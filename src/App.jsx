@@ -1,15 +1,13 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Home from "./pages/Home/Home";
+import {RouterProvider } from "react-router-dom";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Home />,
-  },
-]);
+import { StrictMode } from "react";
+import Routes from "./routes/Routes";
+
 
 function App() {
-  return <RouterProvider router={router} />;
+  return <StrictMode>
+  <RouterProvider router={Routes} />
+  </StrictMode>
 }
 
 export default App;
