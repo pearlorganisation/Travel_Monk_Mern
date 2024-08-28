@@ -96,6 +96,7 @@ const Distinguish = () => {
                     </div>
                   </div>
                 </SwiperSlide>
+
                 <SwiperSlide>
                   <div className="max-w-xs bg-white rounded-lg shadow-md overflow-hidden">
                     <div className="relative">
@@ -126,6 +127,7 @@ const Distinguish = () => {
                     </div>
                   </div>
                 </SwiperSlide>
+
                 <SwiperSlide>
                   <div className="max-w-xs bg-white rounded-lg shadow-md overflow-hidden">
                     <div className="relative">
@@ -156,6 +158,7 @@ const Distinguish = () => {
                     </div>
                   </div>
                 </SwiperSlide>
+
                 <SwiperSlide>
                   <div className="max-w-xs bg-white rounded-lg shadow-md overflow-hidden">
                     <div className="relative">

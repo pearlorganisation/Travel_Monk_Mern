@@ -19,6 +19,7 @@ const GetinTouch = () => {
                   class="w-full mt-2 p-2 border rounded-lg focus:outline-none focus:border-gray-400"
                 />
               </div>
+
               <div>
                 <label for="contact-number" class="block text-gray-700">
                   Contact Number
