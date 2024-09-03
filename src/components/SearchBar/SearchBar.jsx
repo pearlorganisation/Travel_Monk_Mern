@@ -1,6 +1,19 @@
-import React from "react";
 import { useForm } from "react-hook-form";
+import ArrRight from "../../assets/arrright.png";
+import Image1 from "../../assets/images/image1.png";
+import Image2 from "../../assets/images/image2.png";
+import Image3 from "../../assets/images/image3.png";
+import Image4 from "../../assets/images/image4.png";
 
+import Fav from ".././../assets/logos/fav.png";
+import Air from ".././../assets/logos/air.png";
+import Star from ".././../assets/logos/star.png";
+import FreeB from ".././../assets/logos/breakfast.png";
+import Wifi from ".././../assets/logos/wifi.png";
+import Parking from ".././../assets/logos/parking.png";
+
+import Sea from ".././../assets/logos/sea.png";
+import Cancel from ".././../assets/logos/cancel.png";
 const SearchBar = () => {
   const { handleSubmit, register } = useForm();
 
@@ -120,33 +133,198 @@ const SearchBar = () => {
     },
   ];
 
+  const sortByOptions = [
+    {
+      id: 1,
+      name: "Popular",
+    },
+    {
+      id: 2,
+      name: "Price - Low to High",
+    },
+    {
+      id: 3,
+      name: "Price - High to Low",
+    },
+    {
+      id: 4,
+      name: "High Ratings",
+    },
+    {
+      id: 5,
+      name: "High Reviews",
+    },
+    {
+      id: 6,
+      name: "Popular",
+    },
+    {
+      id: 7,
+      name: "Newest First",
+    },
+  ];
+
+  const ratings = [
+    {
+      id: 1,
+      reviews: "532",
+      name: "4.2+",
+    },
+    {
+      id: 2,
+      reviews: "224",
+      name: "3.5+",
+    },
+    {
+      id: 3,
+      reviews: "254",
+      name: "3+",
+    },
+  ];
+
+  const starCategories = [
+    {
+      id: 1,
+      name: "3 Star",
+      reviews: "532",
+    },
+    {
+      id: 2,
+      name: "4 Star",
+      reviews: "224",
+    },
+    {
+      id: 3,
+      name: "5 Star",
+      reviews: "254",
+    },
+  ];
+
+  const priceRanges = [
+    {
+      id: 1,
+      name: "₹ 0 - ₹ 2000",
+      reviews: "532",
+    },
+    {
+      id: 2,
+      name: "₹ 2000 - ₹ 5500",
+      reviews: "224",
+    },
+    {
+      id: 3,
+      name: "₹ 5500 - ₹ 9000",
+      reviews: "254",
+    },
+    {
+      id: 4,
+      reviews: "446",
+      name: "₹ 9000 - ₹ 12500",
+    },
+    {
+      id: 5,
+      name: "₹ 12500 - ₹ 15000",
+      reviews: "16",
+    },
+  ];
+
+  const hotelsData = [
+    {
+      id: 1,
+      image: Image1,
+      top: "Only One Room Left",
+      name: "  ITC Grand Goa - A Luxury Resort Collection",
+      price: "17000",
+      taxes: "3000",
+      rating: "5",
+      features: [
+        { id: 1, name: "Free Parking", logo: Parking },
+        { id: 2, name: "Free Wifi", logo: Wifi },
+        { id: 3, name: "Air Conditioner", logo: Air },
+        { id: 4, name: "Sea View", logo: Sea },
+        { id: 5, name: "Free Breakfast", logo: FreeB },
+        { id: 6, name: "Free Cancellation", logo: Cancel },
+      ],
+    },
+    {
+      id: 2,
+      image: Image2,
+      name: "The Fern Kadamba Hotel and Spa, Goa",
+      price: "15000",
+      originalPrice: "20000",
+      tag: "Limited Time Deal",
+      taxes: "3000",
+      rating: "5",
+      features: [
+        { id: 1, name: "Free Parking", logo: Parking },
+        { id: 2, name: "Free Wifi", logo: Wifi },
+        { id: 3, name: "Air Conditioner", logo: Air },
+        { id: 4, name: "Sea View", logo: Sea },
+        { id: 5, name: "Free Breakfast", logo: FreeB },
+        { id: 6, name: "Free Cancellation", logo: Cancel },
+      ],
+    },
+    {
+      id: 3,
+      image: Image3,
+      name: "Luxury Farm House",
+      price: "24890",
+      originalPrice: "29000",
+      tag: "Limited Time Deal",
+      taxes: "3000",
+      rating: "4.8",
+      features: [
+        { id: 1, name: "Free Parking", logo: Parking },
+        { id: 2, name: "Free Wifi", logo: Wifi },
+        { id: 3, name: "Air Conditioner", logo: Air },
+        { id: 4, name: "Sea View", logo: Sea },
+      ],
+    },
+    {
+      id: 4,
+      image: Image4,
+      name: "Country Inn Panjim Goa",
+      price: "28790",
+      originalPrice: "32000",
+      tag: "Limited Time Deal",
+      taxes: "3000",
+      rating: "4.6",
+      features: [
+        { id: 1, name: "Free Parking", logo: Parking },
+        { id: 2, name: "Free Wifi", logo: Wifi },
+        { id: 3, name: "Air Conditioner", logo: Air },
+        { id: 4, name: "Sea View", logo: Sea },
+      ],
+    },
+  ];
+
   return (
-    <div className="w-screen p-10 ">
+    <div className=" p-10 bg-gray-200">
       <div
-        className="p-4 rounded-2xl flex items-center justify-center"
+        className="p-4 rounded-2xl flex items-center justify-center bg-white"
         style={{ boxShadow: " rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
       >
         <div className="grid justify-between items-center grid-cols-[auto_auto_auto_155px_auto] gap-2  ">
           {searchData.map((el, index) => {
             return (
-              <div class="relative p-2" key={index}>
+              <div className="relative p-2" key={index}>
                 <div className=" flex justify-start items-center">
                   <label
                     htmlFor="base-input"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
                     {el.label}
                   </label>
                 </div>
 
                 <div>
-                  <div class="absolute top-8    justify-center inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                  <div className="absolute top-8    justify-center inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
                     {el.img}
                   </div>
                   <input
                     type="text"
                     id="email-address-icon"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder={el.placeholder}
                   />
                 </div>
@@ -154,14 +332,187 @@ const SearchBar = () => {
             );
           })}
 
-          <div>
+          <div className="flex items-center justify-center mt-6">
             <button
               type="submit"
-              class="text-white bg-[#007E8F] hover:bg-[#439ca8] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md      text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              className="text-white px-12 py-2 bg-[#007E8F] rounded-sm hover:bg-[#439ca8] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium  text-md      text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
               Search
             </button>
           </div>
+        </div>
+      </div>
+
+      <div className="mt-4">
+        <div className="flex flex-row gap-6">
+          <h1 className="mr-12">Sort By</h1>
+
+          {sortByOptions.map((sortByOption) => (
+            <div className="flex flex-row gap-6 items-center justify-center">
+              <h1 className="font-semibold hover:text-blue-400 hover:underline hover:cursor-pointer text-sm">
+                {sortByOption.name}
+              </h1>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex flex-row w-full">
+        <div className="w-[25%]  ">
+          <div className="">
+            <div className="mt-2 h-[300px] rounded-xl w-[90%] bg-red-400">
+              Explore on Map
+            </div>
+
+            <div className="w-[90%]">
+              <h1 className="mt-4 font-semibold text-lg"> Filter By </h1>
+
+              <h3 className="mt-3 font-semibold">Price</h3>
+
+              <div className="flex flex-row gap-3 items-center justify-center">
+                <input
+                  type="text"
+                  placeholder="Min"
+                  className="input input-bordered w-full max-w-xs"
+                />
+
+                <h3 className=""> to </h3>
+
+                <input
+                  type="text"
+                  placeholder="Max"
+                  className="input input-bordered w-full max-w-xs"
+                />
+
+                <div className="bg-white p-1 px-4 border-2 border-gray-200 rounded-xl">
+                  <button className="p-2">
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M3.00006 11H17.5861L12.2931 5.70703L13.7071 4.29303L21.4141 12L13.7071 19.707L12.2931 18.293L17.5861 13H3.00006V11Z"
+                        fill="#7A7A7A"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              {priceRanges.map((priceRange) => (
+                <div className="flex flex-row  justify-between items-center mt-2">
+                  <div className="flex flex-row gap-3">
+                    <input type="checkbox" className="checkbox" />
+                    <h3>{priceRange.name}</h3>
+                  </div>
+
+                  <h1 className="text-sm">( {priceRange.reviews} )</h1>
+                </div>
+              ))}
+
+              <h3 className="mt-3 font-semibold">Star Category</h3>
+
+              {starCategories.map((starCategory) => (
+                <div className="flex flex-row  justify-between items-center mt-2">
+                  <div className="flex flex-row gap-3">
+                    <input type="checkbox" className="checkbox" />
+                    <h3>{starCategory.name}</h3>
+                  </div>
+
+                  <h1 className="text-sm">( {starCategory.reviews} )</h1>
+                </div>
+              ))}
+
+              <h3 className="mt-3 font-semibold">Ratings</h3>
+
+              {ratings.map((rating) => (
+                <div className="flex flex-row  justify-between items-center mt-2">
+                  <div className="flex flex-row gap-3">
+                    <input type="checkbox" className="checkbox" />
+                    <h3>{rating.name}</h3>
+                  </div>
+
+                  <h1 className="text-sm">( {rating.reviews} )</h1>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="w-[75%] mt-2">
+          {hotelsData.map((hotel) => (
+            <div className=" bg-white w-full rounded-xl mt-6">
+              <div className="flex flex-col items-center rounded-xl border  text-center  md:flex-row md:items-start md:text-left relative">
+                <img src={Fav} className="w-8 h-8 absolute right-6 top-2" />
+                <div className="mb-0 md:mr-6 md:mb-0 ">
+                  <img
+                    className=" rounded-xl  object-cover size-96 w-72 "
+                    src={hotel.image}
+                    alt=""
+                  />
+
+                  {hotel.top && (
+                    <div className="absolute top-2 left-3 bg-red-500 p-2 rounded-xl">
+                      <h3 className="text-gray-200 text-sm ">{hotel.top}</h3>
+                    </div>
+                  )}
+                </div>
+                <div className="">
+                  <div className="flex flex-row justify-start items-center w-full">
+                    <p className="text-xl font-bold text-gray-700 mt-3">
+                      {hotel.name}
+                    </p>
+                  </div>
+
+                  <div className="mt-4">
+                    <div className="flex flex-row gap-4 items-center justify-start">
+                      <img src={Star} className="w-5 h-5" />
+                      <h3> {hotel.rating} </h3>
+                    </div>
+                  </div>
+                  <p className="mb-4 mt-4 text-sm font-medium text-gray-500">
+                    This property offers :
+                  </p>
+
+                  <div className="flex flex-row w-full">
+                    <div className="grid grid-cols-2 gap-3">
+                      {hotel.features.map((feature) => (
+                        <div className="flex flex-row gap-2 items-center justify-start">
+                          <img src={feature.logo} className="h-5 w-5" />
+                          <h3>{feature.name}</h3>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="flex flex-row gap-4 justify-start items-center">
+                    <h1 className="mt-6 font-bold text-xl"> ₹ {hotel.price}</h1>
+
+                    {hotel.originalPrice && (
+                      <strike>
+                        <h1 className="mt-6 font-bold text-md line text-gray-400">
+                          ₹ {hotel.originalPrice}
+                        </h1>
+                      </strike>
+                    )}
+
+                    {hotel.tag && (
+                      <div className="bg-yellow-500 rounded-lg p-2 mt-6">
+                        <h3 className=" text-sm "> {hotel.tag}</h3>
+                      </div>
+                    )}
+                  </div>
+
+                  <h3 className="text-gray-400 text-lg mt-4">
+                    + ₹ {hotel.taxes} taxes and fees per night
+                  </h3>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>

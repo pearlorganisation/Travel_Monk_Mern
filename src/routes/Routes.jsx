@@ -6,6 +6,9 @@ import ErrorBoundary from "../components/ErrorBoundary/ErrorBoundary";
 import Products from "../pages/Product/Product";
 import Product from "../pages/Product/Product";
 import BusContactForm from "../pages/Forms/BusContactForm";
+import ProductDetails from "../pages/ProductDetails/ProductDetails";
+import Login from "../pages/Login/Login";
+import Signup from "../pages/Signup/Signup";
 
 const Routes = createBrowserRouter([
   {
@@ -22,8 +25,20 @@ const Routes = createBrowserRouter([
         element: <Product />,
       },
       {
+        path: "/product-details",
+        element: <ProductDetails />,
+      },
+      {
         path: "/bus",
         element: <BusContactForm />,
+      },
+      {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/signup",
+        element: <Signup />,
       },
     ],
   },

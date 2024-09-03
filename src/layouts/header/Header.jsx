@@ -1,109 +1,105 @@
-import React from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-const Header = () => {
-  const headerData = [
-    {
-      title: "Home",
-    },
-    {
-      title: "School Trips",
-    },
-    {
-      title: "Corporate Trips",
-    },
-    {
-      title: "Blog ",
-    },
-    {
-      title: "About Us",
-    },
-    {
-      title: "Contact Us",
-    },
+
+export default function Header() {
+  const [state, setState] = useState(false);
+
+  const navigation = [
+    { title: "Home", path: "/" },
+    { title: "About Us", path: "/about_us" },
+    { title: "Contact Us", path: "/contact_us" },
+    { title: "Product", path: "/product" },
   ];
 
- 
-
   return (
-    <header className="  bg-black font-sans tracking-wide relative z-50">
-      <section className="flex flex-wrap py-2 items-center gap-4 relative  px-10  ">
-        <a href="/" className="">
-          <img src="logo.png" alt="logo" className="w-[170px]" />
-        </a>
-
-        <ul className="flex justify-center  space-x-8 lg:absolute lg:top-2/4 lg:left-2/4 lg:-translate-x-1/2 lg:-translate-y-1/2 max-lg:hidden">
-          {headerData.map((el, index) => {
-            return (
-              <li key={index}>
-                <Link
-                  to={"/" + el.title}
-                  className="hover:text-pink-500 font-bold text-white text-[15px]"
-                >
-                  {el.title}
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      </section>
-
-      <div className="flex flex-wrap items-start gap-4 px-10 py-4 relative">
-        <div
-          id="collapseMenu"
-          className="w-full max-lg:hidden lg:!block max-lg:fixed max-lg:before:fixed max-lg:before:bg-black max-lg:before:opacity-50 max-lg:before:inset-0 max-lg:before:z-50"
-        >
-          <button
-            id="toggleClose"
-            className="lg:hidden fixed top-2 right-4 rounded-full bg-white p-3"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-4 fill-black"
-              viewBox="0 0 320.591 320.591"
+    <nav className="bg-black  w-full border-b md:border-0 md:static  z-50">
+      <div className="items-center px-4 max-w-screen-xl mx-auto md:flex md:px-8">
+        <div className="flex items-center justify-between py-3 md:py-5 md:block">
+          <Link to="/">
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYDzrcR76JDFjYJComkIbHIv6eMK2ZRPvUpw&s"
+              width={50}
+              height={50}
+              alt="logo"
+              data-aos="zoom-in"
+              data-aos-delay="800"
+            />
+          </Link>
+          <div className="md:hidden">
+            <button
+              className="text-gray-700 outline-none p-2 rounded-md focus:border-white border-2 border-white focus:border"
+              onClick={() => setState(!state)}
             >
-              <path
-                d="M30.391 318.583a30.37 30.37 0 0 1-21.56-7.288c-11.774-11.844-11.774-30.973 0-42.817L266.643 10.665c12.246-11.459 31.462-10.822 42.921 1.424 10.362 11.074 10.966 28.095 1.414 39.875L51.647 311.295a30.366 30.366 0 0 1-21.256 7.288z"
-                data-original="#000000"
-              ></path>
-              <path
-                d="M287.9 318.583a30.37 30.37 0 0 1-21.257-8.806L8.83 51.963C-2.078 39.225-.595 20.055 12.143 9.146c11.369-9.736 28.136-9.736 39.504 0l259.331 257.813c12.243 11.462 12.876 30.679 1.414 42.922-.456.487-.927.958-1.414 1.414a30.368 30.368 0 0 1-23.078 7.288z"
-                data-original="#000000"
-              ></path>
-            </svg>
-          </button>
-
-          <ul className="lg:flex lg:justify-center gap-x-8 max-lg:space-y-3 max-lg:fixed max-lg:bg-white max-lg:w-1/2 max-lg:min-w-[300px] max-lg:top-0 max-lg:left-0 max-lg:p-6 max-lg:h-full max-lg:shadow-md max-lg:overflow-auto z-50">
-            <li className="mb-6 hidden max-lg:block">
-              <a href="/">
-                <img
-                  src="https://readymadeui.com/readymadeui.svg"
-                  alt="logo"
-                  className="w-36"
-                />
-              </a>
-            </li>
-
+              {state ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  viewBox="0 0 20 20"
+                  fill="white"
+                  stroke="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="white"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 8h16M4 16h16"
+                  />
+                </svg>
+              )}
+            </button>
+          </div>
+        </div>
+        <div
+          className={`flex-1 justify-self-center pb-3 mt-8 md:block md:pb-0 md:mt-0 ${
+            state ? "block" : "hidden"
+          }`}
+        >
+          <ul
+            className="justify-center items-center space-y-8 md:flex md:space-x-6 md:space-y-0"
+            data-aos="fade-up"
+            data-aos-delay="800"
+          >
+            {navigation.map((item, idx) => {
+              return (
+                <li key={idx} className="text-white hover:text-primary">
+                  <a href={item.path}>{item.title}</a>
+                </li>
+              );
+            })}
           </ul>
         </div>
+        <div className="hidden md:inline-block " data-aos="fade-left">
+          <Link
+            to="/signup"
+            className="py-3 px-4 mr-2 text-white bg-black border-2 border-primary border-width-2 hover:bg-red-400 rounded-md shadow"
+          >
+            Sign Up
+          </Link>
 
-        <div className="flex ml-auto lg:hidden">
-          <button id="toggleOpen">
-            <svg
-              className="w-7 h-7 fill-pink-500"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                clip-rule="evenodd"
-              ></path>
-            </svg>
-          </button>
+          <Link
+            to="/login"
+            data-aos="zoom-out"
+            data-aos-delay="800"
+            className="py-3 px-4 text-white bg-primary hover:bg-blue-500 rounded-md shadow"
+          >
+            Login
+          </Link>
         </div>
       </div>
-    </header>
+    </nav>
   );
-};
-
-export default Header;
+}
