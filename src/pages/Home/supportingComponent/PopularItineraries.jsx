@@ -161,13 +161,15 @@ import "swiper/css/pagination";
 
 // import required modules
 import { Pagination } from "swiper/modules";
-const PopularItineraries = () => {
+import { Link } from "react-router-dom";
+const PopularItineraries = ({ data }) => {
+  console.log("International Data recieved", data);
   return (
     <>
       <div className="bg-[#f5f5f5]">
         <div className="contianer mx-auto max-w-6xl">
           <h2 class="text-center text-2xl font-bold mb-6">
-            Popular Itineraries
+            Popular International Destinations
           </h2>
 
           <div class="relative">
@@ -212,96 +214,28 @@ const PopularItineraries = () => {
                 modules={[Pagination]}
                 className="mySwiper"
               >
-                <SwiperSlide>
-                  {" "}
-                  <div class="max-w-xs mx-auto relative rounded-lg overflow-hidden shadow-lg">
-                    <img
-                      class="w-full h-56 object-cover"
-                      src="https://images.travelandleisureasia.com/wp-content/uploads/sites/2/2023/09/06132056/sri-lanka-1.jpeg"
-                      alt="Shianka"
-                    />
-                    <div class="absolute bottom-0 left-0 p-4 bg-gradient-to-t from-black via-transparent to-transparent w-full">
-                      <h2 class="text-xl font-semibold text-white">Srilanka</h2>
-                      <p class="text-white">Starting Price Rs. 21,999/-</p>
-                    </div>
-                  </div>
-                </SwiperSlide>
-
-                <SwiperSlide>
-                  {" "}
-                  <div class="max-w-xs mx-auto relative rounded-lg overflow-hidden shadow-lg">
-                    <img
-                      class="w-full h-56 object-cover"
-                      src="https://cdn.britannica.com/68/198168-050-16D23B84/Cove-port-coast-Black-Sea-Turkey-Amasra.jpg"
-                      alt="Kashmir"
-                    />
-                    <div class="absolute bottom-0 left-0 p-4 bg-gradient-to-t from-black via-transparent to-transparent w-full">
-                      <h2 class="text-xl font-semibold text-white">Turkey</h2>
-                      <p class="text-white">Starting Price Rs. 21,999/-</p>
-                    </div>
-                  </div>
-                </SwiperSlide>
-
-                <SwiperSlide>
-                  {" "}
-                  <div class="max-w-xs mx-auto relative rounded-lg overflow-hidden shadow-lg">
-                    <img
-                      class="w-full h-56 object-cover"
-                      src="https://static.wanderon.in/wp-content/uploads/2024/04/best-time-to-visit-bhutan.jpg"
-                      alt="Kashmir"
-                    />
-                    <div class="absolute bottom-0 left-0 p-4 bg-gradient-to-t from-black via-transparent to-transparent w-full">
-                      <h2 class="text-xl font-semibold text-white">Bhutan</h2>
-                      <p class="text-white">Starting Price Rs. 21,999/-</p>
-                    </div>
-                  </div>
-                  ``
-                </SwiperSlide>
-
-                <SwiperSlide>
-                  {" "}
-                  <div class="max-w-xs mx-auto relative rounded-lg overflow-hidden shadow-lg">
-                    <img
-                      class="w-full h-56 object-cover"
-                      src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/15/a3/2a/f2/big-hand-ang-golden-bridge.jpg?w=600&h=400&s=1"
-                      alt="Kashmir"
-                    />
-                    <div class="absolute bottom-0 left-0 p-4 bg-gradient-to-t from-black via-transparent to-transparent w-full">
-                      <h2 class="text-xl font-semibold text-white">Vietnam</h2>
-                      <p class="text-white">Starting Price Rs. 21,999/-</p>
-                    </div>
-                  </div>
-                </SwiperSlide>
-
-                <SwiperSlide>
-                  {" "}
-                  <div class="max-w-xs mx-auto relative rounded-lg overflow-hidden shadow-lg">
-                    <img
-                      class="w-full h-56 object-cover"
-                      src="https://images.ctfassets.net/rxqefefl3t5b/2MvpllaTS44GZBPDvxPip6/22fb7211be34011ef52eaff3eb26a77e/shutterstock_444622738.jpg?fl=progressive&q=80"
-                      alt="Kashmir"
-                    />
-                    <div class="absolute bottom-0 left-0 p-4 bg-gradient-to-t from-black via-transparent to-transparent w-full">
-                      <h2 class="text-xl font-semibold text-white">Maldives</h2>
-                      <p class="text-white">Starting Price Rs. 21,999/-</p>
-                    </div>
-                  </div>
-                </SwiperSlide>
-
-                <SwiperSlide>
-                  {" "}
-                  <div class="max-w-xs mx-auto relative rounded-lg overflow-hidden shadow-lg">
-                    <img
-                      class="w-full h-56 object-cover"
-                      src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/15/a3/2a/f2/big-hand-ang-golden-bridge.jpg?w=600&h=400&s=1"
-                      alt="Kashmir"
-                    />
-                    <div class="absolute bottom-0 left-0 p-4 bg-gradient-to-t from-black via-transparent to-transparent w-full">
-                      <h2 class="text-xl font-semibold text-white">Maldives</h2>
-                      <p class="text-white">Starting Price Rs. 21,999/-</p>
-                    </div>
-                  </div>
-                </SwiperSlide>
+                {data?.map((destination) => (
+                  <SwiperSlide key={destination._id}>
+                    {" "}
+                    <Link to={`/international/${destination?._id}`}>
+                      <div class="max-w-xs mx-auto relative rounded-lg overflow-hidden shadow-lg">
+                        <img
+                          class="w-full h-56 object-cover"
+                          src={destination.image.secure_url}
+                          alt={destination.name}
+                        />
+                        <div class="absolute bottom-0 left-0 p-4 bg-gradient-to-t from-black via-transparent to-transparent w-full">
+                          <h2 class="text-3xl  text-white font-bold">
+                            {destination.name}
+                          </h2>
+                          <p class="text-white">
+                            Starting Price Rs. {destination.startingPrice}/-
+                          </p>
+                        </div>
+                      </div>
+                    </Link>
+                  </SwiperSlide>
+                ))}
               </Swiper>
             </div>
 

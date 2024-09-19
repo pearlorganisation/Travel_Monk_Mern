@@ -1,6 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { ClipLoader } from "react-spinners";
+import { useNavigate } from "react-router-dom";
+import { userLogin } from "../../features/auth/authActions";
+import ErrorMessage from "../../components/Error/Error";
 
 const Login = () => {
+  const { loading, error, userInfo } = useSelector((state) => state.auth);
+
+  const dispatch = useDispatch();
+  const { register, handleSubmit } = useForm();
+
+  const navigate = useNavigate();
+
+  const submitForm = (data) => {
+    dispatch(userLogin(data));
+  };
+
+  useEffect(() => {
+    if (userInfo) {
+      navigate("/");
+    }
+  }, [navigate, userInfo]);
+
   return (
     <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
       <div className="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
@@ -45,37 +68,51 @@ const Login = () => {
                 </div>
               </div>
 
-              <div className="mx-auto max-w-xs">
-                <input
-                  className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-                  type="email"
-                  placeholder="Email"
-                />
-                <input
-                  className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
-                  type="password"
-                  placeholder="Password"
-                />
-                <button className="mt-5 tracking-wide font-semibold bg-green-400 text-white-500 w-full py-4 rounded-lg hover:bg-green-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
-                  <span className="ml-">Sign In</span>
-                </button>
-                <p className="mt-6 text-xs text-gray-600 text-center">
-                  I agree to abide by Travel Monks
-                  <a
-                    href="#"
-                    className="border-b border-gray-500 border-dotted"
+              <form onSubmit={handleSubmit(submitForm)}>
+                {error && <ErrorMessage>{error}</ErrorMessage>}
+                <div className="mx-auto max-w-xs">
+                  <input
+                    className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+                    type="email"
+                    placeholder="Email"
+                    required
+                    {...register("email")}
+                  />
+                  <input
+                    className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                    type="password"
+                    required
+                    {...register("password")}
+                    placeholder="Password"
+                  />
+                  <button
+                    type="submit"
+                    className="mt-5 tracking-wide font-semibold bg-green-400 text-white-500 w-full py-4 rounded-lg hover:bg-green-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
                   >
-                    Terms of Service
-                  </a>
-                  and its
-                  <a
-                    href="#"
-                    className="border-b border-gray-500 border-dotted"
-                  >
-                    Privacy Policy
-                  </a>
-                </p>
-              </div>
+                    {loading ? (
+                      <ClipLoader />
+                    ) : (
+                      <span className="">Sign In</span>
+                    )}
+                  </button>
+                  <p className="mt-6 text-xs text-gray-600 text-center">
+                    I agree to abide by Travel Monks
+                    <a
+                      href="#"
+                      className="border-b border-gray-500 border-dotted"
+                    >
+                      Terms of Service
+                    </a>
+                    and its
+                    <a
+                      href="#"
+                      className="border-b border-gray-500 border-dotted"
+                    >
+                      Privacy Policy
+                    </a>
+                  </p>
+                </div>
+              </form>
             </div>
           </div>
         </div>
