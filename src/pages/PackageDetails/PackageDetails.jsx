@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import HelpFAQ from "./HelpFAQ";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { getSinglePackage } from "../../features/package/packageSlice";
 
 const inclusions = [
   " Entire travel from Leh to Leh by tempo traveler (For Tempo option)",
@@ -26,24 +29,43 @@ const exclusions = [
 ];
 
 const PackageDetails = () => {
-  const getPackage = () => {};
+  const dispatch = useDispatch();
+
+  const { id } = useParams();
+
+  const [mypackage, setmyPackage] = useState({});
+
+  useEffect(() => {
+    getPackage();
+    setmyPackage(getPackage());
+  }, []);
+
+  const getPackage = () => {
+    dispatch(getSinglePackage(id));
+  };
+
+  const { data } = useSelector((state) => state.packages.singlePackage);
+
   return (
     <div className="">
       <img
-        src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=1421&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        src={
+          data?.banner?.secure_url ||
+          "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=1421&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        }
         className="w-full h-96"
       />
       <div className="grid grid-cols-1 lg:grid-cols-[65%_auto] gap-6 px-20 py-6">
         <div>
-          <h1 className="text-4xl font-semibold">
-            8 Days Sri Nagar to Leh Road, Trip via Nubra, Pangong and Sou Moriri
-          </h1>
+          <h1 className="text-4xl font-semibold">{data?.name}</h1>
           <div className="flex flex-row gap-12 p-6">
             <div className="flex flex-row gap-4">
               <img src="https://wanderon.in/assets/images/new-location.svg" />
               <div className="flex flex-col ">
                 <h1>Pickup and Drop</h1>
-                <h1>Srinagar - Srinagar</h1>
+                <h1>
+                  {data?.pickDropPoint?.pickup} - {data?.pickDropPoint?.drop}
+                </h1>
               </div>
             </div>
 
@@ -51,7 +73,9 @@ const PackageDetails = () => {
               <img src="https://wanderon.in/assets/images/new-clock.svg" />
               <div className="flex flex-col ">
                 <h1>Duration</h1>
-                <h1>7 N - 8 D</h1>
+                <h1>
+                  {data?.duration?.nights} N - {data?.duration?.days} D
+                </h1>
               </div>
             </div>
           </div>
@@ -64,7 +88,7 @@ const PackageDetails = () => {
               <h1 className="text-2xl font-bold"> Itinary </h1>
             </div>
 
-            <HelpFAQ />
+            <HelpFAQ data={data?.itinerary} />
 
             <div className="flex flex-row gap-4 items-center justify-start px-4 mt-8">
               <img
@@ -75,7 +99,7 @@ const PackageDetails = () => {
             </div>
 
             <div className="px-6 mt-4">
-              {inclusions.map((inclusion, index) => (
+              {data?.inclusions.map((inclusion, index) => (
                 <div className="mt-2 flex flex-row gap-4" key={index}>
                   <img
                     src="https://wanderon.in/assets/svg/check-mark.png"
@@ -95,7 +119,7 @@ const PackageDetails = () => {
             </div>
 
             <div className="px-6 mt-4">
-              {exclusions.map((exclusion, index) => (
+              {data?.exclusions.map((exclusion, index) => (
                 <div className="mt-2 flex flex-row gap-4" key={index}>
                   <img
                     src="https://wanderon.in/assets/svg/exclude.png"
@@ -113,7 +137,7 @@ const PackageDetails = () => {
 
           <h3 className="mt-2 text-gray-400 text-sm">Starting from</h3>
           <h1 className="text-5xl text-[#2DA5F3] mt-0 flex justify-start items-baseline">
-            ₹ 27,999/-{" "}
+            ₹ {data?.startingPrice || 42000}/-{" "}
             <span className="text-xl text-[#2DA5F3] ml-3 font-bold">
               {" "}
               per person

@@ -3,54 +3,29 @@ import axios from "axios";
 const backendURL = "https://travel-monk-backend.onrender.com";
 const localURL = "http://localhost:5000";
 
-const getIndianDestinations = async () => {
-  const response = await axios.get("http://localhost:5000/api/v1/trips/indian");
+const getPackages = async () => {
+  const response = await axios.get(`http://localhost:5000/api/v1/packages`);
 
   if (response.data) {
-    console.log("Data", response.data);
+    console.log("Packages", response.data);
     return response.data;
   }
 };
 
-const getSingleIndianDestination = async (id) => {
+const getSinglePackage = async (id) => {
   const response = await axios.get(
-    `http://localhost:5000/api/v1/trips/indian/${id}`
+    `http://localhost:5000/api/v1/packages/${id}`
   );
 
   if (response.data) {
-    console.log("Data", response.data);
+    console.log("Single Package Data", response.data);
     return response.data;
   }
 };
 
-const getSingleInternationalDestination = async (id) => {
-  const response = await axios.get(
-    `http://localhost:5000/api/v1/trips/international/${id}`
-  );
-
-  if (response.data) {
-    console.log("Data", response.data);
-    return response.data;
-  }
-};
-
-const getInternationalDestinations = async () => {
-  console.log("Hit International API");
-  const response = await axios.get(
-    "http://localhost:5000/api/v1/trips/international"
-  );
-
-  if (response.data) {
-    console.log("Data", response.data);
-    return response.data;
-  }
-};
-
-export const tripService = {
-  getIndianDestinations,
-  getInternationalDestinations,
-  getSingleIndianDestination,
-  getSingleInternationalDestination,
+export const packagesService = {
+  getPackages,
+  getSinglePackage,
 };
 
 // `${backendURL}/api/v1/trips/indian`

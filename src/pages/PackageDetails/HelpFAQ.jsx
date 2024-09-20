@@ -26,10 +26,10 @@ const FaqsCard = (props) => {
               state ? "border-[#2DA5F3] text-[#2DA5F3]" : "border-gray-200"
             } rounded-md`}
           >
-            <h1>{faqsList.day} </h1>
+            <h1>Day {faqsList?.day} </h1>
           </div>
 
-          <h1>{faqsList.q}</h1>
+          <h1>Day Title</h1>
         </div>
         {state ? (
           <div className="h-[30px] w-[30px] bg-white border-2 border-gray-400 rounded-md px-1  flex items-center justify-center">
@@ -72,26 +72,20 @@ const FaqsCard = (props) => {
         className="duration-300"
         style={state ? { height: answerH } : { height: "0px" }}
       >
-        <div>
-          {faqsList.a.map((answer, index) => (
-            <div
-              className="flex flex-row gap-6 items-start justify-start mt-4 px-3"
-              key={index}
-            >
-              <img
-                src="https://wanderon.in/assets/svg/point.png"
-                className="w-6 h-6"
-              />
-              <h1 className=" text-gray-500">{answer}</h1>
-            </div>
-          ))}
+        <div className="flex flex-row gap-6 items-start justify-start mt-4 px-3">
+          <img
+            src="https://wanderon.in/assets/svg/point.png"
+            className="w-6 h-6"
+          />
+          <p className=" text-gray-500">{faqsList?.description}</p>
         </div>
       </div>
     </div>
   );
 };
 
-const HelpFAQ = () => {
+const HelpFAQ = ({ data }) => {
+  console.log("Help FAQ Data", data);
   const faqsList = [
     {
       day: "Day 1",
@@ -153,7 +147,7 @@ const HelpFAQ = () => {
       <div className="max-w-screen-xl mx-auto px-4 gap-12 md:flex md:px-8">
         <div className="flex-1 mt-12 md:mt-0 bg-white p-2 rounded-lg ">
           <ul className="space-y-4 divide-y">
-            {faqsList.map((item, idx) => (
+            {data?.map((item, idx) => (
               <FaqsCard idx={idx} faqsList={item} key={idx} />
             ))}
           </ul>

@@ -77,12 +77,18 @@ function CardCarousel({ data }) {
       </Slider>
 
       <div className="flex justify-end gap-5">
-        <button className="button" onClick={previous}>
-          <i className="ri-arrow-left-circle-line text-neutral-500 text-3xl"></i>
+        <button
+          className="button px-6 py-2 border-2 border-[#2A5D6E] rounded-md"
+          onClick={previous}
+        >
+          Previous
         </button>
 
-        <button className="button" onClick={next}>
-          <i className="ri-arrow-right-circle-line text-neutral-500 text-3xl"></i>
+        <button
+          className="button px-6 py-2 border-2 border-[#2A5D6E] rounded-md"
+          onClick={next}
+        >
+          Next
         </button>
       </div>
     </div>
