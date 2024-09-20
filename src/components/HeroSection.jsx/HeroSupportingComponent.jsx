@@ -302,12 +302,19 @@ const HeroSupportingComponent = ({ data }, ref) => {
               );
             })}
           </div>
-          <div className="flex justify-center items-center py-6 ">
+          <div className="flex flex-row gap-6 justify-center items-center py-6 ">
             <button
               type="submit"
               class="text-white bg-[#007E8F] hover:bg-[#439ca8] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md w-1/6   h-10  text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
-              Search
+              Customize Your Trip
+            </button>
+
+            <button
+              type="submit"
+              class="text-[#1f1f1f] border border-[#1f1f1f] bg-white hover:bg-[#439ca8] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md w-1/6   h-10  text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            >
+              View Package
             </button>
           </div>
         </form>

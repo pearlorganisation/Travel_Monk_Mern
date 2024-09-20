@@ -153,7 +153,7 @@
 // };
 
 // export default PopularDestinations;
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import "swiper/css";
@@ -161,13 +161,15 @@ import "swiper/css/pagination";
 
 // import required modules
 import { Pagination } from "swiper/modules";
-const PopularDestination = () => {
+import { Link } from "react-router-dom";
+
+const PopularDestination = ({ data }) => {
   return (
     <>
       <div className="bg-[#f5f5f5]">
         <div className="contianer mx-auto max-w-6xl">
           <h2 class="text-center text-2xl font-bold mb-6">
-            Most Popular Destinations
+            Most Popular Indian Destinations
           </h2>
 
           <div class="relative">
@@ -212,107 +214,28 @@ const PopularDestination = () => {
                 modules={[Pagination]}
                 className="mySwiper"
               >
-                <SwiperSlide>
-                  {" "}
-                  <div class="max-w-xs mx-auto relative rounded-lg overflow-hidden shadow-lg">
-                    <img
-                      class="w-full h-56 object-cover"
-                      src="https://blog-content.ixigo.com/wp-content/uploads/2022/04/5-reasons-to-visit-Kashmir.jpeg"
-                      alt="Kashmir"
-                    />
-                    <div class="absolute bottom-0 left-0 p-4 bg-gradient-to-t from-black via-transparent to-transparent w-full">
-                      <h2 class="text-xl font-semibold text-white">Kashmir</h2>
-                      <p class="text-white">Starting Price Rs. 21,999/-</p>
-                    </div>
-                  </div>
-                </SwiperSlide>
-
-                <SwiperSlide>
-                  {" "}
-                  <div class="max-w-xs mx-auto relative rounded-lg overflow-hidden shadow-lg">
-                    <img
-                      class="w-full h-56 object-cover"
-                      src="https://blog-content.ixigo.com/wp-content/uploads/2022/04/5-reasons-to-visit-Kashmir.jpeg"
-                      alt="Kashmir"
-                    />
-                    <div class="absolute bottom-0 left-0 p-4 bg-gradient-to-t from-black via-transparent to-transparent w-full">
-                      <h2 class="text-xl font-semibold text-white">Kashmir</h2>
-                      <p class="text-white">Starting Price Rs. 21,999/-</p>
-                    </div>
-                  </div>
-                </SwiperSlide>
-
-                <SwiperSlide>
-                  {" "}
-                  <div class="max-w-xs mx-auto relative rounded-lg overflow-hidden shadow-lg">
-                    <img
-                      class="w-full h-56 object-cover"
-                      src="https://blog-content.ixigo.com/wp-content/uploads/2022/04/5-reasons-to-visit-Kashmir.jpeg"
-                      alt="Kashmir"
-                    />
-                    <div class="absolute bottom-0 left-0 p-4 bg-gradient-to-t from-black via-transparent to-transparent w-full">
-                      <h2 class="text-xl font-semibold text-white">Kashmir</h2>
-                      <p class="text-white">Starting Price Rs. 21,999/-</p>
-                    </div>
-                  </div>
-                </SwiperSlide>
-
-                <SwiperSlide>
-                  {" "}
-                  <div class="max-w-xs mx-auto relative rounded-lg overflow-hidden shadow-lg">
-                    <img
-                      class="w-full h-56 object-cover"
-                      src="https://blog-content.ixigo.com/wp-content/uploads/2022/04/5-reasons-to-visit-Kashmir.jpeg"
-                      alt="Kashmir"
-                    />
-                    <div class="absolute bottom-0 left-0 p-4 bg-gradient-to-t from-black via-transparent to-transparent w-full">
-                      <h2 class="text-xl font-semibold text-white">Kashmir</h2>
-                      <p class="text-white">Starting Price Rs. 21,999/-</p>
-                    </div>
-                  </div>
-                </SwiperSlide>
-                <SwiperSlide>
-                  {" "}
-                  <div class="max-w-xs mx-auto relative rounded-lg overflow-hidden shadow-lg">
-                    <img
-                      class="w-full h-56 object-cover"
-                      src="https://blog-content.ixigo.com/wp-content/uploads/2022/04/5-reasons-to-visit-Kashmir.jpeg"
-                      alt="Kashmir"
-                    />
-                    <div class="absolute bottom-0 left-0 p-4 bg-gradient-to-t from-black via-transparent to-transparent w-full">
-                      <h2 class="text-xl font-semibold text-white">Kashmir</h2>
-                      <p class="text-white">Starting Price Rs. 21,999/-</p>
-                    </div>
-                  </div>
-                </SwiperSlide>
-                <SwiperSlide>
-                  {" "}
-                  <div class="max-w-xs mx-auto relative rounded-lg overflow-hidden shadow-lg">
-                    <img
-                      class="w-full h-56 object-cover"
-                      src="https://blog-content.ixigo.com/wp-content/uploads/2022/04/5-reasons-to-visit-Kashmir.jpeg"
-                      alt="Kashmir"
-                    />
-                    <div class="absolute bottom-0 left-0 p-4 bg-gradient-to-t from-black via-transparent to-transparent w-full">
-                      <h2 class="text-xl font-semibold text-white">Kashmir</h2>
-                      <p class="text-white">Starting Price Rs. 21,999/-</p>
-                    </div>
-                  </div>
-                </SwiperSlide>
-                <SwiperSlide>
-                  {" "}
-                  <div class="max-w-xs mx-auto relative rounded-lg overflow-hidden shadow-lg">
-                    <img
-                      class="w-full h-56 object-cover"
-                      src="https://blog-content.ixigo.com/wp-content/uploads/2022/04/5-reasons-to-visit-Kashmir.jpeg"
-                      alt="Kashmir"
-                    />
-                    <div class="absolute bottom-0 left-0 p-4 bg-gradient-to-t from-black via-transparent to-transparent w-full">
-                      <h2 class="text-xl font-semibold text-white">Kashmir</h2>
-                      <p class="text-white">Starting Price Rs. 21,999/-</p>
-                    </div>
-                  </div>
-                </SwiperSlide>
+                {data?.map((destination) => (
+                  <SwiperSlide key={destination?._id}>
+                    {" "}
+                    <Link to={`/indian/${destination?._id}`}>
+                      <div class="max-w-xs mx-auto relative rounded-lg overflow-hidden shadow-lg">
+                        <img
+                          class="w-full h-56 object-cover"
+                          src={destination?.image.secure_url}
+                          alt={destination?.name}
+                        />
+                        <div class="absolute bottom-0 left-0 p-4 bg-gradient-to-t from-black via-transparent to-transparent w-full">
+                          <h2 class="text-3xl font-bold text-white">
+                            {destination?.name}
+                          </h2>
+                          <p class="text-white">
+                            Starting Price Rs. {destination?.startingPrice}/-
+                          </p>
+                        </div>
+                      </div>
+                    </Link>
+                  </SwiperSlide>
+                ))}
               </Swiper>
             </div>
 

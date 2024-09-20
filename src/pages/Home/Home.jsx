@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import HeroSection from "../../components/HeroSection.jsx/HeroSection";
 import Distinguish from "./supportingComponent/Distinguish";
 import HowitWorks from "./supportingComponent/HowitWorks";
@@ -9,9 +9,42 @@ import GetinTouch from "./supportingComponent/GetinTouch";
 import HotelDetails from "./supportingComponent/HotelDetails";
 import FindHotel from "./supportingComponent/FindHotel";
 import Reviews from "../../components/HeroSection.jsx/Reviews/Reviews";
-
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getAllIndianDestinations,
+  getAllInternationalDestinations,
+} from "../../features/trips/tripsSlice";
 
 const Home = () => {
+  const dispatch = useDispatch();
+
+  const [indianData, setIndianData] = useState([]);
+
+  const indiandestinationState = useSelector(
+    (state) => state.trip.indiandestination.data
+  );
+  const internationalDestinationState = useSelector(
+    (state) => state.trip.internationaldestination.data
+  );
+
+  useEffect(() => {
+    getIndianDestinations();
+    getInternationalDestinations();
+  }, []);
+
+  const getIndianDestinations = () => {
+    dispatch(getAllIndianDestinations());
+    setIndianData(indiandestinationState);
+  };
+
+  const getInternationalDestinations = () => {
+    dispatch(getAllInternationalDestinations());
+  };
+
+  // console.log("Indian DEstionations", indiandestinationState);
+  // console.log("International DEstionations", internationalDestinationState);
+
+  console.log("Indian state data", indianData);
   return (
     <div className="">
       <div
@@ -25,8 +58,14 @@ const Home = () => {
       </div>
       <Reviews />
       <HowitWorks />
-      <PopularDestination />
-      <PopularItineraries />
+      <PopularDestination
+        data={indiandestinationState ? indiandestinationState : []}
+      />
+      <PopularItineraries
+        data={
+          internationalDestinationState ? internationalDestinationState : []
+        }
+      />
       <Upcoming />
       <Distinguish />
       <GetinTouch />
