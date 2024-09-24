@@ -18,8 +18,6 @@ import {
 const Home = () => {
   const dispatch = useDispatch();
 
-  const [indianData, setIndianData] = useState([]);
-
   const indiandestinationState = useSelector(
     (state) => state.trip.indiandestination.data
   );
@@ -34,7 +32,6 @@ const Home = () => {
 
   const getIndianDestinations = () => {
     dispatch(getAllIndianDestinations());
-    setIndianData(indiandestinationState);
   };
 
   const getInternationalDestinations = () => {
@@ -44,7 +41,6 @@ const Home = () => {
   // console.log("Indian DEstionations", indiandestinationState);
   // console.log("International DEstionations", internationalDestinationState);
 
-  console.log("Indian state data", indianData);
   return (
     <div className="">
       <div

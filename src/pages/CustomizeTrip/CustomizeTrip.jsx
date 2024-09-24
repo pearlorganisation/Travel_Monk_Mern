@@ -151,6 +151,7 @@ const tripData = [
 const dropdownOptions = [];
 
 const CustomizeTrip = ({ data }) => {
+  console.log("Trip days and details", data);
   return (
     <div className="bg-gray-200 relative">
       <form className="p-3">

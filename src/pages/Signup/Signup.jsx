@@ -17,7 +17,7 @@ const Signup = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (success) navigate("/login");
+    if (success) navigate("/verification");
   }, [navigate, success]);
 
   const submitForm = async (info) => {

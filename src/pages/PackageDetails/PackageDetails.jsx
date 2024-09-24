@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import HelpFAQ from "./HelpFAQ";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { getSinglePackage } from "../../features/package/packageSlice";
 
 const inclusions = [
@@ -133,7 +133,14 @@ const PackageDetails = () => {
         </div>
 
         <div className="">
-          <h1 className="text-4xl font-semibold">Customize</h1>
+          <h1 className="text-4xl font-semibold">Customize </h1>
+
+          <Link to={"/customize"} data={data}>
+            <button className="w-[100%] px-6 py-4 rounded-full bg-[#2DA5F3] text-white mt-4">
+              {" "}
+              Customize{" "}
+            </button>
+          </Link>
 
           <h3 className="mt-2 text-gray-400 text-sm">Starting from</h3>
           <h1 className="text-5xl text-[#2DA5F3] mt-0 flex justify-start items-baseline">
