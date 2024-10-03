@@ -16,6 +16,8 @@ import InternationalDestinations from "../pages/InternatonalDestinations/Interna
 import PackageDetails from "../pages/PackageDetails/PackageDetails";
 import EmailVerification from "../pages/Signup/EmailVerification";
 import CruizeListing from "../pages/CruizeListing/CruizeListing";
+import BusRides from "../pages/BusTrip/busRide";
+import Details from "../pages/BusDetails/Details";
 
 const Routes = createBrowserRouter([
   {
@@ -41,7 +43,15 @@ const Routes = createBrowserRouter([
       },
       {
         path: "/bus",
+        element: <BusRides />,
+      },
+      {
+        path: "/bus",
         element: <BusContactForm />,
+      },
+      {
+        path: "/busdetails",
+        element: <Details />,
       },
       {
         path: "/login",
