@@ -42,7 +42,7 @@ const Routes = createBrowserRouter([
         element: <ProductDetails />,
       },
       {
-        path: "/bus",
+        path: "/bus-rides",
         element: <BusRides />,
       },
       {
@@ -50,7 +50,7 @@ const Routes = createBrowserRouter([
         element: <BusContactForm />,
       },
       {
-        path: "/busdetails",
+        path: "/bus-details",
         element: <Details />,
       },
       {

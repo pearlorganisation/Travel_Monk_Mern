@@ -1,17 +1,12 @@
 import React from "react";
 
 import { useForm } from "react-hook-form";
-import Image1 from "../../assets/images/bus1.png";
-import Image2 from "../../assets/images/bus2.png";
-import Image3 from "../../assets/images/bus3.png";
-import Image4 from "../../assets/images/image4.png";
-
+ 
 import Air from ".././../assets/logos/air.png";
 import Star from ".././../assets/logos/star.png";
 import FreeB from ".././../assets/logos/breakfast.png";
 import Wifi from ".././../assets/logos/wifi.png";
 import Parking from ".././../assets/logos/parking.png";
-
 import Sea from ".././../assets/logos/sea.png";
 import Cancel from ".././../assets/logos/cancel.png";
 
