@@ -3,8 +3,6 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 const backendURL = "https://travel-monk-backend.onrender.com";
 
-const localURL = "http://localhost:5000";
-
 export const registerUser = createAsyncThunk(
   "auth/register",
   async ({ name, email, password }, { rejectWithValue }) => {
@@ -15,7 +13,7 @@ export const registerUser = createAsyncThunk(
         },
       };
       const { data } = await axios.post(
-        `${localURL}/api/v1/auth/signup`,
+        `${backendURL}/api/v1/auth/signup`,
         { name, email, password },
         config
       );
@@ -42,7 +40,7 @@ export const userLogin = createAsyncThunk(
         },
       };
       const { data } = await axios.post(
-        `${localURL}/api/v1/auth/login`,
+        `${backendURL}/api/v1/auth/login`,
         { email, password },
         config
       );
