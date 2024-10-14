@@ -15,6 +15,8 @@ import PackageDetails from "../pages/PackageDetails/PackageDetails";
 import EmailVerification from "../pages/Signup/EmailVerification";
 import CruizeListing from "../pages/CruizeListing/CruizeListing";
 import Hotels from "../pages/Hotels/Hotels";
+import BusRides from "../pages/BusTrip/busRide";
+import Details from "../pages/BusDetails/Details";
 
 const Routes = createBrowserRouter([
   {
@@ -39,8 +41,16 @@ const Routes = createBrowserRouter([
         element: <ProductDetails />,
       },
       {
+        path: "/bus-rides",
+        element: <BusRides />,
+      },
+      {
         path: "/bus",
         element: <BusContactForm />,
+      },
+      {
+        path: "/bus-details",
+        element: <Details />,
       },
       {
         path: "/login",
