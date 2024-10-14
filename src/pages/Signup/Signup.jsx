@@ -1,23 +1,17 @@
-import React, { useEffect, useState } from "react";
-
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { registerUser } from "../../features/auth/authActions";
 import ClipLoader from "react-spinners/ClipLoader";
 import ErrorMessage from "../../components/Error/Error";
 const Signup = () => {
-  const { loading, error, success } = useSelector((state) => state.auth);
+  const { loading, error} = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const { register, handleSubmit } = useForm();
 
-  const [verificationSent, setVerificationSent] = useState(false);
+  // const [verificationSent, setVerificationSent] = useState(false);
 
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (success) navigate("/verification");
-  }, [navigate, success]);
+  
 
   const submitForm = async (info) => {
     dispatch(registerUser(info));

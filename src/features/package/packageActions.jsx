@@ -4,7 +4,7 @@ const backendURL = "https://travel-monk-backend.onrender.com";
 const localURL = "http://localhost:5000";
 
 const getPackages = async () => {
-  const response = await axios.get(`http://localhost:5000/api/v1/packages`);
+  const response = await axios.get(`${backendURL}/api/v1/packages`);
 
   if (response.data) {
     console.log("Packages", response.data);
@@ -14,7 +14,7 @@ const getPackages = async () => {
 
 const getSinglePackage = async (id) => {
   const response = await axios.get(
-    `http://localhost:5000/api/v1/packages/${id}`
+    `${backendURL}/api/v1/packages/${id}`
   );
 
   if (response.data) {

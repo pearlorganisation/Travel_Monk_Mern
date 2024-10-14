@@ -15,7 +15,7 @@ export const registerUser = createAsyncThunk(
         },
       };
       const { data } = await axios.post(
-        `${localURL}/api/v1/auth/signup`,
+        `${backendURL}/api/v1/auth/signup`,
         { name, email, password },
         config
       );
@@ -42,7 +42,7 @@ export const userLogin = createAsyncThunk(
         },
       };
       const { data } = await axios.post(
-        `${localURL}/api/v1/auth/login`,
+        `${backendURL}/api/v1/auth/login`,
         { email, password },
         config
       );
