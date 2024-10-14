@@ -113,7 +113,7 @@ export default function Header() {
           >
             {navigation.map((item, idx) => {
               return (
-                <li key={idx} className="text-white hover:text-primary">
+                <li key={idx} className="text-white scale-100 hover:scale-125 hover:text-pink-400 border-b-2 border-b-transparent hover:border-b-pink-500 duration-150">
                   <a href={item.path}>{item.title}</a>
                 </li>
               );
