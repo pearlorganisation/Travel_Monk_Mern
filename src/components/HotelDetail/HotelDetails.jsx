@@ -1,6 +1,6 @@
 import React from "react";
 
-const HotelDetails = () => {
+const HotelDetail = () => {
   return (
     <>
       {/* <div class="bg-gray-900 flex items-center justify-center min-h-screen"> */}
@@ -54,4 +54,4 @@ const HotelDetails = () => {
   );
 };
 
-export default HotelDetails;
+export default HotelDetail;

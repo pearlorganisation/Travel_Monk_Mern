@@ -3,8 +3,6 @@ import { createBrowserRouter } from "react-router-dom";
 import DefaultLayout from "../layouts/defaultLayout/DefaultLayout";
 import Home from "../pages/Home/Home";
 import ErrorBoundary from "../components/ErrorBoundary/ErrorBoundary";
-import Products from "../pages/Product/Product";
-import Product from "../pages/Product/Product";
 import BusContactForm from "../pages/Forms/BusContactForm";
 import ProductDetails from "../pages/ProductDetails/ProductDetails";
 import Login from "../pages/Login/Login";
@@ -16,6 +14,7 @@ import InternationalDestinations from "../pages/InternatonalDestinations/Interna
 import PackageDetails from "../pages/PackageDetails/PackageDetails";
 import EmailVerification from "../pages/Signup/EmailVerification";
 import CruizeListing from "../pages/CruizeListing/CruizeListing";
+import Hotels from "../pages/Hotels/Hotels";
 
 const Routes = createBrowserRouter([
   {
@@ -28,15 +27,15 @@ const Routes = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/product",
-        element: <Product />,
+        path: "/hotels",
+        element: <Hotels />,
       },
       {
         path: "/cruize",
         element: <CruizeListing />,
       },
       {
-        path: "/product-details",
+        path: "/hotels/:id",
         element: <ProductDetails />,
       },
       {
@@ -56,7 +55,7 @@ const Routes = createBrowserRouter([
         element: <EmailVerification />,
       },
       {
-        path: "/customize",
+        path: "/customize/:id",
         element: <CustomizeTrip />,
       },
       {

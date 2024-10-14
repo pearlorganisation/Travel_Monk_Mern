@@ -192,9 +192,21 @@ const RoomDetails = () => {
     <div className="flex flex-row gap-8">
       <div className="w-[80%] mt-2">
         <div class="flex space-x-4 mb-4">
-          <img src="hotel1.jpg" alt="Hotel Image 1" class="w-1/4 rounded-lg" />
-          <img src="hotel2.jpg" alt="Hotel Image 2" class="w-1/4 rounded-lg" />
-          <img src="hotel3.jpg" alt="Hotel Image 3" class="w-1/4 rounded-lg" />
+          <img
+            src="https://media.istockphoto.com/id/104731717/photo/luxury-resort.jpg?s=612x612&w=0&k=20&c=cODMSPbYyrn1FHake1xYz9M8r15iOfGz9Aosy9Db7mI="
+            alt="Hotel Image 1"
+            class="w-1/4 rounded-lg"
+          />
+          <img
+            src="https://plus.unsplash.com/premium_photo-1661964071015-d97428970584?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aG90ZWx8ZW58MHx8MHx8fDA%3D"
+            alt="Hotel Image 2"
+            class="w-1/4 rounded-lg"
+          />
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0JxgI2qCHTsxA7QPfdfjYhu9rf6CT_-1mAA&s"
+            alt="Hotel Image 3"
+            class="w-1/4 rounded-lg"
+          />
           <div class="w-1/4 flex items-center justify-center bg-gray-200 rounded-lg">
             <span class="text-gray-600">50 More</span>
           </div>

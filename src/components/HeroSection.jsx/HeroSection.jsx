@@ -81,7 +81,7 @@ const HeroSection = () => {
   const tripData = [
     {
       label: "Place you want to start your trip",
-      placeholder: "City or Country",
+      placeholder: "Place",
       img: (
         <svg
           width="20"
@@ -109,8 +109,8 @@ const HeroSection = () => {
       ),
     },
     {
-      label: "Place you want to visit",
-      placeholder: "City or Country",
+      label: "Place you want to end your trip",
+      placeholder: "Place",
       img: (
         <svg
           width="20"
@@ -225,9 +225,8 @@ const HeroSection = () => {
 
   function handleHeroData(data) {
     console.log(data);
-    if(data.lowercase() === 'travellers')
-    {
-      navigate("/contact-form-bus")
+    if (data.lowercase() === "travellers") {
+      navigate("/contact-form-bus");
     }
     setData(data);
   }

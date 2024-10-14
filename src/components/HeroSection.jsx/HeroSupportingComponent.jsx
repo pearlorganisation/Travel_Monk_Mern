@@ -12,7 +12,7 @@ const HeroSupportingComponent = ({ data }, ref) => {
   const tripData = [
     {
       label: "Place you want to start your trip",
-      placeholder: "City or Country",
+      placeholder: "Place",
       img: (
         <svg
           width="20"
@@ -40,8 +40,8 @@ const HeroSupportingComponent = ({ data }, ref) => {
       ),
     },
     {
-      label: "Place you want to visit",
-      placeholder: "City or Country",
+      label: "Place you want to end your trip",
+      placeholder: "Place",
       img: (
         <svg
           width="20"

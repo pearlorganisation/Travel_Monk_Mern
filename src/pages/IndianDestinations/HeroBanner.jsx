@@ -6,7 +6,7 @@ function HeroBanner({ data }) {
       <img
         className="absolute inset-0 z-0 w-full h-screen  object-cover"
         src={data?.banner?.secure_url}
-        alt=""
+        alt="banner image"
       />
 
       <div className=" pl-[10%] z-20 space-y-3">

@@ -22,6 +22,17 @@ export const getSingleIndianDesstination = createAsyncThunk(
   }
 );
 
+export const getAllActivitiesByDestination = createAsyncThunk(
+  "activities/singleIndianDest/get",
+  async (id, thunkAPI) => {
+    try {
+      return tripService.getActivityByDestination(id);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 export const getSingleInterDestination = createAsyncThunk(
   "trip/singleInterDest/get",
   async (id, thunkAPI) => {
@@ -50,6 +61,7 @@ const destinationState = {
   isSuccess: false,
   indiandestination: "",
   singleDestination: "",
+  activities: "",
   internationaldestination: "",
   message: "",
 };
@@ -91,6 +103,23 @@ export const tripsSlice = createSlice({
         state.isSuccess = false;
         state.message = action.error;
       })
+
+      .addCase(getAllActivitiesByDestination.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getAllActivitiesByDestination.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.activities = action.payload;
+      })
+      .addCase(getAllActivitiesByDestination.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
+      })
+
       .addCase(getAllInternationalDestinations.pending, (state) => {
         state.isLoading = true;
       })
