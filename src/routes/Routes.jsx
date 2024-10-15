@@ -3,8 +3,6 @@ import { createBrowserRouter } from "react-router-dom";
 import DefaultLayout from "../layouts/defaultLayout/DefaultLayout";
 import Home from "../pages/Home/Home";
 import ErrorBoundary from "../components/ErrorBoundary/ErrorBoundary";
-import Products from "../pages/Product/Product";
-import Product from "../pages/Product/Product";
 import BusContactForm from "../pages/Forms/BusContactForm";
 import ProductDetails from "../pages/ProductDetails/ProductDetails";
 import Login from "../pages/Login/Login";
@@ -15,6 +13,7 @@ import IndianDestinations from "../pages/IndianDestinations/IndianDestinations";
 import InternationalDestinations from "../pages/InternatonalDestinations/InternationalDestinations";
 import PackageDetails from "../pages/PackageDetails/PackageDetails";
 import CruizeListing from "../pages/CruizeListing/CruizeListing";
+import Hotels from "../pages/Hotels/Hotels";
 import BusRides from "../pages/BusTrip/busRide";
 import Details from "../pages/BusDetails/Details";
 
@@ -29,15 +28,15 @@ const Routes = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/product",
-        element: <Product />,
+        path: "/hotels",
+        element: <Hotels />,
       },
       {
         path: "/cruize",
         element: <CruizeListing />,
       },
       {
-        path: "/product-details",
+        path: "/hotels/:id",
         element: <ProductDetails />,
       },
       {
@@ -62,7 +61,7 @@ const Routes = createBrowserRouter([
       },
     
       {
-        path: "/customize",
+        path: "/customize/:id",
         element: <CustomizeTrip />,
       },
       {

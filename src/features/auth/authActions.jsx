@@ -3,8 +3,6 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 const backendURL = "https://travel-monk-backend.onrender.com";
 
-const localURL = "http://localhost:5000";
-
 export const registerUser = createAsyncThunk(
   "auth/register",
   async ({ name, email, password }, { rejectWithValue }) => {

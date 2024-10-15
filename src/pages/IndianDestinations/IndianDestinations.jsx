@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
+  getAllActivitiesByDestination,
   getAllIndianDestinations,
   getSingleIndianDesstination,
 } from "../../features/trips/tripsSlice";
@@ -14,14 +15,14 @@ const IndianDestinations = () => {
 
   const { data } = useSelector((state) => state.trip.singleDestination);
 
+  const activities = useSelector((state) => state.trip.activities);
+
   useEffect(() => {
-    getIndianDestination();
+    dispatch(getSingleIndianDesstination(id));
+    dispatch(getAllActivitiesByDestination(id));
   }, []);
 
-  const getIndianDestination = () => {
-    dispatch(getSingleIndianDesstination(id));
-  };
-
+  console.log(activities, "activities of Leh location");
   return (
     <div>
       <HeroBanner data={data} />

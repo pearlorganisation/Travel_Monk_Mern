@@ -13,12 +13,20 @@ const getIndianDestinations = async () => {
 };
 
 const getSingleIndianDestination = async (id) => {
-  const response = await axios.get(
-    `${backendURL}/api/v1/trips/indian/${id}`
-  );
+  const response = await axios.get(`${backendURL}/api/v1/trips/indian/${id}`);
 
   if (response.data) {
     console.log("Data", response.data);
+    return response.data;
+  }
+};
+
+const getActivityByDestination = async (id) => {
+  const response = await axios.get(
+    `${backendURL}/api/v1/activities/indian/destination/${id}`
+  );
+
+  if (response.data) {
     return response.data;
   }
 };
@@ -35,10 +43,7 @@ const getSingleInternationalDestination = async (id) => {
 };
 
 const getInternationalDestinations = async () => {
-  console.log("Hit International API");
-  const response = await axios.get(
-    `${backendURL}/api/v1/trips/international`
-  );
+  const response = await axios.get(`${backendURL}/api/v1/trips/international`);
 
   if (response.data) {
     console.log("Data", response.data);
@@ -51,6 +56,7 @@ export const tripService = {
   getInternationalDestinations,
   getSingleIndianDestination,
   getSingleInternationalDestination,
+  getActivityByDestination,
 };
 
 // `${backendURL}/api/v1/trips/indian`

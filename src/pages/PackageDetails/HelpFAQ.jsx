@@ -10,7 +10,7 @@ const FaqsCard = (props) => {
   const handleOpenAnswer = () => {
     const answerElH = answerElRef.current.childNodes[0].offsetHeight;
     setState(!state);
-    setAnswerH(`${answerElH + 20}px`);
+    setAnswerH(`${answerElH + 60}px`);
   };
 
   return (
@@ -29,7 +29,7 @@ const FaqsCard = (props) => {
             <h1>Day {faqsList?.day} </h1>
           </div>
 
-          <h1>Day Title</h1>
+          <h1>{faqsList?.title}</h1>
         </div>
         {state ? (
           <div className="h-[30px] w-[30px] bg-white border-2 border-gray-400 rounded-md px-1  flex items-center justify-center">
@@ -72,13 +72,17 @@ const FaqsCard = (props) => {
         className="duration-300"
         style={state ? { height: answerH } : { height: "0px" }}
       >
-        <div className="flex flex-row gap-6 items-start justify-start mt-4 px-3">
-          <img
-            src="https://wanderon.in/assets/svg/point.png"
-            className="w-6 h-6"
-          />
-          <p className=" text-gray-500">{faqsList?.description}</p>
-        </div>
+        {faqsList?.activities.map((activity) => (
+          <div>
+            <div className="flex flex-row gap-6 items-start justify-start mt-4 px-3">
+              <img
+                src="https://wanderon.in/assets/svg/point.png"
+                className="w-6 h-6"
+              />
+              <p className=" text-gray-500">{activity.name}</p>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -88,7 +92,8 @@ const HelpFAQ = ({ data }) => {
   console.log("Help FAQ Data", data);
   const faqsList = [
     {
-      day: "Day 1",
+      day: 1,
+      title: "Title",
       q: "Leh Arrival and Acclimatization",
       a: [
         "Welcome to Leh, the heart of Ladakh! After a thrilling journey, it's time to take a break and let your body adjust to the altitude.",
@@ -98,7 +103,8 @@ const HelpFAQ = ({ data }) => {
       ],
     },
     {
-      day: "Day 2",
+      day: 2,
+      title: "Title 2",
       q: "Leh to Nubra over Khardung La, Overnight stay in Nubra ",
       a: [
         " It's time to wake up and start your day with a delicious breakfast at the hotel. Get ready to explore the mesmerizing city of Leh with our local sightseeing tour.",
