@@ -27,7 +27,7 @@ function TripSection({ data }) {
       </div>
 
       <div className="text-[2.5rem] mb-6 font-bold text-[#015f74]">
-        Trips From Delhi/Srinagar
+        Trips From {data?.name}
       </div>
       <CardCarousel data={data} />
     </div>

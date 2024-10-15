@@ -34,7 +34,7 @@ function CardCarousel({ data }) {
               <div className=" h-full relative z-0 w-full">
                 <img
                   className="absolute inset-0  rounded-lg z-0 w-full h-full object-cover"
-                  src={cardData.image}
+                  src={cardData.image.secure_url}
                   alt="img"
                 />
 
@@ -66,7 +66,6 @@ function CardCarousel({ data }) {
                         iconName="ri-map-pin-2-fill"
                         label={cardData?.location}
                       />
-                      <h1>{cardData?._id}</h1>
                     </div>
                   </div>
                 </div>

@@ -4,40 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { getSinglePackage } from "../../features/package/packageSlice";
 
-// const inclusions = [
-//   " Entire travel from Leh to Leh by tempo traveler (For Tempo option)",
-//   " Bike rent for 5 Days - Day 2 till Day 6 (For Biking option)",
-//   "Fuel for the bike",
-//   " Stay for 6 nights – 3 nights in a hotel at Leh, 2 night in a Hotel at Nubra Valley, 1 night in camps at Pangong Tso on triple sharing",
-//   "A total of 12 meals – 1 meal Day 1 (D) + 2 meals Day 2 (B + D) + 2 meals Day 3 (B+D) + 2 meals Day 4 (B+D) + 2 meals Day 5 (B+D) + 2 meals Day 6 (B+D) + 1 meal Day 7 (B)",
-//   "Mechanical Backup",
-//   "All inner line permits for the trip",
-//   "Team Captain throughout the trip",
-//   "Riding Gears – Helmet, Riding Gloves ( only for riders), Elbow Guards, Knee Pads (Though it is recommended you carry your own helmet for comfort)",
-
-//   "Driver Night Charges, Toll Tax, Parking Charges, etc.",
-//   "An Oxygen Cylinder and Medical Kit in the car in case of emergency",
-//   "Airport pick or drop. ( Private taxi won't be provided, taxis will be available on pre-decided slots time as per the Flights timings of combined group).",
-// ];
-
-// const exclusions = [
-//   "GST (5%) is applicable extra.",
-//   "Any kind of food or beverage that is not included in the package like alcoholic drinks, mineral water, meals/refreshments/lunches on the highway.",
-//   "Any personal expenses like a tip to the drivers, entry to monuments/monasteries, camera/video camera charges, camel safari, river rafting, laundry, telephone bills, tips, etc",
-//   "Any cost arising due to natural calamities like landslides, roadblocks etc. (to be borne directly by the customer on the spot)",
-//   "Anything not mentioned in the inclusions.",
-// ];
-
 const PackageDetails = () => {
   const dispatch = useDispatch();
 
   const { id } = useParams();
 
-  const [mypackage, setmyPackage] = useState({});
-
   useEffect(() => {
     getPackage();
-    setmyPackage(getPackage());
   }, []);
 
   const getPackage = () => {
