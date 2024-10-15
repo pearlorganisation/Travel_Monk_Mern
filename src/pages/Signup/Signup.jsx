@@ -52,11 +52,11 @@ const Signup = () => {
           </div>
 
 
-          {verificationSent && <h1> Thank You Mail Sent Successfully</h1>}
+          {/* {verificationSent && <h1> Thank You Mail Sent Successfully</h1>} */}
           <div className="mt-12 flex flex-col items-center">
             <div className="w-full flex-1 mt-8">
               <form onSubmit={handleSubmit(submitForm)}>
-                {error && <ErrorMessage>{error}</ErrorMessage>}
+                {/* {error && <ErrorMessage>{error}</ErrorMessage>} */}
                 <div className="mx-auto max-w-xs">
                   <input
                     className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
