@@ -12,7 +12,6 @@ import EditCustomize from "../pages/EditCustomize/EditCustomize";
 import IndianDestinations from "../pages/IndianDestinations/IndianDestinations";
 import InternationalDestinations from "../pages/InternatonalDestinations/InternationalDestinations";
 import PackageDetails from "../pages/PackageDetails/PackageDetails";
-import EmailVerification from "../pages/Signup/EmailVerification";
 import CruizeListing from "../pages/CruizeListing/CruizeListing";
 import Hotels from "../pages/Hotels/Hotels";
 import BusRides from "../pages/BusTrip/busRide";
@@ -59,10 +58,6 @@ const Routes = createBrowserRouter([
       {
         path: "/signup",
         element: <Signup />,
-      },
-      {
-        path: "/verification",
-        element: <EmailVerification />,
       },
       {
         path: "/customize/:id",

@@ -11,12 +11,12 @@ const Signup = () => {
   const dispatch = useDispatch();
   const { register, handleSubmit } = useForm();
 
-  const [verificationSent, setVerificationSent] = useState(false);
-
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (success) navigate("/verification");
+    if (success) {
+      navigate("/login");
+    }
   }, [navigate, success]);
 
   const submitForm = async (info) => {
@@ -57,8 +57,6 @@ const Signup = () => {
             </svg>
           </div>
 
-
-          {verificationSent && <h1> Thank You Mail Sent Successfully</h1>}
           <div className="mt-12 flex flex-col items-center">
             <div className="w-full flex-1 mt-8">
               <form onSubmit={handleSubmit(submitForm)}>
