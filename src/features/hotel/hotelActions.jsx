@@ -6,7 +6,7 @@ const getHotels = async () => {
   const response = await axios.get(`${backendURL}/api/v1/hotels`);
 
   if (response.data) {
-    console.log("Hotels", response.data);
+    console.log("Hotels eawdasdasdasd", response.data);
     return response.data;
   }
 };

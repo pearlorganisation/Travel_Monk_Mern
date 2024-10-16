@@ -1,4 +1,7 @@
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 const backendURL = "https://travel-monk-backend.onrender.com";
@@ -17,8 +20,10 @@ export const registerUser = createAsyncThunk(
         { name, email, password },
         config
       );
-
+      
       console.log("Register Data", data);
+      toast.success("Mail is sent to your email!"); // Show success toast
+      return data;
     } catch (error) {
       // return custom error message from backend if present
       if (error.response && error.response.data.message) {

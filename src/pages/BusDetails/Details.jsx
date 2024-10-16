@@ -24,8 +24,8 @@ const features = [
 
 const RoomDetails = () => {
     return (
-        <div className="flex flex-row gap-8 pl-6">
-            <div className="w-[80%] mt-2">
+        <div className="flex md:flex-col flex-col lg:flex-row gap-8 pl-6">
+            <div className="lg:w-[80%] mt-2 md:w-full sm:w-full">
                 <div class="flex space-x-4 mb-4">
                     <img src="hotel1.jpg" alt="Hotel Image 1" class="w-1/4 rounded-lg" />
                     <img src="hotel2.jpg" alt="Hotel Image 2" class="w-1/4 rounded-lg" />
@@ -107,7 +107,7 @@ const RoomDetails = () => {
                 </div>
             </div>
 
-            <div className="w-[20%]">
+            <div className="lg:w-[20%] md:w-full sm:w-full">
                 <div className="">
                     <div className="mt-2  rounded-xl w-full bg-gray-200 p-4">
                         <h1 className="text-lg font-bold">Neuo Go</h1>

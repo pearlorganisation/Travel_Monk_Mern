@@ -173,7 +173,7 @@ const CustomizeTrip = () => {
       );
   }, [singlePackage]);
 
-  console.log("Trip days and details ka data", singleDestination);
+  // console.log("Trip days and details ka data", singleDestination);
 
   console.log("Trip Package ka data", singlePackage);
 
@@ -213,6 +213,8 @@ const CustomizeTrip = () => {
 
   console.log(dayData, "day data");
 
+  // console.log(selectedActivity, "selected activity");
+  // console.log(selectedHotel, "selected hotel");
   // console.log(selectedActivity, "selected activity");
   // console.log(selectedHotel, "selected hotel");
   return (
@@ -289,7 +291,8 @@ const CustomizeTrip = () => {
       <div className="grid grid-cols-2 mt-4">
         <div className="overflow-hidden">
           {singlePackage?.data?.itinerary?.map((iti, index) => {
-            console.log(iti, "iti");
+            // console.log(iti, "iti");
+            // console.log(index,"my index");
             return (
               <div className="flex flex-row gap-2 items-center justify-start px-8 mt-2">
                 <svg
@@ -346,7 +349,10 @@ const CustomizeTrip = () => {
                         >
                           <option key="choose"> Choose Hotel</option>
                           {singleDestination?.data?.hotels.map((hotel) => (
-                            <option> {hotel.name}</option>
+                            <option key={hotel.id} value={hotel.id}>
+                              {" "}
+                              {hotel.name}
+                            </option>
                           ))}
                         </select>
                       </div>

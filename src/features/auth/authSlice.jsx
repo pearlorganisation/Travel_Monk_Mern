@@ -1,3 +1,4 @@
+ 
 import { createSlice } from "@reduxjs/toolkit";
 import { registerUser, userLogin } from "./authActions";
 
@@ -43,6 +44,7 @@ const authSlice = createSlice({
       builder
         .addCase(registerUser.fulfilled, (state, action) => {
           (state.loading = false), (state.success = true);
+
         })
         .addCase(userLogin.fulfilled, (state, action) => {
           state.loading = false;

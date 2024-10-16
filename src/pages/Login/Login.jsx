@@ -119,6 +119,8 @@ const Login = () => {
                       <span className="">Sign In</span>
                     )}
                   </button>
+                  <div className="flex items-center justify-center mt-3"> <a className="text-center justify-center" href="/forgot-password">Forgot Password</a></div>
+                  
                   <p className="mt-6 text-xs text-gray-600 text-center">
                     I agree to abide by Travel Monks
                     <a

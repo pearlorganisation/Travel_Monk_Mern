@@ -113,7 +113,8 @@ export default function Header() {
           >
             {navigation.map((item, idx) => {
               return (
-                <li key={idx} className="text-white hover:text-primary">
+                <li key={idx} className="text-white scale-100 hover:scale-125
+                  hover:text-[#007E8F] border-b-2 border-b-transparent hover:border-b-[#007E8F] duration-150">
                   <a href={item.path}>{item.title}</a>
                 </li>
               );
@@ -163,20 +164,20 @@ export default function Header() {
           </div>
 
           <div className="hidden md:inline-block " data-aos="fade-left">
-            <div className="flex flex-row gap-6 items-center justify-center">
+            <div className="flexflex-row gap-6 items-center justify-center">
               {!isLogin ? (
                 <div>
                   <Link
                     to="/login"
                     data-aos="zoom-out"
                     data-aos-delay="800"
-                    className="text-white"
+                    className="hover:text-[#007E8F] border-b-2 text-white border-b-transparent hover:border-b-[#007E8F] duration-150 mr-2"
                   >
                     Login
                   </Link>
                   <Link
                     to="/signup"
-                    className="py-1 px-2 text-white bg-[#007E8F]   rounded-full"
+                    className="hover:text-[#007E8F] border-b-2 text-white border-b-transparent hover:border-b-[#007E8F] duration-150"
                   >
                     Sign Up
                   </Link>

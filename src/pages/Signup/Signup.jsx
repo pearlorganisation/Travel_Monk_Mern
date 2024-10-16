@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from "react";
-
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { registerUser } from "../../features/auth/authActions";
 import ClipLoader from "react-spinners/ClipLoader";
 import ErrorMessage from "../../components/Error/Error";
 const Signup = () => {
-  const { loading, error, success } = useSelector((state) => state.auth);
+  const { loading, error } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const { register, handleSubmit } = useForm();
 
@@ -60,7 +57,7 @@ const Signup = () => {
           <div className="mt-12 flex flex-col items-center">
             <div className="w-full flex-1 mt-8">
               <form onSubmit={handleSubmit(submitForm)}>
-                {error && <ErrorMessage>{error}</ErrorMessage>}
+                {/* {error && <ErrorMessage>{error}</ErrorMessage>} */}
                 <div className="mx-auto max-w-xs">
                   <input
                     className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
