@@ -3,8 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../../features/auth/authActions";
 import ClipLoader from "react-spinners/ClipLoader";
 import ErrorMessage from "../../components/Error/Error";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 const Signup = () => {
-  const { loading, error } = useSelector((state) => state.auth);
+  const { loading, success } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const { register, handleSubmit } = useForm();
 
