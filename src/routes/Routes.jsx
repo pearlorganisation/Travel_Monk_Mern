@@ -16,6 +16,7 @@ import CruizeListing from "../pages/CruizeListing/CruizeListing";
 import Hotels from "../pages/Hotels/Hotels";
 import BusRides from "../pages/BusTrip/busRide";
 import Details from "../pages/BusDetails/Details";
+import { ForgotPassword } from "../components/ForgotPassword/ForgotPassword";
 
 const Routes = createBrowserRouter([
   {
@@ -80,6 +81,10 @@ const Routes = createBrowserRouter([
         path: "/packages/:id",
         element: <PackageDetails />,
       },
+      {
+        path:'forgot-password',
+        element: <ForgotPassword />
+      }
     ],
   },
 ]);
