@@ -113,7 +113,8 @@ export default function Header() {
           >
             {navigation.map((item, idx) => {
               return (
-                <li key={idx} className="text-white scale-100 hover:scale-125 hover:text-pink-400 border-b-2 border-b-transparent hover:border-b-pink-500 duration-150">
+                <li key={idx} className="text-white scale-100 hover:scale-125
+                  hover:text-[#007E8F] border-b-2 border-b-transparent hover:border-b-[#007E8F] duration-150">
                   <a href={item.path}>{item.title}</a>
                 </li>
               );
@@ -170,13 +171,13 @@ export default function Header() {
                     to="/login"
                     data-aos="zoom-out"
                     data-aos-delay="800"
-                    className="text-white hover:text-pink-400 border-b-2 mr-2 border-b-transparent hover:border-b-pink-500 duration-150"
+                    className="hover:text-[#007E8F] border-b-2 text-white border-b-transparent hover:border-b-[#007E8F] duration-150 mr-2"
                   >
                     Login
                   </Link>
                   <Link
                     to="/signup"
-                    className="hover:text-pink-400 border-b-2 text-white border-b-transparent hover:border-b-pink-500 duration-150"
+                    className="hover:text-[#007E8F] border-b-2 text-white border-b-transparent hover:border-b-[#007E8F] duration-150"
                   >
                     Sign Up
                   </Link>

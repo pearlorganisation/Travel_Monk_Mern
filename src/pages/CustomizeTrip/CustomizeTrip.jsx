@@ -173,24 +173,51 @@ const CustomizeTrip = () => {
       );
   }, [singlePackage]);
 
-  console.log("Trip days and details ka data", singleDestination);
+  // console.log("Trip days and details ka data", singleDestination);
 
-  console.log("Trip Package ka data", singlePackage);
-
-  const [dayData, setDayData] = useState([
-    {
+  // console.log("Trip Package ka data", singlePackage);
+  
+  const [dayData, setDayData] = useState(
+    singlePackage?.data?.itinerary?.map(() => ({
       selectedHotel: "Choose Hotel",
       selectedActivity: "Choose Activity",
-    },
-  ]);
+    })) || [] // Initialize based on itinerary length
+  );
+
+  useEffect(() => {
+    // Reset dayData if the itinerary changes
+    if (singlePackage?.data?.itinerary) {
+      setDayData(
+        singlePackage.data.itinerary.map(() => ({
+          selectedHotel: "Choose Hotel",
+          selectedActivity: "Choose Activity",
+        }))
+      );
+    }
+  }, [singlePackage?.data]);
+
+  const handleHotelChange = (index, event) => {
+    const newDayData = [...dayData];
+    newDayData[index].selectedHotel = event.target.value;
+    setDayData(newDayData);
+  };
+
+  const handleActivityChange = (index, event) => {
+    const newDayData = [...dayData];
+    newDayData[index].selectedActivity = event.target.value;
+    setDayData(newDayData);
+  };
+
+
+  
 
   const [selectedActivity, setSelectedActivity] = useState("Choose Activity");
   const [selectedHotel, setSelectedHotel] = useState("Choose Hotel");
 
   console.log(dayData, "day data");
 
-  console.log(selectedActivity, "selected activity");
-  console.log(selectedHotel, "selected hotel");
+  // console.log(selectedActivity, "selected activity");
+  // console.log(selectedHotel, "selected hotel");
   return (
     <div className="bg-gray-200 relative">
       <form className="p-3">
@@ -265,7 +292,8 @@ const CustomizeTrip = () => {
       <div className="grid grid-cols-2 mt-4">
         <div className="overflow-hidden">
           {singlePackage?.data?.itinerary?.map((iti, index) => {
-            console.log(iti, "iti");
+            // console.log(iti, "iti");
+            // console.log(index,"my index");
             return (
               <div className="flex flex-row gap-2 items-center justify-start px-8 mt-2">
                 <svg
@@ -316,13 +344,13 @@ const CustomizeTrip = () => {
                       <div className="flex flex-col gap-3 ">
                         <h1> Select Hotel </h1>
                         <select
-                          value={selectedHotel}
-                          onChange={(e) => setSelectedHotel(e.target.value)}
+                          value={dayData[index]?.selectedHotel}
+                          onChange={(event) => handleHotelChange(index, event)} 
                           className="bg-blue-100 border-2 border-[#1f1f1f] rounded-md px-2 py-2 flex flex-row gap-2"
                         >
                           <option key="choose"> Choose Hotel</option>
                           {singleDestination?.data?.hotels.map((hotel) => (
-                            <option> {hotel.name}</option>
+                            <option key={hotel.id} value={hotel.id}> {hotel.name}</option>
                           ))}
                         </select>
                       </div>
@@ -331,8 +359,12 @@ const CustomizeTrip = () => {
                         <h1> Select Activity </h1>
 
                         <select
-                          value={selectedActivity}
-                          onChange={(e) => setSelectedActivity(e.target.value)}
+                          // value={dayData[index].selectedActivity}
+                          value={dayData[index]?.selectedActivity}
+                          onChange={(event) =>
+                            handleActivityChange(index, event)
+                          }
+                          // onChange={(event) => handleActivityChange(index, event)}
                           className="bg-blue-100 border-2 w-[15rem]
                           border-[#1f1f1f] rounded-md px-2 py-2 flex flex-row
                           gap-2"

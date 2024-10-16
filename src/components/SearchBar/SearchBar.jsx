@@ -460,10 +460,10 @@ const SearchBar = () => {
         <div className="w-[75%] mt-2">
           {hotels?.data?.map((hotel) => (
             <div className=" bg-white w-full rounded-xl mt-6">
-              <Link to={`/hotels/${hotel._id}`}>
+              <Link to={`/hotels/${hotel?._id}`}>
                 <div className="grid grid-cols-[35%_auto] gap-3">
                   <img
-                    src={hotel.images[0].secure_url}
+                    src={hotel?.images[0]?.secure_url}
                     className="w-72 size-96 rounded-md"
                   />
 
