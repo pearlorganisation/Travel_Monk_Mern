@@ -2,7 +2,7 @@ import axios from "axios";
 
 const backendURL = "https://travel-monk-backend.onrender.com";
 
-const searchDestination = async (name) => {
+export const searchDestination = async (name) => {
   const response = await axios.get(
     `${backendURL}/api/v1/destinations/search?destination=${name}`
   );
