@@ -158,8 +158,6 @@ const FullyCustomizeTrip = () => {
   const { id } = useParams();
   const { singleDestination } = useSelector((state) => state.trip);
 
-  const { singlePackage } = useSelector((state) => state.packages);
-
   useEffect(() => {
     dispatch(getSingleIndianDesstination(id));
   }, []);
@@ -167,23 +165,26 @@ const FullyCustomizeTrip = () => {
   console.log("Single Destination Fully Customize", singleDestination);
 
   const [dayData, setDayData] = useState(
-    singlePackage?.data?.itinerary?.map(() => ({
+    singleDestination?.data?.locations?.map(() => ({
+      selectedDay: "Day ",
       selectedHotel: "Choose Hotel",
       selectedActivity: "Choose Activity",
     })) || [] // Initialize based on itinerary length
   );
 
-  useEffect(() => {
-    // Reset dayData if the itinerary changes
-    if (singlePackage?.data?.itinerary) {
-      setDayData(
-        singlePackage.data.itinerary.map(() => ({
-          selectedHotel: "Choose Hotel",
-          selectedActivity: "Choose Activity",
-        }))
-      );
-    }
-  }, [singlePackage?.data]);
+  console.log(dayData, "asdlkasldkajsdlkasdjl lkjlkcj");
+
+  // useEffect(() => {
+  //   // Reset dayData if the itinerary changes
+  //   if (singlePackage?.data?.itinerary) {
+  //     setDayData(
+  //       singlePackage.data.itinerary.map(() => ({
+  //         selectedHotel: "Choose Hotel",
+  //         selectedActivity: "Choose Activity",
+  //       }))
+  //     );
+  //   }
+  // }, [singlePackage?.data]);
 
   const handleHotelChange = (index, event) => {
     const newDayData = [...dayData];
@@ -251,7 +252,7 @@ const FullyCustomizeTrip = () => {
 
       <div className="px-24 mt-4">
         <h1 className="text-[#1f1f1f] font-bold text-4xl leading-[48px]">
-          {singlePackage?.data?.name}
+          {singleDestination?.data?.name}
         </h1>
 
         <h3 className="mt-3 font-normal text-base text-[#1f1f1f]">
@@ -277,11 +278,11 @@ const FullyCustomizeTrip = () => {
         </button>
       </div>
 
-      <div className="grid grid-cols-2 mt-4">
+      <div className="grid grid-cols-1 mt-4">
         <div className="overflow-hidden">
-          {singlePackage?.data?.itinerary?.map((iti, index) => {
-            // console.log(iti, "iti");
-            // console.log(index,"my index");
+          {singleDestination?.data?.location?.map((iti, index) => {
+            console.log(iti, "iti");
+            console.log(index, "my index");
             return (
               <div className="flex flex-row gap-2 items-center justify-start px-8 mt-2">
                 <svg
@@ -376,7 +377,6 @@ const FullyCustomizeTrip = () => {
             );
           })}
         </div>
-        <div> Google map</div>
       </div>
 
       <div className="px-24 mt-6 w-full ">

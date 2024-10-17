@@ -17,6 +17,7 @@ import Hotels from "../pages/Hotels/Hotels";
 import BusRides from "../pages/BusTrip/busRide";
 import Details from "../pages/BusDetails/Details";
 import { ForgotPassword } from "../components/ForgotPassword/ForgotPassword";
+import FullyCustomizeTrip from "../pages/FullyCustomizable/FullyCustimzable";
 
 const Routes = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ const Routes = createBrowserRouter([
       {
         path: "/cruize",
         element: <CruizeListing />,
+      },
+      {
+        path: "/fully-customize/:id",
+        element: <FullyCustomizeTrip />,
       },
       {
         path: "/hotels/:id",
