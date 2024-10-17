@@ -12,11 +12,11 @@ const Signup = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (success) {
-      navigate("/login");
-    }
-  }, [navigate, success]);
+  // useEffect(() => {
+  //   if (success) {
+  //     navigate("/login");
+  //   }
+  // }, [navigate, success]);
 
   const submitForm = async (info) => {
     dispatch(registerUser(info));

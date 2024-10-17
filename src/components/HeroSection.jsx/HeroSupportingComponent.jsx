@@ -4,15 +4,19 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { useForm } from "react-hook-form";
 
 const HeroSupportingComponent = ({ data }, ref) => {
   // --------------------------------------------States--------------------------------------
-  const [heroSectionData, setHeroSectionData] = useState("Trip");
+
+  console.log(data, "data");
+  const { register, handleSubmit, formState: error } = useForm();
 
   const tripData = [
     {
       label: "Place you want to start your trip",
       placeholder: "Place",
+      registerData: "destination",
       img: (
         <svg
           width="20"
@@ -42,6 +46,7 @@ const HeroSupportingComponent = ({ data }, ref) => {
     {
       label: "Place you want to end your trip",
       placeholder: "Place",
+      registerData: "journeyFrom",
       img: (
         <svg
           width="20"
@@ -71,6 +76,7 @@ const HeroSupportingComponent = ({ data }, ref) => {
     {
       label: "Start date",
       placeholder: "Not Selected",
+      registerData: "startDate",
       img: (
         <svg
           width="20"
@@ -101,6 +107,7 @@ const HeroSupportingComponent = ({ data }, ref) => {
     {
       label: "End date",
       placeholder: "Not Selected ",
+      registerData: "endDate",
       img: (
         <svg
           width="20"
@@ -130,6 +137,7 @@ const HeroSupportingComponent = ({ data }, ref) => {
     },
     {
       label: "Travellers",
+      registerData: "noTravellers",
       img: (
         <svg
           width="20"
@@ -270,10 +278,13 @@ const HeroSupportingComponent = ({ data }, ref) => {
     },
   ];
 
+  function handleSubmittionForm(data) {
+    console.log(data);
+  }
   return (
     <div className="  bg-white p-2 rounded-2xl">
       {data === "Trip" && (
-        <form>
+        <form onSubmit={handleSubmit(handleSubmittionForm)}>
           <div className="grid grid-cols-[auto_auto_auto_155px_auto] gap-2  ">
             {tripData.map((el, index) => {
               return (
@@ -294,6 +305,7 @@ const HeroSupportingComponent = ({ data }, ref) => {
                     <input
                       type="text"
                       id="email-address-icon"
+                      {...register(el.registerData)}
                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder={el.placeholder}
                     />
