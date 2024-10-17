@@ -4,13 +4,20 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { searchDestination } from "../../features/destination/destinationActions";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 
 const HeroSupportingComponent = ({ data }, ref) => {
   // --------------------------------------------States--------------------------------------
 
-  console.log(data, "data");
-  const { register, handleSubmit, formState: error } = useForm();
+  // console.log(data, "data");
+  const dispatch = useDispatch();
+  const { register, handleSubmit} = useForm();
+
+  const submitForm = async (info)=>{
+    dispatch(searchDestination(info.destination));
+  }
 
   const tripData = [
     {
@@ -278,13 +285,13 @@ const HeroSupportingComponent = ({ data }, ref) => {
     },
   ];
 
-  function handleSubmittionForm(data) {
-    console.log(data);
-  }
+  // function handleSubmittionForm(data) {
+  //   console.log(data);
+  // }
   return (
     <div className="  bg-white p-2 rounded-2xl">
       {data === "Trip" && (
-        <form onSubmit={handleSubmit(handleSubmittionForm)}>
+        <form onSubmit={handleSubmit(submitForm)}>
           <div className="grid grid-cols-[auto_auto_auto_155px_auto] gap-2  ">
             {tripData.map((el, index) => {
               return (
