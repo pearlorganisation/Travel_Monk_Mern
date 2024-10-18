@@ -5,9 +5,12 @@ import { registerUser, userLogin } from "./authActions";
 const initialState = {
   loading: false,
   userInfo: null,
+  isUserLoggedIn: false,
   userToken: null,
   error: null,
   success: false,
+  // accessToken: null,
+  // refreshToken:null,
 };
 
 const authSlice = createSlice({
@@ -50,6 +53,9 @@ const authSlice = createSlice({
           state.loading = false;
           state.userInfo = action.payload;
           state.userToken = action.payload.userToken;
+          state.isUserLoggedIn = true
+          // state.accessToken = localStorage.getItem("accessToken"); // Get token from localStorage
+          // state.refreshToken = localStorage.getItem("refreshToken");
         });
   },
 });

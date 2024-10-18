@@ -17,6 +17,7 @@ import Hotels from "../pages/Hotels/Hotels";
 import BusRides from "../pages/BusTrip/busRide";
 import Details from "../pages/BusDetails/Details";
 import { ForgotPassword } from "../components/ForgotPassword/ForgotPassword";
+import AboutUs from "../pages/AboutUs/AboutUs";
 
 const Routes = createBrowserRouter([
   {
@@ -85,6 +86,10 @@ const Routes = createBrowserRouter([
         path: "forgot-password",
         element: <ForgotPassword />,
       },
+      {
+        path: 'about_us',
+        element: <AboutUs />
+      }
     ],
   },
 ]);
