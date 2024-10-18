@@ -3,9 +3,12 @@ import HelpFAQ from "./HelpFAQ";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { getSinglePackage } from "../../features/package/packageSlice";
+import { toast } from 'react-toastify';
+import axios from "axios"
 
 const PackageDetails = () => {
   const dispatch = useDispatch();
+ 
 
   const { id } = useParams();
 
@@ -18,6 +21,40 @@ const PackageDetails = () => {
   };
 
   const { data } = useSelector((state) => state.packages.singlePackage);
+
+  /*-------------------------------------------------Handle for submitting the contact us form----------------------------------------------- */
+  const [formData, setFormData] = useState({
+    name: '',
+    phoneNumber: '',
+    email: '',
+    message:'',
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post(
+        "https://travel-monk-backend.onrender.com/api/v1/contact",
+        formData
+      );
+      console.log('Response from server:', response.data);  
+
+      // Reset  
+      setFormData({ name: '', phoneNumber: '', email: '', message: '' });
+ 
+      toast.success("We will contact you soon")
+
+    } catch (error) {
+      console.error('Error submitting form:', error);
+ 
+      toast.error('Error submitting form. Please try again later.');
+    }
+  };
 
   return (
     <div className="">
@@ -129,7 +166,7 @@ const PackageDetails = () => {
           </button>
 
           <div className="border-2 border-[#2DA5F3] rounded-md mt-8 px-4">
-            <form className="mt-12">
+            <form className="mt-12" onSubmit={handleSubmit}>
               <h1 className="text-[#2DA5F3] font-semibold">
                 Travel Monk Calling ?{" "}
               </h1>
@@ -137,10 +174,13 @@ const PackageDetails = () => {
 
               <div class="relative my-6">
                 <input
-                  id="id-l11"
+                  id="name"
                   type="text"
-                  name="id-l11"
+                  name="name"
+                  onChange={handleChange}
+                  value={formData.name}
                   placeholder="e.g. John Smith"
+                  required
                   class="relative w-full h-12 px-4 pl-12 placeholder-transparent transition-all border rounded outline-none focus-visible:outline-none peer border-slate-200 text-slate-500 autofill:bg-white invalid:border-pink-500 invalid:text-pink-500 focus:border-[#2DA5F3] focus:outline-none invalid:focus:border-pink-500 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400"
                 />
                 <label
@@ -172,9 +212,12 @@ const PackageDetails = () => {
 
               <div class="relative my-6">
                 <input
-                  id="id-l11"
+                  id="phoneNumber"
                   type="text"
-                  name="id-l11"
+                  name="phoneNumber"
+                  onChange={handleChange}
+                  value={formData.phoneNumber}
+                  required
                   placeholder="e.g. John Smith"
                   class="relative w-full h-12 px-4 pl-12 placeholder-transparent transition-all border rounded outline-none focus-visible:outline-none peer border-slate-200 text-slate-500 autofill:bg-white invalid:border-pink-500 invalid:text-pink-500 focus:border-[#2DA5F3] focus:outline-none invalid:focus:border-pink-500 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400"
                 />
@@ -208,10 +251,13 @@ const PackageDetails = () => {
 
               <div class="relative my-6">
                 <input
-                  id="id-l11"
-                  type="text"
-                  name="id-l11"
+                  id="email"
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   placeholder="e.g. John Smith"
+                  required
                   className="relative w-full h-12 px-4 pl-12 placeholder-transparent transition-all border-2 rounded outline-none focus-visible:outline-none peer border-gray-200 text-slate-500 autofill:bg-white invalid:border-pink-500 invalid:text-pink-500 focus:border-[#2DA5F3] focus:outline-none invalid:focus:border-pink-500 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400"
                 />
                 <label
@@ -249,10 +295,28 @@ const PackageDetails = () => {
                   </g>
                 </svg>
               </div>
-
+{/**  message */}
+              <div class="relative my-6">
+                <textarea  // Use textarea for multi-line input
+                  id="message"
+                  name="message"
+                  placeholder="Enter your message"
+                  onChange={handleChange}
+                  value={formData.message}
+                  rows="4" // Adjust number of rows as needed
+                  required
+                  className="relative w-full px-4 py-2 border rounded outline-none focus:border-[#2DA5F3] resize-none" // Add styling as needed
+                />
+                <label
+                  htmlFor="message" // Corrected htmlFor
+                  className="cursor-text absolute left-2 -top-2 z-[1] px-2 text-xs text-slate-400 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:left-4 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:left-2 peer-focus:text-xs peer-focus:text-[#2DA5F3]"
+                >
+                  Message
+                </label>
+              </div>
               <div className="flex items-center justify-center mb-4">
                 {" "}
-                <button className="px-6 py-3 bg-yellow-400 w-[80%]  rounded-full">
+                <button type="submit" className="px-6 py-3 bg-yellow-400 w-[80%]  rounded-full">
                   {" "}
                   Submit{" "}
                 </button>
