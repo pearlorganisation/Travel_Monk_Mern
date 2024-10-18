@@ -8,9 +8,10 @@ export default function Header() {
 
   const navigation = [
     { title: "Home", path: "/" },
+    { title: "International Packages", path: "/" },
+    { title: "Indian Packages", path: "/" },
     { title: "About Us", path: "/about_us" },
     { title: "Contact Us", path: "/contact_us" },
-    { title: "Product", path: "/product" },
   ];
 
   // const isLoggedIn = localStorage.getItem("isLoggedIn");
@@ -115,10 +116,12 @@ export default function Header() {
               return (
                 <li
                   key={idx}
-                  className="text-white scale-100 hover:scale-125
-                  hover:text-[#007E8F] border-b-2 border-b-transparent hover:border-b-[#007E8F] duration-150"
+                  className="text-white text-sm 
+                  hover:text-[#007E8F] border-b-transparent  duration-150"
                 >
-                  <a href={item.path}>{item.title}</a>
+                  <a href={item.path} className="">
+                    {item.title}
+                  </a>
                 </li>
               );
             })}

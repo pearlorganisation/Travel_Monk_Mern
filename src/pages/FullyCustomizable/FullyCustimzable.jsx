@@ -4,7 +4,10 @@ import Bro from "../../assets/images/bro.png";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getSingleIndianDesstination } from "../../features/trips/tripsSlice";
+import {
+  getAllActivitiesByDestination,
+  getSingleIndianDesstination,
+} from "../../features/trips/tripsSlice";
 import parse from "html-react-parser";
 
 const tripData = [
@@ -156,35 +159,47 @@ const FullyCustomizeTrip = () => {
   const dispatch = useDispatch();
 
   const { id } = useParams();
-  const { singleDestination } = useSelector((state) => state.trip);
+  const { singleDestination, activities } = useSelector((state) => state.trip);
 
   useEffect(() => {
     dispatch(getSingleIndianDesstination(id));
   }, []);
 
+  useEffect(() => {
+    dispatch(getAllActivitiesByDestination(id));
+  }, []);
+
   console.log("Single Destination Fully Customize", singleDestination);
+  console.log("All activities", activities);
 
   const [dayData, setDayData] = useState(
     singleDestination?.data?.locations?.map(() => ({
-      selectedDay: "Day ",
+      selectedLocation: "Choose Location",
       selectedHotel: "Choose Hotel",
       selectedActivity: "Choose Activity",
     })) || [] // Initialize based on itinerary length
   );
 
-  console.log(dayData, "asdlkasldkajsdlkasdjl lkjlkcj");
+  // console.log(dayData, "asdlkasldkajsdlkasdjl lkjlkcj");
 
-  // useEffect(() => {
-  //   // Reset dayData if the itinerary changes
-  //   if (singlePackage?.data?.itinerary) {
-  //     setDayData(
-  //       singlePackage.data.itinerary.map(() => ({
-  //         selectedHotel: "Choose Hotel",
-  //         selectedActivity: "Choose Activity",
-  //       }))
-  //     );
-  //   }
-  // }, [singlePackage?.data]);
+  useEffect(() => {
+    // Reset dayData if the itinerary changes
+    if (singleDestination?.data?.locations) {
+      setDayData(
+        singleDestination?.data?.locations.map(() => ({
+          selectedLocation: "Choose Location",
+          selectedHotel: "Choose Hotel",
+          selectedActivity: "Choose Activity",
+        }))
+      );
+    }
+  }, [singleDestination?.data]);
+
+  const handleLocationChange = (index, event) => {
+    const newDayData = [...dayData];
+    newDayData[index].selectedLocation = event.target.value;
+    setDayData(newDayData);
+  };
 
   const handleHotelChange = (index, event) => {
     const newDayData = [...dayData];
@@ -198,8 +213,8 @@ const FullyCustomizeTrip = () => {
     setDayData(newDayData);
   };
 
-  const [selectedActivity, setSelectedActivity] = useState("Choose Activity");
-  const [selectedHotel, setSelectedHotel] = useState("Choose Hotel");
+  // const [selectedActivity, setSelectedActivity] = useState("Choose Activity");
+  // const [selectedHotel, setSelectedHotel] = useState("Choose Hotel");
 
   console.log(dayData, "day data");
 
@@ -280,7 +295,7 @@ const FullyCustomizeTrip = () => {
 
       <div className="grid grid-cols-1 mt-4">
         <div className="overflow-hidden">
-          {singleDestination?.data?.location?.map((iti, index) => {
+          {singleDestination?.data?.locations?.map((iti, index) => {
             console.log(iti, "iti");
             console.log(index, "my index");
             return (
@@ -326,8 +341,26 @@ const FullyCustomizeTrip = () => {
                       </svg>
 
                       <div className="flex flex-col gap-1">
-                        <h1 className="font-bold text-base">{iti.location}</h1>
                         <h1> 21 June </h1>
+                      </div>
+
+                      <div className="flex flex-col gap-3 ">
+                        <h1> Select Location </h1>
+                        <select
+                          value={dayData[index]?.selectedLocation}
+                          onChange={(event) =>
+                            handleLocationChange(index, event)
+                          }
+                          className="bg-blue-100 border-2 border-[#1f1f1f] rounded-md px-2 py-2 flex flex-row gap-2"
+                        >
+                          <option key="choose"> Choose Location</option>
+                          {iti.location.map((loc, index) => (
+                            <option key={index} value={loc}>
+                              {" "}
+                              {loc}
+                            </option>
+                          ))}
+                        </select>
                       </div>
 
                       <div className="flex flex-col gap-3 ">
@@ -363,7 +396,7 @@ const FullyCustomizeTrip = () => {
                             {" "}
                             Choose Activity{" "}
                           </option>
-                          {iti?.activities?.map((activity) => (
+                          {activities?.map((activity) => (
                             <option key={activity?._id} value={activity?.name}>
                               {activity?.name}
                             </option>
@@ -421,6 +454,13 @@ const FullyCustomizeTrip = () => {
             <Stepper />
 
             <div className="flex flex-col gap-2 w-[100%] justify-between items-start">
+              {iti.selectedLocation === "Choose Location" ? null : (
+                <div>
+                  <h1 className="text-3xl font-semibold">
+                    {iti.selectedLocation}
+                  </h1>
+                </div>
+              )}
               {iti.selectedActivity === "Choose Activity" ? null : (
                 <div className="flex flex-row gap-28 bg-white p-2">
                   <img src={Bro} alt="logo" className="w-48 min-h-max" />
@@ -432,7 +472,7 @@ const FullyCustomizeTrip = () => {
 
                     <h3 className="">
                       Location :{" "}
-                      {singlePackage?.data?.itinerary[index]?.location}
+                      {singleDestination?.data?.locations[index]?.location}
                     </h3>
 
                     <h3 className="mt-2 font-semibold text-base">

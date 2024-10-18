@@ -18,6 +18,7 @@ import BusRides from "../pages/BusTrip/busRide";
 import Details from "../pages/BusDetails/Details";
 import { ForgotPassword } from "../components/ForgotPassword/ForgotPassword";
 import FullyCustomizeTrip from "../pages/FullyCustomizable/FullyCustimzable";
+import CruiseContactForm from "../pages/Forms/CruiseContactForm";
 
 const Routes = createBrowserRouter([
   {
@@ -52,6 +53,10 @@ const Routes = createBrowserRouter([
       {
         path: "/bus",
         element: <BusContactForm />,
+      },
+      {
+        path: "/cruise-form",
+        element: <CruiseContactForm />,
       },
       {
         path: "/bus-details",

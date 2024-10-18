@@ -4,6 +4,7 @@ import tripReducer from "../features/trips/tripsSlice";
 import packageReducer from "./package/packageSlice";
 import cruizeReducer from "./cruize/cruizeSlice";
 import hotelsReducer from "./hotel/hotelSlice";
+import destinationsReducer from "./destination/destinationSlice";
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     packages: packageReducer,
     cruises: cruizeReducer,
     hotels: hotelsReducer,
+    destination: destinationsReducer,
   },
 });
 export default store;

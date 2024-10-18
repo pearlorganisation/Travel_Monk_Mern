@@ -1,4 +1,4 @@
-export default function BusContactForm() {
+export default function CruiseContactForm() {
   const contactMethods = [
     {
       icon: (
@@ -66,19 +66,19 @@ export default function BusContactForm() {
   const busCompanies = [
     {
       id: 1,
-      name: "Intr City",
-      logo: "https://play-lh.googleusercontent.com/AFGJTXBhjczoCkP7fxFBDudHbiVxohxl28iH2HwFVfCp6a_gBPQjHEu7K6RjiyXOUvr7",
+      name: "Cordelia",
+      logo: "https://blog.cordeliacruises.com/wp-content/uploads/2024/05/Cordelia-Final-Logo-01.png",
     },
-    {
-      id: 2,
-      name: "Zing Bus",
-      logo: "https://media.licdn.com/dms/image/v2/C4D0BAQFf3sI_H7ytnQ/company-logo_200_200/company-logo_200_200/0/1630535749790?e=2147483647&v=beta&t=eXdo_OMpP-0pngLpFIR_7gbX-fhM99U_paebrhsSm-c",
-    },
-    {
-      id: 3,
-      name: "Himachal Pradesh Roadways",
-      logo: "https://upload.wikimedia.org/wikipedia/commons/4/4a/HRTCHP.jpg",
-    },
+    // {
+    //   id: 2,
+    //   name: "Zing Bus",
+    //   logo: "https://media.licdn.com/dms/image/v2/C4D0BAQFf3sI_H7ytnQ/company-logo_200_200/company-logo_200_200/0/1630535749790?e=2147483647&v=beta&t=eXdo_OMpP-0pngLpFIR_7gbX-fhM99U_paebrhsSm-c",
+    // },
+    // {
+    //   id: 3,
+    //   name: "Himachal Pradesh Roadways",
+    //   logo: "https://upload.wikimedia.org/wikipedia/commons/4/4a/HRTCHP.jpg",
+    // },
   ];
   return (
     <main className="py-14">
@@ -86,7 +86,7 @@ export default function BusContactForm() {
         <div className="flex items-center justify-center flex-col gap-4">
           <h3 className="text-4xl font-semibold">
             {" "}
-            Our Bus Travelling Partners{" "}
+            Our Cruise Travelling Partners{" "}
           </h3>
 
           <div className="flex flex-row gap-12">
@@ -166,15 +166,15 @@ export default function BusContactForm() {
                 />
               </div>
               {/* <div>
-                                <label className="font-medium">
-                                    Company
-                                </label>
-                                <input
-                                    type="text"
-                                    required
-                                    className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
-                                />
-                            </div> */}
+                                  <label className="font-medium">
+                                      Company
+                                  </label>
+                                  <input
+                                      type="text"
+                                      required
+                                      className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
+                                  />
+                              </div> */}
               <div>
                 <label className="font-medium">Message</label>
                 <textarea

@@ -1,16 +1,5 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { destinationsService } from "./destinationActions";
-
-export const searchDestinations = createAsyncThunk(
-  "searchResult/get",
-  async (name, thunkAPI) => {
-    try {
-      return await destinationsService.searchDestination(name);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
+import { createSlice } from "@reduxjs/toolkit";
+import { searchDestination } from "./destinationActions";
 
 const searchState = {
   isLoading: false,
@@ -26,16 +15,16 @@ export const destinationsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(searchDestinations.pending, (state) => {
+      .addCase(searchDestination.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(searchDestinations.fulfilled, (state, action) => {
+      .addCase(searchDestination.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.searchResult = action.payload;
+        state.searchResult = action.payload.data;
       })
-      .addCase(searchDestinations.rejected, (state, action) => {
+      .addCase(searchDestination.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;

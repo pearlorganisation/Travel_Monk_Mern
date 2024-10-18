@@ -1,23 +1,38 @@
 import React, {
   forwardRef,
+  useEffect,
   useImperativeHandle,
   useRef,
   useState,
 } from "react";
 import { searchDestination } from "../../features/destination/destinationActions";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const HeroSupportingComponent = ({ data }, ref) => {
   // --------------------------------------------States--------------------------------------
 
-  // console.log(data, "data");
+  console.log(data, "data");
   const dispatch = useDispatch();
-  const { register, handleSubmit} = useForm();
+  const { register, handleSubmit } = useForm();
 
-  const submitForm = async (info)=>{
+  const navigate = useNavigate();
+  const { searchResult, isSuccess, isError, message } = useSelector(
+    (state) => state.destination
+  );
+
+  console.log(searchResult && searchResult[0], "searched result");
+  const submitForm = async (info) => {
     dispatch(searchDestination(info.destination));
-  }
+
+    {
+      isSuccess &&
+        searchResult.length > 0 &&
+        navigate(`fully-customize/${searchResult[0]?._id}`);
+    }
+  };
 
   const tripData = [
     {
@@ -50,36 +65,7 @@ const HeroSupportingComponent = ({ data }, ref) => {
         </svg>
       ),
     },
-    {
-      label: "Place you want to end your trip",
-      placeholder: "Place",
-      registerData: "journeyFrom",
-      img: (
-        <svg
-          width="20"
-          height="20"
-          viewBox="0 0 20 20"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <g clip-path="url(#clip0_972_1398)">
-            <path
-              d="M9.99996 1.66669C6.77496 1.66669 4.16663 4.27502 4.16663 7.50002C4.16663 11.875 9.99996 18.3334 9.99996 18.3334C9.99996 18.3334 15.8333 11.875 15.8333 7.50002C15.8333 4.27502 13.225 1.66669 9.99996 1.66669ZM5.83329 7.50002C5.83329 5.20002 7.69996 3.33335 9.99996 3.33335C12.3 3.33335 14.1666 5.20002 14.1666 7.50002C14.1666 9.90002 11.7666 13.4917 9.99996 15.7334C8.26663 13.5084 5.83329 9.87502 5.83329 7.50002Z"
-              fill="#5C5C5C"
-            />
-            <path
-              d="M9.99996 9.58335C11.1506 9.58335 12.0833 8.65061 12.0833 7.50002C12.0833 6.34943 11.1506 5.41669 9.99996 5.41669C8.84937 5.41669 7.91663 6.34943 7.91663 7.50002C7.91663 8.65061 8.84937 9.58335 9.99996 9.58335Z"
-              fill="#5C5C5C"
-            />
-          </g>
-          <defs>
-            <clipPath id="clip0_972_1398">
-              <rect width="20" height="20" fill="white" />
-            </clipPath>
-          </defs>
-        </svg>
-      ),
-    },
+
     {
       label: "Start date",
       placeholder: "Not Selected",

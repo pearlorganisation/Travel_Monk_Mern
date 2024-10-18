@@ -225,6 +225,8 @@ const HeroSection = () => {
     console.log(data.toLowerCase());
     if (data.toLowerCase() === "bus") {
       navigate("/bus");
+    } else if (data.toLowerCase() === "cruise") {
+      navigate("/cruise-form");
     }
     setData(data);
   }
