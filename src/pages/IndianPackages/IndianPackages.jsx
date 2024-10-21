@@ -1,5 +1,6 @@
 import React from 'react'
 import DestinationCard from '../../components/DestinationCards/DestinationCard'
+import  { BestPackages } from '../../components/DestinationCards/BestDestinationCard'
 const destinationData = [
     {
         name: "Ladakh",
@@ -49,8 +50,18 @@ const IndianPackages = () => {
           </div>
           <div>
               <h1 className='text-4xl font-bold text-blue-500 w-full justify-center items-center flex'>Destinations</h1>
-              <div className='p-4'>
+              <div className='px-10 py-4'>
                 <DestinationCard data={destinationData} />
+              </div>
+              <div className='mt-8'>
+                  <div className='flex flex-col justify-center items-center'>  
+                    <h1 className='text-4xl font-bold text-blue-500 w-full text-center'>Best Seller Packages</h1>
+                      <h2 className='text-xl font-normal text-gray-400'>Find your perfect travel experience with our top-rated packages</h2>
+                  </div>
+                  <div className='px-10 py-4'>
+                 
+                   <BestPackages />
+                  </div>
               </div>
           </div>
 
