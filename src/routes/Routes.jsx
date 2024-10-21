@@ -21,6 +21,7 @@ import FullyCustomizeTrip from "../pages/FullyCustomizable/FullyCustimzable";
 import CruiseContactForm from "../pages/Forms/CruiseContactForm";
 import AboutUs from "../pages/AboutUs/AboutUs";
 import IndianPackages from "../pages/IndianPackages/IndianPackages";
+import InternationalPackages from "../pages/InternationalPackages/InternationalPackages";
 
 const Routes = createBrowserRouter([
   {
@@ -103,8 +104,12 @@ const Routes = createBrowserRouter([
       },
       {
         path: "indian_packages",
-        element: <IndianPackages />
-      }
+        element: <IndianPackages />,
+      },
+      {
+        path: "international_packages",
+        element: <InternationalPackages />,
+      },
     ],
   },
 ]);

@@ -1,17 +1,17 @@
 import React, { useEffect } from "react";
 import DestinationCard from "../../components/DestinationCards/DestinationCard";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllIndianDestinations } from "../../features/trips/tripsSlice";
+import { getAllInternationalDestinations } from "../../features/trips/tripsSlice";
 
-const IndianPackages = () => {
-  const { data } = useSelector((state) => state.trip.indiandestination);
+const InternationalPackages = () => {
+  const { data } = useSelector((state) => state.trip.internationaldestination);
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getAllIndianDestinations());
+    dispatch(getAllInternationalDestinations());
   }, []);
 
-  console.log(data, "indian destinations on indian packages page");
+  console.log(data, "international destinations on indian packages page");
   return (
     <div>
       <div
@@ -46,4 +46,4 @@ const IndianPackages = () => {
   );
 };
 
-export default IndianPackages;
+export default InternationalPackages;
