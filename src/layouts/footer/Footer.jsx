@@ -45,7 +45,11 @@ const Footer = () => {
 
           <div className="flex mx-2 flex-col gap-4 px-4 lg:py-x-4">
             <div className="flex justify-center gap-4">
-              <Link to={"#"}>
+              <a
+                href="https://www.facebook.com/imtravelmonk"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <svg
                   width="32"
                   className="fill-slate-50"
@@ -60,9 +64,13 @@ const Footer = () => {
                     fill="#333333"
                   />
                 </svg>
-              </Link>
+              </a>
 
-              <Link to={"#"}>
+              <a
+                href="https://www.instagram.com/imtravelmonk/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <svg
                   width="32"
                   height="32"
@@ -80,8 +88,12 @@ const Footer = () => {
                     fill="#333333"
                   />
                 </svg>
-              </Link>
-              <Link to={"#"}>
+              </a>
+              <a
+                href="https://x.com/imTravelMonk"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <svg
                   width="32"
                   height="32"
@@ -100,8 +112,12 @@ const Footer = () => {
                     fill="#333333"
                   />
                 </svg>
-              </Link>
-              <Link to={"#"}>
+              </a>
+              <a
+                href="https://www.instagram.com/imtravelmonk/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <svg
                   width="32"
                   height="32"
@@ -115,7 +131,7 @@ const Footer = () => {
                     fill="#333333"
                   />
                 </svg>
-              </Link>
+              </a>
             </div>
             <p className="text-center">
               Follow us on social media platforms and stay updated{" "}

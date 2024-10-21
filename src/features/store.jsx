@@ -5,6 +5,7 @@ import packageReducer from "./package/packageSlice";
 import cruizeReducer from "./cruize/cruizeSlice";
 import hotelsReducer from "./hotel/hotelSlice";
 import destinationsReducer from "./destination/destinationSlice";
+import partnersReducer from "./partners/partnersSlice";
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     cruises: cruizeReducer,
     hotels: hotelsReducer,
     destination: destinationsReducer,
+    partners: partnersReducer,
   },
 });
 export default store;

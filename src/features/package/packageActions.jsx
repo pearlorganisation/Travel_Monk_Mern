@@ -24,5 +24,3 @@ export const packagesService = {
   getPackages,
   getSinglePackage,
 };
-
-// `${backendURL}/api/v1/trips/indian`

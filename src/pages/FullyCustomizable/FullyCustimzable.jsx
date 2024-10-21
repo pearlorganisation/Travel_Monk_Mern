@@ -180,10 +180,7 @@ const FullyCustomizeTrip = () => {
     })) || [] // Initialize based on itinerary length
   );
 
-  // console.log(dayData, "asdlkasldkajsdlkasdjl lkjlkcj");
-
   useEffect(() => {
-    // Reset dayData if the itinerary changes
     if (singleDestination?.data?.locations) {
       setDayData(
         singleDestination?.data?.locations.map(() => ({
@@ -213,58 +210,10 @@ const FullyCustomizeTrip = () => {
     setDayData(newDayData);
   };
 
-  // const [selectedActivity, setSelectedActivity] = useState("Choose Activity");
-  // const [selectedHotel, setSelectedHotel] = useState("Choose Hotel");
-
   console.log(dayData, "day data");
 
-  // console.log(selectedActivity, "selected activity");
-  // console.log(selectedHotel, "selected hotel");
-  // console.log(selectedActivity, "selected activity");
-  // console.log(selectedHotel, "selected hotel");
   return (
     <div className="bg-gray-200 relative">
-      <form className="p-3">
-        <div className="grid grid-cols-[240px_240px_155px_155px_155px_auto] gap-2  bg-white p-3 border-2 shadow-md border-gray-200 rounded-md">
-          {tripData.map((el, index) => {
-            return (
-              <div class="relative p-2" key={index}>
-                <div className=" flex justify-start items-center">
-                  <label
-                    htmlFor="base-input"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    {el.label}
-                  </label>
-                </div>
-
-                <div>
-                  <div class="absolute top-8    justify-center inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-                    {el.img}
-                  </div>
-                  <input
-                    type="text"
-                    id="email-address-icon"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder={el.placeholder}
-                  />
-                </div>
-              </div>
-            );
-          })}
-
-          <div className="items-end justify-center flex p-2">
-            <button
-              type="submit"
-              className="text-white w-full  bg-[#007E8F] hover:bg-[#439ca8] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md   h-10  text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            >
-              Customize your Trip
-            </button>
-          </div>
-        </div>
-        <div className="flex flex-row gap-6 justify-center items-center py-6 "></div>
-      </form>
-
       <div className="px-24 mt-4">
         <h1 className="text-[#1f1f1f] font-bold text-4xl leading-[48px]">
           {singleDestination?.data?.name}

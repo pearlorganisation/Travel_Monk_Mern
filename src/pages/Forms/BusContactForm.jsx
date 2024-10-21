@@ -1,4 +1,14 @@
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getPartners } from "../../features/partners/partnersSlice";
+
 export default function BusContactForm() {
+  const { data } = useSelector((state) => state.partners.partners);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getPartners());
+  }, []);
+
   const contactMethods = [
     {
       icon: (
@@ -18,6 +28,7 @@ export default function BusContactForm() {
         </svg>
       ),
       contact: "info@thetravelmonk.com",
+      isEmail: true,
     },
     {
       icon: (
@@ -37,6 +48,7 @@ export default function BusContactForm() {
         </svg>
       ),
       contact: "+91-8146654329",
+      isEmail: false,
     },
     {
       icon: (
@@ -63,23 +75,7 @@ export default function BusContactForm() {
       contact: "Dehradun, Uttarakhand.",
     },
   ];
-  const busCompanies = [
-    {
-      id: 1,
-      name: "Intr City",
-      logo: "https://play-lh.googleusercontent.com/AFGJTXBhjczoCkP7fxFBDudHbiVxohxl28iH2HwFVfCp6a_gBPQjHEu7K6RjiyXOUvr7",
-    },
-    {
-      id: 2,
-      name: "Zing Bus",
-      logo: "https://media.licdn.com/dms/image/v2/C4D0BAQFf3sI_H7ytnQ/company-logo_200_200/company-logo_200_200/0/1630535749790?e=2147483647&v=beta&t=eXdo_OMpP-0pngLpFIR_7gbX-fhM99U_paebrhsSm-c",
-    },
-    {
-      id: 3,
-      name: "Himachal Pradesh Roadways",
-      logo: "https://upload.wikimedia.org/wikipedia/commons/4/4a/HRTCHP.jpg",
-    },
-  ];
+
   return (
     <main className="py-14">
       <div className="max-w-screen-xl mx-auto px-4 text-gray-600 md:px-8">
@@ -90,13 +86,15 @@ export default function BusContactForm() {
           </h3>
 
           <div className="flex flex-row gap-12">
-            {busCompanies.map((item) => (
-              <div key={item.id} className="">
-                <img
-                  src={item.logo}
-                  alt={item.name}
-                  className="w-20 h-20 rounded-lg"
-                />
+            {data?.map((item) => (
+              <div key={item._id} className="">
+                {item.partnerType.partnerTypeName === "Bus" && (
+                  <img
+                    src={item.partnerLogo.secure_url}
+                    alt={item.name}
+                    className="w-20 h-20 rounded-lg"
+                  />
+                )}
               </div>
             ))}
           </div>
@@ -117,7 +115,15 @@ export default function BusContactForm() {
                 {contactMethods.map((item, idx) => (
                   <li key={idx} className="flex items-center gap-x-3">
                     <div className="flex-none text-gray-400">{item.icon}</div>
-                    <p>{item.contact}</p>
+                    <a
+                      href={`${
+                        item.isEmail
+                          ? `mailto:${item.contact}`
+                          : `tel:${item.contact}`
+                      }    `}
+                    >
+                      {item.contact}
+                    </a>
                   </li>
                 ))}
               </ul>
