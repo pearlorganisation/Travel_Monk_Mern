@@ -8,8 +8,8 @@ export default function Header() {
 
   const navigation = [
     { title: "Home", path: "/" },
-    { title: "International Packages", path: "/" },
-    { title: "Indian Packages", path: "/" },
+    { title: "International Packages", path: "/international_packages" },
+    { title: "Indian Packages", path: "/indian_packages" },
     { title: "About Us", path: "/about_us" },
     { title: "Contact Us", path: "/contact_us" },
   ];

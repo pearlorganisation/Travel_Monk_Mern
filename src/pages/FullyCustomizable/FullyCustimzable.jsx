@@ -162,15 +162,16 @@ const FullyCustomizeTrip = () => {
   const { singleDestination, activities } = useSelector((state) => state.trip);
 
   useEffect(() => {
+    dispatch(getAllActivitiesByDestination(id));
     dispatch(getSingleIndianDesstination(id));
   }, []);
 
-  useEffect(() => {
-    dispatch(getAllActivitiesByDestination(id));
-  }, []);
+  // useEffect(() => {
 
-  console.log("Single Destination Fully Customize", singleDestination);
-  console.log("All activities", activities);
+  // }, []);
+
+  // console.log("Single Destination Fully Customize", singleDestination);
+  // console.log("All activities", activities);
 
   const [dayData, setDayData] = useState(
     singleDestination?.data?.locations?.map(() => ({
@@ -245,8 +246,6 @@ const FullyCustomizeTrip = () => {
       <div className="grid grid-cols-1 mt-4">
         <div className="overflow-hidden">
           {singleDestination?.data?.locations?.map((iti, index) => {
-            console.log(iti, "iti");
-            console.log(index, "my index");
             return (
               <div className="flex flex-row gap-2 items-center justify-start px-8 mt-2">
                 <svg
@@ -345,11 +344,15 @@ const FullyCustomizeTrip = () => {
                             {" "}
                             Choose Activity{" "}
                           </option>
-                          {activities?.map((activity) => (
-                            <option key={activity?._id} value={activity?.name}>
-                              {activity?.name}
-                            </option>
-                          ))}
+                          {activities &&
+                            activities?.map((activity) => (
+                              <option
+                                key={activity?._id}
+                                value={activity?.name}
+                              >
+                                {activity?.name}
+                              </option>
+                            ))}
                         </select>
                       </div>
                     </div>

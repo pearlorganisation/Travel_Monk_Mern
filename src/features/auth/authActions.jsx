@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 const backendURL = "https://travel-monk-backend.onrender.com";
+const localBackendUrl = "http://localhost:5000";
 const second = ""
 export const registerUser = createAsyncThunk(
   "auth/register",
@@ -14,11 +15,15 @@ export const registerUser = createAsyncThunk(
         headers: {
           "Content-Type": "application/json",
         },
+       
       };
       const { data } = await axios.post(
         `${backendURL}/api/v1/auth/signup`,
         { name, email, password },
-        config
+        config,
+        {
+          withCredential: true
+        }
       );
       
       console.log("Register Data", data);
@@ -40,16 +45,20 @@ export const userLogin = createAsyncThunk(
   async ({ email, password }, { rejectWithValue }) => {
     try {
       const config = {
-
-        // withCredentials:true,
-        headers: {
+              // withCredentials: true,
+               headers: {
           "Content-Type": "application/json",
         },
+        
+       
+
       };
       const { data } = await axios.post(
         `${backendURL}/api/v1/auth/login`,
         { email, password },
-        config
+        config,
+       
+        
       );
       // store user's token in local storage
       console.log("login data", data)

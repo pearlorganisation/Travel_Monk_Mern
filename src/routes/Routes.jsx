@@ -20,6 +20,7 @@ import { ForgotPassword } from "../components/ForgotPassword/ForgotPassword";
 import FullyCustomizeTrip from "../pages/FullyCustomizable/FullyCustimzable";
 import CruiseContactForm from "../pages/Forms/CruiseContactForm";
 import AboutUs from "../pages/AboutUs/AboutUs";
+import IndianPackages from "../pages/IndianPackages/IndianPackages";
 
 const Routes = createBrowserRouter([
   {
@@ -100,6 +101,10 @@ const Routes = createBrowserRouter([
         path: "about_us",
         element: <AboutUs />,
       },
+      {
+        path: "indian_packages",
+        element: <IndianPackages />
+      }
     ],
   },
 ]);
