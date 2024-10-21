@@ -1,12 +1,11 @@
 import axios from "axios";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 const backendURL = "https://travel-monk-backend.onrender.com";
-const localBackendUrl = "http://localhost:5000";
-const second = ""
+
 export const registerUser = createAsyncThunk(
   "auth/register",
   async ({ name, email, password }, { rejectWithValue }) => {
@@ -15,17 +14,16 @@ export const registerUser = createAsyncThunk(
         headers: {
           "Content-Type": "application/json",
         },
-       
       };
       const { data } = await axios.post(
         `${backendURL}/api/v1/auth/signup`,
         { name, email, password },
         config,
         {
-          withCredential: true
+          withCredential: true,
         }
       );
-      
+
       console.log("Register Data", data);
       toast.success("Mail is sent to your email!"); // Show success toast
       return data;
@@ -45,23 +43,18 @@ export const userLogin = createAsyncThunk(
   async ({ email, password }, { rejectWithValue }) => {
     try {
       const config = {
-              // withCredentials: true,
-               headers: {
+        // withCredentials: true,
+        headers: {
           "Content-Type": "application/json",
         },
-        
-       
-
       };
       const { data } = await axios.post(
         `${backendURL}/api/v1/auth/login`,
         { email, password },
-        config,
-       
-        
+        config
       );
       // store user's token in local storage
-      console.log("login data", data)
+      console.log("login data", data);
       localStorage.setItem("isLoggedIn", true);
 
       return data;
