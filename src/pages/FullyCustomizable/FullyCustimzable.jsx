@@ -162,15 +162,17 @@ const FullyCustomizeTrip = () => {
   const { singleDestination, activities } = useSelector((state) => state.trip);
 
   useEffect(() => {
-    dispatch(getSingleIndianDesstination(id));
-  }, []);
-
-  useEffect(() => {
     dispatch(getAllActivitiesByDestination(id));
+    dispatch(getSingleIndianDesstination(id));
+    
   }, []);
 
-  console.log("Single Destination Fully Customize", singleDestination);
-  console.log("All activities", activities);
+  // useEffect(() => {
+  
+  // }, []);
+
+  // console.log("Single Destination Fully Customize", singleDestination);
+  // console.log("All activities", activities);
 
   const [dayData, setDayData] = useState(
     singleDestination?.data?.locations?.map(() => ({
@@ -212,16 +214,7 @@ const FullyCustomizeTrip = () => {
     newDayData[index].selectedActivity = event.target.value;
     setDayData(newDayData);
   };
-
-  // const [selectedActivity, setSelectedActivity] = useState("Choose Activity");
-  // const [selectedHotel, setSelectedHotel] = useState("Choose Hotel");
-
-  console.log(dayData, "day data");
-
-  // console.log(selectedActivity, "selected activity");
-  // console.log(selectedHotel, "selected hotel");
-  // console.log(selectedActivity, "selected activity");
-  // console.log(selectedHotel, "selected hotel");
+ 
   return (
     <div className="bg-gray-200 relative">
       <form className="p-3">
@@ -296,8 +289,7 @@ const FullyCustomizeTrip = () => {
       <div className="grid grid-cols-1 mt-4">
         <div className="overflow-hidden">
           {singleDestination?.data?.locations?.map((iti, index) => {
-            console.log(iti, "iti");
-            console.log(index, "my index");
+            
             return (
               <div className="flex flex-row gap-2 items-center justify-start px-8 mt-2">
                 <svg
@@ -396,7 +388,7 @@ const FullyCustomizeTrip = () => {
                             {" "}
                             Choose Activity{" "}
                           </option>
-                          {activities?.map((activity) => (
+                          {activities && activities?.map((activity) => (
                             <option key={activity?._id} value={activity?.name}>
                               {activity?.name}
                             </option>

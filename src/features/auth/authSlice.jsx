@@ -2,6 +2,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { registerUser, userLogin } from "./authActions";
 
+import { PURGE } from "redux-persist";
+
+
 const initialState = {
   loading: false,
   userInfo: null,
@@ -52,11 +55,16 @@ const authSlice = createSlice({
         .addCase(userLogin.fulfilled, (state, action) => {
           state.loading = false;
           state.userInfo = action.payload;
+          // state.success = true;
+          // state.error = false;
           state.userToken = action.payload.userToken;
           state.isUserLoggedIn = true
           // state.accessToken = localStorage.getItem("accessToken"); // Get token from localStorage
           // state.refreshToken = localStorage.getItem("refreshToken");
         });
+    // builder.addCase(PURGE, () => {
+    //   return initialState;
+    // });
   },
 });
 
