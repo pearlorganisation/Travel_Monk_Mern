@@ -95,19 +95,19 @@ const Routes = createBrowserRouter([
         element: <PackageDetails />,
       },
       {
-        path: "forgot-password",
+        path: "/forgot-password",
         element: <ForgotPassword />,
       },
       {
-        path: "about_us",
+        path: "/about_us",
         element: <AboutUs />,
       },
       {
-        path: "indian_packages",
+        path: "/indian_packages",
         element: <IndianPackages />,
       },
       {
-        path: "international_packages",
+        path: "/international_packages",
         element: <InternationalPackages />,
       },
     ],
