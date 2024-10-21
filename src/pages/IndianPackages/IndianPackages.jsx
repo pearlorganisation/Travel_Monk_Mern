@@ -11,7 +11,6 @@ const IndianPackages = () => {
     dispatch(getAllIndianDestinations());
   }, []);
 
-  console.log(data, "indian destinations on indian packages page");
   return (
     <div>
       <div
@@ -31,7 +30,7 @@ const IndianPackages = () => {
       </div>
       <div className="flex justify-center items-center h-full ">
         <div className="bg-slate-200 my-6">
-          <h1 className="text-3xl font-bold">About India Tours</h1>
+          <h1 className="text-3xl font-bold">About Indian Tours</h1>
         </div>
       </div>
       <div>
