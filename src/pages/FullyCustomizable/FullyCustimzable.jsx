@@ -6,8 +6,8 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
   getAllActivitiesByDestination,
-  getSingleIndianDesstination,
-} from "../../features/trips/tripsSlice";
+  getSingleDestination,
+} from "../../features/trips/tripActions";
 import parse from "html-react-parser";
 
 const tripData = [
@@ -163,7 +163,7 @@ const FullyCustomizeTrip = () => {
 
   useEffect(() => {
     dispatch(getAllActivitiesByDestination(id));
-    dispatch(getSingleIndianDesstination(id));
+    dispatch(getSingleDestination(id));
   }, []);
 
   // useEffect(() => {

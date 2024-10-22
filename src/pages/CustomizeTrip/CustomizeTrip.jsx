@@ -6,8 +6,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getSinglePackage } from "../../features/package/packageSlice";
-import { getSingleIndianDesstination } from "../../features/trips/tripsSlice";
+
 import parse from "html-react-parser";
+import { getSingleDestination } from "../../features/trips/tripActions";
 
 const tripData = [
   {
@@ -168,9 +169,7 @@ const CustomizeTrip = () => {
 
   useEffect(() => {
     if (singlePackage?.data)
-      dispatch(
-        getSingleIndianDesstination(singlePackage?.data?.packageDestination)
-      );
+      dispatch(getSingleDestination(singlePackage?.data?.packageDestination));
   }, [singlePackage]);
 
   // console.log("Trip days and details ka data", singleDestination);

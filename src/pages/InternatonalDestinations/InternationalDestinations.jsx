@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { getSingleInterDestination } from "../../features/trips/tripsSlice";
+import { getSingleDestination } from "../../features/trips/tripActions";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
@@ -9,15 +9,11 @@ const InternationalDestinations = () => {
 
   const { data } = useSelector((state) => state.trip.singleDestination);
 
-  console.log(data, "Sing;le Desgdfg");
+  console.log(data, "Single Desgdfg");
 
   useEffect(() => {
-    getInternationalDestination();
+    dispatch(getSingleDestination(id));
   }, []);
-
-  const getInternationalDestination = () => {
-    dispatch(getSingleInterDestination(id));
-  };
 
   return (
     <div>

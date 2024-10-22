@@ -1,9 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
   getAllActivitiesByDestination,
-  getAllIndianDestinations,
-  getSingleIndianDesstination,
-} from "../../features/trips/tripsSlice";
+  getSingleDestination,
+} from "../../features/trips/tripActions";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import HeroBanner from "./HeroBanner";
@@ -13,26 +12,27 @@ const IndianDestinations = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
 
-  const { data } = useSelector((state) => state.trip.singleDestination);
+  const singleD = useSelector((state) => state.trip.singleDestination);
 
   const activities = useSelector((state) => state.trip.activities);
 
   useEffect(() => {
-    dispatch(getSingleIndianDesstination(id));
+    dispatch(getSingleDestination(id));
     dispatch(getAllActivitiesByDestination(id));
   }, []);
 
+  console.log(singleD?.data, "destination data on single destination");
   console.log(activities, "activities of Leh location");
   return (
     <div>
-      <HeroBanner data={data} />
+      <HeroBanner data={singleD?.data} />
 
       <h1 className="text-3xl font-semibold ml-12">
         {" "}
-        About {data?.name} Tour Packages{" "}
+        About {singleD?.data?.name} Tour Packages{" "}
       </h1>
 
-      <TripSection data={data} />
+      <TripSection data={singleD?.data} />
 
       <h1> Available Packages </h1>
     </div>
@@ -40,31 +40,3 @@ const IndianDestinations = () => {
 };
 
 export default IndianDestinations;
-
-{
-  /*  {data?.packages.map((mypackage) => (
-    <div key={mypackage._id} className="">
-      <h1>Destination : {mypackage.destination}</h1>
-      <h3>
-        Duration : {mypackage.duration.nights} N / {mypackage.duration.days}{" "}
-        D
-      </h3>
-
-      <div className="">
-        <h1>Exclusions </h1>
-
-        {mypackage?.exclusions.map((exclusion) => (
-          <h1 className="ml-5"> : {exclusion}</h1>
-        ))}
-      </div>
-
-      <div className="mt-4">
-        <h1> Inclusions </h1>
-
-        {mypackage?.inclusions?.map((inclusion) => (
-          <h1 className="ml-5"> : {inclusion}</h1>
-        ))}
-      </div>
-    </div>
-  ))}*/
-}
