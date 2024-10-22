@@ -31,7 +31,7 @@ const PackageDetails = () => {
   
 
   const submitForm = async (info) => {
-    dispatch( submitContact(info))
+    dispatch(submitContact(info))
   };
 
   if (success) {
