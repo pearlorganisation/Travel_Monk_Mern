@@ -9,7 +9,7 @@ export const searchDestination = createAsyncThunk(
   async (name, thunkAPI) => {
     try {
       const result = await axios.get(
-        `${localURL}/api/v1/destinations/search?destination=${name}`
+        `${backendURL}/api/v1/destinations/search?destination=${name}`
       );
       console.log(result, "result nayan search");
       return result.data;

@@ -8,7 +8,9 @@ export const getAllDestinations = createAsyncThunk(
   "trip/Dest/get",
   async (thunkAPI) => {
     try {
-      const response = await axios.get(`${localURL}/api/v1/trips/destination`);
+      const response = await axios.get(
+        `${backendURL}/api/v1/trips/destination`
+      );
 
       if (response.data) {
         console.log("Data", response.data);
@@ -25,7 +27,7 @@ export const getSingleDestination = createAsyncThunk(
   async (id, thunkAPI) => {
     try {
       const response = await axios.get(
-        `${localURL}/api/v1/trips/destination/${id}`
+        `${backendURL}/api/v1/trips/destination/${id}`
       );
 
       if (response.data) {
@@ -43,7 +45,7 @@ export const getAllActivitiesByDestination = createAsyncThunk(
   async (id, thunkAPI) => {
     try {
       const response = await axios.get(
-        `${localURL}/api/v1/activities/destination/${id}`
+        `${backendURL}/api/v1/activities/destination/${id}`
       );
 
       if (response.data) {
