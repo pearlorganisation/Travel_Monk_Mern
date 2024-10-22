@@ -1,14 +1,17 @@
 import React, { useEffect } from "react";
 import DestinationCard from "../../components/DestinationCards/DestinationCard";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllInternationalDestinations } from "../../features/trips/tripsSlice";
+import { getAllDestinations } from "../../features/trips/tripActions";
 
 const InternationalPackages = () => {
-  const { data } = useSelector((state) => state.trip.internationaldestination);
+  const destState = useSelector((state) => state.trip.destinations);
 
+  const internationalDest = destState?.data.filter(
+    (data) => data.type == "International"
+  );
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getAllInternationalDestinations());
+    dispatch(getAllDestinations());
   }, []);
 
   return (
@@ -38,7 +41,7 @@ const InternationalPackages = () => {
           Destinations
         </h1>
         <div className="p-4">
-          <DestinationCard data={data} />
+          <DestinationCard data={internationalDest} />
         </div>
       </div>
     </div>

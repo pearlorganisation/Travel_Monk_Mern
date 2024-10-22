@@ -10,36 +10,23 @@ import HotelDetails from "./supportingComponent/HotelDetails";
 import FindHotel from "./supportingComponent/FindHotel";
 import Reviews from "../../components/HeroSection.jsx/Reviews/Reviews";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getAllIndianDestinations,
-  getAllInternationalDestinations,
-} from "../../features/trips/tripsSlice";
+import { getAllDestinations } from "../../features/trips/tripActions";
 
 const Home = () => {
   const dispatch = useDispatch();
 
-  const indiandestinationState = useSelector(
-    (state) => state.trip.indiandestination.data
-  );
-  const internationalDestinationState = useSelector(
-    (state) => state.trip.internationaldestination.data
-  );
+  const { destinations } = useSelector((state) => state.trip);
 
   useEffect(() => {
-    getIndianDestinations();
-    getInternationalDestinations();
+    dispatch(getAllDestinations());
   }, []);
 
-  const getIndianDestinations = () => {
-    dispatch(getAllIndianDestinations());
-  };
-
-  const getInternationalDestinations = () => {
-    dispatch(getAllInternationalDestinations());
-  };
-
-  // console.log("Indian DEstionations", indiandestinationState);
-  // console.log("International DEstionations", internationalDestinationState);
+  const indianData = destinations?.data?.filter(
+    (data) => data.type == "Indian"
+  );
+  const internationalData = destinations?.data?.filter(
+    (data) => data.type == "International"
+  );
 
   return (
     <div className="">
@@ -54,14 +41,8 @@ const Home = () => {
       </div>
       <Reviews />
       <HowitWorks />
-      <PopularDestination
-        data={indiandestinationState ? indiandestinationState : []}
-      />
-      <PopularItineraries
-        data={
-          internationalDestinationState ? internationalDestinationState : []
-        }
-      />
+      <PopularDestination data={indianData ? indianData : []} />
+      <PopularItineraries data={internationalData ? internationalData : []} />
       <Upcoming />
       <Distinguish />
       <GetinTouch />

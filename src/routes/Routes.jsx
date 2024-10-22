@@ -83,12 +83,8 @@ const Routes = createBrowserRouter([
         element: <EditCustomize />,
       },
       {
-        path: "/indian/:id",
+        path: "/destination/:id",
         element: <IndianDestinations />,
-      },
-      {
-        path: "/international/:id",
-        element: <InternationalDestinations />,
       },
       {
         path: "/packages/:id",

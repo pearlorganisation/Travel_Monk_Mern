@@ -8,7 +8,7 @@ const DestinationCard = ({ data }) => {
       <div className="grid md:grid-cols-2  lg:grid-cols-3 justify-center items-stretch gap-6 shadow-md">
         {data?.map((destination, index) => (
           <div key={index} className="shadow-md rounded-lg overflow-hidden">
-            <Link to={`/${destination.type}/${destination._id}`}>
+            <Link to={`/destination/${destination._id}`}>
               <img
                 src={destination?.image?.secure_url}
                 alt={destination?.name}
