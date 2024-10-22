@@ -214,28 +214,29 @@ const PopularItineraries = ({ data }) => {
                 modules={[Pagination]}
                 className="mySwiper"
               >
-                {data?.map((destination) => (
-                  <SwiperSlide key={destination._id}>
-                    {" "}
-                    <Link to={`/international/${destination?._id}`}>
-                      <div class="max-w-xs mx-auto relative rounded-lg overflow-hidden shadow-lg">
-                        <img
-                          class="w-full h-56 object-cover"
-                          src={destination.image.secure_url}
-                          alt={destination.name}
-                        />
-                        <div class="absolute bottom-0 left-0 p-4 bg-gradient-to-t from-black via-transparent to-transparent w-full">
-                          <h2 class="text-3xl  text-white font-bold">
-                            {destination.name}
-                          </h2>
-                          <p class="text-white">
-                            Starting Price Rs. {destination.startingPrice}/-
-                          </p>
+                {Array.isArray(data) &&
+                  data?.map((destination) => (
+                    <SwiperSlide key={destination._id}>
+                      {" "}
+                      <Link to={`/destination/${destination?._id}`}>
+                        <div class="max-w-xs mx-auto relative rounded-lg overflow-hidden shadow-lg">
+                          <img
+                            class="w-full h-56 object-cover"
+                            src={destination.image.secure_url}
+                            alt={destination.name}
+                          />
+                          <div class="absolute bottom-0 left-0 p-4 bg-gradient-to-t from-black via-transparent to-transparent w-full">
+                            <h2 class="text-3xl  text-white font-bold">
+                              {destination.name}
+                            </h2>
+                            <p class="text-white">
+                              Starting Price Rs. {destination.startingPrice}/-
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                    </Link>
-                  </SwiperSlide>
-                ))}
+                      </Link>
+                    </SwiperSlide>
+                  ))}
               </Swiper>
             </div>
 

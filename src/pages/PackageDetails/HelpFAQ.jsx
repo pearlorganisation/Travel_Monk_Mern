@@ -8,9 +8,10 @@ const FaqsCard = (props) => {
   const { faqsList, idx } = props;
 
   const handleOpenAnswer = () => {
-    const answerElH = answerElRef.current.childNodes[0].offsetHeight;
+    console.log(answerElRef.current, "answer refernce");
+    // const answerElH = answerElRef.current.childNodes[0].offsetHeight;
     setState(!state);
-    setAnswerH(`${answerElH + 60}px`);
+    setAnswerH(`${120}px`);
   };
 
   return (

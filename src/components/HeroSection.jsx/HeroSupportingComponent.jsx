@@ -19,18 +19,17 @@ const HeroSupportingComponent = ({ data }, ref) => {
   const { register, handleSubmit } = useForm();
 
   const navigate = useNavigate();
-  const { searchResult, isSuccess, isError, message } = useSelector(
-    (state) => state.destination
-  );
+  const result = useSelector((state) => state.destination);
 
-  console.log(searchResult && searchResult[0], "searched result");
+  console.log(result, "result");
+
   const submitForm = async (info) => {
     dispatch(searchDestination(info.destination));
 
     {
-      isSuccess &&
-        searchResult.length > 0 &&
-        navigate(`fully-customize/${searchResult[0]?._id}`);
+      result?.isSuccess &&
+        result?.searchResult?.length > 0 &&
+        navigate(`fully-customize/${result?.searchResult[0]?._id}`);
     }
   };
 

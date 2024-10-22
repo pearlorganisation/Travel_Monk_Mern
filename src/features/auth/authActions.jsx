@@ -1,10 +1,9 @@
 import axios from "axios";
+import { axiosInstance } from "../../services/axiosInterceptor.js";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { createAsyncThunk } from "@reduxjs/toolkit";
-
-export const backendURL = "https://travel-monk-backend.onrender.com";
 
 export const registerUser = createAsyncThunk(
   "auth/register",
@@ -15,13 +14,10 @@ export const registerUser = createAsyncThunk(
           "Content-Type": "application/json",
         },
       };
-      const { data } = await axios.post(
-        `${backendURL}/api/v1/auth/signup`,
+      const { data } = await axiosInstance.post(
+        "/api/v1/auth/signup",
         { name, email, password },
-        config,
-        {
-          withCredential: true,
-        }
+        config
       );
 
       console.log("Register Data", data);
@@ -43,16 +39,16 @@ export const userLogin = createAsyncThunk(
   async ({ email, password }, { rejectWithValue }) => {
     try {
       const config = {
-        // withCredentials: true,
         headers: {
           "Content-Type": "application/json",
         },
       };
-      const { data } = await axios.post(
-        `${backendURL}/api/v1/auth/login`,
+      const { data } = await axiosInstance.post(
+        "/api/v1/auth/login", // No need to repeat backendURL
         { email, password },
         config
       );
+
       // store user's token in local storage
       console.log("login data", data);
       localStorage.setItem("isLoggedIn", true);

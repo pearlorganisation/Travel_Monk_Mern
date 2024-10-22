@@ -1,18 +1,18 @@
 import React, { useEffect } from "react";
 import DestinationCard from "../../components/DestinationCards/DestinationCard";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllIndianDestinations } from "../../features/trips/tripsSlice";
-import { BestPackages } from "../../components/DestinationCards/BestDestinationCard";
+import { getAllDestinations } from "../../features/trips/tripActions";
 
 const IndianPackages = () => {
-  const { data } = useSelector((state) => state.trip.indiandestination);
+  const destState = useSelector((state) => state.trip.destinations);
+
+  const indianDest = destState?.data.filter((data) => data.type == "Indian");
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getAllIndianDestinations());
+    dispatch(getAllDestinations());
   }, []);
 
-  console.log(data, "indian destinations on indian packages page");
   return (
     <div>
       <div
@@ -32,7 +32,7 @@ const IndianPackages = () => {
       </div>
       <div className="flex justify-center items-center h-full ">
         <div className="bg-slate-200 my-6">
-          <h1 className="text-3xl font-bold">About India Tours</h1>
+          <h1 className="text-3xl font-bold">About Indian Tours</h1>
         </div>
       </div>
       <div>
@@ -40,18 +40,8 @@ const IndianPackages = () => {
           Destinations
         </h1>
         <div className="p-4">
-          <DestinationCard data={data} />
+          <DestinationCard data={indianDest} />
         </div>
-        <div className='mt-8'>
-            <div className='flex flex-col justify-center items-center'>
-             <h1 className='text-4xl font-bold text-blue-500 w-full text-center'>Best Seller Packages</h1>
-             <h2 className='text-xl font-normal text-gray-400'>Find your perfect travel experience with our top-rated packages</h2>
-            </div>
-        <div className='px-10 py-4'>
-
-          <BestPackages />
-        </div>
-       </div>
       </div>
     </div>
   );
