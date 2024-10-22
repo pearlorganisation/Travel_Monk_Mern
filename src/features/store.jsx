@@ -6,6 +6,7 @@ import cruizeReducer from "./cruize/cruizeSlice";
 import hotelsReducer from "./hotel/hotelSlice";
 import destinationsReducer from "./destination/destinationSlice";
 import partnersReducer from "./partners/partnersSlice";
+import contactReducer from "./contact/contactSlice"
 
 const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ const store = configureStore({
     hotels: hotelsReducer,
     destination: destinationsReducer,
     partners: partnersReducer,
+    contact: contactReducer
   },
 });
 export default store;

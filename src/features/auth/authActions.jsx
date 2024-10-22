@@ -4,7 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-const backendURL = "https://travel-monk-backend.onrender.com";
+export const backendURL = "https://travel-monk-backend.onrender.com";
 
 export const registerUser = createAsyncThunk(
   "auth/register",

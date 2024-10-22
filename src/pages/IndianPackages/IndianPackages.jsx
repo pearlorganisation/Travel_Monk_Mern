@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import DestinationCard from "../../components/DestinationCards/DestinationCard";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllIndianDestinations } from "../../features/trips/tripsSlice";
+import { BestPackages } from "../../components/DestinationCards/BestDestinationCard";
 
 const IndianPackages = () => {
   const { data } = useSelector((state) => state.trip.indiandestination);
@@ -41,6 +42,16 @@ const IndianPackages = () => {
         <div className="p-4">
           <DestinationCard data={data} />
         </div>
+        <div className='mt-8'>
+            <div className='flex flex-col justify-center items-center'>
+             <h1 className='text-4xl font-bold text-blue-500 w-full text-center'>Best Seller Packages</h1>
+             <h2 className='text-xl font-normal text-gray-400'>Find your perfect travel experience with our top-rated packages</h2>
+            </div>
+        <div className='px-10 py-4'>
+
+          <BestPackages />
+        </div>
+       </div>
       </div>
     </div>
   );

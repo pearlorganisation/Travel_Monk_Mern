@@ -4,6 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { getSinglePackage } from "../../features/package/packageSlice";
 import { toast } from 'react-toastify';
+import { submitContact } from "../../features/contact/contactAction";
+import { useForm } from "react-hook-form";
+import { resetContactForm } from "../../features/contact/contactSlice";
 import axios from "axios"
 
 const PackageDetails = () => {
@@ -23,39 +26,18 @@ const PackageDetails = () => {
   const { data } = useSelector((state) => state.packages.singlePackage);
 
   /*-------------------------------------------------Handle for submitting the contact us form----------------------------------------------- */
-  const [formData, setFormData] = useState({
-    name: '',
-    phoneNumber: '',
-    email: '',
-    message:'',
-  });
+  const { loading, success, error } = useSelector((state) => state.contact);
+  const { register , handleSubmit } = useForm();
+  
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const submitForm = async (info) => {
+    dispatch( submitContact(info))
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      const response = await axios.post(
-        "https://travel-monk-backend.onrender.com/api/v1/contact",
-        formData
-      );
-      console.log('Response from server:', response.data);  
-
-      // Reset  
-      setFormData({ name: '', phoneNumber: '', email: '', message: '' });
- 
-      toast.success("We will contact you soon")
-
-    } catch (error) {
-      console.error('Error submitting form:', error);
- 
-      toast.error('Error submitting form. Please try again later.');
-    }
-  };
-
+  if (success) {
+    
+    dispatch(resetContactForm());
+  }
   return (
     <div className="">
       <img
@@ -166,7 +148,7 @@ const PackageDetails = () => {
           </button>
 
           <div className="border-2 border-[#2DA5F3] rounded-md mt-8 px-4">
-            <form className="mt-12" onSubmit={handleSubmit}>
+            <form className="mt-12" onSubmit={handleSubmit(submitForm)}>
               <h1 className="text-[#2DA5F3] font-semibold">
                 Travel Monk Calling ?{" "}
               </h1>
@@ -177,8 +159,7 @@ const PackageDetails = () => {
                   id="name"
                   type="text"
                   name="name"
-                  onChange={handleChange}
-                  value={formData.name}
+                  {...register("name")}
                   placeholder="e.g. John Smith"
                   required
                   class="relative w-full h-12 px-4 pl-12 placeholder-transparent transition-all border rounded outline-none focus-visible:outline-none peer border-slate-200 text-slate-500 autofill:bg-white invalid:border-pink-500 invalid:text-pink-500 focus:border-[#2DA5F3] focus:outline-none invalid:focus:border-pink-500 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400"
@@ -215,8 +196,7 @@ const PackageDetails = () => {
                   id="phoneNumber"
                   type="text"
                   name="phoneNumber"
-                  onChange={handleChange}
-                  value={formData.phoneNumber}
+                 {...register("phoneNumber")}
                   required
                   placeholder="e.g. John Smith"
                   class="relative w-full h-12 px-4 pl-12 placeholder-transparent transition-all border rounded outline-none focus-visible:outline-none peer border-slate-200 text-slate-500 autofill:bg-white invalid:border-pink-500 invalid:text-pink-500 focus:border-[#2DA5F3] focus:outline-none invalid:focus:border-pink-500 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400"
@@ -254,8 +234,7 @@ const PackageDetails = () => {
                   id="email"
                   type="email"
                   name="email"
-                  value={formData.email}
-                  onChange={handleChange}
+                  {...register("email")}
                   placeholder="e.g. John Smith"
                   required
                   className="relative w-full h-12 px-4 pl-12 placeholder-transparent transition-all border-2 rounded outline-none focus-visible:outline-none peer border-gray-200 text-slate-500 autofill:bg-white invalid:border-pink-500 invalid:text-pink-500 focus:border-[#2DA5F3] focus:outline-none invalid:focus:border-pink-500 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400"
@@ -296,19 +275,17 @@ const PackageDetails = () => {
                 </svg>
               </div>
 {/**  message */}
-              <div class="relative my-6">
-                <textarea  // Use textarea for multi-line input
+              <div className="relative my-6">
+                <textarea
                   id="message"
                   name="message"
                   placeholder="Enter your message"
-                  onChange={handleChange}
-                  value={formData.message}
-                  rows="4" // Adjust number of rows as needed
-                  required
-                  className="relative w-full px-4 py-2 border rounded outline-none focus:border-[#2DA5F3] resize-none" // Add styling as needed
+                  {...register("message", { required: true })} // Add validation if needed
+                  rows="4"
+                  className="relative w-full px-4 py-2 border rounded outline-none focus:border-[#2DA5F3] resize-none"
                 />
                 <label
-                  htmlFor="message" // Corrected htmlFor
+                  htmlFor="message"
                   className="cursor-text absolute left-2 -top-2 z-[1] px-2 text-xs text-slate-400 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:left-4 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:left-2 peer-focus:text-xs peer-focus:text-[#2DA5F3]"
                 >
                   Message
