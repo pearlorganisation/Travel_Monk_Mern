@@ -2,13 +2,12 @@ import React, { useEffect, useState } from "react";
 import HelpFAQ from "./HelpFAQ";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import { getSinglePackage } from "../../features/package/packageSlice";
-import { toast } from 'react-toastify';
-import axios from "axios"
+import { getSinglePackage } from "../../features/package/packageActions";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const PackageDetails = () => {
   const dispatch = useDispatch();
- 
 
   const { id } = useParams();
 
@@ -24,10 +23,10 @@ const PackageDetails = () => {
 
   /*-------------------------------------------------Handle for submitting the contact us form----------------------------------------------- */
   const [formData, setFormData] = useState({
-    name: '',
-    phoneNumber: '',
-    email: '',
-    message:'',
+    name: "",
+    phoneNumber: "",
+    email: "",
+    message: "",
   });
 
   const handleChange = (e) => {
@@ -42,17 +41,15 @@ const PackageDetails = () => {
         "https://travel-monk-backend.onrender.com/api/v1/contact",
         formData
       );
-      console.log('Response from server:', response.data);  
 
-      // Reset  
-      setFormData({ name: '', phoneNumber: '', email: '', message: '' });
- 
-      toast.success("We will contact you soon")
+      // Reset
+      setFormData({ name: "", phoneNumber: "", email: "", message: "" });
 
+      toast.success("We will contact you soon");
     } catch (error) {
-      console.error('Error submitting form:', error);
- 
-      toast.error('Error submitting form. Please try again later.');
+      console.error("Error submitting form:", error);
+
+      toast.error("Error submitting form. Please try again later.");
     }
   };
 
@@ -295,9 +292,9 @@ const PackageDetails = () => {
                   </g>
                 </svg>
               </div>
-{/**  message */}
+              {/**  message */}
               <div class="relative my-6">
-                <textarea  // Use textarea for multi-line input
+                <textarea // Use textarea for multi-line input
                   id="message"
                   name="message"
                   placeholder="Enter your message"
@@ -316,7 +313,10 @@ const PackageDetails = () => {
               </div>
               <div className="flex items-center justify-center mb-4">
                 {" "}
-                <button type="submit" className="px-6 py-3 bg-yellow-400 w-[80%]  rounded-full">
+                <button
+                  type="submit"
+                  className="px-6 py-3 bg-yellow-400 w-[80%]  rounded-full"
+                >
                   {" "}
                   Submit{" "}
                 </button>

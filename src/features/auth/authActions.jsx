@@ -1,6 +1,5 @@
-import axios from "axios";
 import { axiosInstance } from "../../services/axiosInterceptor.js";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { createAsyncThunk } from "@reduxjs/toolkit";

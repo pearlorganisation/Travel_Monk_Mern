@@ -1,16 +1,22 @@
-import axios from "axios";
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { axiosInstance } from "../../services/axiosInterceptor";
 
-const backendURL = "https://travel-monk-backend.onrender.com";
+export const getPartners = createAsyncThunk(
+  "partners/get",
+  async (thunkAPI) => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const response = await axiosInstance.get(`/api/v1/partners`, config);
 
-const getPartners = async () => {
-  const response = await axios.get(`${backendURL}/api/v1/partners`);
-
-  if (response.data) {
-    console.log("Partners", response.data);
-    return response.data;
+      if (response.data) {
+        return response.data;
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
   }
-};
-
-export const partnersService = {
-  getPartners,
-};
+);

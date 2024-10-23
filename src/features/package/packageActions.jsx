@@ -1,26 +1,38 @@
-import axios from "axios";
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { axiosInstance } from "../../services/axiosInterceptor";
 
-const backendURL = "https://travel-monk-backend.onrender.com";
-const localURL = "http://localhost:5000";
-const getPackages = async () => {
-  const response = await axios.get(`${backendURL}/api/v1/packages`);
-
-  if (response.data) {
-    console.log("Packages", response.data);
-    return response.data;
+export const getAllPackages = createAsyncThunk(
+  "packages/get",
+  async (thunkAPI) => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const response = await axiosInstance.get(`/api/v1/packages`, config);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
   }
-};
-
-const getSinglePackage = async (id) => {
-  const response = await axios.get(`${backendURL}/api/v1/packages/${id}`);
-
-  if (response.data) {
-    console.log("Single Package Data", response.data);
-    return response.data;
+);
+export const getSinglePackage = createAsyncThunk(
+  "singlePackage/get",
+  async (id, thunkAPI) => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const response = await axiosInstance.get(
+        `/api/v1/packages/${id}`,
+        config
+      );
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
   }
-};
-
-export const packagesService = {
-  getPackages,
-  getSinglePackage,
-};
+);

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getPartners } from "../../features/partners/partnersSlice";
+import { getPartners } from "../../features/partners/partnersActions";
 
 export default function CruiseContactForm() {
   const contactMethods = [

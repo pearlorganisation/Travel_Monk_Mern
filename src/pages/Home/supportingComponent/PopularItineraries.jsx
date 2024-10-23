@@ -163,7 +163,6 @@ import "swiper/css/pagination";
 import { Pagination } from "swiper/modules";
 import { Link } from "react-router-dom";
 const PopularItineraries = ({ data }) => {
-  console.log("International Data recieved", data);
   return (
     <>
       <div className="bg-[#f5f5f5]">

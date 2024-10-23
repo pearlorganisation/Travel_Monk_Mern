@@ -1,23 +1,5 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { hotelsService } from "./hotelActions";
-
-export const getAllHotels = createAsyncThunk("hotels/get", async (thunkAPI) => {
-  try {
-    return await hotelsService.getHotels();
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error);
-  }
-});
-export const getSingleHotel = createAsyncThunk(
-  "singleHotel/get",
-  async (id, thunkAPI) => {
-    try {
-      return await hotelsService.getSingleHotel(id);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
+import { createSlice } from "@reduxjs/toolkit";
+import { getAllHotels, getSingleHotel } from "./hotelActions";
 
 const hotelState = {
   isLoading: false,

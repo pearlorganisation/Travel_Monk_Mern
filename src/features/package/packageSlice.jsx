@@ -1,26 +1,6 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { packagesService } from "./packageActions";
+import { createSlice } from "@reduxjs/toolkit";
 
-export const getAllPackages = createAsyncThunk(
-  "packages/get",
-  async (thunkAPI) => {
-    try {
-      return await packagesService.getPackages();
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
-export const getSinglePackage = createAsyncThunk(
-  "singlePackage/get",
-  async (id, thunkAPI) => {
-    try {
-      return await packagesService.getSinglePackage(id);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
+import { getAllPackages, getSinglePackage } from "./packageActions";
 
 const packagesState = {
   isLoading: false,

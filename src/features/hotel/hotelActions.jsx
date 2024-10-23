@@ -1,26 +1,38 @@
-import axios from "axios";
+import { axiosInstance } from "../../services/axiosInterceptor";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 
-const backendURL = "https://travel-monk-backend.onrender.com";
+export const getAllHotels = createAsyncThunk("hotels/get", async (thunkAPI) => {
+  try {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const response = await axiosInstance.get(`/api/v1/hotels`, config);
 
-const getHotels = async () => {
-  const response = await axios.get(`${backendURL}/api/v1/hotels`);
-
-  if (response.data) {
-    console.log("Hotels eawdasdasdasd", response.data);
-    return response.data;
+    if (response.data) {
+      return response.data;
+    }
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error);
   }
-};
+});
+export const getSingleHotel = createAsyncThunk(
+  "singleHotel/get",
+  async (id, thunkAPI) => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const response = await axiosInstance.get(`/api/v1/hotels/${id}`, config);
 
-const getSingleHotel = async (id) => {
-  const response = await axios.get(`${backendURL}/api/v1/hotels/${id}`);
-
-  if (response.data) {
-    console.log("Single Hotel Data", response.data);
-    return response.data;
+      if (response.data) {
+        return response.data;
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
   }
-};
-
-export const hotelsService = {
-  getHotels,
-  getSingleHotel,
-};
+);

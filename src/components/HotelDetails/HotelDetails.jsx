@@ -5,7 +5,7 @@ import Reviews2 from "./Reviews";
 import RoomDetails from "./RoomDetails";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { getSingleHotel } from "../../features/hotel/hotelSlice";
+import { getSingleHotel } from "../../features/hotel/hotelActions";
 
 const HotelDetails = () => {
   const { id } = useParams();
@@ -16,6 +16,8 @@ const HotelDetails = () => {
   useEffect(() => {
     dispatch(getSingleHotel(id));
   }, []);
+
+  console.log(singleHotel, "single Hotel details");
 
   return (
     <div className="w-full p-6 bg-white">
