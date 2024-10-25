@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "../features/auth/authSlice";
+import userReducer from "../features/user/userSlice";
 import tripReducer from "../features/trips/tripsSlice";
 import packageReducer from "./package/packageSlice";
 import cruizeReducer from "./cruize/cruizeSlice";
@@ -11,6 +12,7 @@ import buscruizeReducer from "./BusCruizeContactAction/BusCruizeSlice"
 const store = configureStore({
   reducer: {
     auth: authReducer,
+    user: userReducer,
     trip: tripReducer,
     packages: packageReducer,
     cruises: cruizeReducer,
