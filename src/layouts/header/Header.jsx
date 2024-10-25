@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { logout } from "../../features/auth/authSlice";
+import ProfileMenu from "../../components/ProfileMenue/ProfileMenu";
 
 export default function Header() {
   const [state, setState] = useState(false);
-  const [isLogin, setIsLogin] = useState(false);
+  // const [isLogin, setIsLogin] = useState(false);
 
+ 
   const navigation = [
     { title: "Home", path: "/" },
     { title: "International Packages", path: "/international_packages" },
@@ -16,18 +19,21 @@ export default function Header() {
 
   // const isLoggedIn = localStorage.getItem("isLoggedIn");
 
-  useEffect(() => {
-    const checkAuth = () => {
-      setIsLogin(localStorage.getItem("isLoggedIn"));
-      setState();
-    };
+  // useEffect(() => {
+  //   const checkAuth = () => {
+  //     setIsLogin(localStorage.getItem("isLoggedIn"));
+  //     setState();
+  //   };
 
-    checkAuth();
-  }, [localStorage.getItem("isLoggedIn")]);
+  //   checkAuth();
+  // }, [localStorage.getItem("isLoggedIn")]);
 
+  // to check for is userlogged in
+  const { isUserLoggedIn } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  
   const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn");
-    setIsLogin(false);
+    dispatch(logout());
   };
 
   return (
@@ -171,7 +177,7 @@ export default function Header() {
 
           <div className="hidden md:inline-block " data-aos="fade-left">
             <div className="flexflex-row gap-6 items-center justify-center">
-              {!isLogin ? (
+              {!isUserLoggedIn ? (
                 <div>
                   <Link
                     to="/login"
@@ -188,14 +194,7 @@ export default function Header() {
                     Sign Up
                   </Link>
                 </div>
-              ) : (
-                <button
-                  className="text-white px-6 py-2 border-2 border-[#2DA5F3] rounded-md"
-                  onClick={handleLogout}
-                >
-                  {" "}
-                  Logout{" "}
-                </button>
+              ) : ( <ProfileMenu />
               )}
             </div>
           </div>

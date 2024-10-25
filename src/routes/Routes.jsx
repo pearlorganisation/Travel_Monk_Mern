@@ -22,6 +22,8 @@ import CruiseContactForm from "../pages/Forms/CruiseContactForm";
 import AboutUs from "../pages/AboutUs/AboutUs";
 import IndianPackages from "../pages/IndianPackages/IndianPackages";
 import InternationalPackages from "../pages/InternationalPackages/InternationalPackages";
+import ProfilePage from "../pages/ProfilePage/ProfilePage";
+import ConfirmPackage from "../pages/ConfirmPackage/ConfirmPackage";
 
 const Routes = createBrowserRouter([
   {
@@ -106,6 +108,14 @@ const Routes = createBrowserRouter([
         path: "/international_packages",
         element: <InternationalPackages />,
       },
+      {
+        path:"profile",
+        element: <ProfilePage />
+      },
+      {
+        path:"confirm-package",
+        element: <ConfirmPackage />
+      }
     ],
   },
 ]);

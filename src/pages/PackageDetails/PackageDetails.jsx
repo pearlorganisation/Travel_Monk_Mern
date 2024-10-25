@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import HelpFAQ from "./HelpFAQ";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { getSinglePackage } from "../../features/package/packageActions";
 import { toast } from "react-toastify";
 import { submitContact } from "../../features/contact/contactAction";
@@ -11,7 +11,7 @@ import axios from "axios";
 
 const PackageDetails = () => {
   const dispatch = useDispatch();
- 
+ const navigate = useNavigate()
 
   const { id } = useParams();
 
@@ -24,6 +24,9 @@ const PackageDetails = () => {
   };
 
   const { data } = useSelector((state) => state.packages.singlePackage);
+  const handleBookNow = () => {
+    navigate("/confirm-package", { state: { startingPrice: data?.startingPrice } });
+  };
 
   /*-------------------------------------------------Handle for submitting the contact us form----------------------------------------------- */
   const { loading, success, error } = useSelector((state) => state.contact);
@@ -142,7 +145,7 @@ const PackageDetails = () => {
               per person
             </span>
           </h1>
-          <button className="w-[100%] px-6 py-4 rounded-full bg-[#2DA5F3] text-white mt-4">
+          <button onClick={handleBookNow} className="w-[100%] px-6 py-4 rounded-full bg-[#2DA5F3] text-white mt-4">
             {" "}
             BOOK NOW{" "}
           </button>

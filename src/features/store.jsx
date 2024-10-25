@@ -7,7 +7,7 @@ import hotelsReducer from "./hotel/hotelSlice";
 import destinationsReducer from "./destination/destinationSlice";
 import partnersReducer from "./partners/partnersSlice";
 import contactReducer from "./contact/contactSlice"
-
+import buscruizeReducer from "./BusCruizeContactAction/BusCruizeSlice"
 const store = configureStore({
   reducer: {
     auth: authReducer,
@@ -17,7 +17,8 @@ const store = configureStore({
     hotels: hotelsReducer,
     destination: destinationsReducer,
     partners: partnersReducer,
-    contact: contactReducer
+    contact: contactReducer,
+    buscruize: buscruizeReducer
   },
 });
 export default store;
