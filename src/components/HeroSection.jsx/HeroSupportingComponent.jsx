@@ -14,14 +14,11 @@ import { toast } from "react-toastify";
 const HeroSupportingComponent = ({ data }, ref) => {
   // --------------------------------------------States--------------------------------------
 
-  console.log(data, "data");
   const dispatch = useDispatch();
   const { register, handleSubmit } = useForm();
 
   const navigate = useNavigate();
   const result = useSelector((state) => state.destination);
-
-  console.log(result, "result");
 
   const submitForm = async (info) => {
     dispatch(searchDestination(info.destination));

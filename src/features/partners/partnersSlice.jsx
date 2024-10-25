@@ -1,16 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { partnersService } from "./partnersActions";
-
-export const getPartners = createAsyncThunk(
-  "partners/get",
-  async (thunkAPI) => {
-    try {
-      return await partnersService.getPartners();
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
+import { getPartners } from "./partnersActions";
 
 const partnersState = {
   isLoading: false,

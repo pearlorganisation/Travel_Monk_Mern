@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import HelpFAQ from "./HelpFAQ";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import { getSinglePackage } from "../../features/package/packageSlice";
-import { toast } from 'react-toastify';
+import { getSinglePackage } from "../../features/package/packageActions";
+import { toast } from "react-toastify";
 import { submitContact } from "../../features/contact/contactAction";
 import { useForm } from "react-hook-form";
 import { resetContactForm } from "../../features/contact/contactSlice";
-import axios from "axios"
+import axios from "axios";
 
 const PackageDetails = () => {
   const dispatch = useDispatch();
@@ -293,7 +293,10 @@ const PackageDetails = () => {
               </div>
               <div className="flex items-center justify-center mb-4">
                 {" "}
-                <button type="submit" className="px-6 py-3 bg-yellow-400 w-[80%]  rounded-full">
+                <button
+                  type="submit"
+                  className="px-6 py-3 bg-yellow-400 w-[80%]  rounded-full"
+                >
                   {" "}
                   Submit{" "}
                 </button>

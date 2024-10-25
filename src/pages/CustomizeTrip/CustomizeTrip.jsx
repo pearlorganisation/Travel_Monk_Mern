@@ -5,7 +5,7 @@ import Lake from "../../assets/images/lake.png";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getSinglePackage } from "../../features/package/packageSlice";
+import { getSinglePackage } from "../../features/package/packageActions";
 
 import parse from "html-react-parser";
 import { getSingleDestination } from "../../features/trips/tripActions";

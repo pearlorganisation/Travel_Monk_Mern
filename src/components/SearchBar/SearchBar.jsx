@@ -1,22 +1,8 @@
 import { useForm } from "react-hook-form";
-import ArrRight from "../../assets/arrright.png";
-import Image1 from "../../assets/images/image1.png";
-import Image2 from "../../assets/images/image2.png";
-import Image3 from "../../assets/images/image3.png";
-import Image4 from "../../assets/images/image4.png";
 
-import Fav from ".././../assets/logos/fav.png";
-import Air from ".././../assets/logos/air.png";
-import Star from ".././../assets/logos/star.png";
-import FreeB from ".././../assets/logos/breakfast.png";
-import Wifi from ".././../assets/logos/wifi.png";
-import Parking from ".././../assets/logos/parking.png";
-
-import Sea from ".././../assets/logos/sea.png";
-import Cancel from ".././../assets/logos/cancel.png";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { getAllHotels } from "../../features/hotel/hotelSlice";
+import { getAllHotels } from "../../features/hotel/hotelActions";
 import { Link } from "react-router-dom";
 import parse from "html-react-parser";
 import StarRating from "../StarRating/StarRatingComponent";
@@ -242,77 +228,6 @@ const SearchBar = () => {
     },
   ];
 
-  const hotelsData = [
-    {
-      id: 1,
-      image: Image1,
-      top: "Only One Room Left",
-      name: "  ITC Grand Goa - A Luxury Resort Collection",
-      price: "17000",
-      taxes: "3000",
-      categories: ["4 Star", "4.2"],
-      rating: "5",
-      features: [
-        { id: 1, name: "Free Parking", logo: Parking },
-        { id: 2, name: "Free Wifi", logo: Wifi },
-        { id: 3, name: "Air Conditioner", logo: Air },
-        { id: 4, name: "Sea View", logo: Sea },
-        { id: 5, name: "Free Breakfast", logo: FreeB },
-        { id: 6, name: "Free Cancellation", logo: Cancel },
-      ],
-    },
-    {
-      id: 2,
-      image: Image2,
-      name: "The Fern Kadamba Hotel and Spa, Goa",
-      price: "15000",
-      originalPrice: "20000",
-      tag: "Limited Time Deal",
-      taxes: "3000",
-      rating: "5",
-      features: [
-        { id: 1, name: "Free Parking", logo: Parking },
-        { id: 2, name: "Free Wifi", logo: Wifi },
-        { id: 3, name: "Air Conditioner", logo: Air },
-        { id: 4, name: "Sea View", logo: Sea },
-        { id: 5, name: "Free Breakfast", logo: FreeB },
-        { id: 6, name: "Free Cancellation", logo: Cancel },
-      ],
-    },
-    {
-      id: 3,
-      image: Image3,
-      name: "Luxury Farm House",
-      price: "24890",
-      originalPrice: "29000",
-      tag: "Limited Time Deal",
-      taxes: "3000",
-      rating: "4.8",
-      features: [
-        { id: 1, name: "Free Parking", logo: Parking },
-        { id: 2, name: "Free Wifi", logo: Wifi },
-        { id: 3, name: "Air Conditioner", logo: Air },
-        { id: 4, name: "Sea View", logo: Sea },
-      ],
-    },
-    {
-      id: 4,
-      image: Image4,
-      name: "Country Inn Panjim Goa",
-      price: "28790",
-      originalPrice: "32000",
-      tag: "Limited Time Deal",
-      taxes: "3000",
-      rating: "4.6",
-      features: [
-        { id: 1, name: "Free Parking", logo: Parking },
-        { id: 2, name: "Free Wifi", logo: Wifi },
-        { id: 3, name: "Air Conditioner", logo: Air },
-        { id: 4, name: "Sea View", logo: Sea },
-      ],
-    },
-  ];
-
   return (
     <div className=" p-10 bg-gray-200">
       <div
@@ -362,8 +277,11 @@ const SearchBar = () => {
         <div className="flex flex-row gap-6">
           <h1 className="mr-12">Sort By</h1>
 
-          {sortByOptions.map((sortByOption) => (
-            <div className="flex flex-row gap-6 items-center justify-center">
+          {sortByOptions.map((sortByOption, index) => (
+            <div
+              key={index}
+              className="flex flex-row gap-6 items-center justify-center"
+            >
               <h1 className="font-semibold hover:text-blue-400 hover:underline hover:cursor-pointer text-sm">
                 {sortByOption.name}
               </h1>
@@ -417,8 +335,11 @@ const SearchBar = () => {
                 </div>
               </div>
 
-              {priceRanges.map((priceRange) => (
-                <div className="flex flex-row  justify-between items-center mt-2">
+              {priceRanges.map((priceRange, index) => (
+                <div
+                  key={index}
+                  className="flex flex-row  justify-between items-center mt-2"
+                >
                   <div className="flex flex-row gap-3">
                     <input type="checkbox" className="checkbox" />
                     <h3>{priceRange.name}</h3>
@@ -430,8 +351,11 @@ const SearchBar = () => {
 
               <h3 className="mt-3 font-semibold">Star Category</h3>
 
-              {starCategories.map((starCategory) => (
-                <div className="flex flex-row  justify-between items-center mt-2">
+              {starCategories.map((starCategory, index) => (
+                <div
+                  key={index}
+                  className="flex flex-row  justify-between items-center mt-2"
+                >
                   <div className="flex flex-row gap-3">
                     <input type="checkbox" className="checkbox" />
                     <h3>{starCategory.name}</h3>
@@ -443,8 +367,11 @@ const SearchBar = () => {
 
               <h3 className="mt-3 font-semibold">Ratings</h3>
 
-              {ratings.map((rating) => (
-                <div className="flex flex-row  justify-between items-center mt-2">
+              {ratings.map((rating, index) => (
+                <div
+                  key={index}
+                  className="flex flex-row  justify-between items-center mt-2"
+                >
                   <div className="flex flex-row gap-3">
                     <input type="checkbox" className="checkbox" />
                     <h3>{rating.name}</h3>
@@ -458,8 +385,8 @@ const SearchBar = () => {
         </div>
 
         <div className="w-[75%] mt-2">
-          {hotels?.data?.map((hotel) => (
-            <div className=" bg-white w-full rounded-xl mt-6">
+          {hotels?.data?.map((hotel, index) => (
+            <div key={hotel._id} className=" bg-white w-full rounded-xl mt-6">
               <Link to={`/hotels/${hotel?._id}`}>
                 <div className="grid grid-cols-[35%_auto] gap-3">
                   <img

@@ -2,7 +2,7 @@ import React from "react";
 
 const HotelDetail = () => {
   return (
-    <>
+    <div>
       {/* <div class="bg-gray-900 flex items-center justify-center min-h-screen"> */}
       <div class="bg-white rounded-lg shadow-lg p-6 max-w-6xl mx-auto w-full">
         <h2 class="text-xl font-semibold mb-2">
@@ -50,7 +50,7 @@ const HotelDetail = () => {
           Change
         </button>
       </div>
-    </>
+    </div>
   );
 };
 

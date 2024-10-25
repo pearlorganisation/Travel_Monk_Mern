@@ -21,8 +21,6 @@ const IndianDestinations = () => {
     dispatch(getAllActivitiesByDestination(id));
   }, []);
 
-  console.log(singleD?.data, "destination data on single destination");
-  console.log(activities, "activities of Leh location");
   return (
     <div>
       <HeroBanner data={singleD?.data} />
