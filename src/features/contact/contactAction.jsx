@@ -3,7 +3,8 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { backendURL } from "../auth/authActions";
+
+const backendURL = "https://travel-monk-backend.onrender.com";
 
 export const submitContact = createAsyncThunk("contact/form",
     async({name , email, phoneNumber, message},{ rejectWithValue }) =>{

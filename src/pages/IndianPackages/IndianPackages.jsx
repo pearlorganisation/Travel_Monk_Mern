@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import DestinationCard from "../../components/DestinationCards/DestinationCard";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllDestinations } from "../../features/trips/tripActions";
+import { BestPackages } from "../../components/DestinationCards/BestDestinationCard";
 
 const IndianPackages = () => {
   const destState = useSelector((state) => state.trip.destinations);
