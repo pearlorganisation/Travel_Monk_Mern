@@ -1,10 +1,8 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 import { createAsyncThunk } from "@reduxjs/toolkit";
-
-const backendURL = "https://travel-monk-backend.onrender.com";
+import { axiosInstance } from "../../services/axiosInterceptor";
 
 export const submitContact = createAsyncThunk("contact/form",
     async({name , email, phoneNumber, message},{ rejectWithValue }) =>{
@@ -14,7 +12,7 @@ export const submitContact = createAsyncThunk("contact/form",
                     "Content-Type":"application/json",
                 }
             }
-            const { data } = await axios.post(`${backendURL}/api/v1/contacts`,
+            const { data } = await axiosInstance.post("/api/v1/contacts",
                 {name, email, phoneNumber, message},
                 config,
             );
