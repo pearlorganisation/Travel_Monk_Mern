@@ -11,12 +11,19 @@ import FindHotel from "./supportingComponent/FindHotel";
 import Reviews from "../../components/HeroSection.jsx/Reviews/Reviews";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllDestinations } from "../../features/trips/tripActions";
+import { getAuthUserDetails } from "../../features/user/userActions";
 
 const Home = () => {
   const dispatch = useDispatch();
 
   const { destinations } = useSelector((state) => state.trip);
+  
+  const userState = useSelector(state=> state.user);
+  console.log(userState, "user state")
 
+  useEffect(()=> {
+    dispatch(getAuthUserDetails())
+  }, [])
   useEffect(() => {
     dispatch(getAllDestinations());
   }, []);
