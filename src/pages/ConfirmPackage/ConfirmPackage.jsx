@@ -3,59 +3,47 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 const ConfirmPackage = () => {
     const location = useLocation();
-    const { startingPrice } = location.state || {};
-    const navigate = useNavigate();
-
-
+    const { startingPrice , packagename } = location.state || {};
     const [numPeople, setNumPeople] = useState(1);
+    
+  
     const totalPrice = startingPrice * numPeople;
-
-    const handleNumPeopleChange = (event) => {
-        const value = parseInt(event.target.value, 10);
-        setNumPeople(value > 0 ? value : 1);  
-    };
-
-     
-
-
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-200 via-purple-300 to-blue-200 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-md w-full space-y-8 p-10 bg-white rounded-lg shadow-2xl transform transition-all duration-500 hover:scale-105">
-                <h1 className="text-5xl font-extrabold text-center text-gray-800">Confirm Package</h1>
+        <div className="p-6 bg-white rounded-lg shadow-md">  
+            <div className="mb-6"> 
+                <h2 className="text-2xl font-semibold mb-4">Booking Details</h2>
+                <h2 className="text-2xl font-semibold mb-4">{packagename}</h2>
+                <div className="border rounded-md p-4">  
+                    
 
-                <div>
-                    <label
-                        htmlFor="numPeople"
-                        className="block text-lg font-semibold text-gray-700"
-                    >
-                        Number of People
-                    </label>
-                    <input
-                        type="number"
-                        id="numPeople"
-                        name="numPeople"
-                        min="1"
-                        value={numPeople}
-                        onChange={handleNumPeopleChange}
-                        className="mt-2 block w-full py-3 px-4 border border-gray-300 bg-gray-50 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-lg transition duration-150 ease-in-out"
-                    />
+                    <div className=" flex items-center justify-between"> 
+                        <span className="text-xl font-semibold">₹ {totalPrice}/-</span>
+                        <div className="flex items-center border rounded-md">  
+                            <button
+                                className="px-4 py-2 text-gray-600 hover:bg-gray-200"
+                                onClick={() => setNumPeople(Math.max(0, numPeople - 1))}
+                            >
+                                -
+                            </button>
+                            <span className="px-4 py-2 border-l border-r">{numPeople}</span>
+                            <button
+                                className="px-4 py-2 text-gray-600 hover:bg-gray-200"
+                                onClick={() => setNumPeople(numPeople + 1)}
+
+                            >
+                                +
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
-                <div className="space-y-2">
-                    <p className="text-xl font-semibold text-gray-800">
-                        Starting Price: ₹{startingPrice}/-
-                    </p>
-                    <p className="text-3xl font-bold text-indigo-600">
-                        Total Price: ₹{totalPrice}/-
-                    </p>
-                </div>
 
-                <button
-                    className="w-full py-3 px-6 mt-6 text-lg font-medium text-white bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transform transition-colors duration-300"
-                >
-                    Confirm
-                </button>
             </div>
+
+            <button className="w-full bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">
+                Continue
+            </button>
+
         </div>
     );
 }
