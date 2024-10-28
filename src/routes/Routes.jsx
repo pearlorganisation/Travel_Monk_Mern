@@ -24,6 +24,7 @@ import IndianPackages from "../pages/IndianPackages/IndianPackages";
 import InternationalPackages from "../pages/InternationalPackages/InternationalPackages";
 import ProfilePage from "../pages/ProfilePage/ProfilePage";
 import ConfirmPackage from "../pages/ConfirmPackage/ConfirmPackage";
+import ContactUs from "../pages/ContactUs/ContactUs";
 
 const Routes = createBrowserRouter([
   {
@@ -115,6 +116,10 @@ const Routes = createBrowserRouter([
       {
         path:"confirm-package",
         element: <ConfirmPackage />
+      },
+      {
+        path:"contact",
+        element: <ContactUs />
       }
     ],
   },

@@ -14,7 +14,7 @@ export default function Header() {
     { title: "International Packages", path: "/international_packages" },
     { title: "Indian Packages", path: "/indian_packages" },
     { title: "About Us", path: "/about_us" },
-    { title: "Contact Us", path: "/contact_us" },
+    { title: "Contact Us", path: "/contact" },
   ];
 
   // const isLoggedIn = localStorage.getItem("isLoggedIn");

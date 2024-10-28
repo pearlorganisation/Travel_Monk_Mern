@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { submitContact } from "./contactAction";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const initialState = {
     loading: false,
@@ -34,6 +36,7 @@ const contactSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload;
                 state.success = false;
+                toast("Failed to submit the form");
             });
     },
 });

@@ -18,10 +18,12 @@ export const submitContact = createAsyncThunk("contact/form",
             );
           console.log("Registered Contact US Form",data);
           toast.success("We will contact you soon")
+          
         } catch (error) {
             if (error.response && error.response.data.message) {
                 return rejectWithValue(error.response.data.message);
             } else {
+               
                 return rejectWithValue(error.message);
             }
         }
