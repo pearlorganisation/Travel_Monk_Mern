@@ -78,14 +78,13 @@ const ContactUs = () => {
               <div
                   className="h-96 flex justify-center items-center"
                   style={{
-                      backgroundImage: `url('/indian.jpg')`,
+                      backgroundImage: `url('/HeroImg.jpg')`,
                       backgroundSize: "cover",
                       backgroundPosition: "center",
                   }}
               >
                   <div className="text-white flex justify-center items-center">
-                      <h1 className="text-5xl font-bold">Contact Us</h1>
-                  </div>
+                      <h1 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-blue-400 to-green-600">Contact Us</h1>                  </div>
               </div>
               <div className="max-w-lg lg:mx-32 mx-4 mt-3 mb-3 gap-12 justify-between lg:flex lg:max-w-none">
                   <div className="max-w-lg space-y-3 mt-4">
