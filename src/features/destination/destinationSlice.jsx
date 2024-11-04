@@ -1,11 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { searchDestination } from "./destinationActions";
+import {
+  searchDestination,
+  getAllDestinationNames,
+} from "./destinationActions";
 
 const searchState = {
   isLoading: false,
   isError: false,
   isSuccess: false,
   searchResult: null,
+  destinationNames: null,
   message: "",
 };
 
@@ -25,6 +29,21 @@ export const destinationsSlice = createSlice({
         state.searchResult = action.payload.data;
       })
       .addCase(searchDestination.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
+      })
+      .addCase(getAllDestinationNames.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getAllDestinationNames.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.destinationNames = action.payload;
+      })
+      .addCase(getAllDestinationNames.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;

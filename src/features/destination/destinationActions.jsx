@@ -23,6 +23,25 @@ export const searchDestination = createAsyncThunk(
   }
 );
 
+export const getAllDestinationNames = createAsyncThunk(
+  "all-destinations/get",
+  async (_, thunkAPI) => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const result = await axiosInstance.get(`/api/v1/destinations`, config);
+      console.log(result, "result nayan search");
+      return result.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 export const destinationsService = {
   searchDestination,
+  getAllDestinationNames,
 };

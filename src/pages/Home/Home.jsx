@@ -12,20 +12,28 @@ import Reviews from "../../components/HeroSection.jsx/Reviews/Reviews";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllDestinations } from "../../features/trips/tripActions";
 import { getAuthUserDetails } from "../../features/user/userActions";
+import { getAllDestinationNames } from "../../features/destination/destinationActions";
 
 const Home = () => {
   const dispatch = useDispatch();
 
   const { destinations } = useSelector((state) => state.trip);
-  
-  const userState = useSelector(state=> state.user);
-  console.log(userState, "user state")
+  const { destinationNames } = useSelector((state) => state.destination);
 
-  useEffect(()=> {
-    dispatch(getAuthUserDetails())
-  }, [])
+  const userState = useSelector((state) => state.user);
+  console.log(userState, "user state");
+
+  console.log(destinationNames?.destinations, "destination names");
+
+  useEffect(() => {
+    dispatch(getAuthUserDetails());
+  }, []);
   useEffect(() => {
     dispatch(getAllDestinations());
+  }, []);
+
+  useEffect(() => {
+    dispatch(getAllDestinationNames());
   }, []);
 
   const indianData = destinations?.data?.filter(
