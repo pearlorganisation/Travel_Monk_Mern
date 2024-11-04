@@ -18,7 +18,10 @@ const Login = () => {
     dispatch(userLogin(data));
   };
   
-  
+  const { isUserLoggedIn } = useSelector((state)=>state.auth)
+  if(isUserLoggedIn){
+    navigate("/");
+  }
 
   // useEffect(() => {
   //   if (userInfo) {
