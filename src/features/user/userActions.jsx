@@ -17,7 +17,7 @@ export const getAuthUserDetails = createAsyncThunk(
 
             if (data) {
                 console.log("Data", data);
-                return data;
+                return data.data;
             }
         } catch (error) {
             return thunkAPI.rejectWithValue(error);

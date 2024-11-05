@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAuthUserDetails } from '../../features/user/userActions';
 
 const ProfilePage = () => {
     const [showBookings, setShowBookings] = useState(false);
-
-    const userProfile = {
-        username: 'JohnDoe123',
-        email: 'john.doe@example.com',
-        firstName: 'John',
-        lastName: 'Doe',
-        city: 'New York',
-        country: 'USA',
-        profilePicture: '/HeroImg.jpg',  
-    };
+    const dispatch = useDispatch();
+    const { userInfo } = useSelector((state) => state.user)
+    
+ 
+    useEffect(() => {
+        dispatch(getAuthUserDetails())
+    }, []);
+    console.log(userInfo,"user data in profile")
 
     const bookingsData = [
         {
@@ -29,6 +29,9 @@ const ProfilePage = () => {
             status: 'Upcoming',
         }, 
     ];
+ 
+    
+
 
     return (
         <div className="bg-gray-50 min-h-screen">
@@ -36,13 +39,13 @@ const ProfilePage = () => {
                 <div className="bg-white p-6 rounded-lg shadow-md">
                     <div className="flex items-center mb-6">  
                         <img
-                            src={userProfile.profilePicture}
+                            src={userInfo?.profilePicture}
                             alt="Profile"
                             className="rounded-full h-24 w-24 mr-6 border-4 border-white shadow-lg"  
                         />
                         <div>
-                            <h2 className="text-3xl font-semibold text-gray-800">{userProfile.firstName} {userProfile.lastName}</h2>
-                            <p className="text-gray-600">@{userProfile.username}</p>
+                            <h2 className="text-3xl font-semibold text-gray-800">{ userInfo?.name }</h2>
+                           
                         </div>
                     </div>
 
@@ -50,11 +53,7 @@ const ProfilePage = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6"> 
                         <div>
                             <p className="text-gray-700 font-bold">Email:</p>
-                            <p className="text-gray-600">{userProfile.email}</p>
-                        </div>
-                        <div>
-                            <p className="text-gray-700 font-bold">Location:</p>
-                            <p className="text-gray-600">{userProfile.city}, {userProfile.country}</p>
+                            <p className="text-gray-600">{userInfo?.email}</p>
                         </div>
                     </div>
 
