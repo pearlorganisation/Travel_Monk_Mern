@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
+    changePassword,
     getAuthUserDetails
   
 } from "./userActions";
@@ -9,7 +10,6 @@ const userState = {
     isError: false,
     isSuccess: false,
     userInfo: null,
- 
     message: "",
 };
 
@@ -33,6 +33,20 @@ export const usersSlice = createSlice({
                 state.isError = true;
                 state.isSuccess = false;
                 state.message = action.error;
+            })
+            .addCase(changePassword.pending,(state)=>{
+                state.isLoading = true;
+            })
+            .addCase(changePassword.rejected,(state,action)=>{
+                state.isLoading = false;
+                state.isSuccess = false;
+                state.isError = true;
+                state.message = action.error;
+            })
+            .addCase(changePassword.fulfilled,(state,action)=>{
+                state.isError = false;
+                state.isLoading = false;
+                state.isSuccess = true;
             })
 
            

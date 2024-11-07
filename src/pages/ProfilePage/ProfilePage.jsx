@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthUserDetails } from '../../features/user/userActions';
+import { Link } from 'react-router-dom';
 
 const ProfilePage = () => {
     const [showBookings, setShowBookings] = useState(false);
@@ -54,6 +55,10 @@ const ProfilePage = () => {
                         <div>
                             <p className="text-gray-700 font-bold">Email:</p>
                             <p className="text-gray-600">{userInfo?.email}</p>
+                            <Link to="/change-password">
+                             <button className='mt-2 bg-blue-400 rounded-md p-2 text-xl'>Change Password</button>
+                             </Link>
+                            
                         </div>
                     </div>
 

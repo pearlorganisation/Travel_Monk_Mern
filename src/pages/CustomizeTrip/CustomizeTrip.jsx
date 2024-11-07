@@ -3,7 +3,7 @@ import Bro from "../../assets/images/bro.png";
 import Nainital from "../../assets/images/nainital.png";
 import Lake from "../../assets/images/lake.png";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getSinglePackage } from "../../features/package/packageActions";
 
@@ -157,7 +157,7 @@ const tripData = [
 
 const CustomizeTrip = () => {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const { id } = useParams();
   const { singleDestination } = useSelector((state) => state.trip);
 
@@ -176,6 +176,7 @@ const CustomizeTrip = () => {
 
   console.log("Trip Package ka data", singlePackage);
 
+  // all the hotel data and activity data is stored in dayaData
   const [dayData, setDayData] = useState(
     singlePackage?.data?.itinerary?.map(() => ({
       selectedHotel: "Choose Hotel",
@@ -216,6 +217,12 @@ const CustomizeTrip = () => {
   // console.log(selectedHotel, "selected hotel");
   // console.log(selectedActivity, "selected activity");
   // console.log(selectedHotel, "selected hotel");
+
+  // handle to move to confirm-package
+
+  const handleBookNow=()=>{
+   navigate("/confirm-package",{state:{dayData: dayData , startingPrice: singlePackage?.data?.startingPrice }})
+  }
   return (
     <div className="bg-gray-200 relative">
       <form className="p-3">
@@ -585,7 +592,7 @@ const CustomizeTrip = () => {
             <h1>New Delhi toNainital to Jim Corbett to Mussorie to Delhi</h1>
           </div>
 
-          <button className="text-white rounded-sm bg-[#2DA5F3] px-6 py-2">
+          <button onClick={handleBookNow} className="text-white rounded-sm bg-[#2DA5F3] px-6 py-2">
             {" "}
             Continue
           </button>

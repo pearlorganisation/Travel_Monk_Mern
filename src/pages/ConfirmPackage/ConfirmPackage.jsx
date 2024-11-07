@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const ConfirmPackage = () => {
     const location = useLocation();
-    const { startingPrice, packagename } = location.state || {};
+    const { startingPrice, packagename, dayData } = location.state || {};
+
     const [numPeople, setNumPeople] = useState(0);
 
     // for calculating gst
@@ -30,7 +31,7 @@ const ConfirmPackage = () => {
                 <div className="border rounded-md p-4">
                     <div className="flex items-center justify-between">
                         <div>
-                            <span className="text-lg font-semibold">Price: ₹ {totalPrice}/- Person</span>
+                            <span className="text-lg font-semibold">Price: ₹ {startingPrice}/- Person</span>
                             <div className="text-sm text-gray-600">GST (5%): ₹ {gst.toFixed(2)}/- Person</div>
                             <div className="text-lg font-bold">Total: ₹ {finalPrice.toFixed(2)}/- {numPeople} Person</div>
                         </div>
@@ -39,7 +40,7 @@ const ConfirmPackage = () => {
                             <button
                                 className="px-4 py-2 text-gray-600 hover:bg-gray-200"
                                 onClick={() => setNumPeople(numPeople - 1)}
-                                disabled={numPeople <= 1} // Disable if numPeople is 1 or less
+                                disabled={numPeople <= 0} // Disable if numPeople is 1 or less
                             >
                                 -
                             </button>

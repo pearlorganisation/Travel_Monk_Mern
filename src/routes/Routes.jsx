@@ -25,6 +25,7 @@ import InternationalPackages from "../pages/InternationalPackages/InternationalP
 import ProfilePage from "../pages/ProfilePage/ProfilePage";
 import ConfirmPackage from "../pages/ConfirmPackage/ConfirmPackage";
 import ContactUs from "../pages/ContactUs/ContactUs";
+import ChangePassword from "../pages/ChangePassword/ChangePassword";
 
 const Routes = createBrowserRouter([
   {
@@ -120,6 +121,10 @@ const Routes = createBrowserRouter([
       {
         path:"contact",
         element: <ContactUs />
+      },
+      {
+        path:"change-password",
+        element: <ChangePassword />
       }
     ],
   },
