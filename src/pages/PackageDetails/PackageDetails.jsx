@@ -26,7 +26,7 @@ const PackageDetails = () => {
   const { data } = useSelector((state) => state.packages.singlePackage);
  
   const handleBookNow = () => {
-    navigate("/confirm-package", { state: { startingPrice: data?.startingPrice , packagename: data?.name } }); // passing data as state 
+    navigate("/confirm-package", { state: { startingPrice: data?.startingPrice , packagename: data?.name , id:id } }); // passing data as state 
   };
 
   /*-------------------------------------------------Handle for submitting the contact us form----------------------------------------------- */
