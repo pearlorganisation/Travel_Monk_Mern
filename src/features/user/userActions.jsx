@@ -26,7 +26,7 @@ export const getAuthUserDetails = createAsyncThunk(
 );
 
 
-/*--------------------------------------------------Action for canging the password----------------------------------------------------- */
+/*--------------------------------------------------Action for canging the password for logged in----------------------------------------------------- */
 
 export const changePassword = createAsyncThunk("user/updatePassword", async({ currentPassword, newPassword, confirmNewPassword },{ rejectWithValue })=>{
     try {
@@ -80,12 +80,11 @@ export const forgotPassword = createAsyncThunk(
                 const config ={
                     headers:{
                         "Content-Type":"application/json"
-                    },
-                    
+                    },    
                 }
                 const { data } = await axiosInstance.post(`/api/v1/users/reset-password/${token}`,
-            { password } ,
-            config
+                { password } ,
+                config
           ) 
           return data;     
             } catch (error) {
