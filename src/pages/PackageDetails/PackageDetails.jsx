@@ -10,7 +10,7 @@ import { resetContactForm } from "../../features/contact/contactSlice";
 import axios from "axios";
 
 const PackageDetails = () => {
-  const dispatch = useDispatch();
+ const dispatch = useDispatch();
  const navigate = useNavigate()
 
   const { id } = useParams();
@@ -24,8 +24,9 @@ const PackageDetails = () => {
   };
 
   const { data } = useSelector((state) => state.packages.singlePackage);
+ 
   const handleBookNow = () => {
-    navigate("/confirm-package", { state: { startingPrice: data?.startingPrice , packagename: data?.name } });
+    navigate("/confirm-package", { state: { startingPrice: data?.startingPrice , packagename: data?.name , id:id } }); // passing data as state 
   };
 
   /*-------------------------------------------------Handle for submitting the contact us form----------------------------------------------- */

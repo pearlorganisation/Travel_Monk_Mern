@@ -25,6 +25,8 @@ import InternationalPackages from "../pages/InternationalPackages/InternationalP
 import ProfilePage from "../pages/ProfilePage/ProfilePage";
 import ConfirmPackage from "../pages/ConfirmPackage/ConfirmPackage";
 import ContactUs from "../pages/ContactUs/ContactUs";
+import ChangePassword from "../pages/ChangePassword/ChangePassword";
+import ResetPassword from "../pages/ResetPassword/ResetPassword";
 
 const Routes = createBrowserRouter([
   {
@@ -98,6 +100,10 @@ const Routes = createBrowserRouter([
         element: <ForgotPassword />,
       },
       {
+       path: "/reset-password/:token",
+       element: <ResetPassword />
+      },
+      {
         path: "/about_us",
         element: <AboutUs />,
       },
@@ -121,6 +127,13 @@ const Routes = createBrowserRouter([
         path: "contact",
         element: <ContactUs />,
       },
+        path:"contact",
+        element: <ContactUs />
+      },
+      {
+        path:"change-password",
+        element: <ChangePassword />
+      }
     ],
   },
 ]);
