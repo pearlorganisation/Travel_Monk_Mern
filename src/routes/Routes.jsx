@@ -110,17 +110,17 @@ const Routes = createBrowserRouter([
         element: <InternationalPackages />,
       },
       {
-        path:"profile",
-        element: <ProfilePage />
+        path: "profile",
+        element: <ProfilePage />,
       },
       {
-        path:"confirm-package",
-        element: <ConfirmPackage />
+        path: "confirm-package",
+        element: <ConfirmPackage />,
       },
       {
-        path:"contact",
-        element: <ContactUs />
-      }
+        path: "contact",
+        element: <ContactUs />,
+      },
     ],
   },
 ]);
