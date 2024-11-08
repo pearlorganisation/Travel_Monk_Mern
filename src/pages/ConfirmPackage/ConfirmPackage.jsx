@@ -68,23 +68,25 @@
 // export default ConfirmPackage;
 
 import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
  
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+// razorpay key
 const RAZORPAY_KEY_ID = import.meta.env.VITE_APP_RAZORPAY_KEY_ID;
 
 const ConfirmPackage = () => {
     const location = useLocation();
+    const navigate = useNavigate();
     const { userInfo } = useSelector((state)=> state.user);
     
-    // console.log(userInfo?._id,"The Id of the user")
+  
 
-    // extracting the price and  packagename and id of the package.
-    const { startingPrice, packagename, dayData ,id } = location.state || {};
+    // extracting the price and  packagename and id of the package.  
+    const { startingPrice, packagename, dayData ,id } = location.state || {}; // id is the packageId
    
     const [numPeople, setNumPeople] = useState(1);
     const [loading, setLoading] = useState(false);
@@ -132,7 +134,11 @@ const ConfirmPackage = () => {
                             response
                         );
                         if(verifyPayment?.data?.success === true){
-                            toast.success("🦄Payment Successfull")}
+                            toast.success("🦄Payment Successfull");
+                            setTimeout(()=>{
+                                navigate("/")
+                            },400)                         
+                        }
                     } catch (error) {
                         console.log("ERR: ", error);
                         if (error.response && error.response.status === 404) {
