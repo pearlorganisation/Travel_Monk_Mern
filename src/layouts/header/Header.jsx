@@ -125,9 +125,9 @@ export default function Header() {
                   className="text-white text-sm 
                   hover:text-[#007E8F] border-b-transparent  duration-150"
                 >
-                  <a href={item.path} className="">
+                  <Link to={item.path} className="">
                     {item.title}
-                  </a>
+                  </Link>
                 </li>
               );
             })}

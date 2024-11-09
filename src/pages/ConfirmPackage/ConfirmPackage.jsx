@@ -128,7 +128,7 @@ const ConfirmPackage = () => {
                 handler: async function (response) {
                     // Step 3: Verify payment on the backend
                     try {
-                        // Step 3: Verify payment on the backend
+                         
                         const verifyPayment = await axios.post(
                             "http://localhost:5000/api/v1/bookings/verify-payment",
                             response
@@ -142,11 +142,9 @@ const ConfirmPackage = () => {
                     } catch (error) {
                         console.log("ERR: ", error);
                         if (error.response && error.response.status === 404) {
-                            // alert("Verification route not found. Please contact support.");
-                            toast.error('🦄Verification route not found. Please contact support' );
+                             toast.error('🦄Verification route not found. Please contact support' );
                         } else {
-                            // alert("Payment verification failed. Please try again.");
-                            toast.error('🦄Payment verification failed. Please try again' );
+                             toast.error('🦄Payment verification failed. Please try again' );
                         }
                         console.error("Error in payment verification:", error);
                     }

@@ -241,7 +241,7 @@ const PackageDetails = () => {
                   {...register("email")}
                   placeholder="e.g. John Smith"
                   required
-                  className="relative w-full h-12 px-4 pl-12 placeholder-transparent transition-all border-2 rounded outline-none focus-visible:outline-none peer border-gray-200 text-slate-500 autofill:bg-white invalid:border-pink-500 invalid:text-pink-500 focus:border-[#2DA5F3] focus:outline-none invalid:focus:border-pink-500 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400"
+                  class="relative w-full h-12 px-4 pl-12 placeholder-transparent transition-all border rounded outline-none focus-visible:outline-none peer border-slate-200 text-slate-500 autofill:bg-white invalid:border-pink-500 invalid:text-pink-500 focus:border-[#2DA5F3] focus:outline-none invalid:focus:border-pink-500 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400"
                 />
                 <label
                   for="id-l11"
@@ -292,7 +292,7 @@ const PackageDetails = () => {
                   htmlFor="message"
                   className="cursor-text absolute left-2 -top-2 z-[1] px-2 text-xs text-slate-400 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:left-4 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:left-2 peer-focus:text-xs peer-focus:text-[#2DA5F3]"
                 >
-                  Message
+                  
                 </label>
               </div>
               <div className="flex items-center justify-center mb-4">
