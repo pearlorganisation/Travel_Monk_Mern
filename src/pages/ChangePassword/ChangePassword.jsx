@@ -3,24 +3,30 @@ import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { changePassword } from '../../features/user/userActions';
 import { useNavigate } from 'react-router-dom';
+import { RxCross1 } from "react-icons/rx";
 
 const ChangePassword = () => {
     const dispatch = useDispatch();
-    
+    const navigate = useNavigate()
     const { register, handleSubmit, formState: { errors }, watch, reset } = useForm();
- 
+    const { isSuccess } = useSelector((state)=> state.user)
+
     const submitForm = (data) => {
         dispatch(changePassword(data));
-        reset();
-        
+        reset();  
+        navigate("/profile")  
     };
+ 
    
     const newPassword = watch("newPassword");
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
+             
             <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+                <div className='flex justify-end w-full'> <button onClick={()=>navigate('/profile')}><RxCross1 /></button> </div>
                 <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">Change Password</h2>
+                 
                 <form onSubmit={handleSubmit(submitForm)} className="space-y-4">
                     <div className="form-group">
                         <label className="block text-sm font-medium text-gray-700">Current Password</label>

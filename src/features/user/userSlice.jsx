@@ -46,11 +46,13 @@ export const usersSlice = createSlice({
                 state.isSuccess = false;
                 state.isError = true;
                 state.message = action.error;
+                toast("Failed To Change the Password")
             })
             .addCase(changePassword.fulfilled,(state,action)=>{
                 state.isError = false;
                 state.isLoading = false;
                 state.isSuccess = true;
+                toast("Successfully changed the password")
             })
             .addCase(forgotPassword.pending,(state)=>{
                 state.isLoading = true;

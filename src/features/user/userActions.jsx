@@ -39,9 +39,7 @@ export const changePassword = createAsyncThunk("user/updatePassword", async({ cu
             config
         )
         console.log(data," Updated password data");
-        if(data.success){
-            
-        }
+       return data;
     } catch (error) {
         if (error.response && error.response.data.message) {
             return rejectWithValue(error.response.data.message);
