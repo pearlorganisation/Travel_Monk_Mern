@@ -24,7 +24,7 @@ export const getAuthUserDetails = createAsyncThunk(
         }
     }
 );
-
+ 
 
 /*--------------------------------------------------Action for canging the password for logged in----------------------------------------------------- */
 

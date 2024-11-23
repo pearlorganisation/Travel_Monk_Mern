@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../features/auth/authSlice';
+import { userLogout } from '../../features/auth/authActions';
 const ProfileMenu = () => {
     const [showDropdown, setShowDropdown] = useState(false);
     const toggleDropdown = () => {
@@ -17,6 +18,7 @@ const ProfileMenu = () => {
     }
     const handleLogout = () => {
         dipsatch(logout());
+        dipsatch(userLogout());
         navigate("/login");
     }
     return (
