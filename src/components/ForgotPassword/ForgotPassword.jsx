@@ -1,13 +1,25 @@
 import React from 'react'
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { forgotPassword } from '../../features/user/userActions';
 export const ForgotPassword = () => {
     const dispatch = useDispatch();
-    const { register, handleSubmit } = useForm();
-   const submitForm = (data)=>{
-    dispatch(forgotPassword(data))
-   }
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { isSubmitting }, // Access isSubmitting from formState
+    } = useForm();
+
+    const submitForm = async (data) => {
+        try {
+            dispatch(forgotPassword(data)); // Dispatch the forgotPassword action
+            reset(); // Clear the form after successful submission
+        } catch (error) {
+            console.error('Error sending recovery email:', error);
+        }
+    };
+
     return (
         <div className='flex items-center justify-center min-h-screen bg-gray-100'>
             <div className='bg-white shadow-lg rounded-lg p-8 w-full max-w-md'>
@@ -25,11 +37,15 @@ export const ForgotPassword = () => {
                     </div>
                     <button
                         type='submit'
-                        className='bg-indigo-500 text-white py-2 rounded-lg hover:bg-indigo-600 transition'>
-                        Send Recovery Mail
+                        disabled={isSubmitting} // Disable the button while submitting
+                        className={`py-2 rounded-lg transition ${isSubmitting
+                                ? 'bg-gray-400 text-gray-200 cursor-not-allowed'
+                                : 'bg-indigo-500 text-white hover:bg-indigo-600'
+                            }`}>
+                        {isSubmitting ? 'Sending...' : 'Send Recovery Mail'}
                     </button>
                 </form>
             </div>
         </div>
-    )
+    );
 }

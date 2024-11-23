@@ -15,6 +15,11 @@ const userState = {
     isSuccess: false,
     userInfo: null,
     message: "",
+    changePasswordInfo: { // for changing the logged in user password
+        isLoading: false,
+        isError: false,
+        isSuccess: false,
+    },            
 };
 
 export const usersSlice = createSlice({
@@ -39,19 +44,21 @@ export const usersSlice = createSlice({
                 state.message = action.error;
             })
             .addCase(changePassword.pending,(state)=>{
-                state.isLoading = true;
+                state.changePasswordInfo = state.changePasswordInfo ?? {}
+                state.changePasswordInfo.isLoading = true;
             })
             .addCase(changePassword.rejected,(state,action)=>{
-                state.isLoading = false;
-                state.isSuccess = false;
-                state.isError = true;
-                state.message = action.error;
+                state.changePasswordInfo = state.changePasswordInfo ?? {}
+                state.changePasswordInfo.isLoading = false;
+                state.changePasswordInfo.isSuccess = false;
+                state.changePasswordInfo.isError = true;
                 toast("Failed To Change the Password")
             })
             .addCase(changePassword.fulfilled,(state,action)=>{
-                state.isError = false;
-                state.isLoading = false;
-                state.isSuccess = true;
+                state.changePasswordInfo = state.changePasswordInfo ?? {}
+                state.changePasswordInfo.isError = false;
+                state.changePasswordInfo.isLoading = false;
+                state.changePasswordInfo.isSuccess = true;
                 toast("Successfully changed the password")
             })
             .addCase(forgotPassword.pending,(state)=>{
