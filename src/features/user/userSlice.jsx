@@ -1,14 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+ 
+
+
 import {
     changePassword,
-    forgotPassword,
     getAuthUserDetails,
     resetPassword
   
 } from "./userActions";
-
+ 
 const userState = {
     isLoading: false,
     isError: false,
@@ -60,21 +62,6 @@ export const usersSlice = createSlice({
                 state.changePasswordInfo.isLoading = false;
                 state.changePasswordInfo.isSuccess = true;
                 toast("Successfully changed the password")
-            })
-            .addCase(forgotPassword.pending,(state)=>{
-                state.isLoading = true;
-            })
-            .addCase(forgotPassword.rejected,(state,action)=>{
-                state.isError = true;
-                state.isSuccess = false;
-                state.isLoading = false;
-                toast("Failed to send the email")
-            })
-            .addCase(forgotPassword.fulfilled,(state,action)=>{
-                state.isError= false;
-                state.isLoading = true;
-                state.isSuccess = true;
-                toast("A Password reset mail is sent to your email")
             })
            .addCase(resetPassword.pending,(state)=>{
             state.isLoading = true;

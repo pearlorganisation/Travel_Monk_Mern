@@ -14,8 +14,17 @@ const ResetPassword = () => {
   };
     console.log(token, "Token from the reset password")
   return (
-    <> <div className='flex items-center justify-center min-h-screen bg-gray-100'>
-      <div className='bg-white shadow-lg rounded-lg p-8 w-full max-w-md'>
+    <>
+      <div
+        className="h-full flex justify-center p-4 items-center"
+        style={{
+          backgroundImage: `url('/HeroImg.jpg')`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        <div className='flex items-center justify-center w-96 bg-opacity-70 backdrop-blur-md rounded-lg border border-gray-200 shadow-lg'>
+          <div className='bg-white bg-opacity-30 p-8 rounded-lg shadow-md w-full max-w-md backdrop-blur-sm border border-white border-opacity-40'>
         <h2 className='text-2xl font-bold mb-6 text-center text-gray-800'>Reset Password</h2>
         <form onSubmit={handleSubmit(submitForm)} className='flex flex-col space-y-4'>
           <div className='flex flex-col'>
@@ -23,7 +32,7 @@ const ResetPassword = () => {
             <input
               type='password'
               required
-              placeholder='Enter Email'
+              placeholder='Enter New Password'
               {...register("password")}
               className='border rounded-lg p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-500'
             />
@@ -35,7 +44,9 @@ const ResetPassword = () => {
           </button>
         </form>
       </div>
-    </div></>
+    </div>
+    </div>
+    </>
    
   )
 }

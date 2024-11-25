@@ -9,17 +9,14 @@ const ChangePassword = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate()
     const { register, handleSubmit, formState: { errors }, watch, reset } = useForm();
-    const { isSuccess } = useSelector((state)=> state.user.changePasswordInfo)
-
+ 
     const submitForm = (data) => {
         dispatch(changePassword(data));
         reset();  
          
     };
   
-    if(isSuccess){
-     navigate("/profile")
-    }
+    
    
     const newPassword = watch("newPassword");
 
@@ -35,7 +32,7 @@ const ChangePassword = () => {
             <div className="flex items-center justify-center w-96 bg-opacity-70 backdrop-blur-md rounded-lg border border-gray-200 shadow-lg">
                 <div className="bg-white bg-opacity-30 p-8 rounded-lg shadow-md w-full max-w-md backdrop-blur-sm border border-white border-opacity-40">
                     <div className="flex justify-end w-full">
-                        <button onClick={() => navigate('/profile')} className="text-gray-600 hover:text-gray-800">
+                        <button onClick={() => navigate('/profile')} className="text-red-700 hover:text-gray-800">
                             <RxCross1 />
                         </button>
                     </div>
