@@ -1,20 +1,27 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+ 
+
+
 import {
     changePassword,
-    forgotPassword,
     getAuthUserDetails,
     resetPassword
   
 } from "./userActions";
-
+ 
 const userState = {
     isLoading: false,
     isError: false,
     isSuccess: false,
     userInfo: null,
     message: "",
+    changePasswordInfo: { // for changing the logged in user password
+        isLoading: false,
+        isError: false,
+        isSuccess: false,
+    },            
 };
 
 export const usersSlice = createSlice({
@@ -39,33 +46,22 @@ export const usersSlice = createSlice({
                 state.message = action.error;
             })
             .addCase(changePassword.pending,(state)=>{
-                state.isLoading = true;
+                state.changePasswordInfo = state.changePasswordInfo ?? {}
+                state.changePasswordInfo.isLoading = true;
             })
             .addCase(changePassword.rejected,(state,action)=>{
-                state.isLoading = false;
-                state.isSuccess = false;
-                state.isError = true;
-                state.message = action.error;
+                state.changePasswordInfo = state.changePasswordInfo ?? {}
+                state.changePasswordInfo.isLoading = false;
+                state.changePasswordInfo.isSuccess = false;
+                state.changePasswordInfo.isError = true;
+                toast("Failed To Change the Password")
             })
             .addCase(changePassword.fulfilled,(state,action)=>{
-                state.isError = false;
-                state.isLoading = false;
-                state.isSuccess = true;
-            })
-            .addCase(forgotPassword.pending,(state)=>{
-                state.isLoading = true;
-            })
-            .addCase(forgotPassword.rejected,(state,action)=>{
-                state.isError = true;
-                state.isSuccess = false;
-                state.isLoading = false;
-                toast("Failed to send the email")
-            })
-            .addCase(forgotPassword.fulfilled,(state,action)=>{
-                state.isError= false;
-                state.isLoading = true;
-                state.isSuccess = true;
-                toast("A Password reset mail is sent to your email")
+                state.changePasswordInfo = state.changePasswordInfo ?? {}
+                state.changePasswordInfo.isError = false;
+                state.changePasswordInfo.isLoading = false;
+                state.changePasswordInfo.isSuccess = true;
+                toast("Successfully changed the password")
             })
            .addCase(resetPassword.pending,(state)=>{
             state.isLoading = true;
