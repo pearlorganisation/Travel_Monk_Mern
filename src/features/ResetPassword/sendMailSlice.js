@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { forgotPassword } from "./sendMailAction"
+import { forgotPassword, resetPassword } from "./sendMailAction"
 import { toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css";
 
@@ -8,6 +8,7 @@ const initialState = {
     isError: false,
     isSuccess: false,
     mailSent: false,
+    resetSuccess: false,
 }
 
 const resetMail = createSlice({
@@ -39,6 +40,21 @@ const resetMail = createSlice({
             toast("A mail with Revovery Link is sent to your mail.")
             //add a set timout to reset the state after 20 sec
            
+        })
+        .addCase(resetPassword.pending,(state)=>{
+            state.isLoading = true;
+        })
+        .addCase(resetPassword.rejected,(state)=>{
+            state.isLoading = false;
+            state.isError = true;
+            state.isSuccess = false;
+            state.resetSuccess = false;
+        })
+        .addCase(resetPassword.fulfilled,(state)=>{
+            state.isLoading = false;
+            state.isLoading = false;
+            state.isSuccess = true;
+            state.resetSuccess = true;
         })
     }
 })

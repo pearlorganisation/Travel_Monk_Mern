@@ -76,7 +76,7 @@ const authSlice = createSlice({
             draggable: true,
             progress: undefined,
             theme: "colored",
-            transition: Bounce,
+            
           })
         })
         .addCase(userLogout.rejected,(state,action)=>{
@@ -93,7 +93,7 @@ const authSlice = createSlice({
             draggable: true,
             progress: undefined,
             theme: "colored",
-            transition: Bounce,
+             
           })
         })
   },
