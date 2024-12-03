@@ -29,22 +29,6 @@ const ProfilePage = () => {
       status: "Upcoming",
     },
   ];
-  const bookingsData = [
-    {
-      id: 1,
-      destination: "Paris, France",
-      date: "2024-03-15",
-      hotel: "Hotel Eiffel Tower View",
-      status: "Completed",
-    },
-    {
-      id: 2,
-      destination: "Tokyo, Japan",
-      date: "2024-05-20",
-      hotel: "Imperial Hotel",
-      status: "Upcoming",
-    },
-  ];
 
   return (
     <div className="bg-gray-50 min-h-screen">

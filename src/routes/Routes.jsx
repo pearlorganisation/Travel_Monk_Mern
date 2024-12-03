@@ -100,8 +100,8 @@ const Routes = createBrowserRouter([
         element: <ForgotPassword />,
       },
       {
-       path: "/reset-password/:token",
-       element: <ResetPassword />
+        path: "/reset-password/:token",
+        element: <ResetPassword />,
       },
       {
         path: "/about_us",
@@ -127,13 +127,14 @@ const Routes = createBrowserRouter([
         path: "contact",
         element: <ContactUs />,
       },
-        path:"contact",
-        element: <ContactUs />
+      {
+        path: "contact",
+        element: <ContactUs />,
       },
       {
-        path:"change-password",
-        element: <ChangePassword />
-      }
+        path: "change-password",
+        element: <ChangePassword />,
+      },
     ],
   },
 ]);

@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getSinglePackage } from "../../features/package/packageActions";
-
+import Select from "react-select";
 import parse from "html-react-parser";
 import { getSingleDestination } from "../../features/trips/tripActions";
 
@@ -180,7 +180,7 @@ const CustomizeTrip = () => {
   const [dayData, setDayData] = useState(
     singlePackage?.data?.itinerary?.map(() => ({
       selectedHotel: "Choose Hotel",
-      selectedActivity: "Choose Activity",
+      selectedActivity: [],
     })) || [] // Initialize based on itinerary length
   );
 
@@ -190,7 +190,7 @@ const CustomizeTrip = () => {
       setDayData(
         singlePackage.data.itinerary.map(() => ({
           selectedHotel: "Choose Hotel",
-          selectedActivity: "Choose Activity",
+          selectedActivity: [],
         }))
       );
     }
@@ -204,7 +204,7 @@ const CustomizeTrip = () => {
 
   const handleActivityChange = (index, event) => {
     const newDayData = [...dayData];
-    newDayData[index].selectedActivity = event.target.value;
+    newDayData[index].selectedActivity.push(event.target.value);
     setDayData(newDayData);
   };
 
@@ -220,9 +220,14 @@ const CustomizeTrip = () => {
 
   // handle to move to confirm-package
 
-  const handleBookNow=()=>{
-   navigate("/confirm-package",{state:{dayData: dayData , startingPrice: singlePackage?.data?.startingPrice }})
-  }
+  const handleBookNow = () => {
+    navigate("/confirm-package", {
+      state: {
+        dayData: dayData,
+        startingPrice: singlePackage?.data?.startingPrice,
+      },
+    });
+  };
   return (
     <div className="bg-gray-200 relative">
       <form className="p-3">
@@ -294,10 +299,21 @@ const CustomizeTrip = () => {
         </button>
       </div>
 
-      <div className="grid grid-cols-2 mt-4">
-        <div className="overflow-hidden">
+      <div className="grid grid-cols-[80%_auto]  mt-4">
+        <div className="">
           {singlePackage?.data?.itinerary?.map((iti, index) => {
-            // console.log(iti, "iti");
+            console.log(iti, "iti");
+            const dataForSelect = iti?.activities.map((el) => {
+              return {
+                label: el?.name || "Something is wrong in name",
+                value: el?._id || "Something is wrong in id",
+              };
+            });
+
+            if (dataForSelect.length === 0)
+              return (
+                <h1 className="text-center">Arrived Back To Destinatiom !!</h1>
+              );
             // console.log(index,"my index");
             return (
               <div className="flex flex-row gap-2 items-center justify-start px-8 mt-2">
@@ -319,7 +335,7 @@ const CustomizeTrip = () => {
                 </div>
 
                 <div className="bg-white border border-gray-200 rounded-md p-2 flex flex-row">
-                  <div className="grid grid-cols-2  w-full">
+                  <div className="grid grid-cols-1 w-[100%]">
                     <div className="flex flex-row items-center gap-8">
                       <svg
                         width="24"
@@ -366,11 +382,12 @@ const CustomizeTrip = () => {
                       <div className="flex flex-col gap-3 ">
                         <h1> Select Activity </h1>
 
-                        <select
+                        {/* <select
                           value={dayData[index]?.selectedActivity}
                           onChange={(event) =>
                             handleActivityChange(index, event)
                           }
+
                           className="bg-blue-100 border-2 w-[15rem]
                           border-[#1f1f1f] rounded-md px-2 py-2 flex flex-row
                           gap-2"
@@ -384,7 +401,15 @@ const CustomizeTrip = () => {
                               {activity?.name}
                             </option>
                           ))}
-                        </select>
+                        </select> */}
+                        <Select
+                          placeholder="Choose Activity"
+                          isMulti
+                          // defaultInputValue={"Choose Activity"}
+                          // value={label:}
+                          onChange={(event) => console.log(event)}
+                          options={dataForSelect}
+                        />
                       </div>
                     </div>
                   </div>
@@ -592,7 +617,10 @@ const CustomizeTrip = () => {
             <h1>New Delhi toNainital to Jim Corbett to Mussorie to Delhi</h1>
           </div>
 
-          <button onClick={handleBookNow} className="text-white rounded-sm bg-[#2DA5F3] px-6 py-2">
+          <button
+            onClick={handleBookNow}
+            className="text-white rounded-sm bg-[#2DA5F3] px-6 py-2"
+          >
             {" "}
             Continue
           </button>
