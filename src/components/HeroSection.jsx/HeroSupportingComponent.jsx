@@ -5,7 +5,10 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { searchDestination } from "../../features/destination/destinationActions";
+import {
+  getAllDestinationNames,
+  searchDestination,
+} from "../../features/destination/destinationActions";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +18,28 @@ const HeroSupportingComponent = ({ data }, ref) => {
   // --------------------------------------------States--------------------------------------
 
   const dispatch = useDispatch();
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, watch } = useForm();
+
+  const { destinationNames } = useSelector((state) => state.destination);
+
+  useEffect(() => {
+    dispatch(getAllDestinationNames());
+  }, []);
+
+  const onlyNames = destinationNames?.destinations?.map((dest) => dest.name);
+
+  console.log("only names", onlyNames);
+
+  const [filteredOptions, setFilteredOptions] = useState(onlyNames);
+
+  const inputValue = watch("destination", "");
+
+  useEffect(() => {
+    const filtered = onlyNames?.filter((option) =>
+      option.toLowerCase().includes(inputValue.toLowerCase())
+    );
+    setFilteredOptions(filtered);
+  }, [inputValue]);
 
   const navigate = useNavigate();
   const result = useSelector((state) => state.destination);
@@ -298,6 +322,14 @@ const HeroSupportingComponent = ({ data }, ref) => {
                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder={el.placeholder}
                     />
+
+                    {el.registerData === "destination" && (
+                      <ul className="mt-16">
+                        {filteredOptions?.map((option, index) => (
+                          <li key={index}>{option}</li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
                 </div>
               );
