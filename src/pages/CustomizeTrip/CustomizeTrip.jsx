@@ -9,6 +9,7 @@ import { getSinglePackage } from "../../features/package/packageActions";
 import Select from "react-select";
 import parse from "html-react-parser";
 import { getSingleDestination } from "../../features/trips/tripActions";
+import { getDestinationVehicle } from "../../features/DestinationVehicle/destinationVehicleaction";
 
 const tripData = [
   {
@@ -159,13 +160,31 @@ const CustomizeTrip = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
+  
+  /** to get the current page url */
+  const fullURL = window.location.href;
+  console.log(`The full URL is: ${fullURL}`);
+
+
   const { singleDestination } = useSelector((state) => state.trip);
-
   const { singlePackage } = useSelector((state) => state.packages);
+ 
+  /*---------------- getting the vehicles available for that destination-----------------------------------------------*/
+  const [selectedVehicle, setSelectedVehicle] = useState("")
+  const [selectedVehiclePrice, setSelectedVehiclePrice] = useState("")
+  const { destinationVehicles } = useSelector((state) => state.destination_vehicle)
 
+  const handleSelect =(vehicleName,vehiclePrice)=>{
+       setSelectedVehicle(vehicleName);
+       setSelectedVehiclePrice(vehiclePrice)
+  }
   useEffect(() => {
     dispatch(getSinglePackage(id));
   }, []);
+  
+  useEffect(()=>{
+    dispatch(getDestinationVehicle(singleDestination.data._id))
+  },[])
 
   useEffect(() => {
     if (singlePackage?.data)
@@ -196,20 +215,38 @@ const CustomizeTrip = () => {
     }
   }, [singlePackage?.data]);
 
-  const handleHotelChange = (index, event) => {
+  const [hotelPrices, setTotalHotelPrice] = useState(0);
+  const handleHotelChange = (index, event, hotels) => {
     const newDayData = [...dayData];
     newDayData[index].selectedHotel = event.target.value;
     setDayData(newDayData);
+
+
+    const selectedHotelId = event.target.value;
+    const selectedHotel = hotels.find((hotel) => hotel._id === selectedHotelId);
+    const startingPrice = selectedHotel ? selectedHotel.startingPrice : 0;
+
+    // Add the selected hotel's price to the total
+    setTotalHotelPrice((prevTotal) => prevTotal + startingPrice);
   };
 
+/** the final price will */
+
+let Total_Estimated_Price = hotelPrices + selectedVehiclePrice;
+
+
+  console.log('-----------hotelprice new calculated', hotelPrices)
+console.log('--------------------selected vehicle price',selectedVehiclePrice)
   const handleActivityChange = (index, event) => {
     const newDayData = [...dayData];
     newDayData[index].selectedActivity.push(event.target.value);
     setDayData(newDayData);
+  
   };
 
   const [selectedActivity, setSelectedActivity] = useState("Choose Activity");
   const [selectedHotel, setSelectedHotel] = useState("Choose Hotel");
+
 
   console.log(dayData, "day data");
 
@@ -366,12 +403,12 @@ const CustomizeTrip = () => {
                         <h1> Select Hotel </h1>
                         <select
                           value={dayData[index]?.selectedHotel}
-                          onChange={(event) => handleHotelChange(index, event)}
+                          onChange={(event) => handleHotelChange(index, event, singleDestination?.data?.hotels)}
                           className="bg-blue-100 border-2 border-[#1f1f1f] rounded-md px-2 py-2 flex flex-row gap-2"
                         >
                           <option key="choose"> Choose Hotel</option>
                           {singleDestination?.data?.hotels.map((hotel) => (
-                            <option key={hotel.id} value={hotel.id}>
+                            <option key={hotel._id} value={hotel._id}>
                               {" "}
                               {hotel.name}
                             </option>
@@ -418,9 +455,37 @@ const CustomizeTrip = () => {
             );
           })}
         </div>
+        {/** select vehicle section */}
+        <div className="p-4">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {destinationVehicles?.map((vehicle) => (
+              <div
+                key={vehicle.id}
+                onClick={() => handleSelect(vehicle.vehicleName, vehicle.price)}
+                className="p-4 border rounded-lg shadow-md cursor-pointer hover:bg-gray-100"
+              >
+                <p className="text-lg font-semibold">Name: {vehicle.vehicleName}</p>
+                <p className="text-gray-600">Price: {vehicle.price}</p>
+              </div>
+            ))}
+          </div>
+          {selectedVehicle && (
+            <div className="mt-6 p-4 bg-blue-50 rounded-lg shadow-md">
+              <h3 className="text-xl font-semibold text-blue-700">Selected Vehicle</h3>
+              <p className="text-lg">Name: {selectedVehicle}</p>
+              <p className="text-lg">Price: {selectedVehiclePrice}</p>
+            </div>
+          )}
+        </div>
         <div> Google map</div>
-      </div>
 
+      </div>
+      {/** section containing the total price of all the hotels in the destination */}
+      <div className="pl-20 bg-emerald-300">
+        <div className="m-4">   
+          <h1 className="">Estimated Total cost of trip can be around this figure for proceeding ahead fill this contact form and one of our executive will reach out to you.{Total_Estimated_Price} </h1> 
+        </div>
+      </div>
       <div className="px-24 mt-6 w-full ">
         <h1 className="font-bold text-2xl"> You might want to add </h1>
 

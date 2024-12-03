@@ -2,21 +2,28 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../features/auth/authSlice';
+import { userLogout } from '../../features/auth/authActions';
+import Cookies from 'js-cookie';
+
 const ProfileMenu = () => {
     const [showDropdown, setShowDropdown] = useState(false);
     const toggleDropdown = () => {
         setShowDropdown(!showDropdown)
     }
+   
+    // to remove cookies from the browser
+
+
 
     const navigate = useNavigate();
     const dipsatch = useDispatch();
-
 
     const handleProfile = () => {
         navigate("/profile")
     }
     const handleLogout = () => {
         dipsatch(logout());
+        dipsatch(userLogout());
         navigate("/login");
     }
     return (

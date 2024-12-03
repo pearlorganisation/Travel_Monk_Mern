@@ -24,7 +24,7 @@ export const getAuthUserDetails = createAsyncThunk(
         }
     }
 );
-
+ 
 
 /*--------------------------------------------------Action for canging the password for logged in----------------------------------------------------- */
 
@@ -39,9 +39,7 @@ export const changePassword = createAsyncThunk("user/updatePassword", async({ cu
             config
         )
         console.log(data," Updated password data");
-        if(data.success){
-            
-        }
+       return data;
     } catch (error) {
         if (error.response && error.response.data.message) {
             return rejectWithValue(error.response.data.message);
@@ -50,27 +48,7 @@ export const changePassword = createAsyncThunk("user/updatePassword", async({ cu
         }
     }
 })
-
-/* --------------------------------handle for changing password when forgotten------------------------------------------------------ */
-
-export const forgotPassword = createAsyncThunk(
-    "user/forgotPassword/sendMail", async({ email }, { rejectWithValue })=>{
-        try {
-            const config = {
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            }
-        const { data } = await axiosInstance.post(`/api/v1/users/forgot-password`,{ email })
-        return data;
-        } catch (error) {
-            if (error.response && error.response.data.message) {
-                return rejectWithValue(error.response.data.message);
-            } else {
-                return rejectWithValue(error.message);
-            }
-        }
-    });
+ 
 
     /**---------------------------------------resetting the password------------------------------------------------------- */
 

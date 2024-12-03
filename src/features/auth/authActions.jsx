@@ -64,3 +64,24 @@ export const userLogin = createAsyncThunk(
     }
   }
 );
+
+
+/**-----------------------------------------Action for sending logout request to backedn-----------------------------------------*/
+export const userLogout = createAsyncThunk(
+  "user/logout", async (_, { rejectWithValue }) => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }
+      const { data } = await axiosInstance.post(`/api/v1/auth/logout`,config)
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  }
+)
