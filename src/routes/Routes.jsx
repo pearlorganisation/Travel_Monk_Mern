@@ -27,6 +27,7 @@ import ConfirmPackage from "../pages/ConfirmPackage/ConfirmPackage";
 import ContactUs from "../pages/ContactUs/ContactUs";
 import ChangePassword from "../pages/ChangePassword/ChangePassword";
 import ResetPassword from "../pages/ResetPassword/ResetPassword";
+import PrebuiltEnquiryForm from "../pages/PrebuiltEnquiryForm/PrebuiltEnquiryForm";
 
 const Routes = createBrowserRouter([
   {
@@ -135,6 +136,10 @@ const Routes = createBrowserRouter([
         path: "change-password",
         element: <ChangePassword />,
       },
+      {
+        path:"prebuilt-package-enquiry",
+        element:<PrebuiltEnquiryForm />
+      }
     ],
   },
 ]);
