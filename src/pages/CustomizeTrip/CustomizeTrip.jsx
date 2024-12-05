@@ -65,7 +65,7 @@ const CustomizeTrip = () => {
     setDayData((prevDayData) =>
       prevDayData.map((day, index) =>
         index === dayIndex
-          ? { ...day, selectedActivity: selectedOptions || [] }
+          ? { ...day, selectedActivity: selectedOptions || [] } 
           : day
       )
     );
@@ -113,12 +113,7 @@ const handleEnquiry = ()=>{
 
   console.log('-----------hotelprice new calculated', hotelPrices)
 console.log('--------------------selected vehicle price',selectedVehiclePrice)
-  // const handleActivityChange = (index, event) => {
-  //   const newDayData = [...dayData];
-  //   newDayData[index].selectedActivity.push(event.target.value);
-  //   setDayData(newDayData);
-  
-  // };
+   
 
   const [selectedActivity, setSelectedActivity] = useState("Choose Activity");
   const [selectedHotel, setSelectedHotel] = useState("Choose Hotel");
@@ -268,11 +263,8 @@ console.log('--------------------selected vehicle price',selectedVehiclePrice)
                         <Select
                           placeholder="Choose Activity"
                           isMulti
-                          // defaultInputValue={"Choose Activity"}
-                          // value={label:}
-                          // value={day.selectedActivity} // Display the selected options
-
-                          onChange={(event) => console.log(event)}
+                          value={dayData[index]?.selectedActivity} // Bind the value to the specific day's selectedActivity
+                          onChange={(selectedOptions) => handleActivityChange(selectedOptions, index)}
                           options={dataForSelect}
                         />
                       </div>
@@ -349,7 +341,7 @@ console.log('--------------------selected vehicle price',selectedVehiclePrice)
       <div className="px-24 mt-6 w-full pb-10">
         <h1 className="font-bold text-2xl">Your Trip </h1>
 
-        {dayData.map((iti, index) => (
+        {/* {dayData.map((iti, index) => (
           <div className="flex flex-row gap-2 justify-start">
             <h3 className="text-[#007E8F]"> Day {index + 1} </h3>
 
@@ -478,25 +470,10 @@ console.log('--------------------selected vehicle price',selectedVehiclePrice)
                 </div>
               )}
 
-              {/*  
               
-                <div className="flex flex-row gap-2 mb-4">
-                {iti.activities.map((activity) => (
-                  <div className="flex flex-row bg-white">
-                    <img src={Lake} />
-
-                    <div className="flex flex-col px-6 py-3">
-                      <h1> {activity.name}</h1>
-                      <h3>Spend Approx 1 hour</h3>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              */}
             </div>
           </div>
-        ))}
+        ))} */}
       </div>
 
       <div className="fixed bottom-0 bg-white w-full">
