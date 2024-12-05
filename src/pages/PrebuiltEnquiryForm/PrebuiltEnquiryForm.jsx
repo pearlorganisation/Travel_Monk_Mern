@@ -10,7 +10,7 @@ const PrebuiltEnquiryForm = () => {
     const { userInfo } = useSelector ((state)=>state.user) // getting the userInfo 
 
     /** extarcting the data  */
-    const { Estimate_Price, packageId, itinerary, vehicleId } = location.state || {}
+    const { Estimate_Price, packageId, itinerary, vehicleId, enquiryLocation } = location.state || {}
     console.log('-----------------estimated price',Estimate_Price, packageId, itinerary, vehicleId)
    
     const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm({

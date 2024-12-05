@@ -48,7 +48,6 @@ const CustomizeTrip = () => {
       dispatch(getSingleDestination(singlePackage?.data?.packageDestination));
   }, [singlePackage]);
 
-  // console.log("Trip days and details ka data", singleDestination);
 
   console.log("Trip Package ka data", singlePackage);
 
@@ -107,7 +106,7 @@ let Total_Estimated_Price = totalHotelPrices + selectedVehiclePrice;
 
 /**--------------------Handle Enquiry to send to the page for submitting the form-------------------------------------------------*/
 const handleEnquiry = ()=>{
-  navigate("/prebuilt-package-enquiry",{state:{Estimate_Price:Total_Estimated_Price, packageId: id, itinerary:dayData, vehicleId: selectedVehicleId}}) // to send all the required prebuilt package data
+  navigate("/prebuilt-package-enquiry",{state:{Estimate_Price:Total_Estimated_Price, packageId: id, itinerary:dayData, vehicleId: selectedVehicleId, enquiryLocation:fullURL}}) // to send all the required prebuilt package data
 } 
 
 
