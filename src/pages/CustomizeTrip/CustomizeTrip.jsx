@@ -37,6 +37,11 @@ const CustomizeTrip = () => {
   }
   useEffect(() => {
     dispatch(getSinglePackage(id));
+  }, []);
+
+  useEffect(() => {
+    dispatch(getDestinationVehicle(singleDestination.data._id));
+  }, []);
   }, [])
   
   useEffect(()=>{
@@ -59,7 +64,7 @@ const CustomizeTrip = () => {
       selectedLocation:""
     })) || [] // Initialize based on itinerary length
   );
-/**--------------------Selected Activity-----------------------*/
+  /**--------------------Selected Activity-----------------------*/
   const handleActivityChange = (selectedOptions, dayIndex) => {
     // Update the specific day's selectedActivity field
     setDayData((prevDayData) =>prevDayData.map((day, index) => index === dayIndex
@@ -104,7 +109,9 @@ const CustomizeTrip = () => {
     updatedHotelPrices[index] = startingPrice;
 
     setHotelPrices(updatedHotelPrices);
-    setTotalHotelPrice(updatedHotelPrices.reduce((total, price) => total + price, 0));
+    setTotalHotelPrice(
+      updatedHotelPrices.reduce((total, price) => total + price, 0)
+    );
   };
 
 /**---------------------the final estimated price will be----------------------------*/
@@ -268,7 +275,9 @@ console.log('--------------------selected vehicle price',selectedVehiclePrice)
                           placeholder="Choose Activity"
                           isMulti
                           value={dayData[index]?.selectedActivity} // Bind the value to the specific day's selectedActivity
-                          onChange={(selectedOptions) => handleActivityChange(selectedOptions, index)}
+                          onChange={(selectedOptions) =>
+                            handleActivityChange(selectedOptions, index)
+                          }
                           options={dataForSelect}
                         />
                       </div>

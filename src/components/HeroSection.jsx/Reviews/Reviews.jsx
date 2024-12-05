@@ -1,5 +1,5 @@
 import React from "react";
-
+import { IoLogoOctocat } from "react-icons/io5";
 const Reviews = () => {
   return (
     <div className="bg-white    ">
@@ -38,7 +38,9 @@ const Reviews = () => {
         </div>
 
         <div className="flex justify-center items-center">
-          <img src="tripadvisor.png" alt="google" />
+          {/* <img src="tripadvisor.png" alt="google" /> */}
+   
+<IoLogoOctocat  size={50} className="text-yellow-600 "/>
           <div className="flex flex-col gap-[0.1rem]">
             <p>
               <svg

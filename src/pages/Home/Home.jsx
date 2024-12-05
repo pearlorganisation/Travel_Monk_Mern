@@ -12,18 +12,18 @@ import Reviews from "../../components/HeroSection.jsx/Reviews/Reviews";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllDestinations } from "../../features/trips/tripActions";
 import { getAuthUserDetails } from "../../features/user/userActions";
-// import { getAllDestinationNames } from "../../features/destination/destinationActions";
+import { getPopularDestination } from "../../features/destination/destinationActions";
 
 const Home = () => {
   const dispatch = useDispatch();
 
   const { destinations } = useSelector((state) => state.trip);
-  // const { destinationNames } = useSelector((state) => state.destination);
+  const { popular } = useSelector((state) => state.destination);
 
   const userState = useSelector((state) => state.user);
   console.log(userState, "user state");
 
-  // console.log(destinationNames?.destinations, "destination names");
+  console.log(popular, "destination names");
 
   useEffect(() => {
     dispatch(getAuthUserDetails());
@@ -32,9 +32,9 @@ const Home = () => {
     dispatch(getAllDestinations());
   }, []);
 
-  // useEffect(() => {
-  //   dispatch(getAllDestinationNames());
-  // }, []);
+  useEffect(() => {
+    dispatch(getPopularDestination());
+  }, []);
 
   const indianData = destinations?.data?.filter(
     (data) => data.type == "Indian"
@@ -61,8 +61,8 @@ const Home = () => {
       <Upcoming />
       <Distinguish />
       <GetinTouch />
-      <HotelDetails />
-      <FindHotel />
+      {/* <HotelDetails />
+      <FindHotel /> */}
     </div>
   );
 };

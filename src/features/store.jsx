@@ -2,23 +2,23 @@ import authReducer from "../features/auth/authSlice";
 import userReducer from "../features/user/userSlice";
 import tripReducer from "../features/trips/tripsSlice";
 import packageReducer from "./package/packageSlice";
-import cruizeReducer from "./cruize/cruizeSlice";
 import hotelsReducer from "./hotel/hotelSlice";
 import destinationsReducer from "./destination/destinationSlice";
 import partnersReducer from "./partners/partnersSlice";
-import contactReducer from "./contact/contactSlice"
-import buscruizeReducer from "./BusCruizeContactAction/BusCruizeSlice"
-import resetReducer from "./ResetPassword/sendMailSlice"
-import destinationVehicleReducer from "./DestinationVehicle/destinationVehicleSlice"
-import { combineReducers } from '@reduxjs/toolkit';
-import { configureStore } from '@reduxjs/toolkit';
-import { persistStore, persistReducer } from 'redux-persist';
- 
-import storage from 'redux-persist/lib/storage'
+import contactReducer from "./contact/contactSlice";
+import buscruizeReducer from "./BusCruizeContactAction/BusCruizeSlice";
+import cruiseReducer from "./cruize/cruizeSlice";
+import resetReducer from "./ResetPassword/sendMailSlice";
+import destinationVehicleReducer from "./DestinationVehicle/destinationVehicleSlice";
+import { combineReducers } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
+import { persistStore, persistReducer } from "redux-persist";
+
+import storage from "redux-persist/lib/storage";
 // Persist configuration
 // Persist configuration
 const persistConfig = {
-  key: 'Travel_Monk',
+  key: "Travel_Monk",
   storage,
 };
 
@@ -28,14 +28,14 @@ const combinedReducer = combineReducers({
   user: userReducer,
   trip: tripReducer,
   packages: packageReducer,
-  cruises: cruizeReducer,
+  cruises: cruiseReducer,
   hotels: hotelsReducer,
   destination: destinationsReducer,
   partners: partnersReducer,
   contact: contactReducer,
   buscruize: buscruizeReducer,
   password: resetReducer,
-  destination_vehicle: destinationVehicleReducer
+  destination_vehicle: destinationVehicleReducer,
 });
 
 // Apply persistReducer to the combined reducer

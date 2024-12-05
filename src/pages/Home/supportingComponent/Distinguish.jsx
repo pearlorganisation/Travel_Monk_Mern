@@ -224,7 +224,7 @@ const Distinguish = () => {
                 </SwiperSlide>
               </Swiper>
             </div>
-            <div className="text-right mt-4">
+            <div className="text-right mt-4 py-10">
               <a href="#" className="text-blue-500 hover:underline">
                 Explore All →
               </a>
