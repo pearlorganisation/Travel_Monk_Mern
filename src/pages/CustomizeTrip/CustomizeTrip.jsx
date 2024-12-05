@@ -10,6 +10,7 @@ import Select from "react-select";
 import parse from "html-react-parser";
 import { getSingleDestination } from "../../features/trips/tripActions";
 import { getDestinationVehicle } from "../../features/DestinationVehicle/destinationVehicleaction";
+import { ReactSVG } from "react-svg";
 
 const CustomizeTrip = () => {
   const dispatch = useDispatch();
@@ -20,10 +21,9 @@ const CustomizeTrip = () => {
   const fullURL = window.location.href;
   console.log(`The full URL is: ${fullURL}`);
 
-
   const { singleDestination } = useSelector((state) => state.trip);
   const { singlePackage } = useSelector((state) => state.packages);
- 
+
   /*---------------- getting the vehicles available for that destination-----------------------------------------------*/
   const [selectedVehicle, setSelectedVehicle] = useState("")
   const [selectedVehiclePrice, setSelectedVehiclePrice] = useState("");
@@ -89,11 +89,15 @@ const CustomizeTrip = () => {
     const newDayData = [...dayData];
     newDayData[index].selectedLocation = currentLocation;
     newDayData[index].selectedHotel = event.target.value;
+    // newDayData[index].selectedHotel.name = name;
     setDayData(newDayData);
 
     /** Calculating price based on the selected hotel price */
     const selectedHotelId = event.target.value;
     const selectedHotel = hotels.find((hotel) => hotel._id === selectedHotelId);
+    console.log("--------selected hotel", selectedHotel);
+    // const selectedHotelName = hot
+
     const startingPrice = selectedHotel ? selectedHotel.startingPrice : 0;
 
     const updatedHotelPrices = [...hotelPrices];
@@ -118,7 +122,6 @@ console.log('--------------------selected vehicle price',selectedVehiclePrice)
 
   const [selectedActivity, setSelectedActivity] = useState("Choose Activity");
   const [selectedHotel, setSelectedHotel] = useState("Choose Hotel");
-
 
   console.log(dayData, "day data");
   const handleBookNow = () => {
@@ -292,14 +295,15 @@ console.log('--------------------selected vehicle price',selectedVehiclePrice)
           </div>
           {selectedVehicle && (
             <div className="mt-6 p-4 bg-blue-50 rounded-lg shadow-md">
-              <h3 className="text-xl font-semibold text-blue-700">Selected Vehicle</h3>
+              <h3 className="text-xl font-semibold text-blue-700">
+                Selected Vehicle
+              </h3>
               <p className="text-lg">Name: {selectedVehicle}</p>
               <p className="text-lg">Price: {selectedVehiclePrice}</p>
             </div>
           )}
         </div>
         <div> Google map</div>
-
       </div>
       {/** section containing the total price of all the hotels in the destination */}
       <div className="pl-20 bg-emerald-300">
@@ -440,11 +444,14 @@ console.log('--------------------selected vehicle price',selectedVehiclePrice)
                             </div>
                           ))}
 
-                        <button className="px-4 py-2 bg-blue-400 text-white rounded-xl">
-                          {singleDestination?.data?.hotels[0]?.amenities
-                            .length - 3}
-                          More
-                        </button>
+                        {singleDestination?.data?.hotels[0]?.amenities.length >
+                          3 && (
+                          <button className="px-4 py-2 bg-blue-400 text-white rounded-xl">
+                            {singleDestination?.data?.hotels[0]?.amenities
+                              .length - 3}
+                            More
+                          </button>
+                        )}
                       </div>
                     </div>
 
