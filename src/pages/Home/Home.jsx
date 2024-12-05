@@ -23,7 +23,7 @@ const Home = () => {
   const userState = useSelector((state) => state.user);
   console.log(userState, "user state");
 
-  console.log(popular, "destination names");
+  console.log(popular?.data, "destination names");
 
   useEffect(() => {
     dispatch(getAuthUserDetails());
@@ -36,10 +36,8 @@ const Home = () => {
     dispatch(getPopularDestination());
   }, []);
 
-  const indianData = destinations?.data?.filter(
-    (data) => data.type == "Indian"
-  );
-  const internationalData = destinations?.data?.filter(
+  const indianData = popular?.data?.filter((data) => data.type == "Indian");
+  const internationalData = popular?.data?.filter(
     (data) => data.type == "International"
   );
 
@@ -58,9 +56,9 @@ const Home = () => {
       <HowitWorks />
       <PopularDestination data={indianData ? indianData : []} />
       <PopularItineraries data={internationalData ? internationalData : []} />
-      <Upcoming />
+      {/* <Upcoming />
       <Distinguish />
-      <GetinTouch />
+      <GetinTouch /> */}
       {/* <HotelDetails />
       <FindHotel /> */}
     </div>

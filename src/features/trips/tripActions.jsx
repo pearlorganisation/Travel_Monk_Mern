@@ -10,10 +10,7 @@ export const getAllDestinations = createAsyncThunk(
           "Content-Type": "application/json",
         },
       };
-      const { data } = await axiosInstance.get(
-        "/api/v1/trips/destination",
-        config
-      );
+      const { data } = await axiosInstance.get("/api/v1/destinations", config);
 
       if (data) {
         console.log("Data", data);
@@ -35,7 +32,7 @@ export const getSingleDestination = createAsyncThunk(
         },
       };
       const { data } = await axiosInstance.get(
-        `/api/v1/trips/destination/${id}`,
+        `/api/v1/destinations/${id}`,
         config
       );
 
@@ -59,7 +56,7 @@ export const getAllActivitiesByDestination = createAsyncThunk(
         },
       };
       const response = await axiosInstance.get(
-        `/api/v1/destination/${id}/activities`,
+        `/api/v1/destinations/${id}/activities`,
         config
       );
 

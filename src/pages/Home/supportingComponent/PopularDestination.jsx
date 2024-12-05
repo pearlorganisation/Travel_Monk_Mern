@@ -14,69 +14,35 @@ const PopularDestination = ({ data }) => {
         </h2>
 
         {/* Featured Destination Section */}
-        <div className="flex flex-row gap-4 mb-6">
-          <div
-            className="bg-cover bg-center w-full sm:w-[400px] h-[300px] rounded-lg shadow-lg"
-            style={{
-              backgroundImage: "url('field1.jpg')",
-            }}
-          >
-            <div className="bg-black bg-opacity-50 h-full w-full flex items-center rounded-lg">
-              <div className="text-left text-white p-8">
-                <h3 className="text-3xl font-bold mb-2">Explore India</h3>
-                <p className="mb-4">
-                  A Journey Through Time, Colour And Culture
-                </p>
-                <button className="bg-white text-black py-2 px-4 rounded">
-                  Explore
-                </button>
+        {/* <div className="flex flex-row gap-4 mb-6">
+          {data.map((destination) => (
+            <div
+              className="bg-cover bg-center w-full sm:w-[400px] h-[300px] rounded-lg shadow-lg"
+              style={{
+                backgroundImage: `url(${destination?.banner?.secure_url})`,
+              }}
+            >
+              <div className="bg-black bg-opacity-50 h-full w-full flex items-center rounded-lg">
+                <div className="text-left text-white p-8">
+                  <h3 className="text-3xl font-bold mb-2">
+                    Explore {destination?.name}
+                  </h3>
+                  <p className="mb-4">
+                    A Journey Through Time, Colour And Culture
+                  </p>
+                  <button className="bg-white text-black py-2 px-4 rounded">
+                    Explore
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-          <div
-            className="bg-cover bg-center w-full sm:w-[400px] h-[300px] rounded-lg shadow-lg"
-            style={{
-              backgroundImage:
-                "url('https://images.herzindagi.info/image/2019/May/best-hiking-trails-main.jpg')",
-            }}
-          >
-            <div className="bg-black bg-opacity-50 h-full w-full flex items-center rounded-lg">
-              <div className="text-left text-white p-8">
-                <h3 className="text-3xl font-bold mb-2">Explore India</h3>
-                <p className="mb-4">
-                  A Journey Through Time, Colour And Culture
-                </p>
-                <button className="bg-white text-black py-2 px-4 rounded">
-                  Explore
-                </button>
-              </div>
-            </div>
-          </div>
-          <div
-            className="bg-cover bg-center w-full sm:w-[400px] h-[300px] rounded-lg shadow-lg"
-            style={{
-              backgroundImage:
-                "url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQloXHmJ07oEI69sLbDLHN8ncifpYi82UXbWg&s')",
-            }}
-          >
-            <div className="bg-black bg-opacity-50 h-full w-full flex items-center rounded-lg">
-              <div className="text-left text-white p-8">
-                <h3 className="text-3xl font-bold mb-2">Explore India</h3>
-                <p className="mb-4">
-                  A Journey Through Time, Colour And Culture
-                </p>
-                <button className="bg-white text-black py-2 px-4 rounded">
-                  Explore
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+          ))}
+        </div> */}
 
         {/* Swiper Section */}
         <Swiper
           slidesPerView={1}
-          spaceBetween={10}
+          spaceBetween={20}
           pagination={{
             clickable: true,
           }}
@@ -91,7 +57,7 @@ const PopularDestination = ({ data }) => {
             },
             1024: {
               slidesPerView: 4,
-              spaceBetween: 40,
+              spaceBetween: 10,
             },
           }}
           modules={[Pagination]}
@@ -101,7 +67,7 @@ const PopularDestination = ({ data }) => {
             data.map((destination) => (
               <SwiperSlide key={destination?._id}>
                 <Link to={`/destination/${destination?._id}`}>
-                  <div className="max-w-xs mx-auto relative rounded-lg overflow-hidden shadow-lg">
+                  {/* <div className="max-w-xs mx-auto relative rounded-lg overflow-hidden shadow-lg">
                     <img
                       className="w-full h-56 object-cover"
                       src={destination?.image?.secure_url}
@@ -114,6 +80,38 @@ const PopularDestination = ({ data }) => {
                       <p className="text-white">
                         Starting Price Rs. {destination?.startingPrice}/-
                       </p>
+                    </div>
+                  </div> */}
+
+                  <div className="lg:w-[260px] mx-6 rounded-md">
+                    <div
+                      className="bg-cover bg-center max-w-full sm:w-[400px] h-[300px] rounded-lg shadow-lg bg-opacity-50"
+                      style={{
+                        backgroundImage: `linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${destination?.image?.secure_url})`,
+                      }}
+                    >
+                      <div className=" bg-opacity-50 h-full max-w-full flex items-center rounded-lg">
+                        <div className="text-left text-white p-8">
+                          <h3 className="text-3xl font-bold mb-2 text-white fixed top-4">
+                            {destination?.name}
+                          </h3>
+                          {/* <p className="mb-4">
+                            A Journey Through Time, Colour And Culture
+                          </p> */}
+
+                          <button className="bg-[#007E8F] text-white py-2 px-4 rounded justify-end fixed bottom-20">
+                            Explore
+                          </button>
+
+                          <h1 className="text-base font-semibold text-gray-200 mb-8 fixed bottom-1">
+                            Starting Price
+                          </h1>
+
+                          <h1 className="text-xl font-bold text-white fixed bottom-[10px]">
+                            ₹ {destination?.startingPrice}
+                          </h1>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </Link>
