@@ -10,15 +10,12 @@ import Select from "react-select";
 import parse from "html-react-parser";
 import { getSingleDestination } from "../../features/trips/tripActions";
 import { getDestinationVehicle } from "../../features/DestinationVehicle/destinationVehicleaction";
-import { ReactSVG } from "react-svg";
 
 const CustomizeTrip = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { id } = useParams();
-
   const { id } = useParams(); // id of the package
-  
+
   /** to get the current page url */
   const fullURL = window.location.href;
   console.log(`The full URL is: ${fullURL}`);
@@ -29,19 +26,16 @@ const CustomizeTrip = () => {
   /*---------------- getting the vehicles available for that destination-----------------------------------------------*/
   const [selectedVehicle, setSelectedVehicle] = useState("");
   const [selectedVehiclePrice, setSelectedVehiclePrice] = useState("");
+  const [selectedVehicleId, setSelectedVehicleId] = useState(null); // for vehicle id
   const { destinationVehicles } = useSelector(
     (state) => state.destination_vehicle
   );
 
-  const handleSelect = (vehicleName, vehiclePrice) => {
+  const handleSelect = (vehicleName, vehiclePrice, vehicleId) => {
     setSelectedVehicle(vehicleName);
     setSelectedVehiclePrice(vehiclePrice);
+    setSelectedVehicleId(vehicleId); // storing selected vehicle id
   };
-  const handleSelect =(vehicleName,vehiclePrice, vehicleId)=>{
-       setSelectedVehicle(vehicleName);
-       setSelectedVehiclePrice(vehiclePrice)
-       setSelectedVehicleId(vehicleId) // storing selected vehicle id
-  }
   useEffect(() => {
     dispatch(getSinglePackage(id));
   }, []);
@@ -49,18 +43,11 @@ const CustomizeTrip = () => {
   useEffect(() => {
     dispatch(getDestinationVehicle(singleDestination.data._id));
   }, []);
-  }, [])
-  
-  useEffect(()=>{
-    dispatch(getDestinationVehicle(singleDestination.data._id))
-  },[])
 
   useEffect(() => {
     if (singlePackage?.data)
       dispatch(getSingleDestination(singlePackage?.data?.packageDestination));
   }, [singlePackage]);
-
-  // console.log("Trip days and details ka data", singleDestination);
 
   console.log("Trip Package ka data", singlePackage);
 
@@ -99,18 +86,12 @@ const CustomizeTrip = () => {
   const [totalHotelPrices, setTotalHotelPrice] = useState(0);
   const handleHotelChange = (index, event, hotels) => {
     const newDayData = [...dayData];
-    console.log("-------day data hotel", newDayData);
     newDayData[index].selectedHotel = event.target.value;
-    // newDayData[index].selectedHotel.name = name;
     setDayData(newDayData);
-
 
     /** Calculating price based on the selected hotel price */
     const selectedHotelId = event.target.value;
     const selectedHotel = hotels.find((hotel) => hotel._id === selectedHotelId);
-    console.log("--------selected hotel", selectedHotel);
-    // const selectedHotelName = hot
-
     const startingPrice = selectedHotel ? selectedHotel.startingPrice : 0;
 
     const updatedHotelPrices = [...hotelPrices];
@@ -122,31 +103,27 @@ const CustomizeTrip = () => {
     );
   };
 
-  /** the final price will */
+  /**---------------------the final estimated price will be----------------------------*/
+  let Total_Estimated_Price = totalHotelPrices + selectedVehiclePrice;
 
-  let Total_Estimated_Price = hotelPrices + selectedVehiclePrice;
-/**---------------------the final estimated price will be----------------------------*/
-let Total_Estimated_Price = totalHotelPrices + selectedVehiclePrice;
-
-/**--------------------Handle Enquiry to send to the page for submitting the form-------------------------------------------------*/
-const handleEnquiry = ()=>{
-  navigate("/prebuilt-package-enquiry",{state:{Estimate_Price:Total_Estimated_Price, packageId: id, itinerary:dayData, vehicleId: selectedVehicleId}}) // to send all the required prebuilt package data
-} 
+  /**--------------------Handle Enquiry to send to the page for submitting the form-------------------------------------------------*/
+  const handleEnquiry = () => {
+    navigate("/prebuilt-package-enquiry", {
+      state: {
+        Estimate_Price: Total_Estimated_Price,
+        packageId: id,
+        itinerary: dayData,
+        vehicleId: selectedVehicleId,
+        enquiryLocation: fullURL,
+      },
+    }); // to send all the required prebuilt package data
+  };
 
   console.log("-----------hotelprice new calculated", hotelPrices);
   console.log(
     "--------------------selected vehicle price",
     selectedVehiclePrice
   );
-  const handleActivityChange = (index, event) => {
-    const newDayData = [...dayData];
-    newDayData[index].selectedActivity.push(event.target.value);
-    setDayData(newDayData);
-  };
-
-  console.log('-----------hotelprice new calculated', hotelPrices)
-console.log('--------------------selected vehicle price',selectedVehiclePrice)
-   
 
   const [selectedActivity, setSelectedActivity] = useState("Choose Activity");
   const [selectedHotel, setSelectedHotel] = useState("Choose Hotel");
@@ -260,8 +237,7 @@ console.log('--------------------selected vehicle price',selectedVehiclePrice)
                             handleHotelChange(
                               index,
                               event,
-                              singleDestination?.data?.hotels,
-                              singleDestination?.data?.hotels?.name
+                              singleDestination?.data?.hotels
                             )
                           }
                           className="bg-blue-100 border-2 border-[#1f1f1f] rounded-md px-2 py-2 flex flex-row gap-2"
@@ -322,14 +298,18 @@ console.log('--------------------selected vehicle price',selectedVehiclePrice)
             {destinationVehicles?.map((vehicle) => (
               <div
                 key={vehicle?._id}
-                onClick={() => handleSelect(vehicle?.vehicleName, vehicle?.price,vehicle?._id)}
+                onClick={() =>
+                  handleSelect(
+                    vehicle?.vehicleName,
+                    vehicle?.price,
+                    vehicle?._id
+                  )
+                }
                 className="p-4 border rounded-lg shadow-md cursor-pointer hover:bg-gray-100"
               >
                 <p className="text-lg font-semibold">
-                  Name: {vehicle.vehicleName}
+                  Name: {vehicle?.vehicleName}
                 </p>
-                <p className="text-gray-600">Price: {vehicle.price}</p>
-                <p className="text-lg font-semibold">Name: {vehicle?.vehicleName}</p>
                 <p className="text-gray-600">Price: {vehicle?.price}</p>
               </div>
             ))}
@@ -354,8 +334,7 @@ console.log('--------------------selected vehicle price',selectedVehiclePrice)
             proceeding ahead fill this contact form and one of our executive
             will reach out to you.{Total_Estimated_Price}{" "}
           </h1>
-        <div className="m-4">   
-          <h1 className="">Estimated Total cost of trip can be around this figure for proceeding ahead fill this contact form and one of our executive will reach out to you.{Total_Estimated_Price} </h1><button onClick={handleEnquiry}>Fill the Enquiry Form</button>
+          <button onClick={handleEnquiry}>Fill the Enquiry Form</button>
         </div>
       </div>
       <div className="px-24 mt-6 w-full ">
@@ -491,14 +470,11 @@ console.log('--------------------selected vehicle price',selectedVehiclePrice)
                             </div>
                           ))}
 
-                        {singleDestination?.data?.hotels[0]?.amenities.length >
-                          3 && (
-                          <button className="px-4 py-2 bg-blue-400 text-white rounded-xl">
-                            {singleDestination?.data?.hotels[0]?.amenities
-                              .length - 3}
-                            More
-                          </button>
-                        )}
+                        <button className="px-4 py-2 bg-blue-400 text-white rounded-xl">
+                          {singleDestination?.data?.hotels[0]?.amenities
+                            .length - 3}
+                          More
+                        </button>
                       </div>
                     </div>
 
