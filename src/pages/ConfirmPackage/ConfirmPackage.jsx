@@ -164,6 +164,53 @@ const ConfirmPackage = () => {
           },
         },
       };
+      // Step 2: Set up Razorpay options
+      // const options = {
+      //   key: RAZORPAY_KEY_ID,
+      //   amount: order.amount,
+      //   currency: "INR",
+      //   name: packagename,
+      //   description: `Payment for ${packagename}`,
+      //   order_id: order.id,
+      //   handler: async function (response) {
+      //     // Step 3: Verify payment on the backend
+      //     try {
+      //       const verifyPayment = await axios.post(
+      //         "http://localhost:5000/api/v1/bookings/verify-payment",
+      //         response
+      //       );
+      //       if (verifyPayment?.data?.success === true) {
+      //         toast.success("🦄Payment Successfull");
+      //         setTimeout(() => {
+      //           navigate("/");
+      //         }, 400);
+      //       }
+      //     } catch (error) {
+      //       console.log("ERR: ", error);
+      //       if (error.response && error.response.status === 404) {
+      //         toast.error(
+      //           "🦄Verification route not found. Please contact support"
+      //         );
+      //       } else {
+      //         toast.error("🦄Payment verification failed. Please try again");
+      //       }
+      //       console.error("Error in payment verification:", error);
+      //     }
+      //   },
+      //   prefill: {
+      //     name: `${userInfo?.name}`,
+      //     email: `${userInfo?.email}`,
+      //     contact: "9876543210",
+      //   },
+      //   theme: {
+      //     color: "#3399cc",
+      //   },
+      //   modal: {
+      //     ondismiss: function () {
+      //       alert("Payment cancelled");
+      //     },
+      //   },
+      // };
 
       // Step 4: Open Razorpay checkout
       const razorpay = new window.Razorpay(options);

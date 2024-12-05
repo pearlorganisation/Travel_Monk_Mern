@@ -23,25 +23,28 @@ export const searchDestination = createAsyncThunk(
   }
 );
 
-export const getPopularDestination = createAsyncThunk(
-  "popular/get",
-  async (_, thunkAPI) => {
-    try {
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-      const result = await axiosInstance.get(`/api/v1/destinations/popular`, config);
-      console.log(result, "popular");
-      return result.data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
+// export const getAllDestinationNames = createAsyncThunk(
+//   "all-destinations/get",
+//   async (_, thunkAPI) => {
+//     try {
+//       const config = {
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//       };
+//       const result = await axiosInstance.get(
+//         `/api/v1/destinations/search`,
+//         config
+//       );
+//       console.log(result, "result nayan search");
+//       return result.data;
+//     } catch (error) {
+//       return thunkAPI.rejectWithValue(error);
+//     }
+//   }
+// );
 
 export const destinationsService = {
   searchDestination,
-  getAllDestinationNames,
+  // getAllDestinationNames,
 };

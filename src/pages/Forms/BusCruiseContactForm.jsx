@@ -11,7 +11,7 @@ const submitForm = (data)=>{
 dispatch(BusCruizeContact(formData))
 }
     return (
-      <div className="flex-1 mt-12 sm:max-w-lg lg:max-w-md">
+      <div className="flex-1 mt-12 sm:max-w-lg lg:max-w-md rounded-md bg-white px-8 py-6" style={{boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"}} >
           <form onSubmit={handleSubmit(submitForm)} className="space-y-5">
               <div>
                   <label className="font-medium">Full name</label>

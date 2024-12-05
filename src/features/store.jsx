@@ -9,6 +9,7 @@ import partnersReducer from "./partners/partnersSlice";
 import contactReducer from "./contact/contactSlice"
 import buscruizeReducer from "./BusCruizeContactAction/BusCruizeSlice"
 import resetReducer from "./ResetPassword/sendMailSlice"
+import destinationVehicleReducer from "./DestinationVehicle/destinationVehicleSlice"
 import { combineReducers } from '@reduxjs/toolkit';
 import { configureStore } from '@reduxjs/toolkit';
 import { persistStore, persistReducer } from 'redux-persist';
@@ -33,7 +34,8 @@ const combinedReducer = combineReducers({
   partners: partnersReducer,
   contact: contactReducer,
   buscruize: buscruizeReducer,
-  password: resetReducer
+  password: resetReducer,
+  destination_vehicle: destinationVehicleReducer
 });
 
 // Apply persistReducer to the combined reducer

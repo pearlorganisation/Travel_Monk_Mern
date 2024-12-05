@@ -59,7 +59,7 @@ export const getAllActivitiesByDestination = createAsyncThunk(
         },
       };
       const response = await axiosInstance.get(
-        `/api/v1/activities/destination/${id}`,
+        `/api/v1/destination/${id}/activities`,
         config
       );
 

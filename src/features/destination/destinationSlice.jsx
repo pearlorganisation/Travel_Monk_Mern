@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
   searchDestination,
-  getPopularDestination
+  // getAllDestinationNames,
 } from "./destinationActions";
 
 const searchState = {
@@ -9,8 +9,7 @@ const searchState = {
   isError: false,
   isSuccess: false,
   searchResult: null,
-  destinationNames: null,
-  popular:[],
+  // destinationNames: null,
   message: "",
 };
 
@@ -34,22 +33,22 @@ export const destinationsSlice = createSlice({
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
-      })
-      .addCase(getPopularDestination.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(getPopularDestination.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isError = false;
-        state.isSuccess = true;
-        state.popular = action.payload;
-      })
-      .addCase(getPopularDestination.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.isSuccess = false;
-        state.message = action.error;
       });
+    // .addCase(getAllDestinationNames.pending, (state) => {
+    //   state.isLoading = true;
+    // })
+    // .addCase(getAllDestinationNames.fulfilled, (state, action) => {
+    //   state.isLoading = false;
+    //   state.isError = false;
+    //   state.isSuccess = true;
+    //   state.destinationNames = action.payload;
+    // })
+    // .addCase(getAllDestinationNames.rejected, (state, action) => {
+    //   state.isLoading = false;
+    //   state.isError = true;
+    //   state.isSuccess = false;
+    //   state.message = action.error;
+    // });
   },
 });
 
