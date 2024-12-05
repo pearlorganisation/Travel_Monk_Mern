@@ -53,17 +53,16 @@ const CustomizeTrip = () => {
 
   // all the hotel data and activity data is stored in dayaData
   const [dayData, setDayData] = useState(
-    singlePackage?.data?.itinerary?.map(() => ({
+    singlePackage?.data?.itinerary?.map((iti) => ({
       selectedHotel: "Choose Hotel",
       selectedActivity: [],
+      selectedLocation:""
     })) || [] // Initialize based on itinerary length
   );
 /**--------------------Selected Activity-----------------------*/
   const handleActivityChange = (selectedOptions, dayIndex) => {
     // Update the specific day's selectedActivity field
-    setDayData((prevDayData) =>
-      prevDayData.map((day, index) =>
-        index === dayIndex
+    setDayData((prevDayData) =>prevDayData.map((day, index) => index === dayIndex
           ? { ...day, selectedActivity: selectedOptions || [] } 
           : day
       )
@@ -77,6 +76,7 @@ const CustomizeTrip = () => {
         singlePackage.data.itinerary.map(() => ({
           selectedHotel: "Choose Hotel",
           selectedActivity: [],
+          selectedLocation:""
         }))
       );
     }
@@ -84,8 +84,10 @@ const CustomizeTrip = () => {
 
   const [hotelPrices, setHotelPrices] = useState([]); // Array to store prices for each day
   const [totalHotelPrices, setTotalHotelPrice] = useState(0);
-  const handleHotelChange = (index, event, hotels) => {
+  const handleHotelChange = (index, event, hotels,currentLocation) => {
+    console.log('---------------location',currentLocation)
     const newDayData = [...dayData];
+    newDayData[index].selectedLocation = currentLocation;
     newDayData[index].selectedHotel = event.target.value;
     setDayData(newDayData);
 
@@ -223,7 +225,7 @@ console.log('--------------------selected vehicle price',selectedVehiclePrice)
                         <h1> Select Hotel </h1>
                         <select
                           value={dayData[index]?.selectedHotel}
-                          onChange={(event) => handleHotelChange(index, event, singleDestination?.data?.hotels)}
+                          onChange={(event) => handleHotelChange(index, event, singleDestination?.data?.hotels,iti.location)}
                           className="bg-blue-100 border-2 border-[#1f1f1f] rounded-md px-2 py-2 flex flex-row gap-2"
                         >
                           <option key="choose"> Choose Hotel</option>
