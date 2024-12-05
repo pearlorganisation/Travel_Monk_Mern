@@ -1,12 +1,6 @@
-import React, {
-  forwardRef,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from "react";
+import React, { useEffect, useState } from "react";
 import {
-  getAllDestinationNames,
+  // getAllDestinationNames,
   searchDestination,
 } from "../../features/destination/destinationActions";
 import { useForm } from "react-hook-form";
@@ -20,26 +14,26 @@ const HeroSupportingComponent = ({ data }, ref) => {
   const dispatch = useDispatch();
   const { register, handleSubmit, watch } = useForm();
 
-  const { destinationNames } = useSelector((state) => state.destination);
+  // const { destinationNames } = useSelector((state) => state.destination);
 
-  useEffect(() => {
-    dispatch(getAllDestinationNames());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getAllDestinationNames());
+  // }, []);
 
-  const onlyNames = destinationNames?.destinations?.map((dest) => dest.name);
+  // const onlyNames = destinationNames?.destinations?.map((dest) => dest.name);
 
-  console.log("only names", onlyNames);
+  // console.log("only names", onlyNames);
 
-  const [filteredOptions, setFilteredOptions] = useState(onlyNames);
+  // const [filteredOptions, setFilteredOptions] = useState(onlyNames);
 
   const inputValue = watch("destination", "");
 
-  useEffect(() => {
-    const filtered = onlyNames?.filter((option) =>
-      option.toLowerCase().includes(inputValue.toLowerCase())
-    );
-    setFilteredOptions(filtered);
-  }, [inputValue]);
+  // useEffect(() => {
+  //   const filtered = onlyNames?.filter((option) =>
+  //     option.toLowerCase().includes(inputValue.toLowerCase())
+  //   );
+  //   setFilteredOptions(filtered);
+  // }, [inputValue]);
 
   const navigate = useNavigate();
   const result = useSelector((state) => state.destination);
@@ -323,13 +317,14 @@ const HeroSupportingComponent = ({ data }, ref) => {
                       placeholder={el.placeholder}
                     />
 
-                    {el.registerData === "destination" && (
+                    {/* {el.registerData === "destination" && (
                       <ul className="mt-16">
-                        {filteredOptions?.map((option, index) => (
-                          <li key={index}>{option}</li>
-                        ))}
+               
+                        <li>Hi</li>
+                        <li>Bye</li>
+                        <li>Fue</li>
                       </ul>
-                    )}
+                    )} */}
                   </div>
                 </div>
               );

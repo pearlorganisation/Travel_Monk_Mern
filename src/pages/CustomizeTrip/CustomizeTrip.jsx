@@ -10,36 +10,40 @@ import Select from "react-select";
 import parse from "html-react-parser";
 import { getSingleDestination } from "../../features/trips/tripActions";
 import { getDestinationVehicle } from "../../features/DestinationVehicle/destinationVehicleaction";
+import { ReactSVG } from "react-svg";
 
 const CustomizeTrip = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
-  
+
   /** to get the current page url */
   const fullURL = window.location.href;
   console.log(`The full URL is: ${fullURL}`);
 
-
   const { singleDestination } = useSelector((state) => state.trip);
   const { singlePackage } = useSelector((state) => state.packages);
- 
-  /*---------------- getting the vehicles available for that destination-----------------------------------------------*/
-  const [selectedVehicle, setSelectedVehicle] = useState("")
-  const [selectedVehiclePrice, setSelectedVehiclePrice] = useState("")
-  const { destinationVehicles } = useSelector((state) => state.destination_vehicle)
 
-  const handleSelect =(vehicleName,vehiclePrice)=>{
-       setSelectedVehicle(vehicleName);
-       setSelectedVehiclePrice(vehiclePrice)
-  }
+  /*---------------- getting the vehicles available for that destination-----------------------------------------------*/
+  const [selectedVehicle, setSelectedVehicle] = useState("");
+  const [selectedVehiclePrice, setSelectedVehiclePrice] = useState("");
+
+  const [hotelName, setHotelName] = useState("");
+  const { destinationVehicles } = useSelector(
+    (state) => state.destination_vehicle
+  );
+
+  const handleSelect = (vehicleName, vehiclePrice) => {
+    setSelectedVehicle(vehicleName);
+    setSelectedVehiclePrice(vehiclePrice);
+  };
   useEffect(() => {
     dispatch(getSinglePackage(id));
   }, []);
-  
-  useEffect(()=>{
-    dispatch(getDestinationVehicle(singleDestination.data._id))
-  },[])
+
+  useEffect(() => {
+    dispatch(getDestinationVehicle(singleDestination.data._id));
+  }, []);
 
   useEffect(() => {
     if (singlePackage?.data)
@@ -71,37 +75,41 @@ const CustomizeTrip = () => {
   }, [singlePackage?.data]);
 
   const [hotelPrices, setTotalHotelPrice] = useState(0);
-  const handleHotelChange = (index, event, hotels) => {
+  const handleHotelChange = (index, event, hotels, name) => {
     const newDayData = [...dayData];
+    console.log("-------day data hotel", newDayData);
     newDayData[index].selectedHotel = event.target.value;
+    // newDayData[index].selectedHotel.name = name;
     setDayData(newDayData);
-
 
     const selectedHotelId = event.target.value;
     const selectedHotel = hotels.find((hotel) => hotel._id === selectedHotelId);
+    console.log("--------selected hotel", selectedHotel);
+    // const selectedHotelName = hot
+
     const startingPrice = selectedHotel ? selectedHotel.startingPrice : 0;
 
     // Add the selected hotel's price to the total
     setTotalHotelPrice((prevTotal) => prevTotal + startingPrice);
   };
 
-/** the final price will */
+  /** the final price will */
 
-let Total_Estimated_Price = hotelPrices + selectedVehiclePrice;
+  let Total_Estimated_Price = hotelPrices + selectedVehiclePrice;
 
-
-  console.log('-----------hotelprice new calculated', hotelPrices)
-console.log('--------------------selected vehicle price',selectedVehiclePrice)
+  console.log("-----------hotelprice new calculated", hotelPrices);
+  console.log(
+    "--------------------selected vehicle price",
+    selectedVehiclePrice
+  );
   const handleActivityChange = (index, event) => {
     const newDayData = [...dayData];
     newDayData[index].selectedActivity.push(event.target.value);
     setDayData(newDayData);
-  
   };
 
   const [selectedActivity, setSelectedActivity] = useState("Choose Activity");
   const [selectedHotel, setSelectedHotel] = useState("Choose Hotel");
-
 
   console.log(dayData, "day data");
 
@@ -160,10 +168,10 @@ console.log('--------------------selected vehicle price',selectedVehiclePrice)
               };
             });
 
-            if (dataForSelect.length === 0)
-              return (
-                <h1 className="text-center">Arrived Back To Destinatiom !!</h1>
-              );
+            // if (dataForSelect.length === 0)
+            //   return (
+            //     <h1 className="text-center">Arrived Back To Destinatiom !!</h1>
+            //   );
             // console.log(index,"my index");
             return (
               <div className="flex flex-row gap-2 items-center justify-start px-8 mt-2">
@@ -216,7 +224,14 @@ console.log('--------------------selected vehicle price',selectedVehiclePrice)
                         <h1> Select Hotel </h1>
                         <select
                           value={dayData[index]?.selectedHotel}
-                          onChange={(event) => handleHotelChange(index, event, singleDestination?.data?.hotels)}
+                          onChange={(event) =>
+                            handleHotelChange(
+                              index,
+                              event,
+                              singleDestination?.data?.hotels,
+                              singleDestination?.data?.hotels?.name
+                            )
+                          }
                           className="bg-blue-100 border-2 border-[#1f1f1f] rounded-md px-2 py-2 flex flex-row gap-2"
                         >
                           <option key="choose"> Choose Hotel</option>
@@ -274,29 +289,38 @@ console.log('--------------------selected vehicle price',selectedVehiclePrice)
             {destinationVehicles?.map((vehicle) => (
               <div
                 key={vehicle.id}
-                onClick={() => handleSelect(vehicle.vehicleName, vehicle.price)}
+                onClick={() =>
+                  handleSelect(vehicle.vehicleName, vehicle.pricePerDay)
+                }
                 className="p-4 border rounded-lg shadow-md cursor-pointer hover:bg-gray-100"
               >
-                <p className="text-lg font-semibold">Name: {vehicle.vehicleName}</p>
+                <p className="text-lg font-semibold">
+                  Name: {vehicle.vehicleName}
+                </p>
                 <p className="text-gray-600">Price: {vehicle.price}</p>
               </div>
             ))}
           </div>
           {selectedVehicle && (
             <div className="mt-6 p-4 bg-blue-50 rounded-lg shadow-md">
-              <h3 className="text-xl font-semibold text-blue-700">Selected Vehicle</h3>
+              <h3 className="text-xl font-semibold text-blue-700">
+                Selected Vehicle
+              </h3>
               <p className="text-lg">Name: {selectedVehicle}</p>
               <p className="text-lg">Price: {selectedVehiclePrice}</p>
             </div>
           )}
         </div>
         <div> Google map</div>
-
       </div>
       {/** section containing the total price of all the hotels in the destination */}
       <div className="pl-20 bg-emerald-300">
-        <div className="m-4">   
-          <h1 className="">Estimated Total cost of trip can be around this figure for proceeding ahead fill this contact form and one of our executive will reach out to you.{Total_Estimated_Price} </h1> 
+        <div className="m-4">
+          <h1 className="">
+            Estimated Total cost of trip can be around this figure for
+            proceeding ahead fill this contact form and one of our executive
+            will reach out to you.{Total_Estimated_Price}{" "}
+          </h1>
         </div>
       </div>
       <div className="px-24 mt-6 w-full ">
@@ -423,21 +447,33 @@ console.log('--------------------selected vehicle price',selectedVehiclePrice)
 
                     <div className="mt-1">
                       <div className="flex flex-row gap-6">
-                        {singleDestination?.data?.hotels[0]?.amenities
-                          .slice(0, 3)
-                          .map((amenity) => (
-                            <div className="flex flex-row gap-4 items-center justify-center">
-                              {parse(amenity.icon)}
+                        {Array.isArray(
+                          singleDestination?.data?.hotels[0]?.amenities
+                        ) &&
+                          singleDestination?.data?.hotels[0]?.amenities.map(
+                            (amenity) => (
+                              <div className="flex flex-row gap-4 items-center justify-center">
+                                <img
+                                  src={amenity?.icon?.secure_url}
+                                  alt={amenity?.name}
+                                  className="w-5 h-5"
+                                />
+                                {/* 
+                                <ReactSVG src={amenity?.icon?.secure_url} /> */}
 
-                              <ol>{amenity.name}</ol>
-                            </div>
-                          ))}
+                                <ol>{amenity?.name}</ol>
+                              </div>
+                            )
+                          )}
 
-                        <button className="px-4 py-2 bg-blue-400 text-white rounded-xl">
-                          {singleDestination?.data?.hotels[0]?.amenities
-                            .length - 3}
-                          More
-                        </button>
+                        {singleDestination?.data?.hotels[0]?.amenities.length >
+                          3 && (
+                          <button className="px-4 py-2 bg-blue-400 text-white rounded-xl">
+                            {singleDestination?.data?.hotels[0]?.amenities
+                              .length - 3}
+                            More
+                          </button>
+                        )}
                       </div>
                     </div>
 
