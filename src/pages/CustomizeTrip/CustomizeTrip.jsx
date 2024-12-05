@@ -439,8 +439,7 @@ console.log('--------------------selected vehicle price',selectedVehiclePrice)
                           .slice(0, 3)
                           .map((amenity) => (
                             <div className="flex flex-row gap-4 items-center justify-center">
-                              {parse(amenity.icon)}
-
+                              <img src={amenity?.icon?.secure_url} alt="amenity-icons" /> 
                               <ol>{amenity.name}</ol>
                             </div>
                           ))}
