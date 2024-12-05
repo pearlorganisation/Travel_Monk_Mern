@@ -91,7 +91,7 @@ const GetInTouchForm = () => {
           Send Message
         </button>
       </form>
-
+{/* 
       <div className="flex  flex-col justify-center items-center py-8">
         <h1 className="text-3xl py-4">
           Where are you going to take your next selfie?
@@ -104,7 +104,7 @@ const GetInTouchForm = () => {
             Start Planning
           </button>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

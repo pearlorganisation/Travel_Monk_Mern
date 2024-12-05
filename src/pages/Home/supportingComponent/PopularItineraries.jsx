@@ -171,80 +171,114 @@ const PopularItineraries = ({ data }) => {
             Popular International Destinations
           </h2>
 
-          <div class="relative">
-            <div
-              className="bg-cover bg-center h-64 rounded-lg shadow-lg mb-4"
-              style={{
-                backgroundImage: "url('world.jpg')",
-              }}
-            >
-              <div class="bg-black bg-opacity-50 h-full w-full flex items-center rounded-lg">
-                <div class="text-left text-white p-8">
-                  <h3 class="text-4xl font-bold mb-2">Explore the world</h3>
-                  <p class="mb-4">A Journey Through Time, Colour And Culture</p>
-                  <button class="bg-white text-black py-2 px-4 rounded">
-                    Explore
-                  </button>
+          <div class="flex flex-col gap-4">
+  {/* First Section: Explore Cards */}
+  <div class="flex flex-row gap-4">
+    {/* Card 1 */}
+    <div
+      className="bg-cover bg-center h-64 rounded-lg shadow-lg mb-4"
+      style={{
+        backgroundImage: "url('world.jpg')",
+      }}
+    >
+      <div class="bg-black bg-opacity-50 h-full w-full flex items-center rounded-lg">
+        <div class="text-left text-white p-8">
+          <h3 class="text-4xl font-bold mb-2">Explore the world</h3>
+          <p class="mb-4">A Journey Through Time, Colour And Culture</p>
+          <button class="bg-white text-black py-2 px-4 rounded">Explore</button>
+        </div>
+      </div>
+    </div>
+    {/* Card 2 */}
+    <div
+      className="bg-cover bg-center h-64 rounded-lg shadow-lg mb-4"
+      style={{
+        backgroundImage: "url('world.jpg')",
+      }}
+    >
+      <div class="bg-black bg-opacity-50 h-full w-full flex items-center rounded-lg">
+        <div class="text-left text-white p-8">
+          <h3 class="text-4xl font-bold mb-2">Explore the world</h3>
+          <p class="mb-4">A Journey Through Time, Colour And Culture</p>
+          <button class="bg-white text-black py-2 px-4 rounded">Explore</button>
+        </div>
+      </div>
+    </div>
+    {/* Card 3 */}
+    <div
+      className="bg-cover bg-center h-64 rounded-lg shadow-lg mb-4"
+      style={{
+        backgroundImage: "url('world.jpg')",
+      }}
+    >
+      <div class="bg-black bg-opacity-50 h-full w-full flex items-center rounded-lg">
+        <div class="text-left text-white p-8">
+          <h3 class="text-4xl font-bold mb-2">Explore the world</h3>
+          <p class="mb-4">A Journey Through Time, Colour And Culture</p>
+          <button class="bg-white text-black py-2 px-4 rounded">Explore</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {/* Second Section: Swiper Carousel */}
+  <div class="flex overflow-x-auto space-x-4 py-4">
+    <Swiper
+      slidesPerView={1}
+      spaceBetween={10}
+      pagination={{
+        clickable: true,
+      }}
+      breakpoints={{
+        640: {
+          slidesPerView: 2,
+          spaceBetween: 20,
+        },
+        768: {
+          slidesPerView: 4,
+          spaceBetween: 40,
+        },
+        1024: {
+          slidesPerView: 5,
+          spaceBetween: 50,
+        },
+      }}
+      modules={[Pagination]}
+      className="mySwiper"
+    >
+      {Array.isArray(data) &&
+        data?.map((destination) => (
+          <SwiperSlide key={destination._id}>
+            <Link to={`/destination/${destination?._id}`}>
+              <div class="max-w-xs mx-auto relative rounded-lg overflow-hidden shadow-lg">
+                <img
+                  class="w-full h-56 object-cover"
+                  src={destination.image.secure_url}
+                  alt={destination.name}
+                />
+                <div class="absolute bottom-0 left-0 p-4 bg-gradient-to-t from-black via-transparent to-transparent w-full">
+                  <h2 class="text-3xl text-white font-bold">
+                    {destination.name}
+                  </h2>
+                  <p class="text-white">
+                    Starting Price Rs. {destination.startingPrice}/-
+                  </p>
                 </div>
               </div>
-            </div>
+            </Link>
+          </SwiperSlide>
+        ))}
+    </Swiper>
+  </div>
 
-            <div class="flex overflow-x-auto space-x-4 py-4">
-              <Swiper
-                slidesPerView={1}
-                spaceBetween={10}
-                pagination={{
-                  clickable: true,
-                }}
-                breakpoints={{
-                  640: {
-                    slidesPerView: 2,
-                    spaceBetween: 20,
-                  },
-                  768: {
-                    slidesPerView: 4,
-                    spaceBetween: 40,
-                  },
-                  1024: {
-                    slidesPerView: 5,
-                    spaceBetween: 50,
-                  },
-                }}
-                modules={[Pagination]}
-                className="mySwiper"
-              >
-                {Array.isArray(data) &&
-                  data?.map((destination) => (
-                    <SwiperSlide key={destination._id}>
-                      {" "}
-                      <Link to={`/destination/${destination?._id}`}>
-                        <div class="max-w-xs mx-auto relative rounded-lg overflow-hidden shadow-lg">
-                          <img
-                            class="w-full h-56 object-cover"
-                            src={destination.image.secure_url}
-                            alt={destination.name}
-                          />
-                          <div class="absolute bottom-0 left-0 p-4 bg-gradient-to-t from-black via-transparent to-transparent w-full">
-                            <h2 class="text-3xl  text-white font-bold">
-                              {destination.name}
-                            </h2>
-                            <p class="text-white">
-                              Starting Price Rs. {destination.startingPrice}/-
-                            </p>
-                          </div>
-                        </div>
-                      </Link>
-                    </SwiperSlide>
-                  ))}
-              </Swiper>
-            </div>
+  {/* Third Section: Explore All Link */}
+  <div class="text-right mt-2 mb-4">
+    <a href="#" class="text-blue-500 hover:underline">
+      Explore All →
+    </a>
+  </div>
+</div>
 
-            <div class="text-right mt-4">
-              <a href="#" class="text-blue-500 hover:underline">
-                Explore All →
-              </a>
-            </div>
-          </div>
         </div>
       </div>
     </>
