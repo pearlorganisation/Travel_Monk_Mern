@@ -83,26 +83,29 @@ const CustomizeTrip = () => {
     }
   }, [singlePackage?.data]);
 
-  const [hotelPrices, setTotalHotelPrice] = useState(0);
+  const [hotelPrices, setHotelPrices] = useState([]); // Array to store prices for each day
+  const [totalHotelPrices, setTotalHotelPrice] = useState(0);
   const handleHotelChange = (index, event, hotels) => {
     const newDayData = [...dayData];
     newDayData[index].selectedHotel = event.target.value;
     setDayData(newDayData);
 
-
+    /** Calculating price based on the selected hotel price */
     const selectedHotelId = event.target.value;
     const selectedHotel = hotels.find((hotel) => hotel._id === selectedHotelId);
     const startingPrice = selectedHotel ? selectedHotel.startingPrice : 0;
 
-    // Add the selected hotel's price to the total
-    setTotalHotelPrice((prevTotal) => prevTotal + startingPrice);
+    const updatedHotelPrices = [...hotelPrices];
+    updatedHotelPrices[index] = startingPrice;
+
+    setHotelPrices(updatedHotelPrices);
+    setTotalHotelPrice(updatedHotelPrices.reduce((total, price) => total + price, 0));
   };
 
-/** the final price will */
+/**---------------------the final estimated price will be----------------------------*/
+let Total_Estimated_Price = totalHotelPrices + selectedVehiclePrice;
 
-let Total_Estimated_Price = hotelPrices + selectedVehiclePrice;
-
-/**--------------------Handle Enquiry to send to the page for submitting the form----------------------------------------------------------------------*/
+/**--------------------Handle Enquiry to send to the page for submitting the form-------------------------------------------------*/
 const handleEnquiry = ()=>{
   navigate("/prebuilt-package-enquiry",{state:{Estimate_Price:Total_Estimated_Price, packageId: id, itinerary:dayData, vehicleId: selectedVehicleId}}) // to send all the required prebuilt package data
 } 
@@ -170,10 +173,10 @@ console.log('--------------------selected vehicle price',selectedVehiclePrice)
               };
             });
 
-            if (dataForSelect.length === 0)
-              return (
-                <h1 className="text-center">Arrived Back To Destinatiom !!</h1>
-              );
+            // if (dataForSelect.length === 0)
+            //   return (
+            //     <h1 className="text-center">Arrived Back To Destinatiom !!</h1>
+            //   );
             // console.log(index,"my index");
             return (
               <div className="flex flex-row gap-2 items-center justify-start px-8 mt-2">
