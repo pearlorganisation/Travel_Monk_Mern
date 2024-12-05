@@ -12,10 +12,7 @@ import Reviews from "../../components/HeroSection.jsx/Reviews/Reviews";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllDestinations } from "../../features/trips/tripActions";
 import { getAuthUserDetails } from "../../features/user/userActions";
-import {
-  getAllDestinationNames,
-  getPopularDestination,
-} from "../../features/destination/destinationActions";
+import { getPopularDestination } from "../../features/destination/destinationActions";
 
 const Home = () => {
   const dispatch = useDispatch();

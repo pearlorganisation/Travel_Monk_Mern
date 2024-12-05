@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { axiosInstance } from "../../../services/axiosInterceptor";
+import { axiosInstance } from "../../services/axiosInterceptor";
 
 export const getAllCruizes = createAsyncThunk(
   "cruizes/get",
