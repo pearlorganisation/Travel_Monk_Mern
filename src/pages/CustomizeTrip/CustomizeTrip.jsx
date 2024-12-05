@@ -10,12 +10,11 @@ import Select from "react-select";
 import parse from "html-react-parser";
 import { getSingleDestination } from "../../features/trips/tripActions";
 import { getDestinationVehicle } from "../../features/DestinationVehicle/destinationVehicleaction";
-import { ReactSVG } from "react-svg";
 
 const CustomizeTrip = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { id } = useParams(); // id of the package
 
   /** to get the current page url */
   const fullURL = window.location.href;
@@ -27,15 +26,15 @@ const CustomizeTrip = () => {
   /*---------------- getting the vehicles available for that destination-----------------------------------------------*/
   const [selectedVehicle, setSelectedVehicle] = useState("");
   const [selectedVehiclePrice, setSelectedVehiclePrice] = useState("");
-
-  const [hotelName, setHotelName] = useState("");
+  const [selectedVehicleId, setSelectedVehicleId] = useState(null); // for vehicle id
   const { destinationVehicles } = useSelector(
     (state) => state.destination_vehicle
   );
 
-  const handleSelect = (vehicleName, vehiclePrice) => {
+  const handleSelect = (vehicleName, vehiclePrice, vehicleId) => {
     setSelectedVehicle(vehicleName);
     setSelectedVehiclePrice(vehiclePrice);
+    setSelectedVehicleId(vehicleId); // storing selected vehicle id
   };
   useEffect(() => {
     dispatch(getSinglePackage(id));
@@ -50,8 +49,6 @@ const CustomizeTrip = () => {
       dispatch(getSingleDestination(singlePackage?.data?.packageDestination));
   }, [singlePackage]);
 
-  // console.log("Trip days and details ka data", singleDestination);
-
   console.log("Trip Package ka data", singlePackage);
 
   // all the hotel data and activity data is stored in dayaData
@@ -61,6 +58,17 @@ const CustomizeTrip = () => {
       selectedActivity: [],
     })) || [] // Initialize based on itinerary length
   );
+  /**--------------------Selected Activity-----------------------*/
+  const handleActivityChange = (selectedOptions, dayIndex) => {
+    // Update the specific day's selectedActivity field
+    setDayData((prevDayData) =>
+      prevDayData.map((day, index) =>
+        index === dayIndex
+          ? { ...day, selectedActivity: selectedOptions || [] }
+          : day
+      )
+    );
+  };
 
   useEffect(() => {
     // Reset dayData if the itinerary changes
@@ -74,52 +82,53 @@ const CustomizeTrip = () => {
     }
   }, [singlePackage?.data]);
 
-  const [hotelPrices, setTotalHotelPrice] = useState(0);
-  const handleHotelChange = (index, event, hotels, name) => {
+  const [hotelPrices, setHotelPrices] = useState([]); // Array to store prices for each day
+  const [totalHotelPrices, setTotalHotelPrice] = useState(0);
+  const handleHotelChange = (index, event, hotels) => {
     const newDayData = [...dayData];
-    console.log("-------day data hotel", newDayData);
     newDayData[index].selectedHotel = event.target.value;
-    // newDayData[index].selectedHotel.name = name;
     setDayData(newDayData);
 
+    /** Calculating price based on the selected hotel price */
     const selectedHotelId = event.target.value;
     const selectedHotel = hotels.find((hotel) => hotel._id === selectedHotelId);
-    console.log("--------selected hotel", selectedHotel);
-    // const selectedHotelName = hot
-
     const startingPrice = selectedHotel ? selectedHotel.startingPrice : 0;
 
-    // Add the selected hotel's price to the total
-    setTotalHotelPrice((prevTotal) => prevTotal + startingPrice);
+    const updatedHotelPrices = [...hotelPrices];
+    updatedHotelPrices[index] = startingPrice;
+
+    setHotelPrices(updatedHotelPrices);
+    setTotalHotelPrice(
+      updatedHotelPrices.reduce((total, price) => total + price, 0)
+    );
   };
 
-  /** the final price will */
+  /**---------------------the final estimated price will be----------------------------*/
+  let Total_Estimated_Price = totalHotelPrices + selectedVehiclePrice;
 
-  let Total_Estimated_Price = hotelPrices + selectedVehiclePrice;
+  /**--------------------Handle Enquiry to send to the page for submitting the form-------------------------------------------------*/
+  const handleEnquiry = () => {
+    navigate("/prebuilt-package-enquiry", {
+      state: {
+        Estimate_Price: Total_Estimated_Price,
+        packageId: id,
+        itinerary: dayData,
+        vehicleId: selectedVehicleId,
+        enquiryLocation: fullURL,
+      },
+    }); // to send all the required prebuilt package data
+  };
 
   console.log("-----------hotelprice new calculated", hotelPrices);
   console.log(
     "--------------------selected vehicle price",
     selectedVehiclePrice
   );
-  const handleActivityChange = (index, event) => {
-    const newDayData = [...dayData];
-    newDayData[index].selectedActivity.push(event.target.value);
-    setDayData(newDayData);
-  };
 
   const [selectedActivity, setSelectedActivity] = useState("Choose Activity");
   const [selectedHotel, setSelectedHotel] = useState("Choose Hotel");
 
   console.log(dayData, "day data");
-
-  // console.log(selectedActivity, "selected activity");
-  // console.log(selectedHotel, "selected hotel");
-  // console.log(selectedActivity, "selected activity");
-  // console.log(selectedHotel, "selected hotel");
-
-  // handle to move to confirm-package
-
   const handleBookNow = () => {
     navigate("/confirm-package", {
       state: {
@@ -228,8 +237,7 @@ const CustomizeTrip = () => {
                             handleHotelChange(
                               index,
                               event,
-                              singleDestination?.data?.hotels,
-                              singleDestination?.data?.hotels?.name
+                              singleDestination?.data?.hotels
                             )
                           }
                           className="bg-blue-100 border-2 border-[#1f1f1f] rounded-md px-2 py-2 flex flex-row gap-2"
@@ -270,9 +278,10 @@ const CustomizeTrip = () => {
                         <Select
                           placeholder="Choose Activity"
                           isMulti
-                          // defaultInputValue={"Choose Activity"}
-                          // value={label:}
-                          onChange={(event) => console.log(event)}
+                          value={dayData[index]?.selectedActivity} // Bind the value to the specific day's selectedActivity
+                          onChange={(selectedOptions) =>
+                            handleActivityChange(selectedOptions, index)
+                          }
                           options={dataForSelect}
                         />
                       </div>
@@ -288,16 +297,20 @@ const CustomizeTrip = () => {
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {destinationVehicles?.map((vehicle) => (
               <div
-                key={vehicle.id}
+                key={vehicle?._id}
                 onClick={() =>
-                  handleSelect(vehicle.vehicleName, vehicle.pricePerDay)
+                  handleSelect(
+                    vehicle?.vehicleName,
+                    vehicle?.price,
+                    vehicle?._id
+                  )
                 }
                 className="p-4 border rounded-lg shadow-md cursor-pointer hover:bg-gray-100"
               >
                 <p className="text-lg font-semibold">
-                  Name: {vehicle.vehicleName}
+                  Name: {vehicle?.vehicleName}
                 </p>
-                <p className="text-gray-600">Price: {vehicle.price}</p>
+                <p className="text-gray-600">Price: {vehicle?.price}</p>
               </div>
             ))}
           </div>
@@ -321,6 +334,7 @@ const CustomizeTrip = () => {
             proceeding ahead fill this contact form and one of our executive
             will reach out to you.{Total_Estimated_Price}{" "}
           </h1>
+          <button onClick={handleEnquiry}>Fill the Enquiry Form</button>
         </div>
       </div>
       <div className="px-24 mt-6 w-full ">
@@ -358,7 +372,7 @@ const CustomizeTrip = () => {
       <div className="px-24 mt-6 w-full pb-10">
         <h1 className="font-bold text-2xl">Your Trip </h1>
 
-        {dayData.map((iti, index) => (
+        {/* {dayData.map((iti, index) => (
           <div className="flex flex-row gap-2 justify-start">
             <h3 className="text-[#007E8F]"> Day {index + 1} </h3>
 
@@ -447,33 +461,20 @@ const CustomizeTrip = () => {
 
                     <div className="mt-1">
                       <div className="flex flex-row gap-6">
-                        {Array.isArray(
-                          singleDestination?.data?.hotels[0]?.amenities
-                        ) &&
-                          singleDestination?.data?.hotels[0]?.amenities.map(
-                            (amenity) => (
-                              <div className="flex flex-row gap-4 items-center justify-center">
-                                <img
-                                  src={amenity?.icon?.secure_url}
-                                  alt={amenity?.name}
-                                  className="w-5 h-5"
-                                />
-                                {/* 
-                                <ReactSVG src={amenity?.icon?.secure_url} /> */}
+                        {singleDestination?.data?.hotels[0]?.amenities
+                          .slice(0, 3)
+                          .map((amenity) => (
+                            <div className="flex flex-row gap-4 items-center justify-center">
+                              <img src={amenity?.icon?.secure_url} alt="amenity-icons" /> 
+                              <ol>{amenity.name}</ol>
+                            </div>
+                          ))}
 
-                                <ol>{amenity?.name}</ol>
-                              </div>
-                            )
-                          )}
-
-                        {singleDestination?.data?.hotels[0]?.amenities.length >
-                          3 && (
-                          <button className="px-4 py-2 bg-blue-400 text-white rounded-xl">
-                            {singleDestination?.data?.hotels[0]?.amenities
-                              .length - 3}
-                            More
-                          </button>
-                        )}
+                        <button className="px-4 py-2 bg-blue-400 text-white rounded-xl">
+                          {singleDestination?.data?.hotels[0]?.amenities
+                            .length - 3}
+                          More
+                        </button>
                       </div>
                     </div>
 
@@ -500,25 +501,10 @@ const CustomizeTrip = () => {
                 </div>
               )}
 
-              {/*  
               
-                <div className="flex flex-row gap-2 mb-4">
-                {iti.activities.map((activity) => (
-                  <div className="flex flex-row bg-white">
-                    <img src={Lake} />
-
-                    <div className="flex flex-col px-6 py-3">
-                      <h1> {activity.name}</h1>
-                      <h3>Spend Approx 1 hour</h3>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              */}
             </div>
           </div>
-        ))}
+        ))} */}
       </div>
 
       <div className="fixed bottom-0 bg-white w-full">
