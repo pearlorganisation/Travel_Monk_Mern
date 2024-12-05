@@ -42,7 +42,6 @@ const CustomizeTrip = () => {
   useEffect(() => {
     dispatch(getDestinationVehicle(singleDestination.data._id));
   }, []);
-  }, [])
   
   useEffect(()=>{
     dispatch(getDestinationVehicle(singleDestination.data._id))
@@ -294,11 +293,11 @@ console.log('--------------------selected vehicle price',selectedVehiclePrice)
             {destinationVehicles?.map((vehicle) => (
               <div
                 key={vehicle?._id}
-                onClick={() => handleSelect(vehicle?.vehicleName, vehicle?.price,vehicle?._id)}
+                onClick={() => handleSelect(vehicle?.vehicleName, vehicle?.pricePerDay,vehicle?._id)}
                 className="p-4 border rounded-lg shadow-md cursor-pointer hover:bg-gray-100"
               >
                 <p className="text-lg font-semibold">Name: {vehicle?.vehicleName}</p>
-                <p className="text-gray-600">Price: {vehicle?.price}</p>
+                <p className="text-gray-600">Price: {vehicle?.pricePerDay}</p>
               </div>
             ))}
           </div>

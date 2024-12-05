@@ -11,7 +11,7 @@ export const getAllDestinations = createAsyncThunk(
         },
       };
       const { data } = await axiosInstance.get(
-        "/api/v1/trips/destination",
+        "/api/v1/destinations",
         config
       );
 
@@ -35,7 +35,7 @@ export const getSingleDestination = createAsyncThunk(
         },
       };
       const { data } = await axiosInstance.get(
-        `/api/v1/trips/destination/${id}`,
+        `/api/v1/destinations/${id}`,
         config
       );
 
@@ -59,7 +59,7 @@ export const getAllActivitiesByDestination = createAsyncThunk(
         },
       };
       const response = await axiosInstance.get(
-        `/api/v1/destination/${id}/activities`,
+        `/api/v1/destinations/${id}/activities`,
         config
       );
 
