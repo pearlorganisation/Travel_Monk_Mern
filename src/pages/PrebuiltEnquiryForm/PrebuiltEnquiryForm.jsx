@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
+import { sendPrebuiltPackageEnquiry } from '../../features/PrebuiltPackage/prebuiltPackageAction'
 
 const PrebuiltEnquiryForm = () => {
     const location = useLocation()
-    
+    const dispatch = useDispatch()
     const { isUserLoggedIn } = useSelector((state)=>state.auth) // getting isUserLogged in
     const { userInfo } = useSelector ((state)=>state.user) // getting the userInfo 
 
@@ -35,6 +36,7 @@ const PrebuiltEnquiryForm = () => {
             itinerary:itinerary
             
         }
+        dispatch(sendPrebuiltPackageEnquiry(formData))
     }
 
   return (
@@ -79,7 +81,7 @@ const PrebuiltEnquiryForm = () => {
 
                   {/* Form Section */}
                   <div className="p-10 flex items-center justify-center">
-                      <form onSubmit={handleSubmit} className="w-full space-y-6">
+                      <form onSubmit={handleSubmit(submitForm)} className="w-full space-y-6">
                           <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Contact Us</h2>
 
                           {/* Full Name */}
