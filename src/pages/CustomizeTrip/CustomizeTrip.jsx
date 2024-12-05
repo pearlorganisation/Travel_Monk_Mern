@@ -301,7 +301,7 @@ const CustomizeTrip = () => {
                 onClick={() =>
                   handleSelect(
                     vehicle?.vehicleName,
-                    vehicle?.price,
+                    vehicle?.pricePerDay,
                     vehicle?._id
                   )
                 }
@@ -310,7 +310,7 @@ const CustomizeTrip = () => {
                 <p className="text-lg font-semibold">
                   Name: {vehicle?.vehicleName}
                 </p>
-                <p className="text-gray-600">Price: {vehicle?.price}</p>
+                <p className="text-gray-600">Price: {vehicle?.pricePerDay}</p>
               </div>
             ))}
           </div>

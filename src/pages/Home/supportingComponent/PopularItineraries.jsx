@@ -310,7 +310,7 @@ const PopularItineraries = ({ data }) => {
     <div className="bg-[#f5f5f5] py-8">
       <div className="container mx-auto max-w-6xl">
         <h2 className="text-start text-2xl font-bold mb-6">
-          Most Popular Indian Destinations
+          Most Popular International Destinations
         </h2>
 
         {/* Featured Destination Section */}
