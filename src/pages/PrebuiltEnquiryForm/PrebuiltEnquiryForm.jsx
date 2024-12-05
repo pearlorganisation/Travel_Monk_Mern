@@ -126,7 +126,7 @@ const PrebuiltEnquiryForm = () => {
                 <TimelineComponent data={location.state} />
               </div> */}
 
-              <Timeline />
+              <Timeline events={location.state.itinerary} />
             </div>
 
             {/* Form Section */}
