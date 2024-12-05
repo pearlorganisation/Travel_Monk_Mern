@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
   searchDestination,
-  getAllDestinationNames,
+  getPopularDestination
 } from "./destinationActions";
 
 const searchState = {
@@ -10,6 +10,7 @@ const searchState = {
   isSuccess: false,
   searchResult: null,
   destinationNames: null,
+  popular:[],
   message: "",
 };
 
@@ -34,16 +35,16 @@ export const destinationsSlice = createSlice({
         state.isSuccess = false;
         state.message = action.error;
       })
-      .addCase(getAllDestinationNames.pending, (state) => {
+      .addCase(getPopularDestination.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getAllDestinationNames.fulfilled, (state, action) => {
+      .addCase(getPopularDestination.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.destinationNames = action.payload;
+        state.popular = action.payload;
       })
-      .addCase(getAllDestinationNames.rejected, (state, action) => {
+      .addCase(getPopularDestination.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
