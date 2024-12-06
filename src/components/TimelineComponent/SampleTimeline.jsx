@@ -1,13 +1,5 @@
 import React from "react";
 
-// const events = [
-//   { day: 1, info: "Event in 2000" },
-//   { day: 2, info: "Event in 2005" },
-//   { day: 3, info: "Event in 2010" },
-//   { day: 4, info: "Event in 2015" },
-//   { day: 5, info: "Event in 2020" },
-// ];
-
 const Timeline = ({ events }) => {
   console.log("my events data from Days", events);
   return (
@@ -44,7 +36,7 @@ const Timeline = ({ events }) => {
               ))}
 
               <h1 className="text-black"> Hotel </h1>
-              <h1 className="text-pink-400"> {event?.selectedHotel}</h1>
+              <h1 className="text-pink-400"> {event?.selectedHotel?.name}</h1>
             </div>
           </div>
         </div>

@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import TimelineComponent from "../../components/TimelineComponent/TimelineComponent";
 import Timeline from "../../components/TimelineComponent/SampleTimeline";
 
 const PrebuiltEnquiryForm = () => {
@@ -12,15 +11,18 @@ const PrebuiltEnquiryForm = () => {
   const { userInfo } = useSelector((state) => state.user); // getting the userInfo
 
   /** extarcting the data  */
-  const { Estimate_Price, packageId, itinerary, vehicleId } =
+  const { Estimate_Price, packageDetails, itinerary, vehicleId, vehicleName } =
     location.state || {};
-  console.log(
-    "-----------------estimated price",
-    Estimate_Price,
-    packageId,
-    itinerary,
-    vehicleId
-  );
+
+  console.log("location state", location.state);
+  // console.log(
+  //   "-----------------estimated price",
+  //   // Estimate_Price,
+  //   // packageId,
+  //   // itinerary,
+  //   // vehicleId,
+  //   vehicleName
+  // );
 
   const {
     register,
@@ -45,8 +47,9 @@ const PrebuiltEnquiryForm = () => {
       ...data,
       user: userInfo?._id,
       estimatedPrice: Estimate_Price,
-      package: packageId,
+      package: packageDetails,
       selectedVehicle: vehicleId,
+      selectedVehicleName: vehicleName,
       itinerary: itinerary,
     };
   };
@@ -62,6 +65,10 @@ const PrebuiltEnquiryForm = () => {
               className="bg-[#007E8F] text-white p-10 flex flex-col justify-center items-start space-y-6"
             >
               <div className="space-y-4">
+                <h2 className="text-3xl font-bold">Package Name</h2>
+                <div className="text-5xl font-extrabold text-white/90">
+                  {packageDetails.name}
+                </div>
                 <h2 className="text-3xl font-bold">Estimated Package Price</h2>
                 <div className="text-5xl font-extrabold text-white/90">
                   {Estimate_Price}
@@ -125,6 +132,16 @@ const PrebuiltEnquiryForm = () => {
               {/* <div className="">
                 <TimelineComponent data={location.state} />
               </div> */}
+
+              <div>
+                <h1 className="font-bold text-4xl text-[#4A9162]">
+                  {" "}
+                  Vehicle Name :{" "}
+                  <span className="text-red-500">
+                    {location.state.vehicleName}
+                  </span>
+                </h1>
+              </div>
 
               <Timeline events={location.state.itinerary} />
             </div>

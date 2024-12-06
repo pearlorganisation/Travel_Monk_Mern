@@ -26,6 +26,7 @@ const CustomizeTrip = () => {
   /*---------------- getting the vehicles available for that destination-----------------------------------------------*/
   const [selectedVehicle, setSelectedVehicle] = useState("");
   const [selectedVehiclePrice, setSelectedVehiclePrice] = useState("");
+
   const [selectedVehicleId, setSelectedVehicleId] = useState(null); // for vehicle id
   const { destinationVehicles } = useSelector(
     (state) => state.destination_vehicle
@@ -45,6 +46,10 @@ const CustomizeTrip = () => {
   }, []);
 
   useEffect(() => {
+    dispatch(getDestinationVehicle(singleDestination.data._id));
+  }, []);
+
+  useEffect(() => {
     if (singlePackage?.data)
       dispatch(getSingleDestination(singlePackage?.data?.packageDestination));
   }, [singlePackage]);
@@ -53,9 +58,10 @@ const CustomizeTrip = () => {
 
   // all the hotel data and activity data is stored in dayaData
   const [dayData, setDayData] = useState(
-    singlePackage?.data?.itinerary?.map(() => ({
-      selectedHotel: "Choose Hotel",
+    singlePackage?.data?.itinerary?.map((iti) => ({
+      selectedHotel: {},
       selectedActivity: [],
+      selectedLocation: "",
     })) || [] // Initialize based on itinerary length
   );
   /**--------------------Selected Activity-----------------------*/
@@ -75,8 +81,9 @@ const CustomizeTrip = () => {
     if (singlePackage?.data?.itinerary) {
       setDayData(
         singlePackage.data.itinerary.map(() => ({
-          selectedHotel: "Choose Hotel",
+          selectedHotel: {},
           selectedActivity: [],
+          selectedLocation: "",
         }))
       );
     }
@@ -84,14 +91,29 @@ const CustomizeTrip = () => {
 
   const [hotelPrices, setHotelPrices] = useState([]); // Array to store prices for each day
   const [totalHotelPrices, setTotalHotelPrice] = useState(0);
-  const handleHotelChange = (index, event, hotels) => {
+  const handleHotelChange = (index, event, hotels, currentLocation) => {
+    console.log("---------------location", currentLocation);
+    const selectedHotelId = event.target.value;
+    const selectedHotel = hotels.find((hotel) => hotel._id === selectedHotelId);
+
+    /**  data for sending in the newDayData for selected hotel */
+
     const newDayData = [...dayData];
     newDayData[index].selectedHotel = event.target.value;
+    newDayData[index].selectedLocation = currentLocation;
+    newDayData[index].selectedHotel = {
+      name: selectedHotel.name,
+      hotelId: selectedHotel._id,
+    };
+    // newDayData[index].selectedHotel.name = name;
     setDayData(newDayData);
 
     /** Calculating price based on the selected hotel price */
-    const selectedHotelId = event.target.value;
-    const selectedHotel = hotels.find((hotel) => hotel._id === selectedHotelId);
+    // const selectedHotelId = event.target.value;
+    // const selectedHotel = hotels.find((hotel) => hotel._id === selectedHotelId);
+    console.log("--------selected hotel", selectedHotel);
+    // const selectedHotelName = hot
+
     const startingPrice = selectedHotel ? selectedHotel.startingPrice : 0;
 
     const updatedHotelPrices = [...hotelPrices];
@@ -111,9 +133,11 @@ const CustomizeTrip = () => {
     navigate("/prebuilt-package-enquiry", {
       state: {
         Estimate_Price: Total_Estimated_Price,
-        packageId: id,
+
+        packageDetails: { name: singlePackage?.data?.name, package: id },
         itinerary: dayData,
         vehicleId: selectedVehicleId,
+        vehicleName: selectedVehicle,
         enquiryLocation: fullURL,
       },
     }); // to send all the required prebuilt package data
@@ -125,6 +149,8 @@ const CustomizeTrip = () => {
     selectedVehiclePrice
   );
 
+  console.log("--------------------selected vehicle name", selectedVehicle);
+
   const [selectedActivity, setSelectedActivity] = useState("Choose Activity");
   const [selectedHotel, setSelectedHotel] = useState("Choose Hotel");
 
@@ -134,6 +160,7 @@ const CustomizeTrip = () => {
       state: {
         dayData: dayData,
         startingPrice: singlePackage?.data?.startingPrice,
+        vehicleName: selectedVehicle,
       },
     });
   };
@@ -232,12 +259,13 @@ const CustomizeTrip = () => {
                       <div className="flex flex-col gap-3 ">
                         <h1> Select Hotel </h1>
                         <select
-                          value={dayData[index]?.selectedHotel}
+                          value={dayData[index].selectedHotel[0]}
                           onChange={(event) =>
                             handleHotelChange(
                               index,
                               event,
-                              singleDestination?.data?.hotels
+                              singleDestination?.data?.hotels,
+                              iti.location
                             )
                           }
                           className="bg-blue-100 border-2 border-[#1f1f1f] rounded-md px-2 py-2 flex flex-row gap-2"
@@ -280,6 +308,10 @@ const CustomizeTrip = () => {
                           isMulti
                           value={dayData[index]?.selectedActivity} // Bind the value to the specific day's selectedActivity
                           onChange={(selectedOptions) =>
+                            /** for later use case */
+                            //   const selectedActivityIds = selectedOptions ? selectedOptions.map((option) => option.value) : [];
+                            // handleActivityChange(selectedActivityIds, index)
+
                             handleActivityChange(selectedOptions, index)
                           }
                           options={dataForSelect}
