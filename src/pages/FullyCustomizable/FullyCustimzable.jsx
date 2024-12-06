@@ -1,5 +1,6 @@
 import Stepper from "./Stepper";
 import Bro from "../../assets/images/bro.png";
+import Select from "react-select";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -9,6 +10,7 @@ import {
   getSingleDestination,
 } from "../../features/trips/tripActions";
 import parse from "html-react-parser";
+import { getHotelsByDestination } from "../../features/hotel/hotelActions";
 
 const tripData = [
   {
@@ -160,9 +162,22 @@ const FullyCustomizeTrip = () => {
 
   const { id } = useParams();
   const { singleDestination, activities } = useSelector((state) => state.trip);
+  const { destinationHotels } = useSelector((state)=> state.hotels)  // destination hotels contains all the hotels for that particular destination
+
+  /** data prepared for the options to use in the react-select */
+let activitiesOption = activities?.map((activity) => ({
+    label: activity?.name,
+    value: activity?._id,
+  }));
+
+
+  console.log("---------------------activites option", activitiesOption)
+
+
 
   useEffect(() => {
     dispatch(getAllActivitiesByDestination(id));
+    dispatch(getHotelsByDestination(id))
     dispatch(getSingleDestination(id));
   }, []);
 
@@ -174,10 +189,10 @@ const FullyCustomizeTrip = () => {
   // console.log("All activities", activities);
 
   const [dayData, setDayData] = useState(
-    singleDestination?.data?.locations?.map(() => ({
-      selectedLocation: "Choose Location",
-      selectedHotel: "Choose Hotel",
-      selectedActivity: "Choose Activity",
+    singleDestination?.data?.locations?.map((loc) => ({
+      selectedLocation: [],
+      selectedHotel: {},
+      selectedActivities: [],
     })) || [] // Initialize based on itinerary length
   );
 
@@ -185,9 +200,9 @@ const FullyCustomizeTrip = () => {
     if (singleDestination?.data?.locations) {
       setDayData(
         singleDestination?.data?.locations.map(() => ({
-          selectedLocation: "Choose Location",
-          selectedHotel: "Choose Hotel",
-          selectedActivity: "Choose Activity",
+          selectedLocation: [],
+          selectedHotel: [],
+          selectedActivities: [],
         }))
       );
     }
@@ -199,16 +214,24 @@ const FullyCustomizeTrip = () => {
     setDayData(newDayData);
   };
 
-  const handleHotelChange = (index, event) => {
+  const handleHotelChange = (index, event, hotels) => {
+  /**------- logic to find out the selected hotel by id--------------*/
+  const selectedHotelId = event.target.value;
+  const selectedHotel = hotels.find((hotel)=> hotel._id === selectedHotelId) // this will find the selected hotel by id
+
     const newDayData = [...dayData];
-    newDayData[index].selectedHotel = event.target.value;
+    newDayData[index].selectedHotel = {name: selectedHotel.name, hotelId:selectedHotel._id};
     setDayData(newDayData);
   };
 
-  const handleActivityChange = (index, event) => {
-    const newDayData = [...dayData];
-    newDayData[index].selectedActivity = event.target.value;
-    setDayData(newDayData);
+  const handleActivityChange = (selectedOptions, dayIndex) => {
+    setDayData((prevDayData) =>
+      prevDayData.map((day, index) =>
+        index === dayIndex
+          ? { ...day, selectedActivities: selectedOptions || [] }
+          : day
+      )
+    );
   };
 
   console.log(dayData, "day data");
@@ -315,12 +338,12 @@ const FullyCustomizeTrip = () => {
                         <h1> Select Hotel </h1>
                         <select
                           value={dayData[index]?.selectedHotel}
-                          onChange={(event) => handleHotelChange(index, event)}
+                          onChange={(event) => handleHotelChange(index, event, destinationHotels)}
                           className="bg-blue-100 border-2 border-[#1f1f1f] rounded-md px-2 py-2 flex flex-row gap-2"
                         >
                           <option key="choose"> Choose Hotel</option>
-                          {singleDestination?.data?.hotels.map((hotel) => (
-                            <option key={hotel.id} value={hotel.id}>
+                          {destinationHotels?.map((hotel) => (
+                            <option key={hotel._id} value={hotel._id}>
                               {" "}
                               {hotel.name}
                             </option>
@@ -330,9 +353,10 @@ const FullyCustomizeTrip = () => {
 
                       <div className="flex flex-col gap-3 ">
                         <h1> Select Activity </h1>
-
+                       {/**  commented out old select for using the react select for multiple values */}
+                       {/* 
                         <select
-                          value={dayData[index]?.selectedActivity}
+                          value={dayData[index]?.selectedActivities}
                           onChange={(event) =>
                             handleActivityChange(index, event)
                           }
@@ -353,7 +377,15 @@ const FullyCustomizeTrip = () => {
                                 {activity?.name}
                               </option>
                             ))}
-                        </select>
+                        </select> */}
+                        <Select
+                          placeholder="Choose Activity"
+                          isMulti
+                          value={dayData[index]?.selectedActivities || []} // Ensure a default value
+                          onChange={(selectedOptions) => handleActivityChange(selectedOptions, index)}
+                          options={activitiesOption}
+                        />
+
                       </div>
                     </div>
                   </div>
@@ -362,8 +394,9 @@ const FullyCustomizeTrip = () => {
             );
           })}
         </div>
-      </div>
+     </div>
 
+ 
       <div className="px-24 mt-6 w-full ">
         <h1 className="font-bold text-2xl"> You might want to add </h1>
 
@@ -395,7 +428,9 @@ const FullyCustomizeTrip = () => {
           </div>
         </div>
       </div>
+      {/**------------commented out the listing of itinerary---------------------*/}
 
+{/* 
       <div className="px-24 mt-6 w-full pb-10">
         <h1 className="font-bold text-2xl">Your Trip </h1>
 
@@ -413,13 +448,13 @@ const FullyCustomizeTrip = () => {
                   </h1>
                 </div>
               )}
-              {iti.selectedActivity === "Choose Activity" ? null : (
+              {iti.selectedActivities === "Choose Activity" ? null : (
                 <div className="flex flex-row gap-28 bg-white p-2">
                   <img src={Bro} alt="logo" className="w-48 min-h-max" />
 
                   <div className="mt-4">
                     <h1 className="font-bold text-lg">
-                      ACTIVITY : {iti.selectedActivity}{" "}
+                      ACTIVITY : {iti.selectedActivities}{" "}
                     </h1>
 
                     <h3 className="">
@@ -536,7 +571,7 @@ const FullyCustomizeTrip = () => {
                 </div>
               )}
 
-              {/*  
+               
               
                 <div className="flex flex-row gap-2 mb-4">
                 {iti.activities.map((activity) => (
@@ -551,11 +586,11 @@ const FullyCustomizeTrip = () => {
                 ))}
               </div>
 
-              */}
+             
             </div>
           </div>
         ))}
-      </div>
+      </div> */}
 
       <div className="fixed bottom-0 bg-white w-full">
         <div className="flex flex-row justify-between p-3">

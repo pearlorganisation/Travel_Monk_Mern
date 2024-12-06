@@ -36,3 +36,21 @@ export const getSingleHotel = createAsyncThunk(
     }
   }
 );
+
+/**-----------------------to get hotels based on destination------------------------ */
+
+export const getHotelsByDestination = createAsyncThunk(
+  "hotels/by-destination", async(id,thunkAPI)=>{
+    try {
+      const config={
+        headers:{
+          "Content-Type":"application/json"
+        }
+      }
+      const { data }= await axiosInstance.get(`/api/v1/destinations/${id}/hotels`,config)
+      return data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error)      
+    }
+  }
+)
