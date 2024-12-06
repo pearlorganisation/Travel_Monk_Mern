@@ -25,7 +25,7 @@ const CustomizeTrip = () => {
   const { singlePackage } = useSelector((state) => state.packages);
 
   /*---------------- getting the vehicles available for that destination-----------------------------------------------*/
-  const [selectedVehicle, setSelectedVehicle] = useState("")
+  const [selectedVehicleName, setSelectedVehicle] = useState("")
   const [selectedVehiclePrice, setSelectedVehiclePrice] = useState("");
   const [selectedVehicleId, setSelectedVehicleId] = useState(null) // for vehicle id
   const { destinationVehicles } = useSelector((state) => state.destination_vehicle)
@@ -43,9 +43,9 @@ const CustomizeTrip = () => {
     dispatch(getDestinationVehicle(singleDestination.data._id));
   }, []);
   
-  useEffect(()=>{
-    dispatch(getDestinationVehicle(singleDestination.data._id))
-  },[])
+  // useEffect(()=>{
+  //   dispatch(getDestinationVehicle(singleDestination.data._id))
+  // },[])
 
   useEffect(() => {
     if (singlePackage?.data)
@@ -59,15 +59,16 @@ const CustomizeTrip = () => {
   const [dayData, setDayData] = useState(
     singlePackage?.data?.itinerary?.map((iti) => ({
       selectedHotel:{},
-      selectedActivity: [],
-      selectedLocation:""
+      selectedActivities: [],
+      location:{},
+      day:""
     })) || [] // Initialize based on itinerary length
   );
   /**--------------------Selected Activity-----------------------*/
   const handleActivityChange = (selectedOptions, dayIndex) => {
-    // Update the specific day's selectedActivity field
+    // Update the specific day's selectedActivities field
      setDayData((prevDayData) =>prevDayData.map((day, index) => index === dayIndex
-          ? { ...day, selectedActivity: selectedOptions || [] } 
+          ? { ...day, selectedActivities: selectedOptions || [] } 
           : day
       )
     );
@@ -79,8 +80,9 @@ const CustomizeTrip = () => {
       setDayData(
         singlePackage.data.itinerary.map(() => ({
           selectedHotel: {},
-          selectedActivity: [],
-          selectedLocation:""
+          selectedActivities: [],
+          location:{},
+          day:""
         }))
       );
     }
@@ -96,8 +98,9 @@ const CustomizeTrip = () => {
     /**  data for sending in the newDayData for selected hotel */
 
     const newDayData = [...dayData];
-    newDayData[index].selectedLocation = currentLocation;
-    newDayData[index].selectedHotel= {name:selectedHotel.name,hotelId: selectedHotel._id};
+    newDayData[index].day = index +1;
+    newDayData[index].location = currentLocation;
+    newDayData[index].selectedHotel= {name:selectedHotel.name,hotel: selectedHotel._id};
     // newDayData[index].selectedHotel.name = name;
     setDayData(newDayData);
 
@@ -123,7 +126,7 @@ let Total_Estimated_Price = totalHotelPrices + selectedVehiclePrice;
 
 /**--------------------Handle Enquiry to send to the page for submitting the form-------------------------------------------------*/
 const handleEnquiry = ()=>{
-  navigate("/prebuilt-package-enquiry",{state:{Estimate_Price:Total_Estimated_Price, packageId: id, itinerary:dayData, vehicleId: selectedVehicleId, enquiryLocation:fullURL}}) // to send all the required prebuilt package data
+  navigate("/prebuilt-package-enquiry",{state:{Estimate_Price:Total_Estimated_Price, packageId: id, itinerary:dayData, vehicleChoosen: {name:selectedVehicleName,vehicle:selectedVehicleId}, enquiryLocation:fullURL}}) // to send all the required prebuilt package data
 } 
 
 
@@ -131,7 +134,7 @@ const handleEnquiry = ()=>{
 console.log('--------------------selected vehicle price',selectedVehiclePrice)
    
 
-  const [selectedActivity, setSelectedActivity] = useState("Choose Activity");
+  const [selectedActivities, setSelectedActivity] = useState("Choose Activity");
   const [selectedHotel, setSelectedHotel] = useState("Choose Hotel");
 
   console.log(dayData, "day data");
@@ -256,7 +259,7 @@ console.log('--------------------selected vehicle price',selectedVehiclePrice)
                         <h1> Select Activity </h1>
 
                         {/* <select
-                          value={dayData[index]?.selectedActivity}
+                          value={dayData[index]?.selectedActivities}
                           onChange={(event) =>
                             handleActivityChange(index, event)
                           }
@@ -278,7 +281,7 @@ console.log('--------------------selected vehicle price',selectedVehiclePrice)
                         <Select
                           placeholder="Choose Activity"
                           isMulti
-                          value={dayData[index]?.selectedActivity} // Bind the value to the specific day's selectedActivity
+                          value={dayData[index]?.selectedActivities} // Bind the value to the specific day's selectedActivities
                           onChange={(selectedOptions) =>
                           /** for later use case */
                             //   const selectedActivityIds = selectedOptions ? selectedOptions.map((option) => option.value) : [];
@@ -310,12 +313,12 @@ console.log('--------------------selected vehicle price',selectedVehiclePrice)
               </div>
             ))}
           </div>
-          {selectedVehicle && (
+          {selectedVehicleName && (
             <div className="mt-6 p-4 bg-blue-50 rounded-lg shadow-md">
               <h3 className="text-xl font-semibold text-blue-700">
                 Selected Vehicle
               </h3>
-              <p className="text-lg">Name: {selectedVehicle}</p>
+              <p className="text-lg">Name: {selectedVehicleName}</p>
               <p className="text-lg">Price: {selectedVehiclePrice}</p>
             </div>
           )}
@@ -370,13 +373,13 @@ console.log('--------------------selected vehicle price',selectedVehiclePrice)
             <Stepper />
 
             <div className="flex flex-col gap-2 w-[100%] justify-between items-start">
-              {iti.selectedActivity === "Choose Activity" ? null : (
+              {iti.selectedActivities === "Choose Activity" ? null : (
                 <div className="flex flex-row gap-28 bg-white p-2">
                   <img src={Bro} alt="logo" className="w-48 min-h-max" />
 
                   <div className="mt-4">
                     <h1 className="font-bold text-lg">
-                      ACTIVITY : {iti.selectedActivity}{" "}
+                      ACTIVITY : {iti.selectedActivities}{" "}
                     </h1>
 
                     <h3 className="">

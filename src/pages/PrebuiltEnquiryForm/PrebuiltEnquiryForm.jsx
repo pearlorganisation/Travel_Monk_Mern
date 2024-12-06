@@ -11,8 +11,8 @@ const PrebuiltEnquiryForm = () => {
     const { userInfo } = useSelector ((state)=>state.user) // getting the userInfo 
 
     /** extarcting the data  */
-    const { Estimate_Price, packageId, itinerary, vehicleId, enquiryLocation } = location.state || {}
-    console.log('-----------------estimated price',Estimate_Price, packageId, itinerary, vehicleId)
+    const { Estimate_Price, packageId, itinerary, vehicleChoosen, enquiryLocation } = location.state || {}
+    console.log('-----------------estimated price', Estimate_Price, packageId, itinerary, vehicleChoosen)
    
     const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm({
         defaultValues: {
@@ -32,7 +32,7 @@ const PrebuiltEnquiryForm = () => {
             user:userInfo?._id,
             estimatedPrice:Estimate_Price,
             package:packageId,
-            selectedVehicle: vehicleId,
+            selectedVehicle: vehicleChoosen,
             itinerary:itinerary
             
         }
