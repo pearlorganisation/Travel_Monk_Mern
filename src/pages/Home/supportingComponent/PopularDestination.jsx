@@ -6,6 +6,8 @@ import { Pagination } from "swiper/modules";
 import { Link } from "react-router-dom";
 
 const PopularDestination = ({ data }) => {
+
+  console.log(data, "12345678")
   return (
     <div className="bg-[#f5f5f5] py-8">
       <div className="container mx-auto max-w-6xl">

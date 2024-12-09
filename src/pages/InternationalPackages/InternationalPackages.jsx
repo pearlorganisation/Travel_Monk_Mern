@@ -15,7 +15,7 @@ const InternationalPackages = () => {
   }, []);
 
   return (
-    <div>
+    <div className="overflow-hidden">
       <div
         className="h-96"
         style={{
@@ -24,7 +24,7 @@ const InternationalPackages = () => {
           backgroundPosition: "center",
         }}
       >
-        <div className="text-white lg:pt-20 lg:pl-40">
+        <div className="text-white px-3 py-6 md:pt-20 md:pl-40">
           <h1 className="text-5xl font-bold">Exquisite International Tours</h1>
           <h1 className="text-2xl bg-yellow-300 w-max px-2 text-black mt-3 py-1 rounded-sm">
             The Journey for New Beginnings.

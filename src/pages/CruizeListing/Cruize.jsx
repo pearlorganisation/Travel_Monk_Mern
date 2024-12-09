@@ -277,7 +277,7 @@ const Cruize = () => {
         className="p-4 rounded-2xl flex items-center justify-center bg-white"
         style={{ boxShadow: " rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
       >
-        <div className="grid justify-between items-center grid-cols-[auto_auto_auto_155px_auto] gap-2  ">
+        <div className="grid justify-between items-center md:grid-cols-5 grid-cols-1 gap-2  ">
           {searchData.map((el, index) => {
             return (
               <div className="relative p-2" key={index}>
@@ -301,11 +301,12 @@ const Cruize = () => {
                     placeholder={el.placeholder}
                   />
                 </div>
+                
               </div>
             );
           })}
 
-          <div className="flex items-center justify-center mt-6">
+<div className="flex items-center justify-center mt-6">
             <button
               type="submit"
               className="text-white px-12 py-2 bg-[#007E8F] rounded-sm hover:bg-[#439ca8] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium  text-md      text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -317,7 +318,7 @@ const Cruize = () => {
       </div>
 
       <div className="mt-4">
-        <div className="flex flex-row gap-6">
+        <div className="flex  flex-col md:flex-row gap-6">
           <h1 className="mr-12">Sort By</h1>
 
           {sortByOptions.map((sortByOption) => (
@@ -330,8 +331,8 @@ const Cruize = () => {
         </div>
       </div>
 
-      <div className="flex flex-row w-full">
-        <div className="w-[25%]  ">
+      <div className="flex  flex-col md:flex-row    w-full">
+        <div className="md:w-[25%]  ">
           <div className="">
             <div className="mt-2 h-[300px] rounded-xl w-[90%] bg-red-400">
               Explore on Map
@@ -342,7 +343,7 @@ const Cruize = () => {
 
               <h3 className="mt-3 font-semibold">Price</h3>
 
-              <div className="flex flex-row gap-3 items-center justify-center">
+              <div className="flex md:flex-row  flex-col gap-3 items-center justify-center">
                 <input
                   type="text"
                   placeholder="Min"
@@ -402,7 +403,7 @@ const Cruize = () => {
               <h3 className="mt-3 font-semibold">Ratings</h3>
 
               {ratings.map((rating) => (
-                <div className="flex flex-row  justify-between items-center mt-2">
+                <div className="flex    flex-row  justify-between items-center mt-2">
                   <div className="flex flex-row gap-3">
                     <input type="checkbox" className="checkbox" />
                     <h3>{rating.shipname}</h3>
@@ -415,14 +416,14 @@ const Cruize = () => {
           </div>
         </div>
 
-        <div className="w-[75%] mt-2">
+        <div className="w-full mt-2">
           {cruiseData.map((cruize) => (
             <div className=" bg-white w-full rounded-xl mt-6">
-              <div className="flex flex-col items-center rounded-xl border  text-center  md:flex-row md:items-start md:text-left relative">
+              <div className="flex flex-col  items-center rounded-xl border  text-center  md:flex-row md:items-start md:text-left relative">
                 <img src={Fav} className="w-8 h-8 absolute right-6 top-2" />
-                <div className="mb-0 md:mr-6 md:mb-0 ">
+                <div className="mb-0  mr-0 md:mr-6 md:mb-0 ">
                   <img
-                    className=" rounded-xl  object-cover size-96 w-72 "
+                    className=" rounded-xl  object-cover size-96 min-w-80 "
                     src={cruize.image}
                     alt=""
                   />
@@ -433,8 +434,8 @@ const Cruize = () => {
                     </div>
                   )}
                 </div>
-                <div className="">
-                  <div className="flex flex-row justify-start items-center w-full">
+                <div className="px-4 py-4">
+                  <div className="flex flex-row  justify-start items-center w-full">
                     <p className="text-xl font-bold text-gray-700 mt-3">
                       {cruize.title}
                     </p>

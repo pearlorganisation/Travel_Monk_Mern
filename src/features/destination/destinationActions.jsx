@@ -36,7 +36,7 @@ export const getPopularDestination = createAsyncThunk(
         `/api/v1/destinations/popular`,
         config
       );
-      console.log(result, "popular");
+      console.log(result.data, "popular");
       return result.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error);

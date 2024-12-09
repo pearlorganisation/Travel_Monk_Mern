@@ -15,7 +15,7 @@ const IndianPackages = () => {
   }, []);
 
   return (
-    <div>
+    <div className="overflow-hidden">
       <div
         className="h-96"
         style={{
@@ -24,15 +24,15 @@ const IndianPackages = () => {
           backgroundPosition: "center",
         }}
       >
-        <div className="text-white lg:pt-20 lg:pl-40">
+        <div className="text-white  md:pt-20 md:pl-40 px-4 py-12">
           <h1 className="text-5xl font-bold">Unparalleled India Tours</h1>
-          <h1 className="text-2xl bg-yellow-300 w-max px-2 text-black mt-3 py-1 rounded-sm">
+          <h1 className="md:text-2xl text-sm bg-yellow-300 w-max px-2 text-black mt-3 py-1 rounded-sm">
             A Journey Through Time, Colour And Culture
           </h1>
         </div>
       </div>
       <div className="flex justify-center items-center h-full ">
-        <div className="bg-slate-200 my-6">
+        <div className="bg-slate-200 my-6 py-2 px-3">
           <h1 className="text-3xl font-bold">About Indian Tours</h1>
         </div>
       </div>

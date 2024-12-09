@@ -30,15 +30,15 @@ const EditCustomize = () => {
     <div className="">
       <img
         src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=1421&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        className="w-full h-96"
+        className="w-full h-96 object-cover"
       />
       <div className="grid grid-cols-1 lg:grid-cols-[65%_auto] gap-6 px-20 py-6">
         <div>
-          <h1 className="text-4xl font-semibold">
+          <h1 className=" text-2xl md:text-4xl font-semibold">
             8 Days Sri Nagar to Leh Road, Trip via Nubra, Pangong and Sou Moriri
           </h1>
-          <div className="flex flex-row gap-12 p-6">
-            <div className="flex flex-row gap-4">
+          <div className="flex flex-col md:flex-row gap-12 p-6">
+            <div className="flex  flex-row gap-4">
               <img src="https://wanderon.in/assets/images/new-location.svg" />
               <div className="flex flex-col ">
                 <h1>Pickup and Drop</h1>
@@ -55,7 +55,7 @@ const EditCustomize = () => {
             </div>
           </div>
           <div className="">
-            <div className="flex flex-row gap-4 items-center justify-start px-4">
+            <div className="flex flex-row gap-4 items-center justify-start md:px-4">
               <img
                 src="https://png.pngtree.com/png-vector/20190508/ourmid/pngtree-click-vector-icon-png-image_1027903.jpg"
                 className="w-10 h-10"
@@ -65,7 +65,7 @@ const EditCustomize = () => {
 
             <Help />
 
-            <div className="flex flex-row gap-4 items-center justify-start px-4 mt-8">
+            <div className="flex flex-row gap-4 items-center justify-start md:px-4 mt-8">
               <img
                 src="https://png.pngtree.com/png-vector/20190508/ourmid/pngtree-click-vector-icon-png-image_1027903.jpg"
                 className="w-10 h-10"
@@ -73,7 +73,7 @@ const EditCustomize = () => {
               <h1 className="text-2xl font-bold"> Inclusions </h1>
             </div>
 
-            <div className="px-6 mt-4">
+            <div className="md:px-6 mt-4">
               {inclusions.map((inclusion, index) => (
                 <div className="mt-2 flex flex-row gap-4" key={index}>
                   <img
@@ -85,7 +85,7 @@ const EditCustomize = () => {
               ))}
             </div>
 
-            <div className="flex flex-row gap-4 items-center justify-start px-4 mt-8">
+            <div className="flex flex-row gap-4 items-center justify-start  md:px-4 mt-8">
               <img
                 src="https://png.pngtree.com/png-vector/20190508/ourmid/pngtree-click-vector-icon-png-image_1027903.jpg"
                 className="w-10 h-10"
@@ -93,7 +93,7 @@ const EditCustomize = () => {
               <h1 className="text-2xl font-bold"> Exclusions </h1>
             </div>
 
-            <div className="px-6 mt-4">
+            <div className="md:px-6 mt-4">
               {exclusions.map((exclusion, index) => (
                 <div className="mt-2 flex flex-row gap-4" key={index}>
                   <img
@@ -113,17 +113,17 @@ const EditCustomize = () => {
           <h3 className="mt-2 text-gray-400 text-sm">Starting from</h3>
           <h1 className="text-5xl text-[#2DA5F3] mt-0 flex justify-start items-baseline">
             ₹ 27,999/-{" "}
-            <span className="text-xl text-[#2DA5F3] ml-3 font-bold">
+            <span className="text-xl text-[#2DA5F3] md:ml-3 font-bold">
               {" "}
               per person
             </span>
           </h1>
-          <button className="w-[100%] px-6 py-4 rounded-full bg-[#2DA5F3] text-white mt-4">
+          <button className="w-[100%]  py-4 rounded-full bg-[#2DA5F3] text-white mt-4">
             {" "}
             BOOK NOW{" "}
           </button>
 
-          <div className="border-2 border-[#2DA5F3] rounded-md mt-8 px-4">
+          <div className="border-2 border-[#2DA5F3] rounded-md mt-8 ">
             <form className="mt-12">
               <h1 className="text-[#2DA5F3] font-semibold">
                 Travel Monk Calling ?{" "}

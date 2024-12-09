@@ -13,9 +13,10 @@ const IndianDestinations = () => {
   const dispatch = useDispatch();
 
   const singleD = useSelector((state) => state.trip.singleDestination);
+  console.log("dtata",singleD)
 
   const activities = useSelector((state) => state.trip.activities);
-
+console.log("activities",activities)
   useEffect(() => {
     dispatch(getSingleDestination(id));
     dispatch(getAllActivitiesByDestination(id));
@@ -25,7 +26,7 @@ const IndianDestinations = () => {
     <div>
       <HeroBanner data={singleD?.data} />
 
-      <h1 className="text-3xl font-semibold ml-12">
+      <h1 className="text-5xl font-extrabold ml-12">
         {" "}
         About {singleD?.data?.name} Tour Packages{" "}
       </h1>

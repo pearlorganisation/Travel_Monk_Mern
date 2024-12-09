@@ -20,7 +20,7 @@ const FaqsCard = (props) => {
       onClick={handleOpenAnswer}
     >
       <div className="cursor-pointer pb-0 flex mt-2 items-center justify-between text-lg text-gray-700 font-medium">
-        <div className="flex flex-row gap-6 items-center justify-center">
+        <div className="flex flex-col md:flex-row gap-6 items-center justify-center">
           <div
             className={`px-6 py-2 border-2  ${
               state ? "border-[#2DA5F3] text-[#2DA5F3]" : "border-gray-200"
@@ -32,7 +32,7 @@ const FaqsCard = (props) => {
           <h1>{faqsList.q}</h1>
         </div>
         {state ? (
-          <div className="h-[30px] w-[30px] bg-white border-2 border-gray-400 rounded-md px-1  flex items-center justify-center">
+          <div className="h-[30px] w-[30px] bg-white border-2  border-gray-400 rounded-md px-1  flex items-center justify-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-12 w-12 text-gray-500"
@@ -49,10 +49,10 @@ const FaqsCard = (props) => {
             </svg>
           </div>
         ) : (
-          <div className="h-[30px] w-[30px] bg-white border-2 border-gray-400 rounded-md px-1  flex items-center justify-center">
+          <div className="h-[30px] w-[30px] bg-white border-2 md:mt-0 mt-16 border-gray-400 rounded-md px-1  flex items-center justify-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-12 w-12 text-gray-500"
+              className="h-12 w-12 text-gray-500 "
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -150,7 +150,7 @@ const Help = () => {
 
   return (
     <section className="py-14">
-      <div className="max-w-screen-xl mx-auto px-4 gap-12 md:flex md:px-8">
+      <div className="max-w-screen-xl mx-auto px-4 gap-12 flex flex-col md:flex md:px-8">
         <div className="flex-1 mt-12 md:mt-0 bg-white p-2 rounded-lg ">
           <ul className="space-y-4 divide-y">
             {faqsList.map((item, idx) => (

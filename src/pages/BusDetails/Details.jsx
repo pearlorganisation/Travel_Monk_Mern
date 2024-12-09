@@ -24,14 +24,14 @@ const features = [
 
 const RoomDetails = () => {
     return (
-        <div className="flex md:flex-col flex-col lg:flex-row gap-8 pl-6">
-            <div className="lg:w-[80%] mt-2 md:w-full sm:w-full">
-                <div class="flex space-x-4 mb-4">
-                    <img src="hotel1.jpg" alt="Hotel Image 1" class="w-1/4 rounded-lg" />
-                    <img src="hotel2.jpg" alt="Hotel Image 2" class="w-1/4 rounded-lg" />
-                    <img src="hotel3.jpg" alt="Hotel Image 3" class="w-1/4 rounded-lg" />
-                    <div class="w-1/4 flex items-center justify-center bg-gray-200 rounded-lg">
-                        <span class="text-gray-600">50 More</span>
+        <div className="flex md:flex-col flex-col lg:flex-row gap-8 pl-6 px-6">
+            <div className="lg:w-[80%] mt-2 md:w-full sm:w-full px-4 h-full gap-4">
+                <div class="flex flex-col md:flex-row gap-4 mb-4 h-full ">
+                    <img src="hotel1.jpg" alt="Hotel Image 1" class="w-full md:w-1/4 rounded-lg" />
+                    <img src="hotel2.jpg" alt="Hotel Image 2" class="w-full md:w-1/4 rounded-lg" />
+                    <img src="hotel3.jpg" alt="Hotel Image 3" class="w-full md:w-1/4 rounded-lg" />
+                    <div class="w-full md:w-1/4 items-center  bg-gray-200 rounded-lg">
+                        <span class="text-gray-600  flex  justify-center items-center py-20 text-center">50 More</span>
                     </div>
                 </div>
 
@@ -71,7 +71,7 @@ const RoomDetails = () => {
                             This Bus offers :
                         </p>
 
-                        <div className="grid grid-cols-4 items-center justify-start mt-4">
+                        <div className="grid md:grid-cols-5  grid-col-1 items-center justify-start mt-4">
                             {features.map((feature) => (
                                 <div className="flex flex-row gap-2">
                                     <img src={feature.logo} className="w-8 h-8 " />
@@ -107,9 +107,9 @@ const RoomDetails = () => {
                 </div>
             </div>
 
-            <div className="lg:w-[20%] md:w-full sm:w-full">
+            <div className="lg:w-[20%] md:w-full sm:w-full py-8">
                 <div className="">
-                    <div className="mt-2  rounded-xl w-full bg-gray-200 p-4">
+                    <div className="mt-2   rounded-xl w-full bg-gray-200 p-4">
                         <h1 className="text-lg font-bold">Neuo Go</h1>
                         <h3>56 Seats</h3>
 

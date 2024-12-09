@@ -292,7 +292,7 @@ const HeroSupportingComponent = ({ data }, ref) => {
     <div className="  bg-white p-2 rounded-2xl">
       {data === "Trip" && (
         <form onSubmit={handleSubmit(submitForm)}>
-          <div className="grid grid-cols-[auto_auto_auto_155px_auto] gap-2  ">
+          <div className="grid lg:grid-cols-4 gap-2  grid-cols-1  ">
             {tripData.map((el, index) => {
               return (
                 <div class="relative p-2" key={index}>

@@ -12,51 +12,33 @@ import Reviews from "../../components/HeroSection.jsx/Reviews/Reviews";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllDestinations } from "../../features/trips/tripActions";
 import { getAuthUserDetails } from "../../features/user/userActions";
-<<<<<<<<< Temporary merge branch 1
-import { getAllDestinationNames, getPopularDestination } from "../../features/destination/destinationActions";
-=========
-// import { getAllDestinationNames } from "../../features/destination/destinationActions";
->>>>>>>>> Temporary merge branch 2
+import { getPopularDestination } from "../../features/destination/destinationActions";
 
 const Home = () => {
   const dispatch = useDispatch();
 
   const { destinations } = useSelector((state) => state.trip);
-<<<<<<<<< Temporary merge branch 1
   const { popular } = useSelector((state) => state.destination);
-=========
-  // const { destinationNames } = useSelector((state) => state.destination);
->>>>>>>>> Temporary merge branch 2
 
   const userState = useSelector((state) => state.user);
   console.log(userState, "user state");
 
-<<<<<<<<< Temporary merge branch 1
-  console.log(popular, "destination names");
-=========
-  // console.log(destinationNames?.destinations, "destination names");
->>>>>>>>> Temporary merge branch 2
+  console.log(popular?.data, "destination names");
 
   useEffect(() => {
     dispatch(getAuthUserDetails());
   }, []);
-  useEffect(() => {
-    dispatch(getAllDestinations());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getAllDestinations());
+  // }, []);
 
-<<<<<<<<< Temporary merge branch 1
   useEffect(() => {
     dispatch(getPopularDestination());
   }, []);
-=========
-  // useEffect(() => {
-  //   dispatch(getAllDestinationNames());
-  // }, []);
->>>>>>>>> Temporary merge branch 2
 
-  const indianData = popular?.data?.filter((data) => data.type == "Indian");
+  const indianData = popular?.data?.filter((data) => data.type === "Indian");
   const internationalData = popular?.data?.filter(
-    (data) => data.type == "International"
+    (data) => data.type === "International"
   );
 
   return (

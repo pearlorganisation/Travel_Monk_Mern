@@ -4,7 +4,9 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import IconWithName from "./IconWithName";
 import { Link } from "react-router-dom";
-
+import { MdLocationOn } from "react-icons/md";
+import { CgCalendarDates } from "react-icons/cg";
+import { FaMountainSun } from "react-icons/fa6";
 function CardCarousel({ data }) {
   let sliderRef = useRef(null);
   const next = () => {
@@ -15,11 +17,40 @@ function CardCarousel({ data }) {
   };
 
   const settings = {
-    infinite: true,
+
     speed: 500,
-    slidesToShow: 4,
+    slidesToShow: 4, // Default for larger screens
     slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 1200, // For large tablets and smaller desktops
+        settings: {
+          slidesToShow: 4,
+        },
+      },
+      {
+        breakpoint: 992, // For tablets
+        settings: {
+          slidesToShow: 3,
+        },
+      },
+      {
+        breakpoint: 768, // For large phones and small tablets
+        settings: {
+          slidesToShow: 2, // Adjusted for better layout
+        },
+      },
+      {
+        breakpoint: 480, // For small phones
+        settings: {
+          slidesToShow: 1,
+          arrows: false, // Optional: Hide arrows for small screens
+        },
+      },
+    ],
   };
+  
+    
 
   const parseDate = (dateString) => {
     const date = new Date(dateString);
@@ -39,7 +70,7 @@ function CardCarousel({ data }) {
         {...settings}
       >
         {data?.packages?.map((cardData, i) => (
-          <div key={i} className="h-96  w-40 p-2    flex ">
+          <div key={i} className="h-96  w-40 p-2    flex flex-col ">
             <Link to={`/packages/${cardData?._id}`}>
               <div className=" h-full relative z-0 w-full">
                 <img
@@ -51,7 +82,7 @@ function CardCarousel({ data }) {
                 <div className=" h-full p-4 rounded-lg  w-full bg-black bg-opacity-50  relative z-20">
                   <div className="h-[60%]">
                     <div className="w-full flex justify-end">
-                      <div className="bg-yellow-400 font-semibold w-fit px-2 flex items-center gap-2 rounded-full">
+                      <div className="bg-white font-semibold w-fit px-2 flex items-center gap-2 rounded-full">
                         {cardData.startingPrice}{" "}
                         <span className="text-sm">onwards</span>
                       </div>
@@ -60,24 +91,23 @@ function CardCarousel({ data }) {
 
                   <div className="h-[40%] flex-1 flex-col text-sm text-white">
                     <div className="mb-4">{cardData.name}</div>
-                    <div className="flex flex-col my-2 justify-between gap-2">
-                      <IconWithName
-                        iconName="https://wanderon.in/assets/images/new-location.svg"
-                        label={`${cardData.duration.days}D/${cardData.duration.nights}N`}
-                      />
-                      <IconWithName
-                        iconName="https://wanderon.in/assets/images/new-calender.svg"
-                        label={`${parseDate(
+                    <div className=" flex flex-row gap-2 items-center">
+                    <FaMountainSun className="text-[#01AFD1] mt-2" size={20} />
+                 
+                      {`${cardData.duration.days}D/${cardData.duration.nights}N`}
+                     </div>
+                <div className=" flex flex-row gap-2 items-center">
+                  <CgCalendarDates className="text-[#01AFD1] mt-2" size={20} />
+                        {`${parseDate(
                           cardData?.startDate
                         )} to ${parseDate(cardData?.endDate)}`}
-                      />
+                  
                     </div>
 
-                    <div className="flex  justify-between">
-                      <IconWithName
-                        iconName="https://wanderon.in/assets/images/new-location.svg"
-                        label={`${cardData?.pickDropPoint?.pickup} - ${cardData?.pickDropPoint?.drop}`}
-                      />
+                    <div className=" flex flex-row gap-2 items-center">
+                 <MdLocationOn className="text-[#01AFD1] mt-2"  size={20}/>
+                       {`${cardData?.pickDropPoint?.pickup} - ${cardData?.pickDropPoint?.drop}`}
+                 
                     </div>
                   </div>
                 </div>
