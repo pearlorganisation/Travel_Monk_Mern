@@ -62,6 +62,8 @@ const CustomizeTrip = () => {
       selectedHotel: {},
       selectedActivity: [],
       selectedLocation: "",
+      location: {},
+      day: "",
     })) || [] // Initialize based on itinerary length
   );
   /**--------------------Selected Activity-----------------------*/
@@ -84,6 +86,8 @@ const CustomizeTrip = () => {
           selectedHotel: {},
           selectedActivity: [],
           selectedLocation: "",
+          location: {},
+          day: "",
         }))
       );
     }
@@ -99,7 +103,9 @@ const CustomizeTrip = () => {
     /**  data for sending in the newDayData for selected hotel */
 
     const newDayData = [...dayData];
-    newDayData[index].selectedHotel = event.target.value;
+    newDayData[index].day = index + 1;
+    newDayData[index].location = currentLocation;
+    // newDayData[index].selectedHotel = event.target.value;
     newDayData[index].selectedLocation = currentLocation;
     newDayData[index].selectedHotel = {
       name: selectedHotel.name,

@@ -1,12 +1,14 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import Timeline from "../../components/TimelineComponent/SampleTimeline";
+import { sendPrebuiltPackageEnquiry } from "../../features/PrebuiltPackage/prebuiltPackageAction";
 
 const PrebuiltEnquiryForm = () => {
   const location = useLocation();
 
+  const dispatch = useDispatch();
   const { isUserLoggedIn } = useSelector((state) => state.auth); // getting isUserLogged in
   const { userInfo } = useSelector((state) => state.user); // getting the userInfo
 
@@ -15,14 +17,6 @@ const PrebuiltEnquiryForm = () => {
     location.state || {};
 
   console.log("location state", location.state);
-  // console.log(
-  //   "-----------------estimated price",
-  //   // Estimate_Price,
-  //   // packageId,
-  //   // itinerary,
-  //   // vehicleId,
-  //   vehicleName
-  // );
 
   const {
     register,
@@ -52,6 +46,8 @@ const PrebuiltEnquiryForm = () => {
       selectedVehicleName: vehicleName,
       itinerary: itinerary,
     };
+
+    dispatch(sendPrebuiltPackageEnquiry(formData));
   };
 
   return (
@@ -148,7 +144,10 @@ const PrebuiltEnquiryForm = () => {
 
             {/* Form Section */}
             <div className="p-10 flex items-center justify-center">
-              <form onSubmit={handleSubmit} className="w-full space-y-6">
+              <form
+                onSubmit={handleSubmit(submitForm)}
+                className="w-full space-y-6"
+              >
                 <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
                   Contact Us
                 </h2>
