@@ -172,6 +172,7 @@ const FullyCustomizeTrip = () => {
   const [hotelPrices, setHotelPrices] = useState([]); // Array to store prices for each day
   const [totalHotelPrices, setTotalHotelPrice] = useState(0); // to get the whole selected hotel prices
 
+  /** for selected vehicle */
   const [selectedVehicleName, setSelectedVehicleName] = useState("")
   const [selectedVehicleId,setSelectedVehicleId] = useState(null)
   const [selectedVehiclePrice,setSelectedVehiclePrice] = useState("")
@@ -263,7 +264,10 @@ console.log(totalHotelPrices,'-----------------------------------')
       )
     );
   };
+/** The Total price after selecting hotels and vehicle */
+let Total_Estimated_Price = totalHotelPrices + selectedVehiclePrice
 
+console.log("selected hotel and vehicle prices" ,Total_Estimated_Price)
   console.log(dayData, "day data");
 
   return (
