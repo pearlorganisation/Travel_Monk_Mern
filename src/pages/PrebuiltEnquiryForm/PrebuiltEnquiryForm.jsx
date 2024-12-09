@@ -41,7 +41,7 @@ const PrebuiltEnquiryForm = () => {
       ...data,
       user: userInfo?._id,
       estimatedPrice: Estimate_Price,
-      package: packageDetails,
+      package: packageDetails.package,
       selectedVehicle: vehicleId,
       selectedVehicleName: vehicleName,
       itinerary: itinerary,
