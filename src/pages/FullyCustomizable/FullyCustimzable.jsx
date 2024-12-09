@@ -11,6 +11,7 @@ import {
 } from "../../features/trips/tripActions";
 import parse from "html-react-parser";
 import { getHotelsByDestination } from "../../features/hotel/hotelActions";
+import { getDestinationVehicle } from "../../features/DestinationVehicle/destinationVehicleaction";
 
 const tripData = [
   {
@@ -163,7 +164,24 @@ const FullyCustomizeTrip = () => {
   const { id } = useParams();
   const { singleDestination, activities } = useSelector((state) => state.trip);
   const { destinationHotels } = useSelector((state)=> state.hotels)  // destination hotels contains all the hotels for that particular destination
+  const { destinationVehicles } = useSelector((state) => state.destination_vehicle)
 
+  /**----------------------------States--------------------------------- */
+
+  /** states for claculating the selected hotels price */
+  const [hotelPrices, setHotelPrices] = useState([]); // Array to store prices for each day
+  const [totalHotelPrices, setTotalHotelPrice] = useState(0); // to get the whole selected hotel prices
+
+  const [selectedVehicleName, setSelectedVehicleName] = useState("")
+  const [selectedVehicleId,setSelectedVehicleId] = useState(null)
+  const [selectedVehiclePrice,setSelectedVehiclePrice] = useState("")
+  const handleSelectVehicle = (vehicleName, vehiclePrice, vehicleId)=>{
+    setSelectedVehicleId(vehicleId)
+    setSelectedVehicleName(vehicleName)
+    setSelectedVehiclePrice(vehiclePrice)
+  }
+
+  console.log(selectedVehiclePrice,"-----------------------selected vehicle price")
   /** data prepared for the options to use in the react-select */
 let activitiesOption = activities?.map((activity) => ({
     label: activity?.name,
@@ -177,8 +195,9 @@ let activitiesOption = activities?.map((activity) => ({
 
   useEffect(() => {
     dispatch(getAllActivitiesByDestination(id));
-    dispatch(getHotelsByDestination(id))
+    dispatch(getHotelsByDestination(id));
     dispatch(getSingleDestination(id));
+    dispatch(getDestinationVehicle(id));
   }, []);
 
   // useEffect(() => {
@@ -190,7 +209,7 @@ let activitiesOption = activities?.map((activity) => ({
 
   const [dayData, setDayData] = useState(
     singleDestination?.data?.locations?.map((loc) => ({
-      selectedLocation: [],
+      selectedLocation: {},
       selectedHotel: {},
       selectedActivities: [],
     })) || [] // Initialize based on itinerary length
@@ -200,8 +219,8 @@ let activitiesOption = activities?.map((activity) => ({
     if (singleDestination?.data?.locations) {
       setDayData(
         singleDestination?.data?.locations.map(() => ({
-          selectedLocation: [],
-          selectedHotel: [],
+          selectedLocation: {},
+          selectedHotel: {},
           selectedActivities: [],
         }))
       );
@@ -214,16 +233,27 @@ let activitiesOption = activities?.map((activity) => ({
     setDayData(newDayData);
   };
 
+ 
+
+  /** to selecte hotels and calculate their price */
   const handleHotelChange = (index, event, hotels) => {
   /**------- logic to find out the selected hotel by id--------------*/
   const selectedHotelId = event.target.value;
-  const selectedHotel = hotels.find((hotel)=> hotel._id === selectedHotelId) // this will find the selected hotel by id
+  const selected_Hotel = hotels.find((hotel)=> hotel._id === selectedHotelId) // this will find the selected hotel by id
 
     const newDayData = [...dayData];
-    newDayData[index].selectedHotel = {name: selectedHotel.name, hotelId:selectedHotel._id};
+    newDayData[index].selectedHotel = {name: selected_Hotel.name, hotelId:selected_Hotel._id};
     setDayData(newDayData);
+    /** calculating the selected hotel prices */
+    const startingPrice = selected_Hotel ? selected_Hotel.startingPrice : 0;
+    const updatedHotelPrices = [...hotelPrices];
+    updatedHotelPrices[index] = startingPrice;
+    setHotelPrices(updatedHotelPrices)
+    setTotalHotelPrice(
+      updatedHotelPrices.reduce((total,price)=>total+price, 0)
+    )
   };
-
+console.log(totalHotelPrices,'-----------------------------------')
   const handleActivityChange = (selectedOptions, dayIndex) => {
     setDayData((prevDayData) =>
       prevDayData.map((day, index) =>
@@ -337,7 +367,7 @@ let activitiesOption = activities?.map((activity) => ({
                       <div className="flex flex-col gap-3 ">
                         <h1> Select Hotel </h1>
                         <select
-                          value={dayData[index]?.selectedHotel}
+                          value={dayData[index]?.selectedHotel[0]}
                           onChange={(event) => handleHotelChange(index, event, destinationHotels)}
                           className="bg-blue-100 border-2 border-[#1f1f1f] rounded-md px-2 py-2 flex flex-row gap-2"
                         >
@@ -393,6 +423,30 @@ let activitiesOption = activities?.map((activity) => ({
               </div>
             );
           })}
+        </div>
+        {/** select vehicle section */}
+        <div className="p-4">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {destinationVehicles?.map((vehicle) => (
+              <div
+                key={vehicle?._id}
+                onClick={() => handleSelectVehicle(vehicle?.vehicleName, vehicle?.pricePerDay, vehicle?._id)}
+                className="p-4 border rounded-lg shadow-md cursor-pointer hover:bg-gray-100"
+              >
+                <p className="text-lg font-semibold">Name: {vehicle?.vehicleName}</p>
+                <p className="text-gray-600">Price: {vehicle?.pricePerDay}</p>
+              </div>
+            ))}
+          </div>
+          {selectedVehicleName && (
+            <div className="mt-6 p-4 bg-blue-50 rounded-lg shadow-md">
+              <h3 className="text-xl font-semibold text-blue-700">
+                Selected Vehicle
+              </h3>
+              <p className="text-lg">Name: {selectedVehicleName}</p>
+              <p className="text-lg">Price: {selectedVehiclePrice}</p>
+            </div>
+          )}
         </div>
      </div>
 
