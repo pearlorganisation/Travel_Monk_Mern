@@ -162,12 +162,34 @@ const FullyCustomizeTrip = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
   const { id } = useParams();  // destinationId 
-  
+  const location= useLocation()
   const { singleDestination, activities } = useSelector((state) => state.trip);
   const { destinationHotels } = useSelector((state)=> state.hotels)  // destination hotels contains all the hotels for that particular destination
   const { destinationVehicles } = useSelector((state) => state.destination_vehicle)
 
- 
+  const { startDate , endDate, destination } = location.state ?? {}
+  console.log("------------destination", startDate, endDate, destination);
+
+  
+  const calculateDaysBetweenDates = (startDate, endDate) => {
+    // Convert the date strings into Date objects
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    // Calculate the difference in time (milliseconds)
+    const timeDifference = end - start;
+
+    // Convert the difference to days
+    const daysDifference = timeDifference / (1000 * 60 * 60 * 24);
+ console.log(daysDifference, "diff")
+    return daysDifference;
+  };
+
+  const myDays = calculateDaysBetweenDates(startDate, endDate);
+
+
+
+  // console.log(duration, "diff between dates")
   /**----------------------------States--------------------------------- */
 
   /** states for claculating the selected hotels price */
@@ -292,6 +314,8 @@ console.log("selected hotel and vehicle prices" ,Total_Estimated_Price)
           further optimize it by changing stays, adding activities and
           destinations.
         </h3>
+
+        <h1> Duration : {myDays} </h1>
 
         <button className="mt-4 bg-white px-6 py-1 border border-[#1f1f1f] rounded-sm lg:min-w-72 flex flex-row items-center justify-center gap-2">
           <svg

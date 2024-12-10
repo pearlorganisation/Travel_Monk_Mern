@@ -39,6 +39,7 @@ export const tripsSlice = createSlice({
 
       .addCase(getSingleDestination.pending, (state) => {
         state.isLoading = true;
+        state.isSuccess = false;
       })
       .addCase(getSingleDestination.fulfilled, (state, action) => {
         state.isLoading = false;
