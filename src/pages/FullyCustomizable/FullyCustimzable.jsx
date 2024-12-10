@@ -3,7 +3,7 @@ import Bro from "../../assets/images/bro.png";
 import Select from "react-select";
 
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
   getAllActivitiesByDestination,
@@ -160,12 +160,14 @@ const tripData = [
 
 const FullyCustomizeTrip = () => {
   const dispatch = useDispatch();
-
-  const { id } = useParams();
+  const navigate = useNavigate()
+  const { id } = useParams();  // destinationId 
+  
   const { singleDestination, activities } = useSelector((state) => state.trip);
   const { destinationHotels } = useSelector((state)=> state.hotels)  // destination hotels contains all the hotels for that particular destination
   const { destinationVehicles } = useSelector((state) => state.destination_vehicle)
 
+ 
   /**----------------------------States--------------------------------- */
 
   /** states for claculating the selected hotels price */
@@ -213,6 +215,7 @@ let activitiesOption = activities?.map((activity) => ({
       selectedLocation: {},
       selectedHotel: {},
       selectedActivities: [],
+      day:""
     })) || [] // Initialize based on itinerary length
   );
 
@@ -223,6 +226,7 @@ let activitiesOption = activities?.map((activity) => ({
           selectedLocation: {},
           selectedHotel: {},
           selectedActivities: [],
+          day:""
         }))
       );
     }
@@ -234,8 +238,6 @@ let activitiesOption = activities?.map((activity) => ({
     setDayData(newDayData);
   };
 
- 
-
   /** to selecte hotels and calculate their price */
   const handleHotelChange = (index, event, hotels) => {
   /**------- logic to find out the selected hotel by id--------------*/
@@ -243,7 +245,10 @@ let activitiesOption = activities?.map((activity) => ({
   const selected_Hotel = hotels.find((hotel)=> hotel._id === selectedHotelId) // this will find the selected hotel by id
 
     const newDayData = [...dayData];
-    newDayData[index].selectedHotel = {name: selected_Hotel.name, hotelId:selected_Hotel._id};
+    /** setting the day also */
+    newDayData[index].day = index + 1
+    /** setting the hotel of current index */
+    newDayData[index].selectedHotel = event.target.value;
     setDayData(newDayData);
     /** calculating the selected hotel prices */
     const startingPrice = selected_Hotel ? selected_Hotel.startingPrice : 0;
@@ -255,7 +260,8 @@ let activitiesOption = activities?.map((activity) => ({
     )
   };
 console.log(totalHotelPrices,'-----------------------------------')
-  const handleActivityChange = (selectedOptions, dayIndex) => {
+  
+const handleActivityChange = (selectedOptions, dayIndex) => {
     setDayData((prevDayData) =>
       prevDayData.map((day, index) =>
         index === dayIndex
@@ -270,6 +276,10 @@ let Total_Estimated_Price = totalHotelPrices + selectedVehiclePrice
 console.log("selected hotel and vehicle prices" ,Total_Estimated_Price)
   console.log(dayData, "day data");
 
+  /**------------------Handle for Enquiry-------------------------*/
+  const handleEnquiry = () => {
+    navigate("/full-customize-package-enquiry", { state: { Estimated_Price: Total_Estimated_Price, itinerary: dayData, destinationId: id,vehicleId:selectedVehicleId} }) // to send all the required prebuilt package data
+  } 
   return (
     <div className="bg-gray-200 relative">
       <div className="px-24 mt-4">
@@ -346,7 +356,7 @@ console.log("selected hotel and vehicle prices" ,Total_Estimated_Price)
                       </svg>
 
                       <div className="flex flex-col gap-1">
-                        <h1> 21 June </h1>
+                        <h1> {21 + index} June </h1>
                       </div>
 
                       <div className="flex flex-col gap-3 ">
@@ -371,7 +381,7 @@ console.log("selected hotel and vehicle prices" ,Total_Estimated_Price)
                       <div className="flex flex-col gap-3 ">
                         <h1> Select Hotel </h1>
                         <select
-                          value={dayData[index]?.selectedHotel[0]}
+                          value={dayData[index]?.selectedHotel}
                           onChange={(event) => handleHotelChange(index, event, destinationHotels)}
                           className="bg-blue-100 border-2 border-[#1f1f1f] rounded-md px-2 py-2 flex flex-row gap-2"
                         >
@@ -451,6 +461,10 @@ console.log("selected hotel and vehicle prices" ,Total_Estimated_Price)
               <p className="text-lg">Price: {selectedVehiclePrice}</p>
             </div>
           )}
+        </div>
+        <div className="w-full bg-cyan-300">
+          <p>Your Estimated price of Trip is: {Total_Estimated_Price}</p>
+          <button onClick={handleEnquiry}>To move forward submit this form</button>
         </div>
      </div>
 

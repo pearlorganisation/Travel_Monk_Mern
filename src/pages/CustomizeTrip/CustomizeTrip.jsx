@@ -60,7 +60,7 @@ const CustomizeTrip = () => {
     singlePackage?.data?.itinerary?.map((iti) => ({
       selectedHotel:{},
       selectedActivities: [],
-      location:{},
+      location:"",
       day:""
     })) || [] // Initialize based on itinerary length
   );
@@ -81,7 +81,7 @@ const CustomizeTrip = () => {
         singlePackage.data.itinerary.map(() => ({
           selectedHotel: {},
           selectedActivities: [],
-          location:{},
+          location:"",
           day:""
         }))
       );

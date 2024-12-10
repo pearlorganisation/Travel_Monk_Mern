@@ -28,6 +28,7 @@ import ContactUs from "../pages/ContactUs/ContactUs";
 import ChangePassword from "../pages/ChangePassword/ChangePassword";
 import ResetPassword from "../pages/ResetPassword/ResetPassword";
 import PrebuiltEnquiryForm from "../pages/PrebuiltEnquiryForm/PrebuiltEnquiryForm";
+import FullCustomizeEnquiryForm from "../pages/FullCustomizeEnquiryForm/FullCustomizeEnquiryForm";
 
 const Routes = createBrowserRouter([
   {
@@ -139,6 +140,10 @@ const Routes = createBrowserRouter([
       {
         path:"prebuilt-package-enquiry",
         element:<PrebuiltEnquiryForm />
+      },
+      {
+        path:"full-customize-package-enquiry",
+        element:<FullCustomizeEnquiryForm />
       }
     ],
   },
