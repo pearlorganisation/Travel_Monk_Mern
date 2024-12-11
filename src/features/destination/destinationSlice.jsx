@@ -23,6 +23,7 @@ export const destinationsSlice = createSlice({
     builder
       .addCase(searchDestination.pending, (state) => {
         state.isLoading = true;
+        state.isSuccess = false;
       })
       .addCase(searchDestination.fulfilled, (state, action) => {
         state.isLoading = false;

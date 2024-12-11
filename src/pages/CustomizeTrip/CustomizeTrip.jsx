@@ -15,13 +15,13 @@ const CustomizeTrip = () => {
 
   /** to get the current page url */
   const fullURL = window.location.href;
-  console.log(`The full URL is: ${fullURL}`);
+  // console.log(`The full URL is: ${fullURL}`);
 
   const { singleDestination } = useSelector((state) => state.trip);
   const { singlePackage } = useSelector((state) => state.packages);
 
   /*---------------- getting the vehicles available for that destination-----------------------------------------------*/
-  const [selectedVehicle, setSelectedVehicle] = useState("");
+  const [selectedVehicleName, setSelectedVehicle] = useState("");
   const [selectedVehiclePrice, setSelectedVehiclePrice] = useState("");
 
   const [selectedVehicleImage, setSelectedVehicleImage] = useState("");
@@ -36,8 +36,6 @@ const CustomizeTrip = () => {
   );
 
   const { destinationHotels } = useSelector((state) => state.hotels);
-
-  console.log(destinationHotels, "my hotels");
 
   useEffect(() => {
     dispatch(getHotelsByDestination(singleDestination?.data?._id));
@@ -117,20 +115,12 @@ const CustomizeTrip = () => {
     const newDayData = [...dayData];
     newDayData[index].day = index + 1;
     newDayData[index].location = currentLocation;
-    // newDayData[index].selectedHotel = event.target.value;
     newDayData[index].selectedLocation = currentLocation;
     newDayData[index].selectedHotel = {
       name: selectedHotel.name,
       hotelId: selectedHotel._id,
     };
-    // newDayData[index].selectedHotel.name = name;
     setDayData(newDayData);
-
-    /** Calculating price based on the selected hotel price */
-    // const selectedHotelId = event.target.value;
-    // const selectedHotel = hotels.find((hotel) => hotel._id === selectedHotelId);
-    console.log("--------selected hotel", selectedHotel);
-    // const selectedHotelName = hot
 
     const startingPrice = selectedHotel ? selectedHotel.startingPrice : 0;
 
@@ -154,7 +144,7 @@ const CustomizeTrip = () => {
         packageDetails: { name: singlePackage?.data?.name, packageId: id },
         itinerary: dayData,
         selectedVehicle: {
-          name: selectedVehicle,
+          name: selectedVehicleName,
           vehicle: selectedVehicleId,
         },
         // vehicleId: selectedVehicleId,
@@ -170,7 +160,7 @@ const CustomizeTrip = () => {
     selectedVehiclePrice
   );
 
-  console.log("--------------------selected vehicle name", selectedVehicle);
+  // console.log("--------------------selected vehicle name", selectedVehicle);
 
   // const [selectedActivity, setSelectedActivity] = useState("Choose Activity");
   // const [selectedHotel, setSelectedHotel] = useState("Choose Hotel");
@@ -181,7 +171,7 @@ const CustomizeTrip = () => {
       state: {
         dayData: dayData,
         startingPrice: singlePackage?.data?.startingPrice,
-        vehicleName: selectedVehicle,
+        vehicleName: selectedVehicleName,
       },
     });
   };
@@ -268,14 +258,14 @@ const CustomizeTrip = () => {
 
       <div className="grid grid-cols-1 mt-4">
         <div className="p-4">
-          {selectedVehicle && (
+          {selectedVehicleName && (
             <div className="mt-6 p-4 bg-orange-300 rounded-lg shadow-md">
               <div className="flex flex-row gap-6">
                 <div className="flex flex-col gap-3">
                   <h3 className="text-xl font-semibold text-blue-700">
                     Your Selected Vehicle
                   </h3>
-                  <p className="text-lg">Name: {selectedVehicle}</p>
+                  <p className="text-lg">Name: {selectedVehicleName}</p>
                   <p className="text-lg">Price: {selectedVehiclePrice}</p>
                 </div>
 
@@ -294,11 +284,6 @@ const CustomizeTrip = () => {
               };
             });
 
-            // if (dataForSelect.length === 0)
-            //   return (
-            //     <h1 className="text-center">Arrived Back To Destinatiom !!</h1>
-            //   );
-            // console.log(index,"my index");
             return (
               <div className="flex flex-row gap-2 items-center justify-start px-4 mt-2">
                 <div className="flex flex-col gap-1 min-w-20">

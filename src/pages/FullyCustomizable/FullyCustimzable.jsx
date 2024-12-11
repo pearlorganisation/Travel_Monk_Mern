@@ -1,14 +1,17 @@
 import Stepper from "./Stepper";
 import Bro from "../../assets/images/bro.png";
+import Select from "react-select";
 
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
   getAllActivitiesByDestination,
   getSingleDestination,
 } from "../../features/trips/tripActions";
 import parse from "html-react-parser";
+import { getHotelsByDestination } from "../../features/hotel/hotelActions";
+import { getDestinationVehicle } from "../../features/DestinationVehicle/destinationVehicleaction";
 
 const tripData = [
   {
@@ -157,62 +160,190 @@ const tripData = [
 
 const FullyCustomizeTrip = () => {
   const dispatch = useDispatch();
-
-  const { id } = useParams();
+  const navigate = useNavigate();
+  const { id } = useParams(); // destinationId
+  const location = useLocation();
   const { singleDestination, activities } = useSelector((state) => state.trip);
+  const { destinationHotels } = useSelector((state) => state.hotels); // destination hotels contains all the hotels for that particular destination
+  const { destinationVehicles } = useSelector(
+    (state) => state.destination_vehicle
+  );
+
+  const { startDate, endDate, destination } = location.state ?? {};
+  // console.log("------------destination", startDate, endDate, destination);
+
+  console.log("------------destination hotels", destinationHotels);
+
+  /** calculating the days difference */
+  const calculateDaysBetweenDates = (startDate, endDate) => {
+    // Convert the date strings into Date objects
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    // Calculate the difference in time (milliseconds)
+    const timeDifference = end - start;
+
+    // Convert the difference to days
+    const daysDifference = timeDifference / (1000 * 60 * 60 * 24);
+    console.log(daysDifference, "diff");
+    return daysDifference;
+  };
+
+  const myDays = calculateDaysBetweenDates(startDate, endDate);
+  /** duration that is day and nights of the customized package */
+  const days = parseInt(myDays);
+  const nights = parseInt(myDays - 1);
+
+  /**------------------Utility function to get the dates between the selected start date and end date----------------------*/
+  const getDatesInRange = (start, end) => {
+    if (!start || !end) return [];
+
+    const dates = [];
+    let currentDate = new Date(start);
+
+    while (currentDate <= end) {
+      dates.push(new Date(currentDate));
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    return dates;
+  };
+
+  const datesRange = getDatesInRange(startDate, endDate);
+  const datesObjects = datesRange.map((date) => ({ date }));
+
+  /**----------------------------States--------------------------------- */
+
+  /** states for claculating the selected hotels price */
+  const [hotelPrices, setHotelPrices] = useState([]); // Array to store prices for each day
+  const [totalHotelPrices, setTotalHotelPrice] = useState(0); // to get the whole selected hotel prices
+
+  /** for selected vehicle */
+  const [selectedVehicleName, setSelectedVehicleName] = useState("");
+  const [selectedVehicleId, setSelectedVehicleId] = useState(null);
+  const [selectedVehiclePrice, setSelectedVehiclePrice] = useState("");
+  const handleSelectVehicle = (vehicleName, vehiclePrice, vehicleId) => {
+    setSelectedVehicleId(vehicleId);
+    setSelectedVehicleName(vehicleName);
+    setSelectedVehiclePrice(vehiclePrice);
+  };
+
+  console.log(
+    selectedVehiclePrice,
+    "-----------------------selected vehicle price"
+  );
+  /** data prepared for the options to use in the react-select */
+  let activitiesOption = activities?.map((activity) => ({
+    label: activity?.name,
+    value: activity?._id,
+  }));
+
+  // console.log("---------------------activites option", activitiesOption)
 
   useEffect(() => {
     dispatch(getAllActivitiesByDestination(id));
+    dispatch(getHotelsByDestination(id));
     dispatch(getSingleDestination(id));
+    dispatch(getDestinationVehicle(id));
   }, []);
 
-  // useEffect(() => {
-
-  // }, []);
-
-  // console.log("Single Destination Fully Customize", singleDestination);
-  // console.log("All activities", activities);
-
   const [dayData, setDayData] = useState(
-    singleDestination?.data?.locations?.map(() => ({
-      selectedLocation: "Choose Location",
-      selectedHotel: "Choose Hotel",
-      selectedActivity: "Choose Activity",
-    })) || [] // Initialize based on itinerary length
+    // singleDestination?.data?.locations?.map((loc) => ({
+    //   selectedLocation: {},
+    //   selectedHotel: {},
+    //   selectedActivities: [],
+    //   day:""
+    // })) || [] // Initialize based on itinerary length
+    Array.from({ length: myDays }, () => ({
+      selectedLocation: "",
+      selectedHotel: {},
+      selectedActivities: [],
+      day: "",
+      date: "",
+    })) || []
   );
 
   useEffect(() => {
-    if (singleDestination?.data?.locations) {
+    if (myDays) {
       setDayData(
-        singleDestination?.data?.locations.map(() => ({
-          selectedLocation: "Choose Location",
-          selectedHotel: "Choose Hotel",
-          selectedActivity: "Choose Activity",
-        }))
+        // singleDestination?.data?.locations.map(() => ({
+        //   selectedLocation: {},
+        //   selectedHotel: {},
+        //   selectedActivities: [],
+        //   day:""
+        // }))
+        Array.from({ length: myDays }, () => ({
+          selectedLocation: "",
+          selectedHotel: {},
+          selectedActivities: [],
+          day: "",
+          date: "",
+        })) || []
       );
     }
-  }, [singleDestination?.data]);
+  }, [myDays]);
 
-  const handleLocationChange = (index, event) => {
+  const handleLocationChange = (index, event, selectedDate) => {
     const newDayData = [...dayData];
     newDayData[index].selectedLocation = event.target.value;
+    newDayData[index].date = selectedDate;
+    newDayData[index].day = index + 1;
     setDayData(newDayData);
   };
 
-  const handleHotelChange = (index, event) => {
+  /** to selecte hotels and calculate their price */
+  const handleHotelChange = (index, event, hotels) => {
+    /**------- logic to find out the selected hotel by id--------------*/
+    const selectedHotelId = event.target.value;
+    const selected_Hotel = hotels.find(
+      (hotel) => hotel._id === selectedHotelId
+    ); // this will find the selected hotel by id
+
     const newDayData = [...dayData];
+
+    /** setting the hotel of current index */
     newDayData[index].selectedHotel = event.target.value;
     setDayData(newDayData);
+    /** calculating the selected hotel prices */
+    const startingPrice = selected_Hotel ? selected_Hotel.startingPrice : 0;
+    const updatedHotelPrices = [...hotelPrices];
+    updatedHotelPrices[index] = startingPrice;
+    setHotelPrices(updatedHotelPrices);
+    setTotalHotelPrice(
+      updatedHotelPrices.reduce((total, price) => total + price, 0)
+    );
   };
+  console.log(totalHotelPrices, "-----------------------------------");
 
-  const handleActivityChange = (index, event) => {
-    const newDayData = [...dayData];
-    newDayData[index].selectedActivity = event.target.value;
-    setDayData(newDayData);
+  const handleActivityChange = (selectedOptions, dayIndex) => {
+    setDayData((prevDayData) =>
+      prevDayData.map((day, index) =>
+        index === dayIndex
+          ? { ...day, selectedActivities: selectedOptions || [] }
+          : day
+      )
+    );
   };
+  /** The Total price after selecting hotels and vehicle */
+  let Total_Estimated_Price = totalHotelPrices + selectedVehiclePrice;
 
+  console.log("selected hotel and vehicle prices", Total_Estimated_Price);
   console.log(dayData, "day data");
 
+  /**------------------Handle for Enquiry-------------------------*/
+  const handleEnquiry = () => {
+    navigate("/full-customize-package-enquiry", {
+      state: {
+        Estimated_Price: Total_Estimated_Price,
+        itinerary: dayData,
+        destinationId: id,
+        vehicleId: selectedVehicleId,
+        duration: { days: days, nights: nights },
+        startDate: startDate,
+        endDate: endDate,
+      },
+    }); // to send all the required prebuilt package data
+  };
   return (
     <div className="bg-gray-200 relative">
       <div className="px-24 mt-4">
@@ -225,6 +356,8 @@ const FullyCustomizeTrip = () => {
           further optimize it by changing stays, adding activities and
           destinations.
         </h3>
+
+        <h1> Duration : {myDays} </h1>
 
         <button className="mt-4 bg-white px-6 py-1 border border-[#1f1f1f] rounded-sm lg:min-w-72 flex flex-row items-center justify-center gap-2">
           <svg
@@ -244,8 +377,8 @@ const FullyCustomizeTrip = () => {
       </div>
 
       <div className="grid grid-cols-1 mt-4">
-        <div className="overflow-hidden">
-          {singleDestination?.data?.locations?.map((iti, index) => {
+        <div className="">
+          {dayData?.map((day, index) => {
             return (
               <div className="flex flex-row gap-2 items-center justify-start px-8 mt-2">
                 <svg
@@ -289,7 +422,10 @@ const FullyCustomizeTrip = () => {
                       </svg>
 
                       <div className="flex flex-col gap-1">
-                        <h1> 21 June </h1>
+                        {/**  show date here */}
+                        <h2 className="text-gray-700 font-medium">
+                          {new Date(datesObjects[index]?.date).toDateString()}
+                        </h2>
                       </div>
 
                       <div className="flex flex-col gap-3 ">
@@ -297,12 +433,18 @@ const FullyCustomizeTrip = () => {
                         <select
                           value={dayData[index]?.selectedLocation}
                           onChange={(event) =>
-                            handleLocationChange(index, event)
+                            handleLocationChange(
+                              index,
+                              event,
+                              new Date(datesObjects[index]?.date).toISOString()
+                            )
                           }
                           className="bg-blue-100 border-2 border-[#1f1f1f] rounded-md px-2 py-2 flex flex-row gap-2"
                         >
                           <option key="choose"> Choose Location</option>
-                          {iti.location.map((loc, index) => (
+                          {singleDestination?.data?.locations?.[
+                            index
+                          ]?.location?.map((loc, index) => (
                             <option key={index} value={loc}>
                               {" "}
                               {loc}
@@ -315,45 +457,34 @@ const FullyCustomizeTrip = () => {
                         <h1> Select Hotel </h1>
                         <select
                           value={dayData[index]?.selectedHotel}
-                          onChange={(event) => handleHotelChange(index, event)}
+                          onChange={(event) =>
+                            handleHotelChange(index, event, destinationHotels)
+                          }
                           className="bg-blue-100 border-2 border-[#1f1f1f] rounded-md px-2 py-2 flex flex-row gap-2"
                         >
                           <option key="choose"> Choose Hotel</option>
-                          {singleDestination?.data?.hotels.map((hotel) => (
-                            <option key={hotel.id} value={hotel.id}>
-                              {" "}
-                              {hotel.name}
-                            </option>
-                          ))}
+                          {Array.isArray(destinationHotels) &&
+                            destinationHotels?.map((hotel) => (
+                              <option key={hotel._id} value={hotel._id}>
+                                {" "}
+                                {hotel.name}
+                              </option>
+                            ))}
                         </select>
                       </div>
 
                       <div className="flex flex-col gap-3 ">
                         <h1> Select Activity </h1>
 
-                        <select
-                          value={dayData[index]?.selectedActivity}
-                          onChange={(event) =>
-                            handleActivityChange(index, event)
+                        <Select
+                          placeholder="Choose Activity"
+                          isMulti
+                          value={dayData[index]?.selectedActivities || []} // Ensure a default value
+                          onChange={(selectedOptions) =>
+                            handleActivityChange(selectedOptions, index)
                           }
-                          className="bg-blue-100 border-2 w-[15rem]
-                          border-[#1f1f1f] rounded-md px-2 py-2 flex flex-row
-                          gap-2"
-                        >
-                          <option key="choose-{index}">
-                            {" "}
-                            Choose Activity{" "}
-                          </option>
-                          {activities &&
-                            activities?.map((activity) => (
-                              <option
-                                key={activity?._id}
-                                value={activity?.name}
-                              >
-                                {activity?.name}
-                              </option>
-                            ))}
-                        </select>
+                          options={activitiesOption}
+                        />
                       </div>
                     </div>
                   </div>
@@ -361,6 +492,44 @@ const FullyCustomizeTrip = () => {
               </div>
             );
           })}
+        </div>
+        {/** select vehicle section */}
+        <div className="p-4">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {destinationVehicles?.map((vehicle) => (
+              <div
+                key={vehicle?._id}
+                onClick={() =>
+                  handleSelectVehicle(
+                    vehicle?.vehicleName,
+                    vehicle?.pricePerDay,
+                    vehicle?._id
+                  )
+                }
+                className="p-4 border rounded-lg shadow-md cursor-pointer hover:bg-gray-100"
+              >
+                <p className="text-lg font-semibold">
+                  Name: {vehicle?.vehicleName}
+                </p>
+                <p className="text-gray-600">Price: {vehicle?.pricePerDay}</p>
+              </div>
+            ))}
+          </div>
+          {selectedVehicleName && (
+            <div className="mt-6 p-4 bg-blue-50 rounded-lg shadow-md">
+              <h3 className="text-xl font-semibold text-blue-700">
+                Selected Vehicle
+              </h3>
+              <p className="text-lg">Name: {selectedVehicleName}</p>
+              <p className="text-lg">Price: {selectedVehiclePrice}</p>
+            </div>
+          )}
+        </div>
+        <div className="w-full bg-cyan-300">
+          <p>Your Estimated price of Trip is: {Total_Estimated_Price}</p>
+          <button onClick={handleEnquiry}>
+            To move forward submit this form
+          </button>
         </div>
       </div>
 
@@ -395,7 +564,9 @@ const FullyCustomizeTrip = () => {
           </div>
         </div>
       </div>
+      {/**------------commented out the listing of itinerary---------------------*/}
 
+      {/* 
       <div className="px-24 mt-6 w-full pb-10">
         <h1 className="font-bold text-2xl">Your Trip </h1>
 
@@ -413,13 +584,13 @@ const FullyCustomizeTrip = () => {
                   </h1>
                 </div>
               )}
-              {iti.selectedActivity === "Choose Activity" ? null : (
+              {iti.selectedActivities === "Choose Activity" ? null : (
                 <div className="flex flex-row gap-28 bg-white p-2">
                   <img src={Bro} alt="logo" className="w-48 min-h-max" />
 
                   <div className="mt-4">
                     <h1 className="font-bold text-lg">
-                      ACTIVITY : {iti.selectedActivity}{" "}
+                      ACTIVITY : {iti.selectedActivities}{" "}
                     </h1>
 
                     <h3 className="">
@@ -536,7 +707,7 @@ const FullyCustomizeTrip = () => {
                 </div>
               )}
 
-              {/*  
+               
               
                 <div className="flex flex-row gap-2 mb-4">
                 {iti.activities.map((activity) => (
@@ -551,11 +722,11 @@ const FullyCustomizeTrip = () => {
                 ))}
               </div>
 
-              */}
+             
             </div>
           </div>
         ))}
-      </div>
+      </div> */}
 
       <div className="fixed bottom-0 bg-white w-full">
         <div className="flex flex-row justify-between p-3">
