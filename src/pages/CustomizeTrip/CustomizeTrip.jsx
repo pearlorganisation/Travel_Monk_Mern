@@ -5,6 +5,8 @@ import { getSinglePackage } from "../../features/package/packageActions";
 import Select from "react-select";
 import { getSingleDestination } from "../../features/trips/tripActions";
 import { getDestinationVehicle } from "../../features/DestinationVehicle/destinationVehicleaction";
+import moment from "moment/moment";
+import { getHotelsByDestination } from "../../features/hotel/hotelActions";
 
 const CustomizeTrip = () => {
   const dispatch = useDispatch();
@@ -22,26 +24,41 @@ const CustomizeTrip = () => {
   const [selectedVehicle, setSelectedVehicle] = useState("");
   const [selectedVehiclePrice, setSelectedVehiclePrice] = useState("");
 
+  const [selectedVehicleImage, setSelectedVehicleImage] = useState("");
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
   const [selectedVehicleId, setSelectedVehicleId] = useState(null); // for vehicle id
   const { destinationVehicles } = useSelector(
     (state) => state.destination_vehicle
   );
 
-  const handleSelect = (vehicleName, vehiclePrice, vehicleId) => {
+  const { destinationHotels } = useSelector((state) => state.hotels);
+
+  console.log(destinationHotels, "my hotels");
+
+  useEffect(() => {
+    dispatch(getHotelsByDestination(singleDestination?.data?._id));
+  }, []);
+
+  const handleSelect = (vehicleName, vehiclePrice, vehicleId, vehicleImage) => {
     setSelectedVehicle(vehicleName);
     setSelectedVehiclePrice(vehiclePrice);
     setSelectedVehicleId(vehicleId); // storing selected vehicle id
+    setSelectedVehicleImage(vehicleImage);
   };
   useEffect(() => {
     dispatch(getSinglePackage(id));
   }, []);
 
   useEffect(() => {
-    dispatch(getDestinationVehicle(singleDestination.data._id));
+    dispatch(getDestinationVehicle(singleDestination?.data?._id));
   }, []);
 
   useEffect(() => {
-    dispatch(getDestinationVehicle(singleDestination.data._id));
+    dispatch(getDestinationVehicle(singleDestination?.data?._id));
   }, []);
 
   useEffect(() => {
@@ -189,11 +206,80 @@ const CustomizeTrip = () => {
               fill="#1F1F1F"
             />
           </svg>
-          <span>Add Destination</span>
+          <button
+            onClick={openModal}
+            className="px-4 py-2  text-black font-bold rounded hover:bg-blue-600 hover:text-white"
+          >
+            Add a Vehicle (Compulsory)
+          </button>
         </button>
       </div>
 
-      <div className="grid grid-cols-[80%_auto]  mt-4">
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-1/2">
+            <h2 className="text-xl font-bold mb-4">Select a Vehicle</h2>
+
+            {/* Vehicle List */}
+            <div className=" flex flex-row gap-6">
+              {destinationVehicles?.map((vehicle) => (
+                <div
+                  key={vehicle?._id}
+                  onClick={() => {
+                    handleSelect(
+                      vehicle?.vehicleName,
+                      vehicle?.pricePerDay,
+                      vehicle?._id,
+                      vehicle?.images[0]?.secure_url
+                    );
+                    closeModal(); // Close the modal after selection
+                  }}
+                  className="p-4 border rounded-lg shadow-md cursor-pointer bg-purple-300 h-56"
+                >
+                  <p className="text-lg font-semibold">
+                    Name: {vehicle?.vehicleName}
+                  </p>
+                  <p className="text-gray-600">
+                    Price: {vehicle?.pricePerDay} /- per day
+                  </p>
+
+                  <img
+                    src={vehicle?.images[0]?.secure_url}
+                    className="w-28 h-20 mt-8"
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Close button */}
+            <button
+              onClick={closeModal}
+              className="mt-4 px-4 py-2 bg-red-500 text-white font-bold rounded hover:bg-red-600"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 mt-4">
+        <div className="p-4">
+          {selectedVehicle && (
+            <div className="mt-6 p-4 bg-orange-300 rounded-lg shadow-md">
+              <div className="flex flex-row gap-6">
+                <div className="flex flex-col gap-3">
+                  <h3 className="text-xl font-semibold text-blue-700">
+                    Your Selected Vehicle
+                  </h3>
+                  <p className="text-lg">Name: {selectedVehicle}</p>
+                  <p className="text-lg">Price: {selectedVehiclePrice}</p>
+                </div>
+
+                <img src={selectedVehicleImage} className="w-20 h-20" />
+              </div>
+            </div>
+          )}
+        </div>
         <div className="">
           {singlePackage?.data?.itinerary?.map((iti, index) => {
             console.log(iti, "iti");
@@ -210,53 +296,25 @@ const CustomizeTrip = () => {
             //   );
             // console.log(index,"my index");
             return (
-              <div className="flex flex-row gap-2 items-center justify-start px-8 mt-2">
-                <svg
-                  width="24"
-                  height="25"
-                  viewBox="0 0 24 25"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <rect x="2" y="6.5" width="20" height="3" fill="black" />
-                  <rect x="2" y="15.5" width="20" height="3" fill="black" />
-                  <rect x="2" y="6.5" width="20" height="3" fill="black" />
-                  <rect x="2" y="15.5" width="20" height="3" fill="black" />
-                </svg>
+              <div className="flex flex-row gap-2 items-center justify-start px-4 mt-2">
+                <div className="flex flex-col gap-1 min-w-32">
+                  <h1 className="font-bold text-base">{iti.location}</h1>
+
+                  <h1>
+                    {moment(singlePackage?.data?.startDate)
+                      .add(index, "days")
+                      .format("DD MMM")}
+                  </h1>
+                </div>
 
                 <div className="w-6 h-6 bg-red-500 rounded-full">
                   <h1 className="text-white px-2">{index + 1}</h1>
                 </div>
 
-                <div className="bg-white border border-gray-200 rounded-md p-2 flex flex-row">
+                <div className="bg-blue-400 border border-gray-200 rounded-md p-2 ml-8 flex flex-row w-full">
                   <div className="grid grid-cols-1 w-[100%]">
-                    <div className="flex flex-row items-center gap-8">
-                      <svg
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <g clip-path="url(#clip0_1779_681)">
-                          <path
-                            d="M18.3 5.70997C17.91 5.31997 17.28 5.31997 16.89 5.70997L12 10.59L7.10997 5.69997C6.71997 5.30997 6.08997 5.30997 5.69997 5.69997C5.30997 6.08997 5.30997 6.71997 5.69997 7.10997L10.59 12L5.69997 16.89C5.30997 17.28 5.30997 17.91 5.69997 18.3C6.08997 18.69 6.71997 18.69 7.10997 18.3L12 13.41L16.89 18.3C17.28 18.69 17.91 18.69 18.3 18.3C18.69 17.91 18.69 17.28 18.3 16.89L13.41 12L18.3 7.10997C18.68 6.72997 18.68 6.08997 18.3 5.70997Z"
-                            fill="#323232"
-                          />
-                        </g>
-                        <defs>
-                          <clipPath id="clip0_1779_681">
-                            <rect width="24" height="24" fill="white" />
-                          </clipPath>
-                        </defs>
-                      </svg>
-
-                      <div className="flex flex-col gap-1">
-                        <h1 className="font-bold text-base">{iti.location}</h1>
-                        <h1> 21 June </h1>
-                      </div>
-
-                      <div className="flex flex-col gap-3 ">
+                    <div className="flex flex-row items-start gap-2">
+                      <div className="flex flex-col gap-3 w-[20%] items-start mx-4">
                         <h1> Select Hotel </h1>
                         <select
                           value={dayData[index].selectedHotel[0]}
@@ -264,14 +322,14 @@ const CustomizeTrip = () => {
                             handleHotelChange(
                               index,
                               event,
-                              singleDestination?.data?.hotels,
+                              destinationHotels,
                               iti.location
                             )
                           }
-                          className="bg-blue-100 border-2 border-[#1f1f1f] rounded-md px-2 py-2 flex flex-row gap-2"
+                          className="bg-blue-100 border-2 border-[#1f1f1f] rounded-md px-2 py-2 flex flex-row gap-2 w-[70%]"
                         >
                           <option key="choose"> Choose Hotel</option>
-                          {singleDestination?.data?.hotels.map((hotel) => (
+                          {destinationHotels.map((hotel) => (
                             <option key={hotel._id} value={hotel._id}>
                               {" "}
                               {hotel.name}
@@ -301,37 +359,7 @@ const CustomizeTrip = () => {
           })}
         </div>
         {/** select vehicle section */}
-        <div className="p-4">
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {destinationVehicles?.map((vehicle) => (
-              <div
-                key={vehicle?._id}
-                onClick={() =>
-                  handleSelect(
-                    vehicle?.vehicleName,
-                    vehicle?.pricePerDay,
-                    vehicle?._id
-                  )
-                }
-                className="p-4 border rounded-lg shadow-md cursor-pointer hover:bg-gray-100"
-              >
-                <p className="text-lg font-semibold">
-                  Name: {vehicle?.vehicleName}
-                </p>
-                <p className="text-gray-600">Price: {vehicle?.pricePerDay}</p>
-              </div>
-            ))}
-          </div>
-          {selectedVehicle && (
-            <div className="mt-6 p-4 bg-blue-50 rounded-lg shadow-md">
-              <h3 className="text-xl font-semibold text-blue-700">
-                Selected Vehicle
-              </h3>
-              <p className="text-lg">Name: {selectedVehicle}</p>
-              <p className="text-lg">Price: {selectedVehiclePrice}</p>
-            </div>
-          )}
-        </div>
+
         <div> Google map</div>
       </div>
       {/** section containing the total price of all the hotels in the destination */}
@@ -345,7 +373,7 @@ const CustomizeTrip = () => {
           <button onClick={handleEnquiry}>Fill the Enquiry Form</button>
         </div>
       </div>
-      <div className="px-24 mt-6 w-full ">
+      {/* <div className="px-24 mt-6 w-full ">
         <h1 className="font-bold text-2xl"> You might want to add </h1>
 
         <div className="flex flex-row gap-2 mt-2">
@@ -375,7 +403,7 @@ const CustomizeTrip = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div className="fixed bottom-0 bg-white w-full">
         <div className="flex flex-row justify-between p-3">

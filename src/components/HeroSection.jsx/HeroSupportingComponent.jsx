@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   // getAllDestinationNames,
   searchDestination,
@@ -7,36 +7,89 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import axios from "axios";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css"; // Import DatePicker styles
+import addDays from "date-fns/addDays";
 
 const HeroSupportingComponent = ({ data }, ref) => {
   // --------------------------------------------States--------------------------------------
+  /** dates */
+  const [startDate, setStartDate] = React.useState(null);
+  const [endDate, setEndDate] = React.useState(null);
 
+  let maxDate = null;
+  if (startDate) {
+    maxDate = addDays(startDate, 10);
+  }
+  console.log("-------------------max date is", maxDate);
+  console.log("---------------start date", startDate);
+  console.log("---------------end date", endDate);
   const dispatch = useDispatch();
   const { register, handleSubmit, watch } = useForm();
 
-  // const { destinationNames } = useSelector((state) => state.destination);
-
-  // useEffect(() => {
-  //   dispatch(getAllDestinationNames());
-  // }, []);
-
-  // const onlyNames = destinationNames?.destinations?.map((dest) => dest.name);
-
-  // console.log("only names", onlyNames);
-
-  // const [filteredOptions, setFilteredOptions] = useState(onlyNames);
-
   const inputValue = watch("destination", "");
-
-  // useEffect(() => {
-  //   const filtered = onlyNames?.filter((option) =>
-  //     option.toLowerCase().includes(inputValue.toLowerCase())
-  //   );
-  //   setFilteredOptions(filtered);
-  // }, [inputValue]);
 
   const navigate = useNavigate();
   const result = useSelector((state) => state.destination);
+
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
+
+  // Debounce function
+  const debounce = (func, delay) => {
+    let timeoutId;
+    return (...args) => {
+      if (timeoutId) clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => func(...args), delay);
+    };
+  };
+
+  const fetchDestinations = async (searchQuery) => {
+    if (!searchQuery) {
+      setResults([]);
+      return;
+    }
+
+    setIsSearching(true);
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/api/v1/destinations/search?destination=${searchQuery}`
+      );
+      setResults(response.data.data || []);
+    } catch (error) {
+      console.error("Error fetching destinations:", error);
+      setResults([]);
+    }
+    setIsSearching(false);
+  };
+
+  // Debounced search handler
+  const debouncedSearch = useCallback(debounce(fetchDestinations, 300), []);
+
+  // Handle input change
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setQuery(value);
+    debouncedSearch(value);
+  };
+
+  // Handle result click
+  const handleResultClick = (destination) => {
+    setQuery(destination.name); // Update input with selected value
+    setResults([]); // Clear dropdown
+  };
+
+  // const submitForm = async (info) => {
+  //   dispatch(searchDestination(info.destination));
+
+  //   {
+  //     result?.isSuccess &&
+  //       result?.searchResult?.length > 0 &&
+  //       navigate(`fully-customize/${result?.searchResult[0]?._id}`);
+  //   }
+  // };
 
   const submitForm = async (info) => {
     dispatch(searchDestination(info.destination));
@@ -44,7 +97,9 @@ const HeroSupportingComponent = ({ data }, ref) => {
     {
       result?.isSuccess &&
         result?.searchResult?.length > 0 &&
-        navigate(`fully-customize/${result?.searchResult[0]?._id}`);
+        navigate(`fully-customize/${result?.searchResult[0]?._id}`, {
+          state: { startDate: startDate, endDate: endDate },
+        });
     }
   };
 
@@ -285,9 +340,6 @@ const HeroSupportingComponent = ({ data }, ref) => {
     },
   ];
 
-  // function handleSubmittionForm(data) {
-  //   console.log(data);
-  // }
   return (
     <div className="  bg-white p-2 rounded-2xl">
       {data === "Trip" && (
@@ -309,22 +361,48 @@ const HeroSupportingComponent = ({ data }, ref) => {
                     <div class="absolute top-8    justify-center inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
                       {el.img}
                     </div>
-                    <input
-                      type="text"
-                      id="email-address-icon"
-                      {...register(el.registerData)}
-                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder={el.placeholder}
-                    />
 
-                    {/* {el.registerData === "destination" && (
-                      <ul className="mt-16">
-               
-                        <li>Hi</li>
-                        <li>Bye</li>
-                        <li>Fue</li>
-                      </ul>
-                    )} */}
+                    {el.registerData != "destination" && (
+                      <input
+                        type="text"
+                        id="email-address-icon"
+                        {...register(el.registerData)}
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder={el.placeholder}
+                      />
+                    )}
+
+                    {el.registerData === "destination" && (
+                      <div className="relative">
+                        <input
+                          type="text"
+                          value={query}
+                          onChange={handleInputChange}
+                          placeholder="Search destinations..."
+                          className="w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+
+                        {results.length > 0 && (
+                          <ul className="absolute z-10 w-full bg-white border rounded-md shadow-lg mt-1 max-h-60 overflow-auto">
+                            {results.map((destination, index) => (
+                              <li
+                                key={index}
+                                onClick={() => handleResultClick(destination)}
+                                className="px-4 py-2 hover:bg-blue-100 cursor-pointer"
+                              >
+                                {destination.name}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+
+                        {isSearching && (
+                          <div className="absolute z-10 mt-1 text-gray-500">
+                            Searching...
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
               );

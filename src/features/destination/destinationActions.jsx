@@ -15,7 +15,7 @@ export const searchDestination = createAsyncThunk(
         `/api/v1/destinations/search?destination=${name}`,
         config
       );
-      console.log(result, "result nayan search");
+      console.log(result, "my searched dest");
       return result.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -44,6 +44,26 @@ export const getPopularDestination = createAsyncThunk(
   }
 );
 
+export const getPacakgesByDestination = createAsyncThunk(
+  "packageByDest/get",
+  async (id, thunkAPI) => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const result = await axiosInstance.get(
+        `/api/v1/destinations/${id}/packages`,
+        config
+      );
+      console.log(result, "packages by destination");
+      return result.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 export const destinationsService = {
   searchDestination,
   // getAllDestinationNames,

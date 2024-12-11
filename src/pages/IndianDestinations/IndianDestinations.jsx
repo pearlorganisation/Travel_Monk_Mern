@@ -7,30 +7,33 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import HeroBanner from "./HeroBanner";
 import TripSection from "./TripSection";
+import { getPacakgesByDestination } from "../../features/destination/destinationActions";
 
 const IndianDestinations = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
 
-  const singleD = useSelector((state) => state.trip.singleDestination);
+  // const { singleDestination, isSuccess } = useSelector((state) => state.trip);
 
-  const activities = useSelector((state) => state.trip.activities);
+  const { packagesByDestination } = useSelector((state) => state.destination);
 
   useEffect(() => {
-    dispatch(getSingleDestination(id));
-    dispatch(getAllActivitiesByDestination(id));
+    dispatch(getPacakgesByDestination(id));
   }, []);
+
+  console.log("Package by D", packagesByDestination);
 
   return (
     <div>
-      <HeroBanner data={singleD?.data} />
+      <HeroBanner data={packagesByDestination?.data} />
 
       <h1 className="text-3xl font-semibold ml-12">
         {" "}
-        About {singleD?.data?.name} Tour Packages{" "}
+        About {packagesByDestination?.data[0]?.packageDestination?.name} Tour
+        Packages{" "}
       </h1>
 
-      <TripSection data={singleD?.data} />
+      <TripSection data={packagesByDestination?.data} />
 
       <h1> Available Packages </h1>
     </div>
