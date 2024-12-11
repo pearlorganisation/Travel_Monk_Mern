@@ -15,8 +15,10 @@ const FullCustomizeEnquiryForm = () => {
 
     const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm()
     
-    const { Estimated_Price, itinerary, destinationId, vehicleId } = location.state ?? {};
+    const { Estimated_Price, itinerary, destinationId, vehicleId , duration, startDate, endDate} = location.state ?? {};
     console.log('----------------------------estimated data is', Estimated_Price, itinerary, destinationId, vehicleId)
+
+    console.log("----------------------the duration", duration)
     const submitForm = (data) => {
         const formData ={
             ...data,
@@ -24,7 +26,10 @@ const FullCustomizeEnquiryForm = () => {
             itinerary:itinerary,
             estimatedPrice: Estimated_Price,
             selectedVehicle:vehicleId,
-            destination: destinationId
+            destination: destinationId,
+            duration:duration,
+            startDate: startDate.toISOString(),
+            endDate: endDate.toISOString()
 
         }
         dispatch(sendFullyCustomizePackageEnquiry(formData))
@@ -37,7 +42,7 @@ const FullCustomizeEnquiryForm = () => {
                     {/* Information Section */}
                     <div id='info' className="bg-indigo-600 text-white p-10 flex flex-col justify-center space-y-6">
                         <div className="space-y-4">
-                            <h2 className="text-3xl font-bold">Estimated Package Price</h2>
+                            <h2 className="text-3xl font-bold">Estimated Package Price {Estimated_Price}</h2>
                             <div className="text-5xl font-extrabold text-white/90">
                                 
                             </div>

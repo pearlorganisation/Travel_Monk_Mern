@@ -19,8 +19,8 @@ const HeroSupportingComponent = ({ data }, ref) => {
   const [results, setResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
    /**-----------------for dates------------------*/
-  const [startDate, setStartDate] = React.useState(null);
-  const [endDate, setEndDate] = React.useState(null);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
 
   let maxDate = null;
   if(startDate){
@@ -381,6 +381,7 @@ const hotelsData = [
                   Start Date
                 </label>
                 <DatePicker
+                  selectsStart
                   selected={startDate}
                   onChange={(date) => setStartDate(date)}
                   dateFormat="yyyy-MM-dd"
@@ -393,6 +394,7 @@ const hotelsData = [
                   End Date
                 </label>
                 <DatePicker
+                  selectsEnd
                   selected={endDate}
                   onChange={(date) => setEndDate(date)}
                   minDate={startDate}

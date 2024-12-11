@@ -186,10 +186,29 @@ const FullyCustomizeTrip = () => {
   };
 
   const myDays = calculateDaysBetweenDates(startDate, endDate);
+  /** duration that is day and nights of the customized package */
+ const days = parseInt(myDays);
+ const nights = parseInt(myDays -1);
 
+ 
+  /**------------------Utility function to get the dates between the selected start date and end date----------------------*/
+  const getDatesInRange = (start, end) => {
+    if (!start || !end) return []; 
 
+    const dates = [];
+    let currentDate = new Date(start);
 
-  // console.log(duration, "diff between dates")
+    while (currentDate <= end) {
+      dates.push(new Date(currentDate));  
+      currentDate.setDate(currentDate.getDate() + 1);  
+    }
+
+    return dates;
+  };
+
+  const datesRange = getDatesInRange(startDate,endDate)
+  const datesObjects = datesRange.map(date => ({ date }));
+  
   /**----------------------------States--------------------------------- */
 
   /** states for claculating the selected hotels price */
@@ -234,10 +253,11 @@ let activitiesOption = activities?.map((activity) => ({
     //   day:""
     // })) || [] // Initialize based on itinerary length
     Array.from({ length: myDays }, () => ({
-      selectedLocation: {},
+      selectedLocation: "",
       selectedHotel: {},
       selectedActivities: [],
       day: "",
+      date:""
     }))|| []
   );
 
@@ -251,18 +271,21 @@ let activitiesOption = activities?.map((activity) => ({
         //   day:""
         // }))
         Array.from({ length: myDays }, () => ({
-          selectedLocation: {},
+          selectedLocation: "",
           selectedHotel: {},
           selectedActivities: [],
           day: "",
+          date:""
         })) || []
       );
     }
   }, [myDays]);
 
-  const handleLocationChange = (index, event) => {
+  const handleLocationChange = (index, event, selectedDate) => {
     const newDayData = [...dayData];
     newDayData[index].selectedLocation = event.target.value;
+    newDayData[index].date = selectedDate
+    newDayData[index].day = index + 1
     setDayData(newDayData);
   };
 
@@ -273,8 +296,7 @@ let activitiesOption = activities?.map((activity) => ({
   const selected_Hotel = hotels.find((hotel)=> hotel._id === selectedHotelId) // this will find the selected hotel by id
 
     const newDayData = [...dayData];
-    /** setting the day also */
-    newDayData[index].day = index + 1
+   
     /** setting the hotel of current index */
     newDayData[index].selectedHotel = event.target.value;
     setDayData(newDayData);
@@ -306,7 +328,7 @@ console.log("selected hotel and vehicle prices" ,Total_Estimated_Price)
 
   /**------------------Handle for Enquiry-------------------------*/
   const handleEnquiry = () => {
-    navigate("/full-customize-package-enquiry", { state: { Estimated_Price: Total_Estimated_Price, itinerary: dayData, destinationId: id,vehicleId:selectedVehicleId} }) // to send all the required prebuilt package data
+    navigate("/full-customize-package-enquiry", { state: { Estimated_Price: Total_Estimated_Price, itinerary: dayData, destinationId: id, vehicleId: selectedVehicleId, duration: { days: days, nights: nights }, startDate: startDate, endDate: endDate } }) // to send all the required prebuilt package data
   } 
   return (
     <div className="bg-gray-200 relative">
@@ -341,108 +363,7 @@ console.log("selected hotel and vehicle prices" ,Total_Estimated_Price)
       </div>
 
       <div className="grid grid-cols-1 mt-4">
-        <div className="overflow-hidden">
-          {/* {singleDestination?.data?.locations?.map((iti, index) => {
-            return (
-              <div className="flex flex-row gap-2 items-center justify-start px-8 mt-2">
-                <svg
-                  width="24"
-                  height="25"
-                  viewBox="0 0 24 25"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <rect x="2" y="6.5" width="20" height="3" fill="black" />
-                  <rect x="2" y="15.5" width="20" height="3" fill="black" />
-                  <rect x="2" y="6.5" width="20" height="3" fill="black" />
-                  <rect x="2" y="15.5" width="20" height="3" fill="black" />
-                </svg>
-
-                <div className="w-6 h-6 bg-red-500 rounded-full">
-                  <h1 className="text-white px-2">{index + 1}</h1>
-                </div>
-
-                <div className="bg-white border border-gray-200 rounded-md p-2 flex flex-row">
-                  <div className="grid grid-cols-2  w-full">
-                    <div className="flex flex-row items-center gap-8">
-                      <svg
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <g clip-path="url(#clip0_1779_681)">
-                          <path
-                            d="M18.3 5.70997C17.91 5.31997 17.28 5.31997 16.89 5.70997L12 10.59L7.10997 5.69997C6.71997 5.30997 6.08997 5.30997 5.69997 5.69997C5.30997 6.08997 5.30997 6.71997 5.69997 7.10997L10.59 12L5.69997 16.89C5.30997 17.28 5.30997 17.91 5.69997 18.3C6.08997 18.69 6.71997 18.69 7.10997 18.3L12 13.41L16.89 18.3C17.28 18.69 17.91 18.69 18.3 18.3C18.69 17.91 18.69 17.28 18.3 16.89L13.41 12L18.3 7.10997C18.68 6.72997 18.68 6.08997 18.3 5.70997Z"
-                            fill="#323232"
-                          />
-                        </g>
-                        <defs>
-                          <clipPath id="clip0_1779_681">
-                            <rect width="24" height="24" fill="white" />
-                          </clipPath>
-                        </defs>
-                      </svg>
-
-                      <div className="flex flex-col gap-1">
-                        <h1> {21 + index} June </h1>
-                      </div>
-
-                      <div className="flex flex-col gap-3 ">
-                        <h1> Select Location </h1>
-                        <select
-                          value={dayData[index]?.selectedLocation}
-                          onChange={(event) =>
-                            handleLocationChange(index, event)
-                          }
-                          className="bg-blue-100 border-2 border-[#1f1f1f] rounded-md px-2 py-2 flex flex-row gap-2"
-                        >
-                          <option key="choose"> Choose Location</option>
-                          {iti.location.map((loc, index) => (
-                            <option key={index} value={loc}>
-                              {" "}
-                              {loc}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-
-                      <div className="flex flex-col gap-3 ">
-                        <h1> Select Hotel </h1>
-                        <select
-                          value={dayData[index]?.selectedHotel}
-                          onChange={(event) => handleHotelChange(index, event, destinationHotels)}
-                          className="bg-blue-100 border-2 border-[#1f1f1f] rounded-md px-2 py-2 flex flex-row gap-2"
-                        >
-                          <option key="choose"> Choose Hotel</option>
-                          {destinationHotels?.map((hotel) => (
-                            <option key={hotel._id} value={hotel._id}>
-                              {" "}
-                              {hotel.name}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-
-                      <div className="flex flex-col gap-3 ">
-                        <h1> Select Activity </h1>
-                  
-                        <Select
-                          placeholder="Choose Activity"
-                          isMulti
-                          value={dayData[index]?.selectedActivities || []} // Ensure a default value
-                          onChange={(selectedOptions) => handleActivityChange(selectedOptions, index)}
-                          options={activitiesOption}
-                        />
-
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })} */}
+        <div className="">
             {dayData?.map((day, index) => {
             return (
               <div className="flex flex-row gap-2 items-center justify-start px-8 mt-2">
@@ -487,7 +408,10 @@ console.log("selected hotel and vehicle prices" ,Total_Estimated_Price)
                       </svg>
 
                       <div className="flex flex-col gap-1">
-                        <h1> {21 + index} June </h1>
+                     {/**  show date here */}
+                        <h2 className="text-gray-700 font-medium">
+                          {new Date(datesObjects[index]?.date).toDateString()}
+                        </h2>
                       </div>
 
                       <div className="flex flex-col gap-3 ">
@@ -495,7 +419,7 @@ console.log("selected hotel and vehicle prices" ,Total_Estimated_Price)
                         <select
                           value={dayData[index]?.selectedLocation}
                           onChange={(event) =>
-                            handleLocationChange(index, event)
+                            handleLocationChange(index, event, new Date(datesObjects[index]?.date).toISOString())
                           }
                           className="bg-blue-100 border-2 border-[#1f1f1f] rounded-md px-2 py-2 flex flex-row gap-2"
                         >
