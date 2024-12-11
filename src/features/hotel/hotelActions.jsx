@@ -52,7 +52,9 @@ export const getHotelsByDestination = createAsyncThunk(
         `/api/v1/destinations/${id}/hotels`,
         config
       );
-      return data.data;
+
+      console.log("mere hotels action ", data?.data);
+      return data?.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }

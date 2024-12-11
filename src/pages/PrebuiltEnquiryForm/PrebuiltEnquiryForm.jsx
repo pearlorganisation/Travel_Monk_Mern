@@ -13,10 +13,14 @@ const PrebuiltEnquiryForm = () => {
   const { userInfo } = useSelector((state) => state.user); // getting the userInfo
 
   /** extarcting the data  */
-  const { Estimate_Price, packageDetails, itinerary, vehicleId, vehicleName } =
+  const { Estimate_Price, packageDetails, itinerary, selectedVehicle } =
     location.state || {};
 
-  console.log("location state", location.state);
+  // console.log("location state", location.state);
+
+  console.log("package Details", packageDetails);
+  console.log("itinerary array", itinerary);
+  console.log("selected vehicle", selectedVehicle);
 
   const {
     register,
@@ -41,9 +45,8 @@ const PrebuiltEnquiryForm = () => {
       ...data,
       user: userInfo?._id,
       estimatedPrice: Estimate_Price,
-      package: packageDetails.package,
-      selectedVehicle: vehicleId,
-      selectedVehicleName: vehicleName,
+      package: packageDetails,
+      selectedVehicle: selectedVehicle,
       itinerary: itinerary,
     };
 
@@ -67,7 +70,7 @@ const PrebuiltEnquiryForm = () => {
                 </div>
                 <h2 className="text-3xl font-bold">Estimated Package Price</h2>
                 <div className="text-5xl font-extrabold text-white/90">
-                  {Estimate_Price}
+                  ₹ {Estimate_Price}
                 </div>
                 <p className="text-lg text-white/80">
                   Please submit this form, and one of our executives will reach
@@ -130,12 +133,10 @@ const PrebuiltEnquiryForm = () => {
               </div> */}
 
               <div>
-                <h1 className="font-bold text-4xl text-[#4A9162]">
+                <h1 className="font-bold text-4xl text-white/80">
                   {" "}
                   Vehicle Name :{" "}
-                  <span className="text-red-500">
-                    {location.state.vehicleName}
-                  </span>
+                  <span className="text-red-500">{selectedVehicle.name}</span>
                 </h1>
               </div>
 

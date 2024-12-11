@@ -29,7 +29,7 @@ const Timeline = ({ events }) => {
             <div className="">
               <h1 className="text-black"> Activities</h1>
 
-              {event?.selectedActivity?.map((activity, index) => (
+              {event?.selectedActivities?.map((activity, index) => (
                 <h1 className="text-red-400 text-sm ">
                   {index + 1} . {activity.label}
                 </h1>

@@ -72,7 +72,7 @@ const CustomizeTrip = () => {
   const [dayData, setDayData] = useState(
     singlePackage?.data?.itinerary?.map((iti) => ({
       selectedHotel: {},
-      selectedActivity: [],
+      selectedActivities: [],
       selectedLocation: "",
       location: {},
       day: "",
@@ -84,7 +84,7 @@ const CustomizeTrip = () => {
     setDayData((prevDayData) =>
       prevDayData.map((day, index) =>
         index === dayIndex
-          ? { ...day, selectedActivity: selectedOptions || [] }
+          ? { ...day, selectedActivities: selectedOptions || [] }
           : day
       )
     );
@@ -96,7 +96,7 @@ const CustomizeTrip = () => {
       setDayData(
         singlePackage.data.itinerary.map(() => ({
           selectedHotel: {},
-          selectedActivity: [],
+          selectedActivities: [],
           selectedLocation: "",
           location: {},
           day: "",
@@ -151,10 +151,14 @@ const CustomizeTrip = () => {
     navigate("/prebuilt-package-enquiry", {
       state: {
         Estimate_Price: Total_Estimated_Price,
-        packageDetails: { name: singlePackage?.data?.name, package: id },
+        packageDetails: { name: singlePackage?.data?.name, packageId: id },
         itinerary: dayData,
-        vehicleId: selectedVehicleId,
-        vehicleName: selectedVehicle,
+        selectedVehicle: {
+          name: selectedVehicle,
+          vehicle: selectedVehicleId,
+        },
+        // vehicleId: selectedVehicleId,
+        // vehicleName: selectedVehicle,
         enquiryLocation: fullURL,
       },
     }); // to send all the required prebuilt package data
@@ -168,8 +172,8 @@ const CustomizeTrip = () => {
 
   console.log("--------------------selected vehicle name", selectedVehicle);
 
-  const [selectedActivity, setSelectedActivity] = useState("Choose Activity");
-  const [selectedHotel, setSelectedHotel] = useState("Choose Hotel");
+  // const [selectedActivity, setSelectedActivity] = useState("Choose Activity");
+  // const [selectedHotel, setSelectedHotel] = useState("Choose Hotel");
 
   console.log(dayData, "day data");
   const handleBookNow = () => {
@@ -297,7 +301,7 @@ const CustomizeTrip = () => {
             // console.log(index,"my index");
             return (
               <div className="flex flex-row gap-2 items-center justify-start px-4 mt-2">
-                <div className="flex flex-col gap-1 min-w-32">
+                <div className="flex flex-col gap-1 min-w-20">
                   <h1 className="font-bold text-base">{iti.location}</h1>
 
                   <h1>
@@ -329,12 +333,13 @@ const CustomizeTrip = () => {
                           className="bg-blue-100 border-2 border-[#1f1f1f] rounded-md px-2 py-2 flex flex-row gap-2 w-[70%]"
                         >
                           <option key="choose"> Choose Hotel</option>
-                          {destinationHotels.map((hotel) => (
-                            <option key={hotel._id} value={hotel._id}>
-                              {" "}
-                              {hotel.name}
-                            </option>
-                          ))}
+                          {Array.isArray(destinationHotels) &&
+                            destinationHotels?.map((hotel) => (
+                              <option key={hotel._id} value={hotel._id}>
+                                {" "}
+                                {hotel.name}
+                              </option>
+                            ))}
                         </select>
                       </div>
 
@@ -344,7 +349,7 @@ const CustomizeTrip = () => {
                         <Select
                           placeholder="Choose Activity"
                           isMulti
-                          value={dayData[index]?.selectedActivity} // Bind the value to the specific day's selectedActivity
+                          value={dayData[index]?.selectedActivities} // Bind the value to the specific day's selectedActivity
                           onChange={(selectedOptions) =>
                             handleActivityChange(selectedOptions, index)
                           }
