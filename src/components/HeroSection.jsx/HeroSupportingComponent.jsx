@@ -279,7 +279,7 @@ const HeroSupportingComponent = ({ data }, ref) => {
   ];
 
   return (
-    <div className="bg-white p-6 rounded-3xl shadow-lg max-w-4xl mx-auto">
+    <div className="bg-white p-6 rounded-3xl shadow-lg lg:w-[750px] mx-auto">
       {data === "Trip" && (
         <div className="space-y-6">
           <div className="flex flex-col-reverse md:flex-row gap-6">
@@ -295,7 +295,7 @@ const HeroSupportingComponent = ({ data }, ref) => {
                     Search Destination
                   </label>
                   <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <div className="absolute inset-y-0 left-4 pl-[-2] flex items-center pointer-events-none">
                       <svg
                         width="20"
                         height="20"
@@ -320,23 +320,6 @@ const HeroSupportingComponent = ({ data }, ref) => {
                         </defs>
                       </svg>
                     </div>
-                    {/* <input
-                      type="text"
-                      {...register("destination")}
-                      className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#007E8F] focus:border-transparent"
-                      placeholder="Search Destination you are looking for"
-                    /> */}
-
-                    {/* <input
-                      type="text"
-                      // value={query}
-                  
-                      value={destination}
-                      onChange={handleInputChange}
-                    
-                      placeholder="Search destinations..."
-                      className="w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    /> */}
 
                     <input
                       type="text"
@@ -346,7 +329,7 @@ const HeroSupportingComponent = ({ data }, ref) => {
                       value={destination}
                       onChange={handleInputChange}
                       placeholder="Search destinations..."
-                      className="w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-4 py-2 pl-10 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                     {results.length > 0 && (
                       <ul className="absolute z-10 w-full bg-white border rounded-md shadow-lg mt-1 max-h-60 overflow-auto">
@@ -368,54 +351,13 @@ const HeroSupportingComponent = ({ data }, ref) => {
                     )}
                   </div>
 
-                  {/* Search Results */}
-                  {/* <div className="mt-2">
-                    {result?.searchResult?.length > 0 ? (
-                      <div className="bg-gray-50 rounded-lg max-h-40 overflow-y-auto">
-                        <ul className="divide-y divide-gray-200">
-                          {result.searchResult.map((item) => (
-                            <li
-                              key={item._id}
-                              onClick={() => {
-                                // Set the input value to the selected destination
-                                setValue('destination', item.name);
-                              }}
-                              className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                            >
-                              {item.name}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    ) : result?.searchResult && (
-                      <div className="text-sm text-gray-500 mt-2">
-                        No destinations found
-                      </div>
-                    )}
-                  </div> */}
-
                   {/* Action Buttons */}
-                  <div className="flex flex-row gap-4 justify-center items-center mt-6">
-                    <button
-                      type="submit"
-                      className="text-white bg-[#007E8F] hover:bg-[#439ca8] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md px-6 py-2.5 text-center transition duration-300 ease-in-out"
-                    >
-                      Customize Your Trip
-                    </button>
-
-                    <button
-                      type="button"
-                      className="text-[#1f1f1f] border border-[#1f1f1f] bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md px-6 py-2.5 text-center transition duration-300 ease-in-out"
-                    >
-                      View Package
-                    </button>
-                  </div>
                 </div>
               </form>
             </div>
 
             {/* Right Side: Date Pickers */}
-            <div className="flex flex-col gap-4 w-full md:w-auto">
+            <div className="flex flex-row gap-4 w-full md:w-auto">
               <div className="flex flex-col">
                 <label className="block mb-2 text-sm font-medium text-gray-700">
                   Start Date
@@ -445,6 +387,15 @@ const HeroSupportingComponent = ({ data }, ref) => {
                 />
               </div>
             </div>
+          </div>
+
+          <div className="flex flex-row gap-4 justify-center items-center mt-6">
+            <button
+              type="submit"
+              className="text-white bg-[#007E8F] hover:bg-[#439ca8] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md px-6 py-2.5 text-center transition duration-300 ease-in-out"
+            >
+              Customize Your Trip
+            </button>
           </div>
         </div>
       )}
