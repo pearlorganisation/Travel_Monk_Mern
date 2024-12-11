@@ -43,9 +43,6 @@ const CustomizeTrip = () => {
     dispatch(getDestinationVehicle(singleDestination.data._id));
   }, []);
   
-  // useEffect(()=>{
-  //   dispatch(getDestinationVehicle(singleDestination.data._id))
-  // },[])
 
   useEffect(() => {
     if (singlePackage?.data)
@@ -105,8 +102,7 @@ const CustomizeTrip = () => {
     setDayData(newDayData);
 
     /** Calculating price based on the selected hotel price */
-    // const selectedHotelId = event.target.value;
-    // const selectedHotel = hotels.find((hotel) => hotel._id === selectedHotelId);
+ 
     console.log("--------selected hotel", selectedHotel);
     // const selectedHotelName = hot
 
@@ -185,12 +181,7 @@ console.log('--------------------selected vehicle price',selectedVehiclePrice)
                 value: el?._id || "Something is wrong in id",
               };
             });
-
-            // if (dataForSelect.length === 0)
-            //   return (
-            //     <h1 className="text-center">Arrived Back To Destinatiom !!</h1>
-            //   );
-            // console.log(index,"my index");
+ 
             return (
               <div className="flex flex-row gap-2 items-center justify-start px-8 mt-2">
                 <svg
@@ -258,35 +249,12 @@ console.log('--------------------selected vehicle price',selectedVehiclePrice)
                       <div className="flex flex-col gap-3 ">
                         <h1> Select Activity </h1>
 
-                        {/* <select
-                          value={dayData[index]?.selectedActivities}
-                          onChange={(event) =>
-                            handleActivityChange(index, event)
-                          }
-
-                          className="bg-blue-100 border-2 w-[15rem]
-                          border-[#1f1f1f] rounded-md px-2 py-2 flex flex-row
-                          gap-2"
-                        >
-                          <option key="choose-{index}">
-                            {" "}
-                            Choose Activity{" "}
-                          </option>
-                          {iti?.activities?.map((activity) => (
-                            <option key={activity?._id} value={activity?.name}>
-                              {activity?.name}
-                            </option>
-                          ))}
-                        </select> */}
+                        
                         <Select
                           placeholder="Choose Activity"
                           isMulti
                           value={dayData[index]?.selectedActivities} // Bind the value to the specific day's selectedActivities
                           onChange={(selectedOptions) =>
-                          /** for later use case */
-                            //   const selectedActivityIds = selectedOptions ? selectedOptions.map((option) => option.value) : [];
-                            // handleActivityChange(selectedActivityIds, index)
-                          
                             handleActivityChange(selectedOptions, index)
                           }
                           options={dataForSelect}
