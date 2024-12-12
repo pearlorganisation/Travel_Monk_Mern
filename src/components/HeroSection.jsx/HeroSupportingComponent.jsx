@@ -8,6 +8,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css"; // Import DatePicker styles
 import addDays from "date-fns/addDays";
 import axios from "axios";
+import { axiosInstance } from "../../services/axiosInterceptor";
 
 const HeroSupportingComponent = ({ data }, ref) => {
   // --------------------------------------------States--------------------------------------
@@ -109,8 +110,8 @@ const HeroSupportingComponent = ({ data }, ref) => {
 
     setIsSearching(true);
     try {
-      const response = await axios.get(
-        `http://localhost:5000/api/v1/destinations/search?destination=${searchQuery}`
+      const response = await axiosInstance.get(
+        `/api/v1/destinations/search?destination=${searchQuery}`
       );
       setResults(response.data.data || []);
     } catch (error) {
@@ -353,6 +354,15 @@ const HeroSupportingComponent = ({ data }, ref) => {
 
                   {/* Action Buttons */}
                 </div>
+
+                <div className="flex flex-row gap-4 place-items-center place-content-center justify-center items-center mt-6">
+                  <button
+                    type="submit"
+                    className="text-white bg-[#007E8F] hover:bg-[#439ca8] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md px-6 py-2.5 text-center transition duration-300 ease-in-out"
+                  >
+                    Customize Your Trip
+                  </button>
+                </div>
               </form>
             </div>
 
@@ -387,15 +397,6 @@ const HeroSupportingComponent = ({ data }, ref) => {
                 />
               </div>
             </div>
-          </div>
-
-          <div className="flex flex-row gap-4 justify-center items-center mt-6">
-            <button
-              type="submit"
-              className="text-white bg-[#007E8F] hover:bg-[#439ca8] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md px-6 py-2.5 text-center transition duration-300 ease-in-out"
-            >
-              Customize Your Trip
-            </button>
           </div>
         </div>
       )}
