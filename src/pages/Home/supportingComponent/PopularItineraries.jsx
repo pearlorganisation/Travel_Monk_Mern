@@ -404,7 +404,7 @@ const PopularItineraries = ({ data }) => {
                           </button>
 
                           <h1 className="text-base font-semibold text-gray-200 mb-8 fixed bottom-1">
-                            Starting Price
+                            Estimated Starting Price
                           </h1>
 
                           <h1 className="text-xl font-bold text-white fixed bottom-[10px]">
