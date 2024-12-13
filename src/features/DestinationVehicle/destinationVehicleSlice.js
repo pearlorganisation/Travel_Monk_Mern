@@ -24,6 +24,7 @@ const get_Destination_Vehicle_Slice = createSlice({
             state.isLoading = false;
             state.isError= true;
             state.isSuccess = false;
+            state.destinationVehicles=  null
             toast.error(action.payload,{position:"top-right"})
         })
         .addCase(getDestinationVehicle.fulfilled,(state,action)=>{

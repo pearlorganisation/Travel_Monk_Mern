@@ -167,6 +167,12 @@ const FullyCustomizeTrip = () => {
   const { destinationHotels } = useSelector((state)=> state.hotels)  // destination hotels contains all the hotels for that particular destination
   const { destinationVehicles } = useSelector((state) => state.destination_vehicle)
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
+  const [selectedVehicleImage, setSelectedVehicleImage] = useState("")
+
   const { startDate , endDate, destination } = location.state ?? {}
   console.log("------------destination", startDate, endDate, destination);
 
@@ -219,11 +225,17 @@ const FullyCustomizeTrip = () => {
   const [selectedVehicleName, setSelectedVehicleName] = useState("")
   const [selectedVehicleId,setSelectedVehicleId] = useState(null)
   const [selectedVehiclePrice,setSelectedVehiclePrice] = useState("")
-  const handleSelectVehicle = (vehicleName, vehiclePrice, vehicleId)=>{
-    setSelectedVehicleId(vehicleId)
-    setSelectedVehicleName(vehicleName)
-    setSelectedVehiclePrice(vehiclePrice)
-  }
+  const handleSelectVehicle = (
+    vehicleName,
+    vehiclePrice,
+    vehicleId,
+    vehicleImage
+  ) => {
+    setSelectedVehicleId(vehicleId);
+    setSelectedVehicleName(vehicleName);
+    setSelectedVehiclePrice(vehiclePrice);
+    setSelectedVehicleImage(vehicleImage);
+  };
 
   console.log(selectedVehiclePrice,"-----------------------selected vehicle price")
   /** data prepared for the options to use in the react-select */
@@ -246,12 +258,7 @@ let activitiesOption = activities?.map((activity) => ({
  
 
   const [dayData, setDayData] = useState(
-    // singleDestination?.data?.locations?.map((loc) => ({
-    //   selectedLocation: {},
-    //   selectedHotel: {},
-    //   selectedActivities: [],
-    //   day:""
-    // })) || [] // Initialize based on itinerary length
+ 
     Array.from({ length: myDays }, () => ({
       selectedLocation: "",
       selectedHotel: {},
@@ -264,12 +271,7 @@ let activitiesOption = activities?.map((activity) => ({
   useEffect(() => {
     if (myDays) {
       setDayData(
-        // singleDestination?.data?.locations.map(() => ({
-        //   selectedLocation: {},
-        //   selectedHotel: {},
-        //   selectedActivities: [],
-        //   day:""
-        // }))
+         
         Array.from({ length: myDays }, () => ({
           selectedLocation: "",
           selectedHotel: {},
@@ -328,7 +330,26 @@ console.log("selected hotel and vehicle prices" ,Total_Estimated_Price)
 
   /**------------------Handle for Enquiry-------------------------*/
   const handleEnquiry = () => {
-    navigate("/full-customize-package-enquiry", { state: { Estimated_Price: Total_Estimated_Price, itinerary: dayData, destinationId: id, vehicleId: selectedVehicleId, duration: { days: days, nights: nights }, startDate: startDate, endDate: endDate } }) // to send all the required prebuilt package data
+    const invalidEntry = dayData.find(day =>
+      !day.selectedLocation ||  
+      !day.selectedHotel || Object.keys(day.selectedHotel).length === 0 || 
+      !Array.isArray(day.selectedActivities) || day.selectedActivities.length === 0  
+    );
+
+    if (invalidEntry) {
+      alert("Please ensure all days have a location, hotel, and activities selected.");
+      return;  }
+    navigate("/full-customize-package-enquiry", {
+      state: {
+        Estimated_Price: Total_Estimated_Price,
+        itinerary: dayData,
+        destinationId: id,
+        vehicleId: selectedVehicleId,
+        duration: { days, nights },
+        startDate,
+        endDate
+      }
+    });
   } 
   return (
     <div className="bg-gray-200 relative">
@@ -358,148 +379,244 @@ console.log("selected hotel and vehicle prices" ,Total_Estimated_Price)
               fill="#1F1F1F"
             />
           </svg>
-          <span>Add Destination</span>
+          <button
+            onClick={openModal}
+            className="px-4 py-2  text-black font-bold rounded hover:bg-blue-600 hover:text-white"
+          >
+            Add a Vehicle ( Compulsory )
+          </button>
         </button>
       </div>
 
-      <div className="grid grid-cols-1 mt-4">
-        <div className="">
-            {dayData?.map((day, index) => {
-            return (
-              <div className="flex flex-row gap-2 items-center justify-start px-8 mt-2">
-                <svg
-                  width="24"
-                  height="25"
-                  viewBox="0 0 24 25"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <rect x="2" y="6.5" width="20" height="3" fill="black" />
-                  <rect x="2" y="15.5" width="20" height="3" fill="black" />
-                  <rect x="2" y="6.5" width="20" height="3" fill="black" />
-                  <rect x="2" y="15.5" width="20" height="3" fill="black" />
-                </svg>
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-1/2">
+            <h2 className="text-xl font-bold mb-4">Select a Vehicle</h2>
 
-                <div className="w-6 h-6 bg-red-500 rounded-full">
-                  <h1 className="text-white px-2">{index + 1}</h1>
+            {/* Vehicle List */}
+            <div className=" flex flex-row gap-6">
+              {destinationVehicles?.map((vehicle) => (
+                <div
+                  key={vehicle?._id}
+                  onClick={() => {
+                    handleSelectVehicle(
+                      vehicle?.vehicleName,
+                      vehicle?.pricePerDay,
+                      vehicle?._id,
+                      vehicle?.images[0]?.secure_url
+                    );
+                    closeModal(); // Close the modal after selection
+                  }}
+                  className="p-4 border rounded-lg shadow-md cursor-pointer bg-purple-300 h-56"
+                >
+                  <p className="text-lg font-semibold">
+                    Name: {vehicle?.vehicleName}
+                  </p>
+                  <p className="text-gray-600">
+                    Price: {vehicle?.pricePerDay} /- per day
+                  </p>
+
+                  <img
+                    src={vehicle?.images[0]?.secure_url}
+                    className="w-28 h-20 mt-8"
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Close button */}
+            <button
+              onClick={closeModal}
+              className="mt-4 px-4 py-2 bg-red-500 text-white font-bold rounded hover:bg-red-600"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+
+      <div className="p-4">
+        {selectedVehicleName && (
+          <div className="mt-6 p-4 bg-orange-300 rounded-lg shadow-md">
+            <div className="flex flex-row gap-6">
+              <div className="flex flex-col gap-3">
+                <h3 className="text-xl font-semibold text-blue-700">
+                  Your Selected Vehicle
+                </h3>
+                <p className="text-lg">Name: {selectedVehicleName}</p>
+                <p className="text-lg">Price: {selectedVehiclePrice}</p>
+              </div>
+
+              <img src={selectedVehicleImage} className="w-20 h-20" />
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="bg-gray-50 min-h-screen p-6">
+        <div className="max-w-6xl mx-auto space-y-4">
+          {dayData?.map((day, index) => (
+            <div
+              key={index}
+              className="bg-white shadow-md rounded-lg border border-gray-200"
+            >
+              <div className="flex items-center bg-gray-100 p-4 space-x-4">
+                {/* Menu Icon */}
+                 
+
+                {/* Day Number */}
+                <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
+                  <span className="text-white text-sm font-bold">{index + 1}</span>
                 </div>
 
-                <div className="bg-white border border-gray-200 rounded-md p-2 flex flex-row">
-                  <div className="grid grid-cols-2  w-full">
-                    <div className="flex flex-row items-center gap-8">
-                      <svg
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <g clip-path="url(#clip0_1779_681)">
-                          <path
-                            d="M18.3 5.70997C17.91 5.31997 17.28 5.31997 16.89 5.70997L12 10.59L7.10997 5.69997C6.71997 5.30997 6.08997 5.30997 5.69997 5.69997C5.30997 6.08997 5.30997 6.71997 5.69997 7.10997L10.59 12L5.69997 16.89C5.30997 17.28 5.30997 17.91 5.69997 18.3C6.08997 18.69 6.71997 18.69 7.10997 18.3L12 13.41L16.89 18.3C17.28 18.69 17.91 18.69 18.3 18.3C18.69 17.91 18.69 17.28 18.3 16.89L13.41 12L18.3 7.10997C18.68 6.72997 18.68 6.08997 18.3 5.70997Z"
-                            fill="#323232"
-                          />
-                        </g>
-                        <defs>
-                          <clipPath id="clip0_1779_681">
-                            <rect width="24" height="24" fill="white" />
-                          </clipPath>
-                        </defs>
-                      </svg>
+                {/* Content Container */}
+                <div className="flex-1 grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {/* Close Icon */}
+                  <div className="flex items-center justify-center">
+                    {/* <svg
+                      className="w-6 h-6 text-gray-500 hover:text-red-500 transition-colors"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M18.3 5.70997C17.91 5.31997 17.28 5.31997 16.89 5.70997L12 10.59L7.10997 5.69997C6.71997 5.30997 6.08997 5.30997 5.69997 5.69997C5.30997 6.08997 5.30997 6.71997 5.69997 7.10997L10.59 12L5.69997 16.89C5.30997 17.28 5.30997 17.91 5.69997 18.3C6.08997 18.69 6.71997 18.69 7.10997 18.3L12 13.41L16.89 18.3C17.28 18.69 17.91 18.69 18.3 18.3C18.69 17.91 18.69 17.28 18.3 16.89L13.41 12L18.3 7.10997C18.68 6.72997 18.68 6.08997 18.3 5.70997Z"
+                        fill="currentColor"
+                      />
+                    </svg> */}
+                  </div>
 
-                      <div className="flex flex-col gap-1">
-                     {/**  show date here */}
-                        <h2 className="text-gray-700 font-medium">
-                          {new Date(datesObjects[index]?.date).toDateString()}
-                        </h2>
-                      </div>
+                  {/* Date */}
+                  <div className="flex flex-col">
+                    <h2 className="text-sm font-medium text-gray-600">
+                      {new Date(datesObjects[index]?.date).toDateString()}
+                    </h2>
+                  </div>
 
-                      <div className="flex flex-col gap-3 ">
-                        <h1> Select Location </h1>
-                        <select
-                          value={dayData[index]?.selectedLocation}
-                          onChange={(event) =>
-                            handleLocationChange(index, event, new Date(datesObjects[index]?.date).toISOString())
-                          }
-                          className="bg-blue-100 border-2 border-[#1f1f1f] rounded-md px-2 py-2 flex flex-row gap-2"
-                        >
-                          <option key="choose"> Choose Location</option>
-                          {singleDestination?.data?.locations?.[index]?.location?.map((loc, index) => (
-                            <option key={index} value={loc}>
-                              {" "}
-                              {loc}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-
-                      <div className="flex flex-col gap-3 ">
-                        <h1> Select Hotel </h1>
-                        <select
-                          value={dayData[index]?.selectedHotel}
-                          onChange={(event) => handleHotelChange(index, event, destinationHotels)}
-                          className="bg-blue-100 border-2 border-[#1f1f1f] rounded-md px-2 py-2 flex flex-row gap-2"
-                        >
-                          <option key="choose"> Choose Hotel</option>
-                          {destinationHotels?.map((hotel) => (
-                            <option key={hotel._id} value={hotel._id}>
-                              {" "}
-                              {hotel.name}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-
-                      <div className="flex flex-col gap-3 ">
-                        <h1> Select Activity </h1>
-                  
-                        <Select
-                          placeholder="Choose Activity"
-                          isMulti
-                          value={dayData[index]?.selectedActivities || []} // Ensure a default value
-                          onChange={(selectedOptions) => handleActivityChange(selectedOptions, index)}
-                          options={activitiesOption}
-                        />
-
-                      </div>
-                    </div>
+                  {/* Location Selector */}
+                 <div className="flex flex-col">
+                    <label className="text-xs font-semibold text-gray-700 mb-1">
+                      Select Location
+                    </label>
+                    <select
+                    value={dayData[index]?.selectedLocation}
+                      onChange={(event) =>
+                        handleLocationChange(index, event, new Date(datesObjects[index]?.date).toISOString())
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm 
+                      focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                      transition-all duration-200"
+                    >
+                      <option key="choose">Choose Location</option>
+                       {singleDestination?.data?.locations?.[index]?.location?.map((loc, index) => (
+                        <option key={index} value={loc}>
+                          {" "}
+                          {loc}
+                        </option>
+                      ))}
+                    </select>
+                  </div> 
+                  {/* <div className="flex flex-col ">
+                    <h1> Select Location </h1>
+                    <select
+                      value={dayData[index]?.selectedLocation}
+                      onChange={(event) =>
+                        handleLocationChange(index, event, new Date(datesObjects[index]?.date).toISOString())
+                      }
+                      className="bg-blue-100 border-2 border-[#1f1f1f] rounded-md px-2 py-2 flex flex-row "
+                    >
+                      <option key="choose"> Choose Location</option>
+                      {singleDestination?.data?.locations?.[index]?.location?.map((loc, index) => (
+                        <option key={index} value={loc}>
+                          {" "}
+                          {loc}
+                        </option>
+                      ))}
+                    </select>
+                  </div> */}
+                  {/* Hotel Selector */}
+                  <div className="flex flex-col">
+                    <label className="text-xs font-semibold text-gray-700 mb-1">
+                      Select Hotel
+                    </label>
+                    <select
+                      value={dayData[index]?.selectedHotel}
+                      onChange={(event) => handleHotelChange(index, event, destinationHotels)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm 
+                      focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                      transition-all duration-200"
+                    >
+                      <option key="choose">Choose Hotel</option>
+                      {Array.isArray(destinationHotels)&&destinationHotels?.map((hotel) => (
+                        <option key={hotel._id} value={hotel._id}>
+                          {hotel.name}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
               </div>
-            );
-          })}
-        </div>
-        {/** select vehicle section */}
-        <div className="p-4">
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {destinationVehicles?.map((vehicle) => (
-              <div
-                key={vehicle?._id}
-                onClick={() => handleSelectVehicle(vehicle?.vehicleName, vehicle?.pricePerDay, vehicle?._id)}
-                className="p-4 border rounded-lg shadow-md cursor-pointer hover:bg-gray-100"
-              >
-                <p className="text-lg font-semibold">Name: {vehicle?.vehicleName}</p>
-                <p className="text-gray-600">Price: {vehicle?.pricePerDay}</p>
-              </div>
-            ))}
-          </div>
-          {selectedVehicleName && (
-            <div className="mt-6 p-4 bg-blue-50 rounded-lg shadow-md">
-              <h3 className="text-xl font-semibold text-blue-700">
-                Selected Vehicle
-              </h3>
-              <p className="text-lg">Name: {selectedVehicleName}</p>
-              <p className="text-lg">Price: {selectedVehiclePrice}</p>
-            </div>
-          )}
-        </div>
-        <div className="w-full bg-cyan-300">
-          <p>Your Estimated price of Trip is: {Total_Estimated_Price}</p>
-          <button onClick={handleEnquiry}>To move forward submit this form</button>
-        </div>
-     </div>
 
- 
+              {/* Activities Selector */}
+              <div className="p-4 bg-gray-50 border-t border-gray-200">
+                <div className="flex flex-col">
+                  <label className="text-xs font-semibold text-gray-700 mb-1">
+                    Select Activities
+                  </label>
+                  <Select
+                    placeholder="Choose Activities"
+                    isMulti
+                    value={dayData[index]?.selectedActivities || []}
+                    onChange={(selectedOptions) => handleActivityChange(selectedOptions, index)}
+                    options={activitiesOption}
+                    className="text-sm"
+                    styles={{
+                      control: (base) => ({
+                        ...base,
+                        borderColor: '#D1D5DB',
+                        '&:hover': {
+                          borderColor: '#3B82F6'
+                        }
+                      })
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+          ))}
+          <div className="w-full bg-cyan-300">
+            <p>Your Estimated price of Trip is: {Total_Estimated_Price}</p>
+            <button onClick={handleEnquiry}>To move forward submit this form</button>
+          </div>
+        </div>
+      </div>
+
+      {/** select vehicle section */}
+      {/* <div className="p-4">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {Array.isArray(destinationVehicles) && destinationVehicles?.map((vehicle) => (
+            <div
+              key={vehicle?._id}
+              onClick={() => handleSelectVehicle(vehicle?.vehicleName, vehicle?.pricePerDay, vehicle?._id)}
+              className="p-4 border rounded-lg shadow-md cursor-pointer hover:bg-gray-100"
+            >
+              <p className="text-lg font-semibold">Name: {vehicle?.vehicleName}</p>
+              <p className="text-gray-600">Price: {vehicle?.pricePerDay}</p>
+            </div>
+          ))}
+        </div>
+        {selectedVehicleName && (
+          <div className="mt-6 p-4 bg-blue-50 rounded-lg shadow-md">
+            <h3 className="text-xl font-semibold text-blue-700">
+              Selected Vehicle
+            </h3>
+            <p className="text-lg">Name: {selectedVehicleName}</p>
+            <p className="text-lg">Price: {selectedVehiclePrice}</p>
+          </div>
+        )}
+      </div> */}
       <div className="px-24 mt-6 w-full ">
         <h1 className="font-bold text-2xl"> You might want to add </h1>
 
@@ -531,169 +648,6 @@ console.log("selected hotel and vehicle prices" ,Total_Estimated_Price)
           </div>
         </div>
       </div>
-      {/**------------commented out the listing of itinerary---------------------*/}
-
-{/* 
-      <div className="px-24 mt-6 w-full pb-10">
-        <h1 className="font-bold text-2xl">Your Trip </h1>
-
-        {dayData.map((iti, index) => (
-          <div className="flex flex-row gap-2 justify-start">
-            <h3 className="text-[#007E8F]"> Day {index + 1} </h3>
-
-            <Stepper />
-
-            <div className="flex flex-col gap-2 w-[100%] justify-between items-start">
-              {iti.selectedLocation === "Choose Location" ? null : (
-                <div>
-                  <h1 className="text-3xl font-semibold">
-                    {iti.selectedLocation}
-                  </h1>
-                </div>
-              )}
-              {iti.selectedActivities === "Choose Activity" ? null : (
-                <div className="flex flex-row gap-28 bg-white p-2">
-                  <img src={Bro} alt="logo" className="w-48 min-h-max" />
-
-                  <div className="mt-4">
-                    <h1 className="font-bold text-lg">
-                      ACTIVITY : {iti.selectedActivities}{" "}
-                    </h1>
-
-                    <h3 className="">
-                      Location :{" "}
-                      {singleDestination?.data?.locations[index]?.location}
-                    </h3>
-
-                    <h3 className="mt-2 font-semibold text-base">
-                      Facilities{" "}
-                    </h3>
-
-                    <h4 className="mt-1">
-                      3 seater . AC . 2 Luggage Bags . First Aid
-                    </h4>
-
-                    <div className="flex flex-row gap-3 mt-4">
-                      <div className="flex flex-col gap-2">
-                        <h3 className="font-semibold text-base">Distance</h3>
-                        <h5>300 km</h5>
-                      </div>
-
-                      <div className="flex flex-col gap-2">
-                        <h3 className="font-semibold text-base">ETA</h3>
-                        <h5>5 h 44 min </h5>
-                      </div>
-
-                      <div className="flex flex-col gap-2">
-                        <h3 className="font-semibold text-base">Cab Timings</h3>
-                        <h5>9 am</h5>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-row gap-2">
-                    <h1 className="text-[#B0404D]"> Timings </h1>
-                    <h1 className="text-[#5c5c5c]"> | </h1>
-                    <h1 className="text-[#B0404D]"> Change </h1>
-                    <h1 className="text-[#5c5c5c]"> | </h1>
-                    <h1 className="text-[#B0404D]"> Remove </h1>
-                  </div>
-                </div>
-              )}
-
-              {iti.selectedHotel === "Choose Hotel" ? null : (
-                <div className="flex flex-row gap-28 bg-white p-2">
-                  <img
-                    src={singleDestination?.data?.hotels[0]?.banner.secure_url}
-                    alt="logo"
-                    className="w-48 "
-                  />
-
-                  <div className="mt-4">
-                    <h1 className="font-bold text-lg">{iti.selectedHotel}</h1>
-
-                    <div className="flex flex-row gap-2 items-center justify-start">
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M14.6313 6.11934C14.5894 5.99592 14.5122 5.88747 14.4094 5.80738C14.3066 5.72729 14.1825 5.67908 14.0526 5.66868L10.2519 5.36668L8.60727 1.72601C8.55489 1.60875 8.4697 1.50916 8.36197 1.43925C8.25424 1.36934 8.12858 1.3321 8.00015 1.33203C7.87173 1.33196 7.74603 1.36906 7.63822 1.43885C7.53041 1.50864 7.44511 1.60814 7.3926 1.72534L5.74794 5.36668L1.94727 5.66868C1.81957 5.67879 1.69749 5.72548 1.59564 5.80316C1.49378 5.88084 1.41646 5.98622 1.37293 6.1067C1.3294 6.22717 1.32149 6.35763 1.35017 6.48248C1.37884 6.60733 1.44287 6.72127 1.5346 6.81068L4.34327 9.54868L3.34994 13.85C3.31977 13.9802 3.32944 14.1165 3.37768 14.2411C3.42592 14.3657 3.51051 14.473 3.62047 14.549C3.73043 14.6249 3.86068 14.6661 3.99433 14.6671C4.12797 14.6681 4.25883 14.629 4.36994 14.5547L7.99994 12.1347L11.6299 14.5547C11.7435 14.6301 11.8774 14.6689 12.0137 14.6659C12.15 14.6629 12.2821 14.6183 12.3922 14.538C12.5023 14.4577 12.5853 14.3456 12.6298 14.2167C12.6743 14.0879 12.6783 13.9485 12.6413 13.8173L11.4219 9.55068L14.4459 6.82934C14.6439 6.65068 14.7166 6.37201 14.6313 6.11934Z"
-                          fill="#1F1F1F"
-                        />
-                      </svg>
-
-                      <h3 className="">5.0</h3>
-                    </div>
-
-                    <h3 className="mt-2 font-semibold text-base">Amenities </h3>
-
-                    <div className="mt-1">
-                      <div className="flex flex-row gap-6">
-                        {singleDestination?.data?.hotels[0]?.amenities
-                          .slice(0, 3)
-                          .map((amenity) => (
-                            <div className="flex flex-row gap-4 items-center justify-center">
-                              {parse(amenity.icon)}
-
-                              <ol>{amenity.name}</ol>
-                            </div>
-                          ))}
-
-                        <button className="px-4 py-2 bg-blue-400 text-white rounded-xl">
-                          {singleDestination?.data?.hotels[0]?.amenities
-                            .length - 3}
-                          More
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="flex flex-row gap-3 mt-4">
-                      <div className="flex flex-col gap-2">
-                        <h3 className="font-semibold text-base">Check In</h3>
-                        <h5>6:00 PM</h5>
-                      </div>
-
-                      <div className="flex flex-col gap-2">
-                        <h3 className="font-semibold text-base">Check Out</h3>
-                        <h5>9:00 AM</h5>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-row gap-2">
-                    <h1 className="text-[#B0404D]"> Details </h1>
-                    <h1 className="text-[#5c5c5c]"> | </h1>
-                    <h1 className="text-[#B0404D]"> Change </h1>
-                    <h1 className="text-[#5c5c5c]"> | </h1>
-                    <h1 className="text-[#B0404D]"> Remove </h1>
-                  </div>
-                </div>
-              )}
-
-               
-              
-                <div className="flex flex-row gap-2 mb-4">
-                {iti.activities.map((activity) => (
-                  <div className="flex flex-row bg-white">
-                    <img src={Lake} />
-
-                    <div className="flex flex-col px-6 py-3">
-                      <h1> {activity.name}</h1>
-                      <h3>Spend Approx 1 hour</h3>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-             
-            </div>
-          </div>
-        ))}
-      </div> */}
 
       <div className="fixed bottom-0 bg-white w-full">
         <div className="flex flex-row justify-between p-3">
@@ -716,3 +670,148 @@ console.log("selected hotel and vehicle prices" ,Total_Estimated_Price)
 };
 
 export default FullyCustomizeTrip;
+
+
+/**main ui of day data selection */
+const mainUi =()=>{
+
+  return(
+    <div className="grid grid-cols-1 mt-4">
+      <div className="">
+        {dayData?.map((day, index) => {
+          return (
+            <div className="flex flex-row gap-2 items-center justify-start px-8 mt-2">
+              <svg
+                width="24"
+                height="25"
+                viewBox="0 0 24 25"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect x="2" y="6.5" width="20" height="3" fill="black" />
+                <rect x="2" y="15.5" width="20" height="3" fill="black" />
+                <rect x="2" y="6.5" width="20" height="3" fill="black" />
+                <rect x="2" y="15.5" width="20" height="3" fill="black" />
+              </svg>
+
+              <div className="w-6 h-6 bg-red-500 rounded-full">
+                <h1 className="text-white px-2">{index + 1}</h1>
+              </div>
+
+              <div className="bg-white border border-gray-200 rounded-md p-2 flex flex-row">
+                <div className="grid grid-cols-2  w-full">
+                  <div className="flex flex-row items-center gap-8">
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g clip-path="url(#clip0_1779_681)">
+                        <path
+                          d="M18.3 5.70997C17.91 5.31997 17.28 5.31997 16.89 5.70997L12 10.59L7.10997 5.69997C6.71997 5.30997 6.08997 5.30997 5.69997 5.69997C5.30997 6.08997 5.30997 6.71997 5.69997 7.10997L10.59 12L5.69997 16.89C5.30997 17.28 5.30997 17.91 5.69997 18.3C6.08997 18.69 6.71997 18.69 7.10997 18.3L12 13.41L16.89 18.3C17.28 18.69 17.91 18.69 18.3 18.3C18.69 17.91 18.69 17.28 18.3 16.89L13.41 12L18.3 7.10997C18.68 6.72997 18.68 6.08997 18.3 5.70997Z"
+                          fill="#323232"
+                        />
+                      </g>
+                      <defs>
+                        <clipPath id="clip0_1779_681">
+                          <rect width="24" height="24" fill="white" />
+                        </clipPath>
+                      </defs>
+                    </svg>
+
+                    <div className="flex flex-col gap-1">
+                      {/**  show date here */}
+                      <h2 className="text-gray-700 font-medium">
+                        {new Date(datesObjects[index]?.date).toDateString()}
+                      </h2>
+                    </div>
+
+                    <div className="flex flex-col gap-3 ">
+                      <h1> Select Location </h1>
+                      <select
+                        value={dayData[index]?.selectedLocation}
+                        onChange={(event) =>
+                          handleLocationChange(index, event, new Date(datesObjects[index]?.date).toISOString())
+                        }
+                        className="bg-blue-100 border-2 border-[#1f1f1f] rounded-md px-2 py-2 flex flex-row gap-2"
+                      >
+                        <option key="choose"> Choose Location</option>
+                        {singleDestination?.data?.locations?.[index]?.location?.map((loc, index) => (
+                          <option key={index} value={loc}>
+                            {" "}
+                            {loc}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div className="flex flex-col gap-3 ">
+                      <h1> Select Hotel </h1>
+                      <select
+                        value={dayData[index]?.selectedHotel}
+                        onChange={(event) => handleHotelChange(index, event, destinationHotels)}
+                        className="bg-blue-100 border-2 border-[#1f1f1f] rounded-md px-2 py-2 flex flex-row gap-2"
+                      >
+                        <option key="choose"> Choose Hotel</option>
+                        {Array.isArray(destinationHotels) && destinationHotels?.map((hotel) => (
+                          <option key={hotel._id} value={hotel._id}>
+                            {" "}
+                            {hotel.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div className="flex flex-col gap-3 ">
+                      <h1> Select Activity </h1>
+
+                      <Select
+                        placeholder="Choose Activity"
+                        isMulti
+                        value={dayData[index]?.selectedActivities || []} // Ensure a default value
+                        onChange={(selectedOptions) => handleActivityChange(selectedOptions, index)}
+                        options={activitiesOption}
+                      />
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      {/** select vehicle section */}
+      <div className="p-4">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {Array.isArray(destinationVehicles) && destinationVehicles?.map((vehicle) => (
+            <div
+              key={vehicle?._id}
+              onClick={() => handleSelectVehicle(vehicle?.vehicleName, vehicle?.pricePerDay, vehicle?._id)}
+              className="p-4 border rounded-lg shadow-md cursor-pointer hover:bg-gray-100"
+            >
+              <p className="text-lg font-semibold">Name: {vehicle?.vehicleName}</p>
+              <p className="text-gray-600">Price: {vehicle?.pricePerDay}</p>
+            </div>
+          ))}
+        </div>
+        {selectedVehicleName && (
+          <div className="mt-6 p-4 bg-blue-50 rounded-lg shadow-md">
+            <h3 className="text-xl font-semibold text-blue-700">
+              Selected Vehicle
+            </h3>
+            <p className="text-lg">Name: {selectedVehicleName}</p>
+            <p className="text-lg">Price: {selectedVehiclePrice}</p>
+          </div>
+        )}
+      </div>
+      <div className="w-full bg-cyan-300">
+        <p>Your Estimated price of Trip is: {Total_Estimated_Price}</p>
+        <button onClick={handleEnquiry}>To move forward submit this form</button>
+      </div>
+    </div>
+  )
+}
+ 

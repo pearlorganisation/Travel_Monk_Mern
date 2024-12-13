@@ -55,6 +55,7 @@ export const hotelsSlice = createSlice({
         state.isLoading = false
         state.isSuccess = false
         state.isError = true
+        state.destinationHotels={}
         state.message = action.error
       })
       .addCase(getHotelsByDestination.fulfilled,(state,action)=>{
