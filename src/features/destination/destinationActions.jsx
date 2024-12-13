@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import { axiosInstance } from "../../services/axiosInterceptor";
+import { toast } from "react-toastify";
 
 export const searchDestination = createAsyncThunk(
   "searchResult/get",
@@ -53,13 +54,22 @@ export const getPacakgesByDestination = createAsyncThunk(
           "Content-Type": "application/json",
         },
       };
-      const result = await axiosInstance.get(
+      const { data } = await axiosInstance.get(
         `/api/v1/destinations/${id}/packages`,
         config
       );
-      console.log(result, "packages by destination");
-      return result.data;
+      console.log(data, "immortals of melluha");
+      return data;
     } catch (error) {
+      if (error?.response?.data?.message) {
+        console.log(error?.response?.data?.message, "Custom error");
+        // toast.error(error?.response?.data?.message, "Custom error");
+      } else {
+        console.log(error, "Server error");
+        // toast.error(error, "Server error");
+      }
+
+      // console.log(error, "13124141414");
       return thunkAPI.rejectWithValue(error);
     }
   }

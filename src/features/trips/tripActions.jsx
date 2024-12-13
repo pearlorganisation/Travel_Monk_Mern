@@ -3,14 +3,17 @@ import { axiosInstance } from "../../services/axiosInterceptor";
 
 export const getAllDestinations = createAsyncThunk(
   "trip/Dest/get",
-  async (thunkAPI) => {
+  async (destType, thunkAPI) => {
     try {
       const config = {
         headers: {
           "Content-Type": "application/json",
         },
       };
-      const { data } = await axiosInstance.get("/api/v1/destinations", config);
+      const { data } = await axiosInstance.get(
+        `/api/v1/destinations?type=${destType}`,
+        config
+      );
 
       if (data) {
         console.log("Data", data);

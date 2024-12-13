@@ -6,12 +6,9 @@ import { getAllDestinations } from "../../features/trips/tripActions";
 const InternationalPackages = () => {
   const destState = useSelector((state) => state.trip.destinations);
 
-  const internationalDest = destState?.data.filter(
-    (data) => data.type == "International"
-  );
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getAllDestinations());
+    dispatch(getAllDestinations("International"));
   }, []);
 
   return (
@@ -41,7 +38,7 @@ const InternationalPackages = () => {
           Destinations
         </h1>
         <div className="p-4">
-          <DestinationCard data={internationalDest} />
+          <DestinationCard data={destState?.data} />
         </div>
       </div>
     </div>

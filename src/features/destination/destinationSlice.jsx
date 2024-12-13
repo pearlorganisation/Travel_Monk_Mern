@@ -54,6 +54,8 @@ export const destinationsSlice = createSlice({
       })
       .addCase(getPacakgesByDestination.pending, (state) => {
         state.isLoading = true;
+        state.isSuccess = false;
+        state.message = "";
       })
       .addCase(getPacakgesByDestination.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -65,7 +67,9 @@ export const destinationsSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
-        state.message = action.error;
+        state.packagesByDestination = [];
+        state.message =
+          action?.payload?.response?.data?.message || action.error;
       });
   },
 });

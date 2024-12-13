@@ -13,32 +13,6 @@ const PopularDestination = ({ data }) => {
           Most Popular Indian Destinations
         </h2>
 
-        {/* Featured Destination Section */}
-        {/* <div className="flex flex-row gap-4 mb-6">
-          {data.map((destination) => (
-            <div
-              className="bg-cover bg-center w-full sm:w-[400px] h-[300px] rounded-lg shadow-lg"
-              style={{
-                backgroundImage: `url(${destination?.banner?.secure_url})`,
-              }}
-            >
-              <div className="bg-black bg-opacity-50 h-full w-full flex items-center rounded-lg">
-                <div className="text-left text-white p-8">
-                  <h3 className="text-3xl font-bold mb-2">
-                    Explore {destination?.name}
-                  </h3>
-                  <p className="mb-4">
-                    A Journey Through Time, Colour And Culture
-                  </p>
-                  <button className="bg-white text-black py-2 px-4 rounded">
-                    Explore
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div> */}
-
         {/* Swiper Section */}
         <Swiper
           slidesPerView={1}

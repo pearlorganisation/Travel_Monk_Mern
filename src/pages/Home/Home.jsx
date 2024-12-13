@@ -17,19 +17,14 @@ import { getPopularDestination } from "../../features/destination/destinationAct
 const Home = () => {
   const dispatch = useDispatch();
 
-  const { destinations } = useSelector((state) => state.trip);
   const { popular } = useSelector((state) => state.destination);
 
   const userState = useSelector((state) => state.user);
-  console.log(userState, "user state");
 
-  console.log(popular?.data, "destination names");
+  console.log(popular?.data, "popular destination names");
 
   useEffect(() => {
     dispatch(getAuthUserDetails());
-  }, []);
-  useEffect(() => {
-    dispatch(getAllDestinations());
   }, []);
 
   useEffect(() => {
