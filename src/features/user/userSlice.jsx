@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
  
-
+ 
 
 import {
     changePassword,
@@ -10,6 +10,7 @@ import {
     resetPassword
   
 } from "./userActions";
+ 
  
 const userState = {
     isLoading: false,
@@ -48,6 +49,8 @@ export const usersSlice = createSlice({
             .addCase(changePassword.pending,(state)=>{
                 state.changePasswordInfo = state.changePasswordInfo ?? {}
                 state.changePasswordInfo.isLoading = true;
+                state.changePasswordInfo.isSuccess = false;
+
             })
             .addCase(changePassword.rejected,(state,action)=>{
                 state.changePasswordInfo = state.changePasswordInfo ?? {}
@@ -61,6 +64,7 @@ export const usersSlice = createSlice({
                 state.changePasswordInfo.isError = false;
                 state.changePasswordInfo.isLoading = false;
                 state.changePasswordInfo.isSuccess = true;
+                 
                 toast("Successfully changed the password")
             })
            .addCase(resetPassword.pending,(state)=>{

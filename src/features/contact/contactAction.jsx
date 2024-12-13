@@ -5,7 +5,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { axiosInstance } from "../../services/axiosInterceptor";
 
 export const submitContact = createAsyncThunk("contact/form",
-    async({name , email, phoneNumber, message},{ rejectWithValue }) =>{
+    async({name , email, phoneNumber, message, page},{ rejectWithValue }) =>{
         try {
             const config ={
                 headers: {
@@ -13,7 +13,7 @@ export const submitContact = createAsyncThunk("contact/form",
                 }
             }
             const { data } = await axiosInstance.post("/api/v1/contacts",
-                {name, email, phoneNumber, message},
+                {name, email, phoneNumber, message, page},
                 config,
             );
           console.log("Registered Contact US Form",data);

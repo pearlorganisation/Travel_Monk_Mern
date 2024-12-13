@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { submitContact } from '../../features/contact/contactAction';
 import { resetContactForm } from '../../features/contact/contactSlice';
+import { useLocation } from 'react-router-dom';
 
 const ContactUs = () => {
 
@@ -217,8 +218,12 @@ export default ContactUs
 const ContactUsForm =()=>{
 const dispatch = useDispatch();
 const {register, handleSubmit, reset} = useForm()
+const location = useLocation()
+const pageUrl = location.pathname
+console.log('----------------page url', pageUrl)
 const submitForm = (data)=>{
-dispatch(submitContact(data));
+    const formData = {...data, page:pageUrl}
+dispatch(submitContact(formData));
  
 setTimeout(()=>{
     reset()
