@@ -20,6 +20,7 @@ const HeroSupportingComponent = ({ data }, ref) => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
+  const [travellers, setTravellers] = useState("");
   let maxDate = null;
   if (startDate) {
     maxDate = addDays(startDate, 10);
@@ -145,7 +146,10 @@ const HeroSupportingComponent = ({ data }, ref) => {
   };
 
   const submitForm = async (data) => {
+    console.log(data, "my sent data");
     const { destination } = data;
+
+    if (travellers == "") return alert("Travellers is a required field");
     if (startDate == null || endDate == null) {
       return alert("Both the dates are required");
     } else {
@@ -164,6 +168,20 @@ const HeroSupportingComponent = ({ data }, ref) => {
       } catch (error) {
         console.error("Failed to fetch destination data:", error);
       }
+    }
+  };
+
+  const handleTravellers = (e) => {
+    // const numberTravellers = e.target.value;
+
+    // if (isNaN(numberTravellers)) setTravellers(e.target.value);
+
+    const numberTravellers = parseInt(e.target.value, 10);
+
+    if (!isNaN(numberTravellers) && numberTravellers > 0) {
+      setTravellers(numberTravellers);
+    } else {
+      setTravellers("");
     }
   };
 
@@ -292,77 +310,131 @@ const HeroSupportingComponent = ({ data }, ref) => {
 
             <div className="flex-grow">
               <form onSubmit={handleSubmit(submitForm)} className="space-y-4">
-                <div className="relative">
-                  <label
-                    htmlFor="destination"
-                    className="block mb-2 text-sm font-medium text-gray-700"
-                  >
-                    Search Destination
-                  </label>
+                <div className="flex flex-row gap-4">
                   <div className="relative">
-                    <div className="absolute inset-y-0 left-4 pl-[-2] flex items-center pointer-events-none">
-                      <svg
-                        width="20"
-                        height="20"
-                        viewBox="0 0 20 20"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <g clipPath="url(#clip0_972_1398)">
-                          <path
-                            d="M9.99996 1.66669C6.77496 1.66669 4.16663 4.27502 4.16663 7.50002C4.16663 11.875 9.99996 18.3334 9.99996 18.3334C9.99996 18.3334 15.8333 11.875 15.8333 7.50002C15.8333 4.27502 13.225 1.66669 9.99996 1.66669ZM5.83329 7.50002C5.83329 5.20002 7.69996 3.33335 9.99996 3.33335C12.3 3.33335 14.1666 5.20002 14.1666 7.50002C14.1666 9.90002 11.7666 13.4917 9.99996 15.7334C8.26663 13.5084 5.83329 9.87502 5.83329 7.50002Z"
-                            fill="#5C5C5C"
-                          />
-                          <path
-                            d="M9.99996 9.58335C11.1506 9.58335 12.0833 8.65061 12.0833 7.50002C12.0833 6.34943 11.1506 5.41669 9.99996 5.41669C8.84937 5.41669 7.91663 6.34943 7.91663 7.50002C7.91663 8.65061 8.84937 9.58335 9.99996 9.58335Z"
-                            fill="#5C5C5C"
-                          />
-                        </g>
-                        <defs>
-                          <clipPath id="clip0_972_1398">
-                            <rect width="20" height="20" fill="white" />
-                          </clipPath>
-                        </defs>
-                      </svg>
+                    <label
+                      htmlFor="destination"
+                      className="block mb-2 text-sm font-medium text-gray-700"
+                    >
+                      Search Destination
+                    </label>
+                    <div className="relative rounded-md">
+                      <div className="absolute inset-y-0 left-4 pl-[-2] flex items-center pointer-events-none ">
+                        <svg
+                          width="20"
+                          height="20"
+                          viewBox="0 0 20 20"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <g clipPath="url(#clip0_972_1398)">
+                            <path
+                              d="M9.99996 1.66669C6.77496 1.66669 4.16663 4.27502 4.16663 7.50002C4.16663 11.875 9.99996 18.3334 9.99996 18.3334C9.99996 18.3334 15.8333 11.875 15.8333 7.50002C15.8333 4.27502 13.225 1.66669 9.99996 1.66669ZM5.83329 7.50002C5.83329 5.20002 7.69996 3.33335 9.99996 3.33335C12.3 3.33335 14.1666 5.20002 14.1666 7.50002C14.1666 9.90002 11.7666 13.4917 9.99996 15.7334C8.26663 13.5084 5.83329 9.87502 5.83329 7.50002Z"
+                              fill="#5C5C5C"
+                            />
+                            <path
+                              d="M9.99996 9.58335C11.1506 9.58335 12.0833 8.65061 12.0833 7.50002C12.0833 6.34943 11.1506 5.41669 9.99996 5.41669C8.84937 5.41669 7.91663 6.34943 7.91663 7.50002C7.91663 8.65061 8.84937 9.58335 9.99996 9.58335Z"
+                              fill="#5C5C5C"
+                            />
+                          </g>
+                          <defs>
+                            <clipPath id="clip0_972_1398">
+                              <rect width="20" height="20" fill="white" />
+                            </clipPath>
+                          </defs>
+                        </svg>
+                      </div>
+
+                      <input
+                        type="text"
+                        autoComplete={false}
+                        autoCorrect={false}
+                        {...register("destination")}
+                        value={destination}
+                        onChange={handleInputChange}
+                        placeholder="Search"
+                        className="w-full px-4 py-2 pl-10 border border-black/50 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#007E8F]"
+                      />
+                      {results.length > 0 && (
+                        <ul className="absolute z-10 w-full bg-white border rounded-md shadow-lg mt-1 max-h-60 overflow-auto">
+                          {results.map((destinationP, index) => (
+                            <li
+                              key={index}
+                              onClick={() => handleResultClick(destinationP)}
+                              className="px-4 py-2 hover:bg-blue-100 cursor-pointer"
+                            >
+                              {destinationP.name}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                      {isSearching && (
+                        <div className="absolute z-10 mt-1 text-gray-500">
+                          Searching...
+                        </div>
+                      )}
                     </div>
 
-                    <input
-                      type="text"
-                      autoComplete={false}
-                      autoCorrect={false}
-                      {...register("destination")}
-                      value={destination}
-                      onChange={handleInputChange}
-                      placeholder="Search destinations..."
-                      className="w-full px-4 py-2 pl-10 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                    {results.length > 0 && (
-                      <ul className="absolute z-10 w-full bg-white border rounded-md shadow-lg mt-1 max-h-60 overflow-auto">
-                        {results.map((destinationP, index) => (
-                          <li
-                            key={index}
-                            onClick={() => handleResultClick(destinationP)}
-                            className="px-4 py-2 hover:bg-blue-100 cursor-pointer"
-                          >
-                            {destinationP.name}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                    {isSearching && (
-                      <div className="absolute z-10 mt-1 text-gray-500">
-                        Searching...
-                      </div>
-                    )}
+                    {/* Action Buttons */}
                   </div>
 
-                  {/* Action Buttons */}
+                  <div className="relative">
+                    <label
+                      htmlFor="travellers"
+                      className="block mb-2 text-sm font-medium text-gray-700"
+                    >
+                      Number of Travellers
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="text"
+                        {...register("travellers")}
+                        value={travellers}
+                        placeholder="Travellers"
+                        onChange={handleTravellers}
+                        className="w-full px-4 py-2 border border-black/50 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#007E8F]"
+                      />
+                    </div>
+
+                    {/* Action Buttons */}
+                  </div>
+
+                  <div className="flex flex-col ">
+                    <label className="block mb-2 text-sm font-medium text-gray-700">
+                      Start Date
+                    </label>
+                    <DatePicker
+                      required
+                      selectsStart
+                      selected={startDate}
+                      onChange={(date) => setStartDate(date)}
+                      dateFormat="yyyy-MM-dd"
+                      className="w-full px-3 py-2 border border-black/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#007E8F] focus:border-transparent"
+                      placeholderText="Select Start Date"
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <label className="block mb-2 text-sm font-medium text-gray-700">
+                      End Date
+                    </label>
+                    <DatePicker
+                      required
+                      selectsEnd
+                      selected={endDate}
+                      onChange={(date) => setEndDate(date)}
+                      minDate={startDate}
+                      maxDate={maxDate}
+                      dateFormat="yyyy-MM-dd"
+                      className="w-full px-3 py-2 border border-black/50  rounded-lg focus:outline-none focus:ring-2 focus:ring-[#007E8F] focus:border-transparent"
+                      placeholderText="Select End Date"
+                    />
+                  </div>
                 </div>
 
-                <div className="flex flex-row gap-4 place-items-center place-content-center justify-center items-center mt-6">
+                <div className="flex items-center justify-center">
                   <button
                     type="submit"
-                    className="text-white bg-[#007E8F] hover:bg-[#439ca8] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md px-6 py-2.5 text-center transition duration-300 ease-in-out"
+                    className="text-white bg-[#007E8F] items-center justify-center flex hover:bg-[#439ca8] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md px-6 py-2.5 text-center transition duration-300 ease-in-out"
                   >
                     Customize Your Trip
                   </button>
@@ -371,38 +443,7 @@ const HeroSupportingComponent = ({ data }, ref) => {
             </div>
 
             {/* Right Side: Date Pickers */}
-            <div className="flex flex-row gap-4 w-full md:w-auto">
-              <div className="flex flex-col">
-                <label className="block mb-2 text-sm font-medium text-gray-700">
-                  Start Date
-                </label>
-                <DatePicker
-                  required
-                  selectsStart
-                  selected={startDate}
-                  onChange={(date) => setStartDate(date)}
-                  dateFormat="yyyy-MM-dd"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#007E8F] focus:border-transparent"
-                  placeholderText="Select Start Date"
-                />
-              </div>
-              <div className="flex flex-col">
-                <label className="block mb-2 text-sm font-medium text-gray-700">
-                  End Date
-                </label>
-                <DatePicker
-                  required
-                  selectsEnd
-                  selected={endDate}
-                  onChange={(date) => setEndDate(date)}
-                  minDate={startDate}
-                  maxDate={maxDate}
-                  dateFormat="yyyy-MM-dd"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#007E8F] focus:border-transparent"
-                  placeholderText="Select End Date"
-                />
-              </div>
-            </div>
+            <div className="flex flex-row gap-4 w-full md:w-auto"></div>
           </div>
         </div>
       )}

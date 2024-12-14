@@ -421,9 +421,12 @@ const PopularItineraries = ({ data }) => {
 
         {/* Explore All Link */}
         <div className="text-right mt-4 mb-6">
-          <a href="#" className="text-blue-500 hover:underline">
+          <Link
+            to="/international_packages"
+            className="text-blue-500 hover:underline"
+          >
             Explore All →
-          </a>
+          </Link>
         </div>
       </div>
     </div>

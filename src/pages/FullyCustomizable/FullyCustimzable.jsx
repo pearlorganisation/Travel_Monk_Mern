@@ -9,7 +9,6 @@ import {
   getAllActivitiesByDestination,
   getSingleDestination,
 } from "../../features/trips/tripActions";
-import parse from "html-react-parser";
 import { getHotelsByDestination } from "../../features/hotel/hotelActions";
 import { getDestinationVehicle } from "../../features/DestinationVehicle/destinationVehicleaction";
 import moment from "moment";
@@ -508,6 +507,8 @@ const FullyCustomizeTrip = () => {
           </div>
         )}
       </div>
+
+      <div className="flex justify-center items-center"></div>
 
       <div className="bg-gray-50 min-h-screen p-6">
         <div className="max-w-6xl mx-auto space-y-4">

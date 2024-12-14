@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllDestinations } from "../../features/trips/tripActions";
 import { getAuthUserDetails } from "../../features/user/userActions";
 import { getPopularDestination } from "../../features/destination/destinationActions";
-import WhatsAppButton from "../../components/Whatsapp/Whatsapp";
+import WhatsAppLogo from "../../components/Whatsapp/WhatsLogo";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -53,7 +53,9 @@ const Home = () => {
       <PopularDestination data={indianData ? indianData : []} />
       <PopularItineraries data={internationalData ? internationalData : []} />
 
-      <WhatsAppButton />
+      <div className="flex items-center justify-end px-20 mb-6">
+        <WhatsAppLogo />
+      </div>
       {/* <Upcoming />
       <Distinguish />
       <GetinTouch /> */}
