@@ -78,7 +78,7 @@ const PopularDestination = ({ data }) => {
                           </button>
 
                           <h1 className="text-base font-semibold text-gray-200 mb-8 fixed bottom-1">
-                            Starting Price
+                            Estimated Starting Price
                           </h1>
 
                           <h1 className="text-xl font-bold text-white fixed bottom-[10px]">
@@ -95,9 +95,9 @@ const PopularDestination = ({ data }) => {
 
         {/* Explore All Link */}
         <div className="text-right mt-4 mb-6">
-          <a href="#" className="text-blue-500 hover:underline">
+          <Link to="/indian_packages" className="text-blue-500 hover:underline">
             Explore All →
-          </a>
+          </Link>
         </div>
       </div>
     </div>

@@ -9,9 +9,9 @@ import {
   getAllActivitiesByDestination,
   getSingleDestination,
 } from "../../features/trips/tripActions";
-import parse from "html-react-parser";
 import { getHotelsByDestination } from "../../features/hotel/hotelActions";
 import { getDestinationVehicle } from "../../features/DestinationVehicle/destinationVehicleaction";
+import moment from "moment";
 
 const tripData = [
   {
@@ -171,7 +171,7 @@ const FullyCustomizeTrip = () => {
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
-  const [selectedVehicleImage, setSelectedVehicleImage] = useState("")
+  const [selectedVehicleImage, setSelectedVehicleImage] = useState("");
 
   const { startDate, endDate, destination } = location.state ?? {};
   // console.log("------------destination", startDate, endDate, destination);
@@ -258,7 +258,6 @@ const FullyCustomizeTrip = () => {
   }, []);
 
   const [dayData, setDayData] = useState(
- 
     Array.from({ length: myDays }, () => ({
       selectedLocation: "",
       selectedHotel: {},
@@ -271,7 +270,6 @@ const FullyCustomizeTrip = () => {
   useEffect(() => {
     if (myDays) {
       setDayData(
-         
         Array.from({ length: myDays }, () => ({
           selectedLocation: "",
           selectedHotel: {},
@@ -349,8 +347,8 @@ const FullyCustomizeTrip = () => {
         vehicleId: selectedVehicleId,
         duration: { days, nights },
         startDate,
-        endDate
-      }
+        endDate,
+      },
     });
   } 
   return (
@@ -455,6 +453,8 @@ const FullyCustomizeTrip = () => {
         )}
       </div>
 
+      <div className="flex justify-center items-center"></div>
+
       <div className="bg-gray-50 min-h-screen p-6">
         <div className="max-w-6xl mx-auto space-y-4">
           {dayData?.map((day, index) => (
@@ -464,11 +464,12 @@ const FullyCustomizeTrip = () => {
             >
               <div className="flex items-center bg-gray-100 p-4 space-x-4">
                 {/* Menu Icon */}
-                 
 
                 {/* Day Number */}
                 <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
-                  <span className="text-white text-sm font-bold">{index + 1}</span>
+                  <span className="text-white text-sm font-bold">
+                    {index + 1}
+                  </span>
                 </div>
 
                 {/* Content Container */}
@@ -498,28 +499,34 @@ const FullyCustomizeTrip = () => {
                   </div>
 
                   {/* Location Selector */}
-                 <div className="flex flex-col">
+                  <div className="flex flex-col">
                     <label className="text-xs font-semibold text-gray-700 mb-1">
                       Select Location
                     </label>
                     <select
-                    value={dayData[index]?.selectedLocation}
+                      value={dayData[index]?.selectedLocation}
                       onChange={(event) =>
-                        handleLocationChange(index, event, new Date(datesObjects[index]?.date).toISOString())
+                        handleLocationChange(
+                          index,
+                          event,
+                          new Date(datesObjects[index]?.date).toISOString()
+                        )
                       }
                       className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm 
                       focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
                       transition-all duration-200"
                     >
                       <option key="choose">Choose Location</option>
-                       {singleDestination?.data?.locations?.[index]?.location?.map((loc, index) => (
+                      {singleDestination?.data?.locations?.[
+                        index
+                      ]?.location?.map((loc, index) => (
                         <option key={index} value={loc}>
                           {" "}
                           {loc}
                         </option>
                       ))}
                     </select>
-                  </div> 
+                  </div>
                   {/* <div className="flex flex-col ">
                     <h1> Select Location </h1>
                     <select
@@ -545,17 +552,20 @@ const FullyCustomizeTrip = () => {
                     </label>
                     <select
                       value={dayData[index]?.selectedHotel}
-                      onChange={(event) => handleHotelChange(index, event, destinationHotels)}
+                      onChange={(event) =>
+                        handleHotelChange(index, event, destinationHotels)
+                      }
                       className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm 
                       focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
                       transition-all duration-200"
                     >
                       <option key="choose">Choose Hotel</option>
-                      {Array.isArray(destinationHotels)&&destinationHotels?.map((hotel) => (
-                        <option key={hotel._id} value={hotel._id}>
-                          {hotel.name}
-                        </option>
-                      ))}
+                      {Array.isArray(destinationHotels) &&
+                        destinationHotels?.map((hotel) => (
+                          <option key={hotel._id} value={hotel._id}>
+                            {hotel.name}
+                          </option>
+                        ))}
                     </select>
                   </div>
                 </div>
@@ -571,26 +581,47 @@ const FullyCustomizeTrip = () => {
                     placeholder="Choose Activities"
                     isMulti
                     value={dayData[index]?.selectedActivities || []}
-                    onChange={(selectedOptions) => handleActivityChange(selectedOptions, index)}
+                    onChange={(selectedOptions) =>
+                      handleActivityChange(selectedOptions, index)
+                    }
                     options={activitiesOption}
                     className="text-sm"
                     styles={{
                       control: (base) => ({
                         ...base,
-                        borderColor: '#D1D5DB',
-                        '&:hover': {
-                          borderColor: '#3B82F6'
-                        }
-                      })
+                        borderColor: "#D1D5DB",
+                        "&:hover": {
+                          borderColor: "#3B82F6",
+                        },
+                      }),
                     }}
                   />
                 </div>
               </div>
             </div>
           ))}
+
+          <div className="bg-white shadow-md rounded-lg border border-gray-200">
+            <div className="flex flex-row justify-between items-center bg-gray-100 p-4 space-x-4">
+              <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
+                <span className="text-white text-sm font-bold">
+                  {myDays + 1}
+                </span>
+              </div>
+
+              <div className="flex items-center justify-center">
+                {" "}
+                Airport Drop
+              </div>
+              <div className="flex items-center justify-center"></div>
+            </div>
+          </div>
+
           <div className="w-full bg-cyan-300">
             <p>Your Estimated price of Trip is: {Total_Estimated_Price}</p>
-            <button onClick={handleEnquiry}>To move forward submit this form</button>
+            <button onClick={handleEnquiry}>
+              To move forward submit this form
+            </button>
           </div>
         </div>
       </div>
@@ -673,11 +704,9 @@ const FullyCustomizeTrip = () => {
 
 export default FullyCustomizeTrip;
 
-
 /**main ui of day data selection */
-const mainUi =()=>{
-
-  return(
+const mainUi = () => {
+  return (
     <div className="grid grid-cols-1 mt-4">
       <div className="">
         {dayData?.map((day, index) => {
@@ -726,7 +755,10 @@ const mainUi =()=>{
                     <div className="flex flex-col gap-1">
                       {/**  show date here */}
                       <h2 className="text-gray-700 font-medium">
-                        {new Date(datesObjects[index]?.date).toDateString()}
+                        {/* {new Date().toDateString()} */}
+                        {moment(datesObjects[index]?.date).format(
+                          "DD MMM YYYY"
+                        )}
                       </h2>
                     </div>
 
@@ -735,12 +767,18 @@ const mainUi =()=>{
                       <select
                         value={dayData[index]?.selectedLocation}
                         onChange={(event) =>
-                          handleLocationChange(index, event, new Date(datesObjects[index]?.date).toISOString())
+                          handleLocationChange(
+                            index,
+                            event,
+                            new Date(datesObjects[index]?.date).toISOString()
+                          )
                         }
                         className="bg-blue-100 border-2 border-[#1f1f1f] rounded-md px-2 py-2 flex flex-row gap-2"
                       >
                         <option key="choose"> Choose Location</option>
-                        {singleDestination?.data?.locations?.[index]?.location?.map((loc, index) => (
+                        {singleDestination?.data?.locations?.[
+                          index
+                        ]?.location?.map((loc, index) => (
                           <option key={index} value={loc}>
                             {" "}
                             {loc}
@@ -753,16 +791,19 @@ const mainUi =()=>{
                       <h1> Select Hotel </h1>
                       <select
                         value={dayData[index]?.selectedHotel}
-                        onChange={(event) => handleHotelChange(index, event, destinationHotels)}
+                        onChange={(event) =>
+                          handleHotelChange(index, event, destinationHotels)
+                        }
                         className="bg-blue-100 border-2 border-[#1f1f1f] rounded-md px-2 py-2 flex flex-row gap-2"
                       >
                         <option key="choose"> Choose Hotel</option>
-                        {Array.isArray(destinationHotels) && destinationHotels?.map((hotel) => (
-                          <option key={hotel._id} value={hotel._id}>
-                            {" "}
-                            {hotel.name}
-                          </option>
-                        ))}
+                        {Array.isArray(destinationHotels) &&
+                          destinationHotels?.map((hotel) => (
+                            <option key={hotel._id} value={hotel._id}>
+                              {" "}
+                              {hotel.name}
+                            </option>
+                          ))}
                       </select>
                     </div>
 
@@ -773,10 +814,11 @@ const mainUi =()=>{
                         placeholder="Choose Activity"
                         isMulti
                         value={dayData[index]?.selectedActivities || []} // Ensure a default value
-                        onChange={(selectedOptions) => handleActivityChange(selectedOptions, index)}
+                        onChange={(selectedOptions) =>
+                          handleActivityChange(selectedOptions, index)
+                        }
                         options={activitiesOption}
                       />
-
                     </div>
                   </div>
                 </div>
@@ -788,16 +830,25 @@ const mainUi =()=>{
       {/** select vehicle section */}
       <div className="p-4">
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {Array.isArray(destinationVehicles) && destinationVehicles?.map((vehicle) => (
-            <div
-              key={vehicle?._id}
-              onClick={() => handleSelectVehicle(vehicle?.vehicleName, vehicle?.pricePerDay, vehicle?._id)}
-              className="p-4 border rounded-lg shadow-md cursor-pointer hover:bg-gray-100"
-            >
-              <p className="text-lg font-semibold">Name: {vehicle?.vehicleName}</p>
-              <p className="text-gray-600">Price: {vehicle?.pricePerDay}</p>
-            </div>
-          ))}
+          {Array.isArray(destinationVehicles) &&
+            destinationVehicles?.map((vehicle) => (
+              <div
+                key={vehicle?._id}
+                onClick={() =>
+                  handleSelectVehicle(
+                    vehicle?.vehicleName,
+                    vehicle?.pricePerDay,
+                    vehicle?._id
+                  )
+                }
+                className="p-4 border rounded-lg shadow-md cursor-pointer hover:bg-gray-100"
+              >
+                <p className="text-lg font-semibold">
+                  Name: {vehicle?.vehicleName}
+                </p>
+                <p className="text-gray-600">Price: {vehicle?.pricePerDay}</p>
+              </div>
+            ))}
         </div>
         {selectedVehicleName && (
           <div className="mt-6 p-4 bg-blue-50 rounded-lg shadow-md">
@@ -811,9 +862,10 @@ const mainUi =()=>{
       </div>
       <div className="w-full bg-cyan-300">
         <p>Your Estimated price of Trip is: {Total_Estimated_Price}</p>
-        <button onClick={handleEnquiry}>To move forward submit this form</button>
+        <button onClick={handleEnquiry}>
+          To move forward submit this form
+        </button>
       </div>
     </div>
-  )
-}
- 
+  );
+};

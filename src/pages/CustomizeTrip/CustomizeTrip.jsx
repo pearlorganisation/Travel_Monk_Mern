@@ -334,7 +334,7 @@ const CustomizeTrip = () => {
                         <Select
                           placeholder="Choose Activity"
                           isMulti
-                          value={dayData[index]?.selectedActivities} // Bind the value to the specific day's selectedActivity
+                          value={dayData[index]?.selectedActivities}
                           onChange={(selectedOptions) =>
                             handleActivityChange(selectedOptions, index)
                           }
@@ -363,37 +363,6 @@ const CustomizeTrip = () => {
           <button onClick={handleEnquiry}>Fill the Enquiry Form</button>
         </div>
       </div>
-      {/* <div className="px-24 mt-6 w-full ">
-        <h1 className="font-bold text-2xl"> You might want to add </h1>
-
-        <div className="flex flex-row gap-2 mt-2">
-          <div className="bg-white flex flex-row gap-2 items-center justify-center py-2 px-6 rounded-md mb-2">
-            <div className="flex flex-col gap-1">
-              <h1>People often visit Kausani</h1>
-              <h1>114 km from Nainital</h1>
-            </div>
-
-            <div className="">
-              <button className="px-2 border border-black rounded-2xl">
-                Add to Destination
-              </button>
-            </div>
-          </div>
-
-          <div className="bg-white flex flex-row gap-2 items-center justify-center py-2 px-6 rounded-md mb-2">
-            <div className="flex flex-col gap-1">
-              <h1>People often visit Rishikesh</h1>
-              <h1>186 km from Nainital</h1>
-            </div>
-
-            <div className="">
-              <button className="px-2 border border-black rounded-2xl">
-                Add to Destination
-              </button>
-            </div>
-          </div>
-        </div>
-      </div> */}
 
       <div className="fixed bottom-0 bg-white w-full">
         <div className="flex flex-row justify-between p-3">

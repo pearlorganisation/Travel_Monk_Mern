@@ -52,7 +52,7 @@ function CardCarousel({ data }) {
                   <div className="h-[60%]">
                     <div className="w-full flex justify-end">
                       <div className="bg-yellow-400 font-semibold w-fit px-2 flex items-center gap-2 rounded-full">
-                        {cardData?.startingPrice}{" "}
+                        Estimated Price {cardData?.startingPrice}{" "}
                       </div>
                     </div>
                   </div>
