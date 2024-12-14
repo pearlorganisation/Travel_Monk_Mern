@@ -14,6 +14,9 @@ import { getAllDestinations } from "../../features/trips/tripActions";
 import { getAuthUserDetails } from "../../features/user/userActions";
 import { getPopularDestination } from "../../features/destination/destinationActions";
 import WhatsAppLogo from "../../components/Whatsapp/WhatsLogo";
+// import Map from "../../components/Map/Map";
+
+import EmbedGoogleMap from "../../components/Map/Map";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -56,6 +59,10 @@ const Home = () => {
       <div className="flex items-center justify-end px-20 mb-6">
         <WhatsAppLogo />
       </div>
+
+      <EmbedGoogleMap />
+
+      {/* <Map /> */}
       {/* <Upcoming />
       <Distinguish />
       <GetinTouch /> */}
