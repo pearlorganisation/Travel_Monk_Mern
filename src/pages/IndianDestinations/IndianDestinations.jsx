@@ -34,7 +34,9 @@ const IndianDestinations = () => {
         <div>
           {message != "" ? (
             <div className="flex items-center justify-center w-full mt-20 mb-20">
-              <h1 className="font-bold text-4xl"> {message}</h1>
+              <h1 className="font-bold text-4xl">
+                No Packages Found For this Destination
+              </h1>
             </div>
           ) : (
             <div>

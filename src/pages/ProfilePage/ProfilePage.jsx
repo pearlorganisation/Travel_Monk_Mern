@@ -19,26 +19,6 @@ const ProfilePage = () => {
   useEffect(() => {
     dispatch(getUserBookings());
   }, []);
-  console.log(userInfo, "user data in profile");
-
-  console.log(userBookings, "user bookings");
-
-  // const bookingsData = [
-  //   {
-  //     id: 1,
-  //     destination: "Paris, France",
-  //     date: "2024-03-15",
-  //     hotel: "Hotel Eiffel Tower View",
-  //     status: "Completed",
-  //   },
-  //   {
-  //     id: 2,
-  //     destination: "Tokyo, Japan",
-  //     date: "2024-05-20",
-  //     hotel: "Imperial Hotel",
-  //     status: "Upcoming",
-  //   },
-  // ];
 
   return (
     <div className="bg-gray-50 min-h-screen">
@@ -94,7 +74,7 @@ const ProfilePage = () => {
 
                           <p className="font-semibold text-gray-800">
                             {" "}
-                            Package ID : {booking?.packageId}
+                            Package Name : {booking?.packageId.name}
                           </p>
 
                           <p className="text-gray-600 mt-2">

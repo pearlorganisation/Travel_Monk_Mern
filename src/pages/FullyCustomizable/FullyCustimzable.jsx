@@ -655,6 +655,23 @@ const FullyCustomizeTrip = () => {
               </div>
             </div>
           ))}
+
+          <div className="bg-white shadow-md rounded-lg border border-gray-200">
+            <div className="flex flex-row justify-between items-center bg-gray-100 p-4 space-x-4">
+              <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
+                <span className="text-white text-sm font-bold">
+                  {myDays + 1}
+                </span>
+              </div>
+
+              <div className="flex items-center justify-center">
+                {" "}
+                Airport Drop
+              </div>
+              <div className="flex items-center justify-center"></div>
+            </div>
+          </div>
+
           <div className="w-full bg-cyan-300">
             <p>Your Estimated price of Trip is: {Total_Estimated_Price}</p>
             <button onClick={handleEnquiry}>
