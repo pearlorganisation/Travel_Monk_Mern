@@ -1,71 +1,88 @@
-import Stepper from "./Stepper";
-import Bro from "../../assets/images/bro.png";
-import Nainital from "../../assets/images/nainital.png";
-import Lake from "../../assets/images/lake.png";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getSinglePackage } from "../../features/package/packageActions";
 import Select from "react-select";
-import parse from "html-react-parser";
 import { getSingleDestination } from "../../features/trips/tripActions";
 import { getDestinationVehicle } from "../../features/DestinationVehicle/destinationVehicleaction";
-import { ReactSVG } from "react-svg";
+import moment from "moment/moment";
+import { getHotelsByDestination } from "../../features/hotel/hotelActions";
 
 const CustomizeTrip = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams(); // id of the package
-  
+
   /** to get the current page url */
   const fullURL = window.location.href;
-  console.log(`The full URL is: ${fullURL}`);
+  // console.log(`The full URL is: ${fullURL}`);
 
   const { singleDestination } = useSelector((state) => state.trip);
   const { singlePackage } = useSelector((state) => state.packages);
 
   /*---------------- getting the vehicles available for that destination-----------------------------------------------*/
-  const [selectedVehicleName, setSelectedVehicle] = useState("")
+  const [selectedVehicleName, setSelectedVehicle] = useState("");
   const [selectedVehiclePrice, setSelectedVehiclePrice] = useState("");
-  const [selectedVehicleId, setSelectedVehicleId] = useState(null) // for vehicle id
-  const { destinationVehicles } = useSelector((state) => state.destination_vehicle)
 
-  const handleSelect =(vehicleName,vehiclePrice, vehicleId)=>{
-       setSelectedVehicle(vehicleName);
-       setSelectedVehiclePrice(vehiclePrice)
-       setSelectedVehicleId(vehicleId) // storing selected vehicle id
-  }
+  const [selectedVehicleImage, setSelectedVehicleImage] = useState("");
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
+  const [selectedVehicleId, setSelectedVehicleId] = useState(null); // for vehicle id
+  const { destinationVehicles } = useSelector(
+    (state) => state.destination_vehicle
+  );
+
+  const { destinationHotels } = useSelector((state) => state.hotels);
+
+  useEffect(() => {
+    dispatch(getHotelsByDestination(singleDestination?.data?._id));
+  }, []);
+
+  const handleSelect = (vehicleName, vehiclePrice, vehicleId, vehicleImage) => {
+    setSelectedVehicle(vehicleName);
+    setSelectedVehiclePrice(vehiclePrice);
+    setSelectedVehicleId(vehicleId); // storing selected vehicle id
+    setSelectedVehicleImage(vehicleImage);
+  };
   useEffect(() => {
     dispatch(getSinglePackage(id));
   }, []);
 
   useEffect(() => {
-    dispatch(getDestinationVehicle(singleDestination.data._id));
+    dispatch(getDestinationVehicle(singleDestination?.data?._id));
   }, []);
-  
+
+  useEffect(() => {
+    dispatch(getDestinationVehicle(singleDestination?.data?._id));
+  }, []);
 
   useEffect(() => {
     if (singlePackage?.data)
       dispatch(getSingleDestination(singlePackage?.data?.packageDestination));
   }, [singlePackage]);
 
-
   console.log("Trip Package ka data", singlePackage);
 
   // all the hotel data and activity data is stored in dayaData
   const [dayData, setDayData] = useState(
     singlePackage?.data?.itinerary?.map((iti) => ({
-      selectedHotel:{},
+      selectedHotel: {},
       selectedActivities: [],
-      location:"",
-      day:""
+      selectedLocation: "",
+      location: {},
+      day: "",
     })) || [] // Initialize based on itinerary length
   );
   /**--------------------Selected Activity-----------------------*/
   const handleActivityChange = (selectedOptions, dayIndex) => {
-    // Update the specific day's selectedActivities field
-     setDayData((prevDayData) =>prevDayData.map((day, index) => index === dayIndex
-          ? { ...day, selectedActivities: selectedOptions || [] } 
+    // Update the specific day's selectedActivity field
+    setDayData((prevDayData) =>
+      prevDayData.map((day, index) =>
+        index === dayIndex
+          ? { ...day, selectedActivities: selectedOptions || [] }
           : day
       )
     );
@@ -78,8 +95,9 @@ const CustomizeTrip = () => {
         singlePackage.data.itinerary.map(() => ({
           selectedHotel: {},
           selectedActivities: [],
-          location:"",
-          day:""
+          selectedLocation: "",
+          location: {},
+          day: "",
         }))
       );
     }
@@ -87,24 +105,22 @@ const CustomizeTrip = () => {
 
   const [hotelPrices, setHotelPrices] = useState([]); // Array to store prices for each day
   const [totalHotelPrices, setTotalHotelPrice] = useState(0);
-  const handleHotelChange = (index, event, hotels,currentLocation) => {
-    console.log('---------------location',currentLocation)
+  const handleHotelChange = (index, event, hotels, currentLocation) => {
+    console.log("---------------location", currentLocation);
     const selectedHotelId = event.target.value;
     const selectedHotel = hotels.find((hotel) => hotel._id === selectedHotelId);
-    
+
     /**  data for sending in the newDayData for selected hotel */
 
     const newDayData = [...dayData];
-    newDayData[index].day = index +1;
+    newDayData[index].day = index + 1;
     newDayData[index].location = currentLocation;
-    newDayData[index].selectedHotel= {name:selectedHotel.name,hotel: selectedHotel._id};
-    // newDayData[index].selectedHotel.name = name;
+    newDayData[index].selectedLocation = currentLocation;
+    newDayData[index].selectedHotel = {
+      name: selectedHotel.name,
+      hotelId: selectedHotel._id,
+    };
     setDayData(newDayData);
-
-    /** Calculating price based on the selected hotel price */
- 
-    console.log("--------selected hotel", selectedHotel);
-    // const selectedHotelName = hot
 
     const startingPrice = selectedHotel ? selectedHotel.startingPrice : 0;
 
@@ -117,21 +133,37 @@ const CustomizeTrip = () => {
     );
   };
 
-/**---------------------the final estimated price will be----------------------------*/
-let Total_Estimated_Price = totalHotelPrices + selectedVehiclePrice;
+  /**---------------------the final estimated price will be----------------------------*/
+  let Total_Estimated_Price = totalHotelPrices + selectedVehiclePrice;
 
-/**--------------------Handle Enquiry to send to the page for submitting the form-------------------------------------------------*/
-const handleEnquiry = ()=>{
-  navigate("/prebuilt-package-enquiry",{state:{Estimate_Price:Total_Estimated_Price, packageId: id, itinerary:dayData, vehicleChoosen: {name:selectedVehicleName,vehicle:selectedVehicleId}, enquiryLocation:fullURL}}) // to send all the required prebuilt package data
-} 
+  /**--------------------Handle Enquiry to send to the page for submitting the form-------------------------------------------------*/
+  const handleEnquiry = () => {
+    navigate("/prebuilt-package-enquiry", {
+      state: {
+        Estimate_Price: Total_Estimated_Price,
+        packageDetails: { name: singlePackage?.data?.name, packageId: id },
+        itinerary: dayData,
+        selectedVehicle: {
+          name: selectedVehicleName,
+          vehicle: selectedVehicleId,
+        },
+        // vehicleId: selectedVehicleId,
+        // vehicleName: selectedVehicle,
+        enquiryLocation: fullURL,
+      },
+    }); // to send all the required prebuilt package data
+  };
 
+  console.log("-----------hotelprice new calculated", hotelPrices);
+  console.log(
+    "--------------------selected vehicle price",
+    selectedVehiclePrice
+  );
 
-  console.log('-----------hotelprice new calculated', hotelPrices)
-console.log('--------------------selected vehicle price',selectedVehiclePrice)
-   
+  // console.log("--------------------selected vehicle name", selectedVehicle);
 
-  const [selectedActivities, setSelectedActivity] = useState("Choose Activity");
-  const [selectedHotel, setSelectedHotel] = useState("Choose Hotel");
+  // const [selectedActivity, setSelectedActivity] = useState("Choose Activity");
+  // const [selectedHotel, setSelectedHotel] = useState("Choose Hotel");
 
   console.log(dayData, "day data");
   const handleBookNow = () => {
@@ -139,6 +171,7 @@ console.log('--------------------selected vehicle price',selectedVehiclePrice)
       state: {
         dayData: dayData,
         startingPrice: singlePackage?.data?.startingPrice,
+        vehicleName: selectedVehicleName,
       },
     });
   };
@@ -167,11 +200,80 @@ console.log('--------------------selected vehicle price',selectedVehiclePrice)
               fill="#1F1F1F"
             />
           </svg>
-          <span>Add Destination</span>
+          <button
+            onClick={openModal}
+            className="px-4 py-2  text-black font-bold rounded hover:bg-blue-600 hover:text-white"
+          >
+            Add a Vehicle (Compulsory)
+          </button>
         </button>
       </div>
 
-      <div className="grid grid-cols-[80%_auto]  mt-4">
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-1/2">
+            <h2 className="text-xl font-bold mb-4">Select a Vehicle</h2>
+
+            {/* Vehicle List */}
+            <div className=" flex flex-row gap-6">
+              {destinationVehicles?.map((vehicle) => (
+                <div
+                  key={vehicle?._id}
+                  onClick={() => {
+                    handleSelect(
+                      vehicle?.vehicleName,
+                      vehicle?.pricePerDay,
+                      vehicle?._id,
+                      vehicle?.images[0]?.secure_url
+                    );
+                    closeModal(); // Close the modal after selection
+                  }}
+                  className="p-4 border rounded-lg shadow-md cursor-pointer bg-purple-300 h-56"
+                >
+                  <p className="text-lg font-semibold">
+                    Name: {vehicle?.vehicleName}
+                  </p>
+                  <p className="text-gray-600">
+                    Price: {vehicle?.pricePerDay} /- per day
+                  </p>
+
+                  <img
+                    src={vehicle?.images[0]?.secure_url}
+                    className="w-28 h-20 mt-8"
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Close button */}
+            <button
+              onClick={closeModal}
+              className="mt-4 px-4 py-2 bg-red-500 text-white font-bold rounded hover:bg-red-600"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 mt-4">
+        <div className="p-4">
+          {selectedVehicleName && (
+            <div className="mt-6 p-4 bg-orange-300 rounded-lg shadow-md">
+              <div className="flex flex-row gap-6">
+                <div className="flex flex-col gap-3">
+                  <h3 className="text-xl font-semibold text-blue-700">
+                    Your Selected Vehicle
+                  </h3>
+                  <p className="text-lg">Name: {selectedVehicleName}</p>
+                  <p className="text-lg">Price: {selectedVehiclePrice}</p>
+                </div>
+
+                <img src={selectedVehicleImage} className="w-20 h-20" />
+              </div>
+            </div>
+          )}
+        </div>
         <div className="">
           {singlePackage?.data?.itinerary?.map((iti, index) => {
             console.log(iti, "iti");
@@ -181,79 +283,58 @@ console.log('--------------------selected vehicle price',selectedVehiclePrice)
                 value: el?._id || "Something is wrong in id",
               };
             });
- 
+
             return (
-              <div className="flex flex-row gap-2 items-center justify-start px-8 mt-2">
-                <svg
-                  width="24"
-                  height="25"
-                  viewBox="0 0 24 25"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <rect x="2" y="6.5" width="20" height="3" fill="black" />
-                  <rect x="2" y="15.5" width="20" height="3" fill="black" />
-                  <rect x="2" y="6.5" width="20" height="3" fill="black" />
-                  <rect x="2" y="15.5" width="20" height="3" fill="black" />
-                </svg>
+              <div className="flex flex-row gap-2 items-center justify-start px-4 mt-2">
+                <div className="flex flex-col gap-1 min-w-20">
+                  <h1 className="font-bold text-base">{iti.location}</h1>
+
+                  <h1>
+                    {moment(singlePackage?.data?.startDate)
+                      .add(index, "days")
+                      .format("DD MMM")}
+                  </h1>
+                </div>
 
                 <div className="w-6 h-6 bg-red-500 rounded-full">
                   <h1 className="text-white px-2">{index + 1}</h1>
                 </div>
 
-                <div className="bg-white border border-gray-200 rounded-md p-2 flex flex-row">
+                <div className="bg-blue-400 border border-gray-200 rounded-md p-2 ml-8 flex flex-row w-full">
                   <div className="grid grid-cols-1 w-[100%]">
-                    <div className="flex flex-row items-center gap-8">
-                      <svg
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <g clip-path="url(#clip0_1779_681)">
-                          <path
-                            d="M18.3 5.70997C17.91 5.31997 17.28 5.31997 16.89 5.70997L12 10.59L7.10997 5.69997C6.71997 5.30997 6.08997 5.30997 5.69997 5.69997C5.30997 6.08997 5.30997 6.71997 5.69997 7.10997L10.59 12L5.69997 16.89C5.30997 17.28 5.30997 17.91 5.69997 18.3C6.08997 18.69 6.71997 18.69 7.10997 18.3L12 13.41L16.89 18.3C17.28 18.69 17.91 18.69 18.3 18.3C18.69 17.91 18.69 17.28 18.3 16.89L13.41 12L18.3 7.10997C18.68 6.72997 18.68 6.08997 18.3 5.70997Z"
-                            fill="#323232"
-                          />
-                        </g>
-                        <defs>
-                          <clipPath id="clip0_1779_681">
-                            <rect width="24" height="24" fill="white" />
-                          </clipPath>
-                        </defs>
-                      </svg>
-
-                      <div className="flex flex-col gap-1">
-                        <h1 className="font-bold text-base">{iti.location}</h1>
-                        <h1> 21 June </h1>
-                      </div>
-
-                      <div className="flex flex-col gap-3 ">
+                    <div className="flex flex-row items-start gap-2">
+                      <div className="flex flex-col gap-3 w-[20%] items-start mx-4">
                         <h1> Select Hotel </h1>
                         <select
                           value={dayData[index].selectedHotel[0]}
-                          onChange={(event) => handleHotelChange(index, event, singleDestination?.data?.hotels,iti.location)}
-                          className="bg-blue-100 border-2 border-[#1f1f1f] rounded-md px-2 py-2 flex flex-row gap-2"
+                          onChange={(event) =>
+                            handleHotelChange(
+                              index,
+                              event,
+                              destinationHotels,
+                              iti.location
+                            )
+                          }
+                          className="bg-blue-100 border-2 border-[#1f1f1f] rounded-md px-2 py-2 flex flex-row gap-2 w-[70%]"
                         >
                           <option key="choose"> Choose Hotel</option>
-                          {singleDestination?.data?.hotels.map((hotel) => (
-                            <option key={hotel._id} value={hotel._id}>
-                              {" "}
-                              {hotel.name}
-                            </option>
-                          ))}
+                          {Array.isArray(destinationHotels) &&
+                            destinationHotels?.map((hotel) => (
+                              <option key={hotel._id} value={hotel._id}>
+                                {" "}
+                                {hotel.name}
+                              </option>
+                            ))}
                         </select>
                       </div>
 
                       <div className="flex flex-col gap-3 ">
                         <h1> Select Activity </h1>
 
-                        
                         <Select
                           placeholder="Choose Activity"
                           isMulti
-                          value={dayData[index]?.selectedActivities} // Bind the value to the specific day's selectedActivities
+                          value={dayData[index]?.selectedActivities} // Bind the value to the specific day's selectedActivity
                           onChange={(selectedOptions) =>
                             handleActivityChange(selectedOptions, index)
                           }
@@ -268,38 +349,21 @@ console.log('--------------------selected vehicle price',selectedVehiclePrice)
           })}
         </div>
         {/** select vehicle section */}
-        <div className="p-4">
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {destinationVehicles?.map((vehicle) => (
-              <div
-                key={vehicle?._id}
-                onClick={() => handleSelect(vehicle?.vehicleName, vehicle?.pricePerDay,vehicle?._id)}
-                className="p-4 border rounded-lg shadow-md cursor-pointer hover:bg-gray-100"
-              >
-                <p className="text-lg font-semibold">Name: {vehicle?.vehicleName}</p>
-                <p className="text-gray-600">Price: {vehicle?.pricePerDay}</p>
-              </div>
-            ))}
-          </div>
-          {selectedVehicleName && (
-            <div className="mt-6 p-4 bg-blue-50 rounded-lg shadow-md">
-              <h3 className="text-xl font-semibold text-blue-700">
-                Selected Vehicle
-              </h3>
-              <p className="text-lg">Name: {selectedVehicleName}</p>
-              <p className="text-lg">Price: {selectedVehiclePrice}</p>
-            </div>
-          )}
-        </div>
+
         <div> Google map</div>
       </div>
       {/** section containing the total price of all the hotels in the destination */}
       <div className="pl-20 bg-emerald-300">
-        <div className="m-4">   
-          <h1 className="">Estimated Total cost of trip can be around this figure for proceeding ahead fill this contact form and one of our executive will reach out to you.{Total_Estimated_Price} </h1><button onClick={handleEnquiry}>Fill the Enquiry Form</button>
+        <div className="m-4">
+          <h1 className="">
+            Estimated Total cost of trip can be around this figure for
+            proceeding ahead fill this contact form and one of our executive
+            will reach out to you.{Total_Estimated_Price}{" "}
+          </h1>
+          <button onClick={handleEnquiry}>Fill the Enquiry Form</button>
         </div>
       </div>
-      <div className="px-24 mt-6 w-full ">
+      {/* <div className="px-24 mt-6 w-full ">
         <h1 className="font-bold text-2xl"> You might want to add </h1>
 
         <div className="flex flex-row gap-2 mt-2">
@@ -329,148 +393,7 @@ console.log('--------------------selected vehicle price',selectedVehiclePrice)
             </div>
           </div>
         </div>
-      </div>
-
-      <div className="px-24 mt-6 w-full pb-10">
-        <h1 className="font-bold text-2xl">Your Trip </h1>
-
-        {/* {dayData.map((iti, index) => (
-          <div className="flex flex-row gap-2 justify-start">
-            <h3 className="text-[#007E8F]"> Day {index + 1} </h3>
-
-            <Stepper />
-
-            <div className="flex flex-col gap-2 w-[100%] justify-between items-start">
-              {iti.selectedActivities === "Choose Activity" ? null : (
-                <div className="flex flex-row gap-28 bg-white p-2">
-                  <img src={Bro} alt="logo" className="w-48 min-h-max" />
-
-                  <div className="mt-4">
-                    <h1 className="font-bold text-lg">
-                      ACTIVITY : {iti.selectedActivities}{" "}
-                    </h1>
-
-                    <h3 className="">
-                      Location :{" "}
-                      {singlePackage?.data?.itinerary[index]?.location}
-                    </h3>
-
-                    <h3 className="mt-2 font-semibold text-base">
-                      Facilities{" "}
-                    </h3>
-
-                    <h4 className="mt-1">
-                      3 seater . AC . 2 Luggage Bags . First Aid
-                    </h4>
-
-                    <div className="flex flex-row gap-3 mt-4">
-                      <div className="flex flex-col gap-2">
-                        <h3 className="font-semibold text-base">Distance</h3>
-                        <h5>300 km</h5>
-                      </div>
-
-                      <div className="flex flex-col gap-2">
-                        <h3 className="font-semibold text-base">ETA</h3>
-                        <h5>5 h 44 min </h5>
-                      </div>
-
-                      <div className="flex flex-col gap-2">
-                        <h3 className="font-semibold text-base">Cab Timings</h3>
-                        <h5>9 am</h5>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-row gap-2">
-                    <h1 className="text-[#B0404D]"> Timings </h1>
-                    <h1 className="text-[#5c5c5c]"> | </h1>
-                    <h1 className="text-[#B0404D]"> Change </h1>
-                    <h1 className="text-[#5c5c5c]"> | </h1>
-                    <h1 className="text-[#B0404D]"> Remove </h1>
-                  </div>
-                </div>
-              )}
-
-              {iti.selectedHotel === "Choose Hotel" ? null : (
-                <div className="flex flex-row gap-28 bg-white p-2">
-                  <img
-                    src={singleDestination?.data?.hotels[0]?.banner.secure_url}
-                    alt="logo"
-                    className="w-48 "
-                  />
-
-                  <div className="mt-4">
-                    <h1 className="font-bold text-lg">{iti.selectedHotel}</h1>
-
-                    <div className="flex flex-row gap-2 items-center justify-start">
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M14.6313 6.11934C14.5894 5.99592 14.5122 5.88747 14.4094 5.80738C14.3066 5.72729 14.1825 5.67908 14.0526 5.66868L10.2519 5.36668L8.60727 1.72601C8.55489 1.60875 8.4697 1.50916 8.36197 1.43925C8.25424 1.36934 8.12858 1.3321 8.00015 1.33203C7.87173 1.33196 7.74603 1.36906 7.63822 1.43885C7.53041 1.50864 7.44511 1.60814 7.3926 1.72534L5.74794 5.36668L1.94727 5.66868C1.81957 5.67879 1.69749 5.72548 1.59564 5.80316C1.49378 5.88084 1.41646 5.98622 1.37293 6.1067C1.3294 6.22717 1.32149 6.35763 1.35017 6.48248C1.37884 6.60733 1.44287 6.72127 1.5346 6.81068L4.34327 9.54868L3.34994 13.85C3.31977 13.9802 3.32944 14.1165 3.37768 14.2411C3.42592 14.3657 3.51051 14.473 3.62047 14.549C3.73043 14.6249 3.86068 14.6661 3.99433 14.6671C4.12797 14.6681 4.25883 14.629 4.36994 14.5547L7.99994 12.1347L11.6299 14.5547C11.7435 14.6301 11.8774 14.6689 12.0137 14.6659C12.15 14.6629 12.2821 14.6183 12.3922 14.538C12.5023 14.4577 12.5853 14.3456 12.6298 14.2167C12.6743 14.0879 12.6783 13.9485 12.6413 13.8173L11.4219 9.55068L14.4459 6.82934C14.6439 6.65068 14.7166 6.37201 14.6313 6.11934Z"
-                          fill="#1F1F1F"
-                        />
-                      </svg>
-
-                      <h3 className="">5.0</h3>
-                    </div>
-
-                    <h3 className="mt-2 font-semibold text-base">Amenities </h3>
-
-                    <div className="mt-1">
-                      <div className="flex flex-row gap-6">
-                        {singleDestination?.data?.hotels[0]?.amenities
-                          .slice(0, 3)
-                          .map((amenity) => (
-                            <div className="flex flex-row gap-4 items-center justify-center">
-                              <img src={amenity?.icon?.secure_url} alt="amenity-icons" /> 
-                              <ol>{amenity.name}</ol>
-                            </div>
-                          ))}
-
-                        {singleDestination?.data?.hotels[0]?.amenities.length >
-                          3 && (
-                          <button className="px-4 py-2 bg-blue-400 text-white rounded-xl">
-                            {singleDestination?.data?.hotels[0]?.amenities
-                              .length - 3}
-                            More
-                          </button>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="flex flex-row gap-3 mt-4">
-                      <div className="flex flex-col gap-2">
-                        <h3 className="font-semibold text-base">Check In</h3>
-                        <h5>6:00 PM</h5>
-                      </div>
-
-                      <div className="flex flex-col gap-2">
-                        <h3 className="font-semibold text-base">Check Out</h3>
-                        <h5>9:00 AM</h5>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-row gap-2">
-                    <h1 className="text-[#B0404D]"> Details </h1>
-                    <h1 className="text-[#5c5c5c]"> | </h1>
-                    <h1 className="text-[#B0404D]"> Change </h1>
-                    <h1 className="text-[#5c5c5c]"> | </h1>
-                    <h1 className="text-[#B0404D]"> Remove </h1>
-                  </div>
-                </div>
-              )}
-
-              
-            </div>
-          </div>
-        ))} */}
-      </div>
+      </div> */}
 
       <div className="fixed bottom-0 bg-white w-full">
         <div className="flex flex-row justify-between p-3">
@@ -496,650 +419,3 @@ console.log('--------------------selected vehicle price',selectedVehiclePrice)
 };
 
 export default CustomizeTrip;
-
-{
-  /*
-      
-      <div className="flex flex-row gap-2 justify-start">
-      <h3 className="text-[#007E8F]"> Day 1 </h3>
-
-      <Stepper />
-
-      <div className="flex flex-col gap-2 w-[100%] justify-between items-start">
-        <div className="flex flex-row gap-28 bg-white p-2">
-          <img src={Bro} alt="logo" className="w-48 min-h-max" />
-
-          <div className="mt-4">
-            <h1 className="font-bold text-lg">New Delhi to Nainital </h1>
-
-            <h3 className="">Swift, Etios ( or Similar )</h3>
-
-            <h3 className="mt-2 font-semibold text-base">Facilities </h3>
-
-            <h4 className="mt-1">
-              3 seater . AC . 2 Luggage Bags . First Aid
-            </h4>
-
-            <div className="flex flex-row gap-3 mt-4">
-              <div className="flex flex-col gap-2">
-                <h3 className="font-semibold text-base">Distance</h3>
-                <h5>300 km</h5>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <h3 className="font-semibold text-base">ETA</h3>
-                <h5>5 h 44 min </h5>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <h3 className="font-semibold text-base">Cab Timings</h3>
-                <h5>9 am</h5>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-row gap-2">
-            <h1 className="text-[#B0404D]"> Timings </h1>
-            <h1 className="text-[#5c5c5c]"> | </h1>
-            <h1 className="text-[#B0404D]"> Change </h1>
-            <h1 className="text-[#5c5c5c]"> | </h1>
-            <h1 className="text-[#B0404D]"> Remove </h1>
-          </div>
-        </div>
-
-        <div className="flex flex-row gap-28 bg-white p-2">
-          <img src={Nainital} alt="logo" className="w-48 " />
-
-          <div className="mt-4">
-            <h1 className="font-bold text-lg">
-              Nainital - A Luxury Collection
-            </h1>
-
-            <div className="flex flex-row gap-2 items-center justify-start">
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M14.6313 6.11934C14.5894 5.99592 14.5122 5.88747 14.4094 5.80738C14.3066 5.72729 14.1825 5.67908 14.0526 5.66868L10.2519 5.36668L8.60727 1.72601C8.55489 1.60875 8.4697 1.50916 8.36197 1.43925C8.25424 1.36934 8.12858 1.3321 8.00015 1.33203C7.87173 1.33196 7.74603 1.36906 7.63822 1.43885C7.53041 1.50864 7.44511 1.60814 7.3926 1.72534L5.74794 5.36668L1.94727 5.66868C1.81957 5.67879 1.69749 5.72548 1.59564 5.80316C1.49378 5.88084 1.41646 5.98622 1.37293 6.1067C1.3294 6.22717 1.32149 6.35763 1.35017 6.48248C1.37884 6.60733 1.44287 6.72127 1.5346 6.81068L4.34327 9.54868L3.34994 13.85C3.31977 13.9802 3.32944 14.1165 3.37768 14.2411C3.42592 14.3657 3.51051 14.473 3.62047 14.549C3.73043 14.6249 3.86068 14.6661 3.99433 14.6671C4.12797 14.6681 4.25883 14.629 4.36994 14.5547L7.99994 12.1347L11.6299 14.5547C11.7435 14.6301 11.8774 14.6689 12.0137 14.6659C12.15 14.6629 12.2821 14.6183 12.3922 14.538C12.5023 14.4577 12.5853 14.3456 12.6298 14.2167C12.6743 14.0879 12.6783 13.9485 12.6413 13.8173L11.4219 9.55068L14.4459 6.82934C14.6439 6.65068 14.7166 6.37201 14.6313 6.11934Z"
-                  fill="#1F1F1F"
-                />
-              </svg>
-
-              <h3 className="">5.0</h3>
-            </div>
-
-            <h3 className="mt-2 font-semibold text-base">Facilities </h3>
-
-            <h4 className="mt-1">
-              Complimentary Breakfast . AC . Free Wifi
-            </h4>
-
-            <div className="flex flex-row gap-3 mt-4">
-              <div className="flex flex-col gap-2">
-                <h3 className="font-semibold text-base">Check In</h3>
-                <h5>6:00 PM</h5>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <h3 className="font-semibold text-base">Check Out</h3>
-                <h5>9:00 AM</h5>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-row gap-2">
-            <h1 className="text-[#B0404D]"> Details </h1>
-            <h1 className="text-[#5c5c5c]"> | </h1>
-            <h1 className="text-[#B0404D]"> Change </h1>
-            <h1 className="text-[#5c5c5c]"> | </h1>
-            <h1 className="text-[#B0404D]"> Remove </h1>
-          </div>
-        </div>
-
-        <div className="flex flex-row gap-2 ">
-          <div className="flex flex-row bg-white">
-            <img src={Lake} />
-
-            <div className="flex flex-col px-6 py-3">
-              <h1> Sattal Lake</h1>
-              <h3>Spend Approx 1 hour</h3>
-              <button className="px-2 py-1 border border-[#1c1c1c] rounded-xl">
-                {" "}
-                Add Activity
-              </button>
-
-              <h3 className="text-blue-300"> See Information</h3>
-            </div>
-          </div>
-
-          <div className="flex flex-row bg-white">
-            <img src={Lake} />
-
-            <div className="flex flex-col px-6 py-3">
-              <h1> Nainital Lake</h1>
-              <h3>Spend Approx 1 hour</h3>
-              <button className="px-2 py-1 border border-[#1c1c1c] rounded-xl">
-                {" "}
-                Add Activity
-              </button>
-
-              <h3 className="text-blue-300"> See Information</h3>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div className="flex flex-row gap-2 justify-start">
-      <h3 className="text-[#007E8F]"> Day 2 </h3>
-
-      <Stepper />
-
-      <div className="flex flex-col gap-2 w-[100%] justify-between items-start">
-        <div className="flex flex-row gap-28 bg-white p-2">
-          <img src={Nainital} alt="logo" className="w-48 " />
-
-          <div className="mt-4">
-            <h1 className="font-bold text-lg">
-              Nainital - A Luxury Collection
-            </h1>
-
-            <div className="flex flex-row gap-2 items-center justify-start">
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M14.6313 6.11934C14.5894 5.99592 14.5122 5.88747 14.4094 5.80738C14.3066 5.72729 14.1825 5.67908 14.0526 5.66868L10.2519 5.36668L8.60727 1.72601C8.55489 1.60875 8.4697 1.50916 8.36197 1.43925C8.25424 1.36934 8.12858 1.3321 8.00015 1.33203C7.87173 1.33196 7.74603 1.36906 7.63822 1.43885C7.53041 1.50864 7.44511 1.60814 7.3926 1.72534L5.74794 5.36668L1.94727 5.66868C1.81957 5.67879 1.69749 5.72548 1.59564 5.80316C1.49378 5.88084 1.41646 5.98622 1.37293 6.1067C1.3294 6.22717 1.32149 6.35763 1.35017 6.48248C1.37884 6.60733 1.44287 6.72127 1.5346 6.81068L4.34327 9.54868L3.34994 13.85C3.31977 13.9802 3.32944 14.1165 3.37768 14.2411C3.42592 14.3657 3.51051 14.473 3.62047 14.549C3.73043 14.6249 3.86068 14.6661 3.99433 14.6671C4.12797 14.6681 4.25883 14.629 4.36994 14.5547L7.99994 12.1347L11.6299 14.5547C11.7435 14.6301 11.8774 14.6689 12.0137 14.6659C12.15 14.6629 12.2821 14.6183 12.3922 14.538C12.5023 14.4577 12.5853 14.3456 12.6298 14.2167C12.6743 14.0879 12.6783 13.9485 12.6413 13.8173L11.4219 9.55068L14.4459 6.82934C14.6439 6.65068 14.7166 6.37201 14.6313 6.11934Z"
-                  fill="#1F1F1F"
-                />
-              </svg>
-
-              <h3 className="">5.0</h3>
-            </div>
-
-            <h3 className="mt-2 font-semibold text-base">Facilities </h3>
-
-            <h4 className="mt-1">
-              Complimentary Breakfast . AC . Free Wifi
-            </h4>
-
-            <div className="flex flex-row gap-3 mt-4">
-              <div className="flex flex-col gap-2">
-                <h3 className="font-semibold text-base">Check In</h3>
-                <h5>6:00 PM</h5>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <h3 className="font-semibold text-base">Check Out</h3>
-                <h5>9:00 AM</h5>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-row gap-2">
-            <h1 className="text-[#B0404D]"> Details </h1>
-            <h1 className="text-[#5c5c5c]"> | </h1>
-            <h1 className="text-[#B0404D]"> Change </h1>
-            <h1 className="text-[#5c5c5c]"> | </h1>
-            <h1 className="text-[#B0404D]"> Remove </h1>
-          </div>
-        </div>
-
-        <div className="flex flex-row gap-2 ">
-          <div className="flex flex-row bg-white">
-            <img src={Lake} />
-
-            <div className="flex flex-col px-6 py-3">
-              <h1> Sattal Lake</h1>
-              <h3>Spend Approx 1 hour</h3>
-              <button className="px-2 py-1 border border-[#1c1c1c] rounded-xl">
-                {" "}
-                Add Activity
-              </button>
-
-              <h3 className="text-blue-300"> See Information</h3>
-            </div>
-          </div>
-
-          <div className="flex flex-row bg-white">
-            <img src={Lake} />
-
-            <div className="flex flex-col px-6 py-3">
-              <h1> Nainital Lake</h1>
-              <h3>Spend Approx 1 hour</h3>
-              <button className="px-2 py-1 border border-[#1c1c1c] rounded-xl">
-                {" "}
-                Add Activity
-              </button>
-
-              <h3 className="text-blue-300"> See Information</h3>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div className="flex flex-row gap-2 justify-start">
-      <h3 className="text-[#007E8F]"> Day 3 </h3>
-
-      <Stepper />
-
-      <div className="flex flex-col gap-2 w-[100%] justify-between items-start">
-        <div className="flex flex-row gap-28 bg-white p-2">
-          <img src={Bro} alt="logo" className="w-48 min-h-max" />
-
-          <div className="mt-4">
-            <h1 className="font-bold text-lg">New Delhi to Nainital </h1>
-
-            <h3 className="">Swift, Etios ( or Similar )</h3>
-
-            <h3 className="mt-2 font-semibold text-base">Facilities </h3>
-
-            <h4 className="mt-1">
-              3 seater . AC . 2 Luggage Bags . First Aid
-            </h4>
-
-            <div className="flex flex-row gap-3 mt-4">
-              <div className="flex flex-col gap-2">
-                <h3 className="font-semibold text-base">Distance</h3>
-                <h5>300 km</h5>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <h3 className="font-semibold text-base">ETA</h3>
-                <h5>5 h 44 min </h5>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <h3 className="font-semibold text-base">Cab Timings</h3>
-                <h5>9 am</h5>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-row gap-2">
-            <h1 className="text-[#B0404D]"> Timings </h1>
-            <h1 className="text-[#5c5c5c]"> | </h1>
-            <h1 className="text-[#B0404D]"> Change </h1>
-            <h1 className="text-[#5c5c5c]"> | </h1>
-            <h1 className="text-[#B0404D]"> Remove </h1>
-          </div>
-        </div>
-
-        <div className="flex flex-row gap-28 bg-white p-2">
-          <img src={Nainital} alt="logo" className="w-48 " />
-
-          <div className="mt-4">
-            <h1 className="font-bold text-lg">
-              Nainital - A Luxury Collection
-            </h1>
-
-            <div className="flex flex-row gap-2 items-center justify-start">
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M14.6313 6.11934C14.5894 5.99592 14.5122 5.88747 14.4094 5.80738C14.3066 5.72729 14.1825 5.67908 14.0526 5.66868L10.2519 5.36668L8.60727 1.72601C8.55489 1.60875 8.4697 1.50916 8.36197 1.43925C8.25424 1.36934 8.12858 1.3321 8.00015 1.33203C7.87173 1.33196 7.74603 1.36906 7.63822 1.43885C7.53041 1.50864 7.44511 1.60814 7.3926 1.72534L5.74794 5.36668L1.94727 5.66868C1.81957 5.67879 1.69749 5.72548 1.59564 5.80316C1.49378 5.88084 1.41646 5.98622 1.37293 6.1067C1.3294 6.22717 1.32149 6.35763 1.35017 6.48248C1.37884 6.60733 1.44287 6.72127 1.5346 6.81068L4.34327 9.54868L3.34994 13.85C3.31977 13.9802 3.32944 14.1165 3.37768 14.2411C3.42592 14.3657 3.51051 14.473 3.62047 14.549C3.73043 14.6249 3.86068 14.6661 3.99433 14.6671C4.12797 14.6681 4.25883 14.629 4.36994 14.5547L7.99994 12.1347L11.6299 14.5547C11.7435 14.6301 11.8774 14.6689 12.0137 14.6659C12.15 14.6629 12.2821 14.6183 12.3922 14.538C12.5023 14.4577 12.5853 14.3456 12.6298 14.2167C12.6743 14.0879 12.6783 13.9485 12.6413 13.8173L11.4219 9.55068L14.4459 6.82934C14.6439 6.65068 14.7166 6.37201 14.6313 6.11934Z"
-                  fill="#1F1F1F"
-                />
-              </svg>
-
-              <h3 className="">5.0</h3>
-            </div>
-
-            <h3 className="mt-2 font-semibold text-base">Facilities </h3>
-
-            <h4 className="mt-1">
-              Complimentary Breakfast . AC . Free Wifi
-            </h4>
-
-            <div className="flex flex-row gap-3 mt-4">
-              <div className="flex flex-col gap-2">
-                <h3 className="font-semibold text-base">Check In</h3>
-                <h5>6:00 PM</h5>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <h3 className="font-semibold text-base">Check Out</h3>
-                <h5>9:00 AM</h5>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-row gap-2">
-            <h1 className="text-[#B0404D]"> Details </h1>
-            <h1 className="text-[#5c5c5c]"> | </h1>
-            <h1 className="text-[#B0404D]"> Change </h1>
-            <h1 className="text-[#5c5c5c]"> | </h1>
-            <h1 className="text-[#B0404D]"> Remove </h1>
-          </div>
-        </div>
-
-        <div className="flex flex-row gap-2 ">
-          <div className="flex flex-row bg-white">
-            <img src={Lake} />
-
-            <div className="flex flex-col px-6 py-3">
-              <h1> Sattal Lake</h1>
-              <h3>Spend Approx 1 hour</h3>
-              <button className="px-2 py-1 border border-[#1c1c1c] rounded-xl">
-                {" "}
-                Add Activity
-              </button>
-
-              <h3 className="text-blue-300"> See Information</h3>
-            </div>
-          </div>
-
-          <div className="flex flex-row bg-white">
-            <img src={Lake} />
-
-            <div className="flex flex-col px-6 py-3">
-              <h1> Nainital Lake</h1>
-              <h3>Spend Approx 1 hour</h3>
-              <button className="px-2 py-1 border border-[#1c1c1c] rounded-xl">
-                {" "}
-                Add Activity
-              </button>
-
-              <h3 className="text-blue-300"> See Information</h3>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div className="flex flex-row gap-2 justify-start mt-8">
-      <h3 className="text-[#007E8F]"> Day 4 </h3>
-
-      <Stepper />
-
-      <div className="flex flex-col gap-2 w-[100%] justify-between items-start">
-        <div className="flex flex-row gap-28 bg-white p-2">
-          <img src={Nainital} alt="logo" className="w-48 " />
-
-          <div className="mt-4">
-            <h1 className="font-bold text-lg">
-              Nainital - A Luxury Collection
-            </h1>
-
-            <div className="flex flex-row gap-2 items-center justify-start">
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M14.6313 6.11934C14.5894 5.99592 14.5122 5.88747 14.4094 5.80738C14.3066 5.72729 14.1825 5.67908 14.0526 5.66868L10.2519 5.36668L8.60727 1.72601C8.55489 1.60875 8.4697 1.50916 8.36197 1.43925C8.25424 1.36934 8.12858 1.3321 8.00015 1.33203C7.87173 1.33196 7.74603 1.36906 7.63822 1.43885C7.53041 1.50864 7.44511 1.60814 7.3926 1.72534L5.74794 5.36668L1.94727 5.66868C1.81957 5.67879 1.69749 5.72548 1.59564 5.80316C1.49378 5.88084 1.41646 5.98622 1.37293 6.1067C1.3294 6.22717 1.32149 6.35763 1.35017 6.48248C1.37884 6.60733 1.44287 6.72127 1.5346 6.81068L4.34327 9.54868L3.34994 13.85C3.31977 13.9802 3.32944 14.1165 3.37768 14.2411C3.42592 14.3657 3.51051 14.473 3.62047 14.549C3.73043 14.6249 3.86068 14.6661 3.99433 14.6671C4.12797 14.6681 4.25883 14.629 4.36994 14.5547L7.99994 12.1347L11.6299 14.5547C11.7435 14.6301 11.8774 14.6689 12.0137 14.6659C12.15 14.6629 12.2821 14.6183 12.3922 14.538C12.5023 14.4577 12.5853 14.3456 12.6298 14.2167C12.6743 14.0879 12.6783 13.9485 12.6413 13.8173L11.4219 9.55068L14.4459 6.82934C14.6439 6.65068 14.7166 6.37201 14.6313 6.11934Z"
-                  fill="#1F1F1F"
-                />
-              </svg>
-
-              <h3 className="">5.0</h3>
-            </div>
-
-            <h3 className="mt-2 font-semibold text-base">Facilities </h3>
-
-            <h4 className="mt-1">
-              Complimentary Breakfast . AC . Free Wifi
-            </h4>
-
-            <div className="flex flex-row gap-3 mt-4">
-              <div className="flex flex-col gap-2">
-                <h3 className="font-semibold text-base">Check In</h3>
-                <h5>6:00 PM</h5>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <h3 className="font-semibold text-base">Check Out</h3>
-                <h5>9:00 AM</h5>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-row gap-2">
-            <h1 className="text-[#B0404D]"> Details </h1>
-            <h1 className="text-[#5c5c5c]"> | </h1>
-            <h1 className="text-[#B0404D]"> Change </h1>
-            <h1 className="text-[#5c5c5c]"> | </h1>
-            <h1 className="text-[#B0404D]"> Remove </h1>
-          </div>
-        </div>
-
-        <div className="flex flex-row gap-2 ">
-          <div className="flex flex-row bg-white">
-            <img src={Lake} />
-
-            <div className="flex flex-col px-6 py-3">
-              <h1> Sattal Lake</h1>
-              <h3>Spend Approx 1 hour</h3>
-              <button className="px-2 py-1 border border-[#1c1c1c] rounded-xl">
-                {" "}
-                Add Activity
-              </button>
-
-              <h3 className="text-blue-300"> See Information</h3>
-            </div>
-          </div>
-
-          <div className="flex flex-row bg-white">
-            <img src={Lake} />
-
-            <div className="flex flex-col px-6 py-3">
-              <h1> Nainital Lake</h1>
-              <h3>Spend Approx 1 hour</h3>
-              <button className="px-2 py-1 border border-[#1c1c1c] rounded-xl">
-                {" "}
-                Add Activity
-              </button>
-
-              <h3 className="text-blue-300"> See Information</h3>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div className="flex flex-row gap-2 justify-start mt-8">
-      <h3 className="text-[#007E8F]"> Day 5 </h3>
-
-      <Stepper />
-
-      <div className="flex flex-col gap-2 w-[100%] justify-between items-start">
-        <div className="flex flex-row gap-28 bg-white p-2">
-          <img src={Bro} alt="logo" className="w-48 min-h-max" />
-
-          <div className="mt-4">
-            <h1 className="font-bold text-lg">New Delhi to Nainital </h1>
-
-            <h3 className="">Swift, Etios ( or Similar )</h3>
-
-            <h3 className="mt-2 font-semibold text-base">Facilities </h3>
-
-            <h4 className="mt-1">
-              3 seater . AC . 2 Luggage Bags . First Aid
-            </h4>
-
-            <div className="flex flex-row gap-3 mt-4">
-              <div className="flex flex-col gap-2">
-                <h3 className="font-semibold text-base">Distance</h3>
-                <h5>300 km</h5>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <h3 className="font-semibold text-base">ETA</h3>
-                <h5>5 h 44 min </h5>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <h3 className="font-semibold text-base">Cab Timings</h3>
-                <h5>9 am</h5>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-row gap-2">
-            <h1 className="text-[#B0404D]"> Timings </h1>
-            <h1 className="text-[#5c5c5c]"> | </h1>
-            <h1 className="text-[#B0404D]"> Change </h1>
-            <h1 className="text-[#5c5c5c]"> | </h1>
-            <h1 className="text-[#B0404D]"> Remove </h1>
-          </div>
-        </div>
-
-        <div className="flex flex-row gap-28 bg-white p-2">
-          <img src={Nainital} alt="logo" className="w-48 " />
-
-          <div className="mt-4">
-            <h1 className="font-bold text-lg">
-              Nainital - A Luxury Collection
-            </h1>
-
-            <div className="flex flex-row gap-2 items-center justify-start">
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M14.6313 6.11934C14.5894 5.99592 14.5122 5.88747 14.4094 5.80738C14.3066 5.72729 14.1825 5.67908 14.0526 5.66868L10.2519 5.36668L8.60727 1.72601C8.55489 1.60875 8.4697 1.50916 8.36197 1.43925C8.25424 1.36934 8.12858 1.3321 8.00015 1.33203C7.87173 1.33196 7.74603 1.36906 7.63822 1.43885C7.53041 1.50864 7.44511 1.60814 7.3926 1.72534L5.74794 5.36668L1.94727 5.66868C1.81957 5.67879 1.69749 5.72548 1.59564 5.80316C1.49378 5.88084 1.41646 5.98622 1.37293 6.1067C1.3294 6.22717 1.32149 6.35763 1.35017 6.48248C1.37884 6.60733 1.44287 6.72127 1.5346 6.81068L4.34327 9.54868L3.34994 13.85C3.31977 13.9802 3.32944 14.1165 3.37768 14.2411C3.42592 14.3657 3.51051 14.473 3.62047 14.549C3.73043 14.6249 3.86068 14.6661 3.99433 14.6671C4.12797 14.6681 4.25883 14.629 4.36994 14.5547L7.99994 12.1347L11.6299 14.5547C11.7435 14.6301 11.8774 14.6689 12.0137 14.6659C12.15 14.6629 12.2821 14.6183 12.3922 14.538C12.5023 14.4577 12.5853 14.3456 12.6298 14.2167C12.6743 14.0879 12.6783 13.9485 12.6413 13.8173L11.4219 9.55068L14.4459 6.82934C14.6439 6.65068 14.7166 6.37201 14.6313 6.11934Z"
-                  fill="#1F1F1F"
-                />
-              </svg>
-
-              <h3 className="">5.0</h3>
-            </div>
-
-            <h3 className="mt-2 font-semibold text-base">Facilities </h3>
-
-            <h4 className="mt-1">
-              Complimentary Breakfast . AC . Free Wifi
-            </h4>
-
-            <div className="flex flex-row gap-3 mt-4">
-              <div className="flex flex-col gap-2">
-                <h3 className="font-semibold text-base">Check In</h3>
-                <h5>6:00 PM</h5>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <h3 className="font-semibold text-base">Check Out</h3>
-                <h5>9:00 AM</h5>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-row gap-2">
-            <h1 className="text-[#B0404D]"> Details </h1>
-            <h1 className="text-[#5c5c5c]"> | </h1>
-            <h1 className="text-[#B0404D]"> Change </h1>
-            <h1 className="text-[#5c5c5c]"> | </h1>
-            <h1 className="text-[#B0404D]"> Remove </h1>
-          </div>
-        </div>
-
-        <div className="flex flex-row gap-2 ">
-          <div className="flex flex-row bg-white">
-            <img src={Lake} />
-
-            <div className="flex flex-col px-6 py-3">
-              <h1> Sattal Lake</h1>
-              <h3>Spend Approx 1 hour</h3>
-              <button className="px-2 py-1 border border-[#1c1c1c] rounded-xl">
-                {" "}
-                Add Activity
-              </button>
-
-              <h3 className="text-blue-300"> See Information</h3>
-            </div>
-          </div>
-
-          <div className="flex flex-row bg-white">
-            <img src={Lake} />
-
-            <div className="flex flex-col px-6 py-3">
-              <h1> Nainital Lake</h1>
-              <h3>Spend Approx 1 hour</h3>
-              <button className="px-2 py-1 border border-[#1c1c1c] rounded-xl">
-                {" "}
-                Add Activity
-              </button>
-
-              <h3 className="text-blue-300"> See Information</h3>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div className="flex flex-row gap-2 justify-start mt-8">
-      <h3 className="text-[#007E8F]"> Day 6 </h3>
-
-      <Stepper />
-
-      <div className="flex flex-col gap-2 w-[100%] justify-between items-start">
-        <div className="flex flex-row gap-28 bg-white p-2">
-          <img src={Bro} alt="logo" className="w-48 min-h-max" />
-
-          <div className="mt-4">
-            <h1 className="font-bold text-lg">Mussorie to Delhi </h1>
-
-            <h3 className="">Swift, Etios ( or Similar )</h3>
-
-            <h3 className="mt-2 font-semibold text-base">Facilities </h3>
-
-            <h4 className="mt-1">
-              3 seater . AC . 2 Luggage Bags . First Aid
-            </h4>
-
-            <div className="flex flex-row gap-3 mt-4">
-              <div className="flex flex-col gap-2">
-                <h3 className="font-semibold text-base">Distance</h3>
-                <h5>300 km</h5>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <h3 className="font-semibold text-base">ETA</h3>
-                <h5>5 h 44 min </h5>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <h3 className="font-semibold text-base">Cab Timings</h3>
-                <h5>9 am</h5>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-row gap-2">
-            <h1 className="text-[#B0404D]"> Timings </h1>
-            <h1 className="text-[#5c5c5c]"> | </h1>
-            <h1 className="text-[#B0404D]"> Change </h1>
-            <h1 className="text-[#5c5c5c]"> | </h1>
-            <h1 className="text-[#B0404D]"> Remove </h1>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-
-      
-      
-      */
-}

@@ -38,13 +38,13 @@ function CardCarousel({ data }) {
         }}
         {...settings}
       >
-        {data?.packages?.map((cardData, i) => (
+        {data?.map((cardData, i) => (
           <div key={i} className="h-96  w-40 p-2    flex ">
             <Link to={`/packages/${cardData?._id}`}>
               <div className=" h-full relative z-0 w-full">
                 <img
                   className="absolute inset-0  rounded-lg z-0 w-full h-full object-cover"
-                  src={cardData.image.secure_url}
+                  src={cardData?.image?.secure_url}
                   alt="img"
                 />
 
@@ -52,18 +52,17 @@ function CardCarousel({ data }) {
                   <div className="h-[60%]">
                     <div className="w-full flex justify-end">
                       <div className="bg-yellow-400 font-semibold w-fit px-2 flex items-center gap-2 rounded-full">
-                        {cardData.startingPrice}{" "}
-                        <span className="text-sm">onwards</span>
+                        {cardData?.startingPrice}{" "}
                       </div>
                     </div>
                   </div>
 
                   <div className="h-[40%] flex-1 flex-col text-sm text-white">
-                    <div className="mb-4">{cardData.name}</div>
+                    <div className="mb-4">{cardData?.name}</div>
                     <div className="flex flex-col my-2 justify-between gap-2">
                       <IconWithName
                         iconName="https://wanderon.in/assets/images/new-location.svg"
-                        label={`${cardData.duration.days}D/${cardData.duration.nights}N`}
+                        label={`${cardData?.duration?.days}D/${cardData?.duration?.nights}N`}
                       />
                       <IconWithName
                         iconName="https://wanderon.in/assets/images/new-calender.svg"

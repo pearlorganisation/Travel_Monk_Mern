@@ -11,7 +11,8 @@ import cruiseReducer from "./cruize/cruizeSlice";
 import resetReducer from "./ResetPassword/sendMailSlice";
 import destinationVehicleReducer from "./DestinationVehicle/destinationVehicleSlice";
 import prebuiltPackageEnquiryReducer from "./PrebuiltPackage/prebuiltPackageSlice";
-import fullyCustomizePackageReducer from "./FullyCustomizePackage/FullCustomizeSlice"
+import fullyCustomizePackageReducer from "./FullyCustomizePackage/FullCustomizeSlice";
+import previousBookingsReducer from "./previousBookings/previousBookingsSlice";
 import { combineReducers } from "@reduxjs/toolkit";
 import { configureStore } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
@@ -38,8 +39,9 @@ const combinedReducer = combineReducers({
   buscruize: buscruizeReducer,
   password: resetReducer,
   destination_vehicle: destinationVehicleReducer,
+  previousBookings: previousBookingsReducer,
   prebuiltPackage: prebuiltPackageEnquiryReducer, // for the prebuilt package enquiry
-  fullyCustomizePackage: fullyCustomizePackageReducer // for the fully customize package 
+  fullyCustomizePackage: fullyCustomizePackageReducer, // for the fully customize package
 });
 
 // Apply persistReducer to the combined reducer

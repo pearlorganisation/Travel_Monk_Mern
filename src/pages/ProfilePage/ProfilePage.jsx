@@ -2,33 +2,43 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAuthUserDetails } from "../../features/user/userActions";
 import { Link } from "react-router-dom";
+import { getUserBookings } from "../../features/previousBookings/previousBookingsActions";
+import moment from "moment";
 
 const ProfilePage = () => {
   const [showBookings, setShowBookings] = useState(false);
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.user);
 
+  const { userBookings } = useSelector((state) => state.previousBookings);
+
   useEffect(() => {
     dispatch(getAuthUserDetails());
   }, []);
+
+  useEffect(() => {
+    dispatch(getUserBookings());
+  }, []);
   console.log(userInfo, "user data in profile");
 
-  const bookingsData = [
-    {
-      id: 1,
-      destination: "Paris, France",
-      date: "2024-03-15",
-      hotel: "Hotel Eiffel Tower View",
-      status: "Completed",
-    },
-    {
-      id: 2,
-      destination: "Tokyo, Japan",
-      date: "2024-05-20",
-      hotel: "Imperial Hotel",
-      status: "Upcoming",
-    },
-  ];
+  console.log(userBookings, "user bookings");
+
+  // const bookingsData = [
+  //   {
+  //     id: 1,
+  //     destination: "Paris, France",
+  //     date: "2024-03-15",
+  //     hotel: "Hotel Eiffel Tower View",
+  //     status: "Completed",
+  //   },
+  //   {
+  //     id: 2,
+  //     destination: "Tokyo, Japan",
+  //     date: "2024-05-20",
+  //     hotel: "Imperial Hotel",
+  //     status: "Upcoming",
+  //   },
+  // ];
 
   return (
     <div className="bg-gray-50 min-h-screen">
@@ -69,34 +79,64 @@ const ProfilePage = () => {
 
             {showBookings && (
               <div className="mt-6">
-                {bookingsData.map((booking) => (
-                  <div
-                    key={booking.id}
-                    className="bg-white p-4 rounded-md shadow-sm mt-3 border border-gray-200"
-                  >
-                    <div className="flex justify-between">
-                      <div>
-                        <p className="font-semibold text-gray-800">
-                          {" "}
-                          {booking.destination}
+                {Array.isArray(userBookings?.data) &&
+                  userBookings?.data?.map((booking) => (
+                    <div
+                      key={booking.bookingId}
+                      className="bg-white p-4 rounded-md shadow-sm mt-3 border border-gray-200"
+                    >
+                      <div className="flex justify-between">
+                        <div>
+                          <p className="font-semibold text-gray-800">
+                            {" "}
+                            Booking ID : {booking?.bookingId ?? "Not Found"}
+                          </p>
+
+                          <p className="font-semibold text-gray-800">
+                            {" "}
+                            Package ID : {booking?.packageId}
+                          </p>
+
+                          <p className="text-gray-600 mt-2">
+                            {" "}
+                            Total Price : Rs.{" "}
+                            <span className="font-bold text-4xl">
+                              {booking.totalPrice}
+                            </span>
+                          </p>
+
+                          <p className="text-gray-600 mt-2">
+                            {" "}
+                            Razorpay Order ID : {booking.razorpay_order_id}
+                          </p>
+                          <p className="text-gray-600 text-sm">
+                            Date:{" "}
+                            {moment(booking.createdAt).format("DD MMM YYYY")}
+                          </p>
+                        </div>
+                        <p
+                          className={`text-${
+                            booking.bookingStatus === "Completed"
+                              ? "green-500"
+                              : booking.bookingStatus === "Upcoming"
+                              ? "yellow-500"
+                              : "red-500"
+                          } font-medium`}
+                        >
+                          Booking Status : {booking.bookingStatus}
                         </p>
-                        <p className="text-gray-600 text-sm">{booking.date}</p>
                       </div>
-                      <p
-                        className={`text-${
-                          booking.status === "Completed"
-                            ? "green-500"
-                            : booking.status === "Upcoming"
-                            ? "yellow-500"
-                            : "red-500"
-                        } font-medium`}
-                      >
-                        {booking.status}
+                      <p className="text-gray-600 mt-2">
+                        {" "}
+                        Payment Status : {booking.paymentStatus}
+                      </p>
+
+                      <p className="text-gray-600 mt-2">
+                        {" "}
+                        Travellers : {booking.numberOfTravellers}
                       </p>
                     </div>
-                    <p className="text-gray-600 mt-2">{booking.hotel}</p>
-                  </div>
-                ))}
+                  ))}
               </div>
             )}
           </div>

@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAllHotels, getHotelsByDestination, getSingleHotel } from "./hotelActions";
+import {
+  getAllHotels,
+  getHotelsByDestination,
+  getSingleHotel,
+} from "./hotelActions";
 
 const hotelState = {
   isLoading: false,
@@ -7,7 +11,7 @@ const hotelState = {
   isSuccess: false,
   hotels: [],
   singleHotel: {},
-  destinationHotels:{},
+  destinationHotels: {},
   message: "",
 };
 
@@ -48,7 +52,7 @@ export const hotelsSlice = createSlice({
         state.isSuccess = false;
         state.message = action.error;
       })
-      .addCase(getHotelsByDestination.pending,(state)=>{
+      .addCase(getHotelsByDestination.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(getHotelsByDestination.rejected,(state,action)=>{
@@ -58,12 +62,12 @@ export const hotelsSlice = createSlice({
         state.destinationHotels={}
         state.message = action.error
       })
-      .addCase(getHotelsByDestination.fulfilled,(state,action)=>{
-        state.isLoading= false
-        state.isError = false
-        state.isSuccess = true
-        state.destinationHotels = action.payload
-      })
+      .addCase(getHotelsByDestination.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.destinationHotels = action.payload;
+      });
   },
 });
 

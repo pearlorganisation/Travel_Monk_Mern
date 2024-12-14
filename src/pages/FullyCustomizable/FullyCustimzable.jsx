@@ -160,9 +160,9 @@ const tripData = [
 
 const FullyCustomizeTrip = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate()
-  const { id } = useParams();  // destinationId 
-  const location= useLocation()
+  const navigate = useNavigate();
+  const { id } = useParams(); // destinationId
+  const location = useLocation();
   const { singleDestination, activities } = useSelector((state) => state.trip);
   const { destinationHotels } = useSelector((state)=> state.hotels)  // destination hotels contains all the hotels for that particular destination
   const { destinationVehicles } = useSelector((state) => state.destination_vehicle)
@@ -173,10 +173,12 @@ const FullyCustomizeTrip = () => {
 
   const [selectedVehicleImage, setSelectedVehicleImage] = useState("")
 
-  const { startDate , endDate, destination } = location.state ?? {}
-  console.log("------------destination", startDate, endDate, destination);
+  const { startDate, endDate, destination } = location.state ?? {};
+  // console.log("------------destination", startDate, endDate, destination);
 
-  /** calculating the days difference */  
+  console.log("------------destination hotels", destinationHotels);
+
+  /** calculating the days difference */
   const calculateDaysBetweenDates = (startDate, endDate) => {
     // Convert the date strings into Date objects
     const start = new Date(startDate);
@@ -187,34 +189,33 @@ const FullyCustomizeTrip = () => {
 
     // Convert the difference to days
     const daysDifference = timeDifference / (1000 * 60 * 60 * 24);
- console.log(daysDifference, "diff")
+    console.log(daysDifference, "diff");
     return daysDifference;
   };
 
   const myDays = calculateDaysBetweenDates(startDate, endDate);
   /** duration that is day and nights of the customized package */
- const days = parseInt(myDays);
- const nights = parseInt(myDays -1);
+  const days = parseInt(myDays);
+  const nights = parseInt(myDays - 1);
 
- 
   /**------------------Utility function to get the dates between the selected start date and end date----------------------*/
   const getDatesInRange = (start, end) => {
-    if (!start || !end) return []; 
+    if (!start || !end) return [];
 
     const dates = [];
     let currentDate = new Date(start);
 
     while (currentDate <= end) {
-      dates.push(new Date(currentDate));  
-      currentDate.setDate(currentDate.getDate() + 1);  
+      dates.push(new Date(currentDate));
+      currentDate.setDate(currentDate.getDate() + 1);
     }
 
     return dates;
   };
 
-  const datesRange = getDatesInRange(startDate,endDate)
-  const datesObjects = datesRange.map(date => ({ date }));
-  
+  const datesRange = getDatesInRange(startDate, endDate);
+  const datesObjects = datesRange.map((date) => ({ date }));
+
   /**----------------------------States--------------------------------- */
 
   /** states for claculating the selected hotels price */
@@ -237,17 +238,17 @@ const FullyCustomizeTrip = () => {
     setSelectedVehicleImage(vehicleImage);
   };
 
-  console.log(selectedVehiclePrice,"-----------------------selected vehicle price")
+  console.log(
+    selectedVehiclePrice,
+    "-----------------------selected vehicle price"
+  );
   /** data prepared for the options to use in the react-select */
-let activitiesOption = activities?.map((activity) => ({
+  let activitiesOption = activities?.map((activity) => ({
     label: activity?.name,
     value: activity?._id,
   }));
 
-
   // console.log("---------------------activites option", activitiesOption)
-
-
 
   useEffect(() => {
     dispatch(getAllActivitiesByDestination(id));
@@ -255,7 +256,6 @@ let activitiesOption = activities?.map((activity) => ({
     dispatch(getSingleDestination(id));
     dispatch(getDestinationVehicle(id));
   }, []);
- 
 
   const [dayData, setDayData] = useState(
  
@@ -264,8 +264,8 @@ let activitiesOption = activities?.map((activity) => ({
       selectedHotel: {},
       selectedActivities: [],
       day: "",
-      date:""
-    }))|| []
+      date: "",
+    })) || []
   );
 
   useEffect(() => {
@@ -277,7 +277,7 @@ let activitiesOption = activities?.map((activity) => ({
           selectedHotel: {},
           selectedActivities: [],
           day: "",
-          date:""
+          date: "",
         })) || []
       );
     }
@@ -286,19 +286,21 @@ let activitiesOption = activities?.map((activity) => ({
   const handleLocationChange = (index, event, selectedDate) => {
     const newDayData = [...dayData];
     newDayData[index].selectedLocation = event.target.value;
-    newDayData[index].date = selectedDate
-    newDayData[index].day = index + 1
+    newDayData[index].date = selectedDate;
+    newDayData[index].day = index + 1;
     setDayData(newDayData);
   };
 
   /** to selecte hotels and calculate their price */
   const handleHotelChange = (index, event, hotels) => {
-  /**------- logic to find out the selected hotel by id--------------*/
-  const selectedHotelId = event.target.value;
-  const selected_Hotel = hotels.find((hotel)=> hotel._id === selectedHotelId) // this will find the selected hotel by id
+    /**------- logic to find out the selected hotel by id--------------*/
+    const selectedHotelId = event.target.value;
+    const selected_Hotel = hotels.find(
+      (hotel) => hotel._id === selectedHotelId
+    ); // this will find the selected hotel by id
 
     const newDayData = [...dayData];
-   
+
     /** setting the hotel of current index */
     newDayData[index].selectedHotel = event.target.value;
     setDayData(newDayData);
@@ -306,14 +308,14 @@ let activitiesOption = activities?.map((activity) => ({
     const startingPrice = selected_Hotel ? selected_Hotel.startingPrice : 0;
     const updatedHotelPrices = [...hotelPrices];
     updatedHotelPrices[index] = startingPrice;
-    setHotelPrices(updatedHotelPrices)
+    setHotelPrices(updatedHotelPrices);
     setTotalHotelPrice(
-      updatedHotelPrices.reduce((total,price)=>total+price, 0)
-    )
+      updatedHotelPrices.reduce((total, price) => total + price, 0)
+    );
   };
-console.log(totalHotelPrices,'-----------------------------------')
-  
-const handleActivityChange = (selectedOptions, dayIndex) => {
+  console.log(totalHotelPrices, "-----------------------------------");
+
+  const handleActivityChange = (selectedOptions, dayIndex) => {
     setDayData((prevDayData) =>
       prevDayData.map((day, index) =>
         index === dayIndex
@@ -322,10 +324,10 @@ const handleActivityChange = (selectedOptions, dayIndex) => {
       )
     );
   };
-/** The Total price after selecting hotels and vehicle */
-let Total_Estimated_Price = totalHotelPrices + selectedVehiclePrice
+  /** The Total price after selecting hotels and vehicle */
+  let Total_Estimated_Price = totalHotelPrices + selectedVehiclePrice;
 
-console.log("selected hotel and vehicle prices" ,Total_Estimated_Price)
+  console.log("selected hotel and vehicle prices", Total_Estimated_Price);
   console.log(dayData, "day data");
 
   /**------------------Handle for Enquiry-------------------------*/
