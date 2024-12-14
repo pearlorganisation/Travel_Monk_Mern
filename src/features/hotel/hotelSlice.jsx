@@ -60,6 +60,12 @@ export const hotelsSlice = createSlice({
         state.isSuccess = false;
         state.isError = true;
         state.message = action.error;
+      .addCase(getHotelsByDestination.rejected,(state,action)=>{
+        state.isLoading = false
+        state.isSuccess = false
+        state.isError = true
+        state.destinationHotels={}
+        state.message = action.error
       })
       .addCase(getHotelsByDestination.fulfilled, (state, action) => {
         state.isLoading = false;

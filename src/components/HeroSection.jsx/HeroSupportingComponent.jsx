@@ -146,20 +146,24 @@ const HeroSupportingComponent = ({ data }, ref) => {
 
   const submitForm = async (data) => {
     const { destination } = data;
-    try {
-      const actionResult = await dispatch(
-        searchDestination(destination)
-      ).unwrap();
+    if (startDate == null || endDate == null) {
+      return alert("Both the dates are required");
+    } else {
+      try {
+        const actionResult = await dispatch(
+          searchDestination(destination)
+        ).unwrap();
 
-      if (actionResult?.data?.length > 0) {
-        navigate(`fully-customize/${actionResult.data[0]._id}`, {
-          state: { startDate, endDate, destination },
-        });
-      } else {
-        console.log("No results found for the selected destination.");
+        if (actionResult?.data?.length > 0) {
+          navigate(`fully-customize/${actionResult.data[0]._id}`, {
+            state: { startDate, endDate, destination },
+          });
+        } else {
+          console.log("No results found for the selected destination.");
+        }
+      } catch (error) {
+        console.error("Failed to fetch destination data:", error);
       }
-    } catch (error) {
-      console.error("Failed to fetch destination data:", error);
     }
   };
 
@@ -373,6 +377,7 @@ const HeroSupportingComponent = ({ data }, ref) => {
                   Start Date
                 </label>
                 <DatePicker
+                  required
                   selectsStart
                   selected={startDate}
                   onChange={(date) => setStartDate(date)}
@@ -386,6 +391,7 @@ const HeroSupportingComponent = ({ data }, ref) => {
                   End Date
                 </label>
                 <DatePicker
+                  required
                   selectsEnd
                   selected={endDate}
                   onChange={(date) => setEndDate(date)}

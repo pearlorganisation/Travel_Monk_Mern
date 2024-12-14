@@ -9,14 +9,16 @@ const ChangePassword = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate()
     const { register, handleSubmit, formState: { errors }, watch, reset } = useForm();
- 
+    const { changePasswordInfo } = useSelector((state) => state?.user)
     const submitForm = (data) => {
         dispatch(changePassword(data));
         reset();  
-         
+        if (!changePasswordInfo.isSuccess) {
+            alert('try again')
+        } else { navigate('/') }
+
     };
-  
-    
+   
    
     const newPassword = watch("newPassword");
 

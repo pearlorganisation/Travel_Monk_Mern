@@ -51,6 +51,7 @@ export const tripsSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
+        // state.singleDestination = null;
         state.message = action.error;
       })
 
