@@ -14,10 +14,10 @@ import { getAllDestinations } from "../../features/trips/tripActions";
 import { getAuthUserDetails } from "../../features/user/userActions";
 import { getPopularDestination } from "../../features/destination/destinationActions";
 import WhatsAppLogo from "../../components/Whatsapp/WhatsLogo";
-// import Map from "../../components/Map/Map";
 
-import EmbedGoogleMap from "../../components/Map/Map";
 import { useNavigate } from "react-router-dom";
+import Roadmap from "../../components/TimelineComponent/TimelineComponent";
+import GoogleMapsEmbed from "../../components/MyEmbed/MyEmbed";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -67,7 +67,11 @@ const Home = () => {
         <WhatsAppLogo />
       </div>
 
-      <EmbedGoogleMap />
+      {/* <EmbedGoogleMap /> */}
+
+      <Roadmap />
+
+      <GoogleMapsEmbed />
 
       {/* <Map /> */}
       {/* <Upcoming />
