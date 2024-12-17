@@ -7,6 +7,7 @@ import { getSingleDestination } from "../../features/trips/tripActions";
 import { getDestinationVehicle } from "../../features/DestinationVehicle/destinationVehicleaction";
 import moment from "moment/moment";
 import { getHotelsByDestination } from "../../features/hotel/hotelActions";
+import CustomDropdownIndicator from "../../components/CustomDropdownIcon/CustomDropdownIcon";
 
 const CustomizeTrip = () => {
   const dispatch = useDispatch();
@@ -19,6 +20,8 @@ const CustomizeTrip = () => {
 
   const { singleDestination } = useSelector((state) => state.trip);
   const { singlePackage } = useSelector((state) => state.packages);
+
+  const userState = useSelector((state) => state.user);
 
   /*---------------- getting the vehicles available for that destination-----------------------------------------------*/
   const [selectedVehicleName, setSelectedVehicle] = useState("");
@@ -64,7 +67,9 @@ const CustomizeTrip = () => {
       dispatch(getSingleDestination(singlePackage?.data?.packageDestination));
   }, [singlePackage]);
 
-  console.log("Trip Package ka data", singlePackage);
+  // console.log("Trip Package ka data", singlePackage);
+
+  console.log(userState, "my user state");
 
   // all the hotel data and activity data is stored in dayaData
   const [dayData, setDayData] = useState(
@@ -335,6 +340,9 @@ const CustomizeTrip = () => {
                           placeholder="Choose Activity"
                           isMulti
                           value={dayData[index]?.selectedActivities}
+                          components={{
+                            DropdownIndicator: CustomDropdownIndicator,
+                          }}
                           onChange={(selectedOptions) =>
                             handleActivityChange(selectedOptions, index)
                           }
