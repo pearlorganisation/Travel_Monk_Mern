@@ -17,8 +17,15 @@ import WhatsAppLogo from "../../components/Whatsapp/WhatsLogo";
 // import Map from "../../components/Map/Map";
 
 import EmbedGoogleMap from "../../components/Map/Map";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
+
+  // if (localStorage.getItem("packageDetails")) {
+  //   navigate("/full-customize-package-enquiry");
+  // }
+
   const dispatch = useDispatch();
 
   const { popular } = useSelector((state) => state.destination);

@@ -12,6 +12,7 @@ import {
 import { getHotelsByDestination } from "../../features/hotel/hotelActions";
 import { getDestinationVehicle } from "../../features/DestinationVehicle/destinationVehicleaction";
 import moment from "moment";
+import CustomDropdownIndicator from "../../components/CustomDropdownIcon/CustomDropdownIcon";
 
 const tripData = [
   {
@@ -169,6 +170,10 @@ const FullyCustomizeTrip = () => {
     (state) => state.destination_vehicle
   );
 
+  const { isUserLoggedIn } = useSelector((state) => state.auth);
+
+  console.log(isUserLoggedIn, "fully customize auth state");
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -178,7 +183,7 @@ const FullyCustomizeTrip = () => {
   const { startDate, endDate, destination } = location.state ?? {};
   // console.log("------------destination", startDate, endDate, destination);
 
-  console.log("------------destination hotels", destinationHotels);
+  // console.log("------------destination hotels", destinationHotels);
 
   /** calculating the days difference */
   const calculateDaysBetweenDates = (startDate, endDate) => {
@@ -191,7 +196,7 @@ const FullyCustomizeTrip = () => {
 
     // Convert the difference to days
     const daysDifference = timeDifference / (1000 * 60 * 60 * 24);
-    console.log(daysDifference, "diff");
+    // console.log(daysDifference, "diff");
     return daysDifference;
   };
 
@@ -240,10 +245,10 @@ const FullyCustomizeTrip = () => {
     setSelectedVehicleImage(vehicleImage);
   };
 
-  console.log(
-    selectedVehiclePrice,
-    "-----------------------selected vehicle price"
-  );
+  // console.log(
+  //   selectedVehiclePrice,
+  //   "-----------------------selected vehicle price"
+  // );
   /** data prepared for the options to use in the react-select */
   let activitiesOption = activities?.map((activity) => ({
     label: activity?.name,
@@ -313,9 +318,13 @@ const FullyCustomizeTrip = () => {
       updatedHotelPrices.reduce((total, price) => total + price, 0)
     );
   };
-  console.log(totalHotelPrices, "-----------------------------------");
+  // console.log(totalHotelPrices, "-----------------------------------");
 
   const handleActivityChange = (selectedOptions, dayIndex) => {
+    if (selectedOptions && selectedOptions.length > 3) {
+      return;
+    }
+
     setDayData((prevDayData) =>
       prevDayData.map((day, index) =>
         index === dayIndex
@@ -347,6 +356,19 @@ const FullyCustomizeTrip = () => {
       );
       return;
     }
+
+    localStorage.setItem(
+      "packageDetails",
+      JSON.stringify({
+        Estimated_Price: Total_Estimated_Price,
+        itinerary: dayData,
+        destinationId: id,
+        vehicleId: selectedVehicleId,
+        duration: { days, nights },
+        startDate,
+        endDate,
+      })
+    );
     navigate("/full-customize-package-enquiry", {
       state: {
         Estimated_Price: Total_Estimated_Price,
@@ -508,7 +530,9 @@ const FullyCustomizeTrip = () => {
         )}
       </div>
 
-      <div className="flex justify-center items-center"></div>
+      <div className="flex justify-center items-center text-center fold-semibold text-4xl">
+        Note: You can only select a maximum of 3 activities for each day.
+      </div>
 
       <div className="bg-gray-50 min-h-screen p-6">
         <div className="max-w-6xl mx-auto space-y-4">
@@ -530,21 +554,7 @@ const FullyCustomizeTrip = () => {
                 {/* Content Container */}
                 <div className="flex-1 grid md:grid-cols-2 lg:grid-cols-4 gap-4">
                   {/* Close Icon */}
-                  <div className="flex items-center justify-center">
-                    {/* <svg
-                      className="w-6 h-6 text-gray-500 hover:text-red-500 transition-colors"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M18.3 5.70997C17.91 5.31997 17.28 5.31997 16.89 5.70997L12 10.59L7.10997 5.69997C6.71997 5.30997 6.08997 5.30997 5.69997 5.69997C5.30997 6.08997 5.30997 6.71997 5.69997 7.10997L10.59 12L5.69997 16.89C5.30997 17.28 5.30997 17.91 5.69997 18.3C6.08997 18.69 6.71997 18.69 7.10997 18.3L12 13.41L16.89 18.3C17.28 18.69 17.91 18.69 18.3 18.3C18.69 17.91 18.69 17.28 18.3 16.89L13.41 12L18.3 7.10997C18.68 6.72997 18.68 6.08997 18.3 5.70997Z"
-                        fill="currentColor"
-                      />
-                    </svg> */}
-                  </div>
+                  <div className="flex items-center justify-center"></div>
 
                   {/* Date */}
                   <div className="flex flex-col">
@@ -582,24 +592,7 @@ const FullyCustomizeTrip = () => {
                       ))}
                     </select>
                   </div>
-                  {/* <div className="flex flex-col ">
-                    <h1> Select Location </h1>
-                    <select
-                      value={dayData[index]?.selectedLocation}
-                      onChange={(event) =>
-                        handleLocationChange(index, event, new Date(datesObjects[index]?.date).toISOString())
-                      }
-                      className="bg-blue-100 border-2 border-[#1f1f1f] rounded-md px-2 py-2 flex flex-row "
-                    >
-                      <option key="choose"> Choose Location</option>
-                      {singleDestination?.data?.locations?.[index]?.location?.map((loc, index) => (
-                        <option key={index} value={loc}>
-                          {" "}
-                          {loc}
-                        </option>
-                      ))}
-                    </select>
-                  </div> */}
+
                   {/* Hotel Selector */}
                   <div className="flex flex-col">
                     <label className="text-xs font-semibold text-gray-700 mb-1">
@@ -635,11 +628,13 @@ const FullyCustomizeTrip = () => {
                   <Select
                     placeholder="Choose Activities"
                     isMulti
+                    components={{ DropdownIndicator: CustomDropdownIndicator }}
                     value={dayData[index]?.selectedActivities || []}
                     onChange={(selectedOptions) =>
                       handleActivityChange(selectedOptions, index)
                     }
                     options={activitiesOption}
+                    closeMenuOnSelect={false}
                     className="text-sm"
                     styles={{
                       control: (base) => ({
@@ -673,7 +668,9 @@ const FullyCustomizeTrip = () => {
           </div>
 
           <div className="w-full bg-cyan-300">
-            <p>Your Estimated price of Trip is: {Total_Estimated_Price}</p>
+            {isUserLoggedIn && (
+              <p>Your Estimated price of Trip is: {Total_Estimated_Price}</p>
+            )}
             <button onClick={handleEnquiry}>
               To move forward submit this form
             </button>
@@ -681,30 +678,6 @@ const FullyCustomizeTrip = () => {
         </div>
       </div>
 
-      {/** select vehicle section */}
-      {/* <div className="p-4">
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {Array.isArray(destinationVehicles) && destinationVehicles?.map((vehicle) => (
-            <div
-              key={vehicle?._id}
-              onClick={() => handleSelectVehicle(vehicle?.vehicleName, vehicle?.pricePerDay, vehicle?._id)}
-              className="p-4 border rounded-lg shadow-md cursor-pointer hover:bg-gray-100"
-            >
-              <p className="text-lg font-semibold">Name: {vehicle?.vehicleName}</p>
-              <p className="text-gray-600">Price: {vehicle?.pricePerDay}</p>
-            </div>
-          ))}
-        </div>
-        {selectedVehicleName && (
-          <div className="mt-6 p-4 bg-blue-50 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold text-blue-700">
-              Selected Vehicle
-            </h3>
-            <p className="text-lg">Name: {selectedVehicleName}</p>
-            <p className="text-lg">Price: {selectedVehiclePrice}</p>
-          </div>
-        )}
-      </div> */}
       <div className="px-24 mt-6 w-full ">
         <h1 className="font-bold text-2xl"> You might want to add </h1>
 
