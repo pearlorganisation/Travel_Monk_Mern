@@ -88,11 +88,11 @@ export default function CruiseContactForm() {
 
           <div className="flex flex-row gap-12">
             {data?.map((item) => (
-              <div key={item._id} className="">
-                {item.partnerType.partnerTypeName === "Cruise" && (
+              <div key={item?._id} className="">
+                {item?.partnerType?.partnerTypeName === "Cruise" && (
                   <img
-                    src={item.partnerLogo.secure_url}
-                    alt={item.name}
+                    src={item?.partnerLogo?.secure_url}
+                    alt={item?.name}
                     className="w-20 h-20 rounded-lg"
                   />
                 )}
@@ -113,17 +113,17 @@ export default function CruiseContactForm() {
             </p>
             <div>
               <ul className="mt-6 flex flex-wrap gap-x-10 gap-y-6 items-center">
-                {contactMethods.map((item, idx) => (
+                {contactMethods?.map((item, idx) => (
                   <li key={idx} className="flex items-center gap-x-3">
-                    <div className="flex-none text-gray-400">{item.icon}</div>
+                    <div className="flex-none text-gray-400">{item?.icon}</div>
                     <a
                       href={`${
-                        item.isEmail
+                        item?.isEmail
                           ? `mailto:${item.contact}`
-                          : `tel:${item.contact}`
+                          : `tel:${item?.contact}`
                       }    `}
                     >
-                      {item.contact}
+                      {item?.contact}
                     </a>
                   </li>
                 ))}
