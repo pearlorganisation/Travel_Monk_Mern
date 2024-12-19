@@ -46,3 +46,8 @@ const MapBoxStaticMap = () => {
 };
 
 export default MapBoxStaticMap;
+
+ 
+
+ 
+ 
