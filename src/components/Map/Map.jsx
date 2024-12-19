@@ -8,7 +8,7 @@ const MapBoxStaticMap = () => {
   // Map center and zoom
   const lng = -97.0; // Centered roughly between the cities
   const lat = 31.0;
-  const zoom = 6; // Zoomed out to see all markers
+  const zoom = 5.5; // Zoomed out to see all markers
 
   // Map size
   const width = 800;
@@ -31,7 +31,7 @@ const MapBoxStaticMap = () => {
 
   // Define route as a polyline by joining coordinates
   const routeCoordinates = markers.map(({ lng, lat }) => `${lng},${lat}`).join(";");
-  const route = `path-5+ff0000-0.8(${routeCoordinates})`; // Red polyline with opacity 0.8
+  const route = `path-5+0000FF-0.8(${routeCoordinates})`; // Red polyline with opacity 0.8
 
   // Static map URL
   const staticMapUrl = `https://api.mapbox.com/styles/v1/mapbox/${mapStyle}/static/${markerString},${route}/${lng},${lat},${zoom}/${width}x${height}?access_token=${accessToken}`;

@@ -378,6 +378,8 @@ const FullyCustomizeTrip = () => {
       },
     });
   } 
+
+  /** */
   return (
     <div className="bg-gray-200 relative">
       <div className="px-24 mt-4">
@@ -659,7 +661,9 @@ const FullyCustomizeTrip = () => {
           </div>
         </div>
       </div>
-
+       <div>
+        <MapBoxStaticMap />
+       </div>
       <div className="fixed bottom-0 bg-white w-full">
         <div className="flex flex-row justify-between p-3">
           <div className="flex flex-col">
@@ -682,168 +686,47 @@ const FullyCustomizeTrip = () => {
 
 export default FullyCustomizeTrip;
 
-/**main ui of day data selection */
-const mainUi = () => {
+ 
+/** map section */
+const MapBoxStaticMap = () => {
+  const accessToken = "pk.eyJ1IjoibWFuaXNoMTE3IiwiYSI6ImNtNHRqaW45ZjBlazkya3M0ZDJmZWxianAifQ.j_H2ZzKixpmHCbH-vCDzWw"; // Replace with your Mapbox access token
+
+  // Map center and zoom
+  const lng = -97.0; // Centered roughly between the cities
+  const lat = 31.0;
+  const zoom = 5.5; // Zoomed out to see all markers
+
+  // Map size
+  const width = 800;
+  const height = 400;
+
+  // Map style
+  const mapStyle = "streets-v11";
+
+  // Define marker locations with colors and labels
+  const markers = [
+    { lng: -97.7431, lat: 30.2672, color: "ff0000", label: "A" }, // Austin - Red
+    { lng: -96.797, lat: 32.7767, color: "0000ff", label: "B" },  // Dallas - Blue
+    { lng: -95.3698, lat: 29.7604, color: "00ff00", label: "C" }, // Houston - Green
+  ];
+
+  // Build markers string
+  const markerString = markers
+    .map(({ lng, lat, color }) => `pin-s+${color}(${lng},${lat})`)
+    .join(",");
+
+  // Define route as a polyline by joining coordinates
+  const routeCoordinates = markers.map(({ lng, lat }) => `${lng},${lat}`).join(";");
+  const route = `path-5+0000FF-0.8(${routeCoordinates})`; // Red polyline with opacity 0.8
+
+  // Static map URL
+  const staticMapUrl = `https://api.mapbox.com/styles/v1/mapbox/${mapStyle}/static/${markerString},${route}/${lng},${lat},${zoom}/${width}x${height}?access_token=${accessToken}`;
+
+  console.log("Static Map URL:", staticMapUrl); // Log for debugging
+
   return (
-    <div className="grid grid-cols-1 mt-4">
-      <div className="">
-        {dayData?.map((day, index) => {
-          return (
-            <div className="flex flex-row gap-2 items-center justify-start px-8 mt-2">
-              <svg
-                width="24"
-                height="25"
-                viewBox="0 0 24 25"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <rect x="2" y="6.5" width="20" height="3" fill="black" />
-                <rect x="2" y="15.5" width="20" height="3" fill="black" />
-                <rect x="2" y="6.5" width="20" height="3" fill="black" />
-                <rect x="2" y="15.5" width="20" height="3" fill="black" />
-              </svg>
-
-              <div className="w-6 h-6 bg-red-500 rounded-full">
-                <h1 className="text-white px-2">{index + 1}</h1>
-              </div>
-
-              <div className="bg-white border border-gray-200 rounded-md p-2 flex flex-row">
-                <div className="grid grid-cols-2  w-full">
-                  <div className="flex flex-row items-center gap-8">
-                    <svg
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <g clip-path="url(#clip0_1779_681)">
-                        <path
-                          d="M18.3 5.70997C17.91 5.31997 17.28 5.31997 16.89 5.70997L12 10.59L7.10997 5.69997C6.71997 5.30997 6.08997 5.30997 5.69997 5.69997C5.30997 6.08997 5.30997 6.71997 5.69997 7.10997L10.59 12L5.69997 16.89C5.30997 17.28 5.30997 17.91 5.69997 18.3C6.08997 18.69 6.71997 18.69 7.10997 18.3L12 13.41L16.89 18.3C17.28 18.69 17.91 18.69 18.3 18.3C18.69 17.91 18.69 17.28 18.3 16.89L13.41 12L18.3 7.10997C18.68 6.72997 18.68 6.08997 18.3 5.70997Z"
-                          fill="#323232"
-                        />
-                      </g>
-                      <defs>
-                        <clipPath id="clip0_1779_681">
-                          <rect width="24" height="24" fill="white" />
-                        </clipPath>
-                      </defs>
-                    </svg>
-
-                    <div className="flex flex-col gap-1">
-                      {/**  show date here */}
-                      <h2 className="text-gray-700 font-medium">
-                        {/* {new Date().toDateString()} */}
-                        {moment(datesObjects[index]?.date).format(
-                          "DD MMM YYYY"
-                        )}
-                      </h2>
-                    </div>
-
-                    <div className="flex flex-col gap-3 ">
-                      <h1> Select Location </h1>
-                      <select
-                        value={dayData[index]?.selectedLocation}
-                        onChange={(event) =>
-                          handleLocationChange(
-                            index,
-                            event,
-                            new Date(datesObjects[index]?.date).toISOString()
-                          )
-                        }
-                        className="bg-blue-100 border-2 border-[#1f1f1f] rounded-md px-2 py-2 flex flex-row gap-2"
-                      >
-                        <option key="choose"> Choose Location</option>
-                        {singleDestination?.data?.locations?.[
-                          index
-                        ]?.location?.map((loc, index) => (
-                          <option key={index} value={loc}>
-                            {" "}
-                            {loc}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div className="flex flex-col gap-3 ">
-                      <h1> Select Hotel </h1>
-                      <select
-                        value={dayData[index]?.selectedHotel}
-                        onChange={(event) =>
-                          handleHotelChange(index, event, destinationHotels)
-                        }
-                        className="bg-blue-100 border-2 border-[#1f1f1f] rounded-md px-2 py-2 flex flex-row gap-2"
-                      >
-                        <option key="choose"> Choose Hotel</option>
-                        {Array.isArray(destinationHotels) &&
-                          destinationHotels?.map((hotel) => (
-                            <option key={hotel._id} value={hotel._id}>
-                              {" "}
-                              {hotel.name}
-                            </option>
-                          ))}
-                      </select>
-                    </div>
-
-                    <div className="flex flex-col gap-3 ">
-                      <h1> Select Activity </h1>
-
-                      <Select
-                        placeholder="Choose Activity"
-                        isMulti
-                        value={dayData[index]?.selectedActivities || []} // Ensure a default value
-                        onChange={(selectedOptions) =>
-                          handleActivityChange(selectedOptions, index)
-                        }
-                        options={activitiesOption}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-      {/** select vehicle section */}
-      <div className="p-4">
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {Array.isArray(destinationVehicles) &&
-            destinationVehicles?.map((vehicle) => (
-              <div
-                key={vehicle?._id}
-                onClick={() =>
-                  handleSelectVehicle(
-                    vehicle?.vehicleName,
-                    vehicle?.pricePerDay,
-                    vehicle?._id
-                  )
-                }
-                className="p-4 border rounded-lg shadow-md cursor-pointer hover:bg-gray-100"
-              >
-                <p className="text-lg font-semibold">
-                  Name: {vehicle?.vehicleName}
-                </p>
-                <p className="text-gray-600">Price: {vehicle?.pricePerDay}</p>
-              </div>
-            ))}
-        </div>
-        {selectedVehicleName && (
-          <div className="mt-6 p-4 bg-blue-50 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold text-blue-700">
-              Selected Vehicle
-            </h3>
-            <p className="text-lg">Name: {selectedVehicleName}</p>
-            <p className="text-lg">Price: {selectedVehiclePrice}</p>
-          </div>
-        )}
-      </div>
-      <div className="w-full bg-cyan-300">
-        <p>Your Estimated price of Trip is: {Total_Estimated_Price}</p>
-        <button onClick={handleEnquiry}>
-          To move forward submit this form
-        </button>
-      </div>
+    <div className="flex justify-center">
+      <img src={staticMapUrl} alt="Mapbox Static Map with Markers and Route" />
     </div>
   );
 };
