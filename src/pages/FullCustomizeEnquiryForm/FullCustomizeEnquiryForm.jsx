@@ -41,6 +41,8 @@ const FullCustomizeEnquiryForm = () => {
   } = location.state ?? {};
 
   const newItinery = [...itinerary];
+  
+  /**-----------taking only the values that we will send to the backend------------*/
   const userData = newItinery.map((item,index)=>{
     const container ={}
 
