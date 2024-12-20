@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import Timeline from "../../components/TimelineComponent/SampleTimeline";
 import { sendPrebuiltPackageEnquiry } from "../../features/PrebuiltPackage/prebuiltPackageAction";
+import Roadmap from "../../components/TimelineComponent/TimelineComponent";
 
 const PrebuiltEnquiryForm = () => {
   const location = useLocation();
@@ -15,12 +15,6 @@ const PrebuiltEnquiryForm = () => {
   /** extarcting the data  */
   const { Estimate_Price, packageDetails, itinerary, selectedVehicle } =
     location.state || {};
-
-  // console.log("location state", location.state);
-
-  console.log("package Details", packageDetails);
-  console.log("itinerary array", itinerary);
-  console.log("selected vehicle", selectedVehicle);
 
   const {
     register,
@@ -57,14 +51,13 @@ const PrebuiltEnquiryForm = () => {
     <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center p-4">
       {isUserLoggedIn ? (
         <>
-          <div className="w-full grid grid-cols-1 md:grid-cols-2 bg-white rounded-2xl shadow-2xl overflow-hidden">
+          <div className="w-full grid grid-cols-1  bg-white rounded-2xl shadow-2xl overflow-hidden">
             {/* Information Section */}
             <div
               id="info"
-              className="bg-[#007E8F] text-white p-10 flex flex-col justify-center items-start space-y-6"
+              className="bg-[#007E8F] text-white  flex flex-col justify-center items-start py-6"
             >
-              <div className="space-y-4">
-                <h2 className="text-3xl font-bold">Package Name</h2>
+              <div className="space-y-4 px-6">
                 <div className="text-5xl font-extrabold text-white/90">
                   {packageDetails.name}
                 </div>
@@ -77,62 +70,8 @@ const PrebuiltEnquiryForm = () => {
                   out to you for further processes.
                 </p>
               </div>
-              {/* <div className="bg-white/10 p-6 rounded-xl">
-                <h3 className="text-xl font-semibold mb-3">What to Expect</h3>
-                <ul className="space-y-2 text-white/80">
-                  <li className="flex items-center space-x-2">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 text-green-400"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    <span>Quick Response</span>
-                  </li>
-                  <li className="flex items-center space-x-2">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 text-green-400"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    <span>Personalized Consultation</span>
-                  </li>
-                  <li className="flex items-center space-x-2">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 text-green-400"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    <span>Detailed Information</span>
-                  </li>
-                </ul>
-              </div> */}
 
-              {/* <div className="">
-                <TimelineComponent data={location.state} />
-              </div> */}
-
-              <div>
+              <div className="px-6">
                 <h1 className="font-bold text-4xl text-white/80">
                   {" "}
                   Vehicle Name :{" "}
@@ -140,14 +79,14 @@ const PrebuiltEnquiryForm = () => {
                 </h1>
               </div>
 
-              <Timeline events={location.state.itinerary} />
+              <Roadmap events={location.state.itinerary} />
             </div>
 
             {/* Form Section */}
-            <div className="p-10 flex items-center justify-center">
+            <div className="p-10 flex items-center justify-center ">
               <form
                 onSubmit={handleSubmit(submitForm)}
-                className="w-full space-y-6"
+                className=" space-y-6 w-[80%]"
               >
                 <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
                   Contact Us
