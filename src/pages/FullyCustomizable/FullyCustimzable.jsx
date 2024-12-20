@@ -233,6 +233,8 @@ const FullyCustomizeTrip = () => {
   const [selectedVehicleName, setSelectedVehicleName] = useState("");
   const [selectedVehicleId, setSelectedVehicleId] = useState(null);
   const [selectedVehiclePrice, setSelectedVehiclePrice] = useState("");
+
+  const [selectedHotelName, setSelectedHotelName] = useState("");
   const handleSelectVehicle = (
     vehicleName,
     vehiclePrice,
@@ -290,6 +292,7 @@ const FullyCustomizeTrip = () => {
 
   const handleLocationChange = (index, event, selectedDate) => {
     const newDayData = [...dayData];
+
     newDayData[index].selectedLocation = event.target.value;
     newDayData[index].date = selectedDate;
     newDayData[index].day = index + 1;
@@ -298,16 +301,22 @@ const FullyCustomizeTrip = () => {
 
   /** to selecte hotels and calculate their price */
   const handleHotelChange = (index, event, hotels) => {
-    /**------- logic to find out the selected hotel by id--------------*/
     const selectedHotelId = event.target.value;
     const selected_Hotel = hotels.find(
       (hotel) => hotel._id === selectedHotelId
     ); // this will find the selected hotel by id
 
+    setSelectedHotelName(selected_Hotel.name);
+
     const newDayData = [...dayData];
 
     /** setting the hotel of current index */
     newDayData[index].selectedHotel = event.target.value;
+
+    // newDayData[index].selectedHotel = {
+    //   name: selected_Hotel.name,
+    //   hotelId: selected_Hotel._id,
+    // };
     setDayData(newDayData);
     /** calculating the selected hotel prices */
     const startingPrice = selected_Hotel ? selected_Hotel.startingPrice : 0;
@@ -375,6 +384,7 @@ const FullyCustomizeTrip = () => {
         itinerary: dayData,
         destinationId: id,
         vehicleId: selectedVehicleId,
+        vehicleName: selectedVehicleName,
         duration: { days, nights },
         startDate,
         endDate,
@@ -599,6 +609,7 @@ const FullyCustomizeTrip = () => {
                       Select Hotel
                     </label>
                     <select
+                      // value={dayData[index]?.selectedHotel?.hotelId}
                       value={dayData[index]?.selectedHotel}
                       onChange={(event) =>
                         handleHotelChange(index, event, destinationHotels)

@@ -71,7 +71,7 @@ export default function CruiseContactForm() {
     },
   ];
 
-  const { data } = useSelector((state) => state.partners.partners);
+  const { partners } = useSelector((state) => state.partners);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getPartners());
@@ -87,17 +87,18 @@ export default function CruiseContactForm() {
           </h3>
 
           <div className="flex flex-row gap-12">
-            {data?.map((item) => (
-              <div key={item._id} className="">
-                {item.partnerType.partnerTypeName === "Cruise" && (
-                  <img
-                    src={item.partnerLogo.secure_url}
-                    alt={item.name}
-                    className="w-20 h-20 rounded-lg"
-                  />
-                )}
-              </div>
-            ))}
+            {Array.isArray(partners?.data) &&
+              partners?.data?.map((item) => (
+                <div key={item._id} className="">
+                  {item?.partnerType?.partnerTypeName === "Cruise" && (
+                    <img
+                      src={item?.partnerLogo?.secure_url}
+                      alt={item?.name}
+                      className="w-20 h-20 rounded-lg"
+                    />
+                  )}
+                </div>
+              ))}
           </div>
         </div>
         <div className="max-w-lg mx-auto gap-12 justify-between lg:flex lg:max-w-none">
@@ -130,7 +131,6 @@ export default function CruiseContactForm() {
               </ul>
             </div>
           </div>
-          
 
           <BusCruiseContactForm type="Cruise" />
         </div>

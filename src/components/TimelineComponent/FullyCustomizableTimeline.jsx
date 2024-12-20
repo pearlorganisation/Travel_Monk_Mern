@@ -2,7 +2,8 @@
 import { useEffect, useRef, useState } from "react";
 import DrawSvg from "./DrawSvg";
 
-const Roadmap = ({ events }) => {
+const RoadmapFully = ({ events }) => {
+  console.log(events, "Events");
   return (
     <section className="min-h-screen w-screen relative p-6">
       <h1 className="text-4xl capitalize flex justify-center items-center m-4 mx-auto border-b-2 border-black w-fit">
@@ -19,11 +20,11 @@ const Roadmap = ({ events }) => {
 
           {Array.isArray(events) &&
             events.map((iti, index) => (
-              <TimelineItem
+              <TimelineItemFully
                 day={`Day ${index + 1}`}
                 activities={iti?.selectedActivities}
                 hotel={iti?.selectedHotel}
-                location={iti.location}
+                location={iti.selectedLocation}
                 index={index}
               />
             ))}
@@ -37,7 +38,7 @@ const Roadmap = ({ events }) => {
   );
 };
 
-const TimelineItem = ({ activities, hotel, day, location, index }) => {
+const TimelineItemFully = ({ activities, hotel, day, location, index }) => {
   const [isVisible, setIsVisible] = useState(false);
   const itemRef = useRef(null);
 
@@ -97,13 +98,13 @@ const TimelineItem = ({ activities, hotel, day, location, index }) => {
               ))}
           </ul>
 
-          <span className="block text-2xl capitalize font-normal mt-2 text-green-500">
+          {/* <span className="block text-2xl capitalize font-normal mt-2 text-green-500">
             Hotel
           </span>
 
           <span className="block text-2xl capitalize font-normal mt-2 text-red-500">
             {hotel.name}
-          </span>
+          </span> */}
 
           <span className="block text-2xl capitalize font-normal mt-2 text-green-500">
             Location
@@ -118,4 +119,4 @@ const TimelineItem = ({ activities, hotel, day, location, index }) => {
   );
 };
 
-export default Roadmap;
+export default RoadmapFully;

@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { sendFullyCustomizePackageEnquiry } from "../../features/FullyCustomizePackage/FullCustomizePackageAction";
+import RoadmapFully from "../../components/TimelineComponent/FullyCustomizableTimeline";
 
 const FullCustomizeEnquiryForm = () => {
   const location = useLocation();
@@ -33,16 +34,17 @@ const FullCustomizeEnquiryForm = () => {
     itinerary,
     destinationId,
     vehicleId,
+    vehicleName,
     duration,
     startDate,
     endDate,
   } = location.state ?? {};
+  const newItinery = [...itinerary];
+
   console.log(
-    "----------------------------estimated data is",
-    Estimated_Price,
-    itinerary,
-    destinationId,
-    vehicleId
+    "----------------------------estimated iti is",
+
+    newItinery
   );
 
   console.log("----------------------the duration", duration);
@@ -65,9 +67,9 @@ const FullCustomizeEnquiryForm = () => {
     <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center p-4">
       {isUserLoggedIn ? (
         <>
-          <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 bg-white rounded-2xl shadow-2xl overflow-hidden">
+          <div className="w-full grid grid-cols-1  bg-white rounded-2xl shadow-2xl overflow-hidden">
             {/* Information Section */}
-            <div
+            {/* <div
               id="info"
               className="bg-indigo-600 text-white p-10 flex flex-col justify-center space-y-6"
             >
@@ -131,13 +133,43 @@ const FullCustomizeEnquiryForm = () => {
                   </li>
                 </ul>
               </div>
+            </div> */}
+
+            <div
+              id="info"
+              className="bg-[#007E8F] text-white  flex flex-col justify-center items-start py-6"
+            >
+              <div className="space-y-4 px-6">
+                {/* <div className="text-5xl font-extrabold text-white/90">
+                  {packageDetails.name}
+                </div> */}
+                <h2 className="text-3xl font-bold">Estimated Package Price</h2>
+                <div className="text-5xl font-extrabold text-white/90">
+                  ₹ {Estimated_Price}
+                </div>
+                <p className="text-lg text-white/80">
+                  Please submit this form, and one of our executives will reach
+                  out to you for further processes.
+                </p>
+              </div>
+
+              <div className="px-6">
+                <h1 className="font-bold text-4xl text-white/80">
+                  {" "}
+                  Vehicle Name :{" "}
+                  {/* <span className="text-red-500">{selectedVehicle.name}</span> */}
+                  <span className="text-red-500">{vehicleName}</span>
+                </h1>
+              </div>
+
+              <RoadmapFully events={location.state.itinerary} />
             </div>
 
             {/* Form Section */}
             <div className="p-10 flex items-center justify-center">
               <form
                 onSubmit={handleSubmit(submitForm)}
-                className="w-full space-y-6"
+                className="w-[80%] space-y-6"
               >
                 <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
                   Contact Us
