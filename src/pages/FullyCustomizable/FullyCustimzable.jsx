@@ -13,6 +13,7 @@ import { getHotelsByDestination } from "../../features/hotel/hotelActions";
 import { getDestinationVehicle } from "../../features/DestinationVehicle/destinationVehicleaction";
 import moment from "moment";
 import CustomDropdownIndicator from "../../components/CustomDropdownIcon/CustomDropdownIcon";
+import { DestinationLocation } from "../../features/Location/locationAction";
 
 const tripData = [
   {
@@ -169,6 +170,7 @@ const FullyCustomizeTrip = () => {
   const { destinationVehicles } = useSelector(
     (state) => state.destination_vehicle
   );
+  const { destinationLocations } = useSelector((state)=>state.locations) // holds locations based on the destinations
 
   const { isUserLoggedIn } = useSelector((state) => state.auth);
 
@@ -264,6 +266,7 @@ const FullyCustomizeTrip = () => {
     dispatch(getHotelsByDestination(id));
     dispatch(getSingleDestination(id));
     dispatch(getDestinationVehicle(id));
+    dispatch(DestinationLocation(id)); // get the location based on the destination
   }, []);
 
   const [dayData, setDayData] = useState(
@@ -542,12 +545,19 @@ const FullyCustomizeTrip = () => {
                       transition-all duration-200"
                     >
                       <option key="choose">Choose Location</option>
-                      {singleDestination?.data?.locations?.[
+                      {/* {singleDestination?.data?.locations?.[
                         index
                       ]?.location?.map((loc, index) => (
                         <option key={index} value={loc}>
                           {" "}
                           {loc}
+                        </option>
+                      ))} */}
+
+                      {destinationLocations?.[index]?.location?.map((loc, index)=>(
+                        <option key={index} value={loc.name}>
+                         {" "}
+                         {loc.name}
                         </option>
                       ))}
                     </select>
