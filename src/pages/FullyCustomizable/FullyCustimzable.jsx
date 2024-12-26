@@ -217,8 +217,9 @@ const FullyCustomizeTrip = () => {
     return dates;
   };
 
-  const datesRange = getDatesInRange(startDate, endDate);
+  const datesRange = getDatesInRange(startDate, endDate); // getting the range of the date
   const datesObjects = datesRange.map((date) => ({ date }));
+ 
 
   /**----------------------------States--------------------------------- */
 
@@ -287,16 +288,35 @@ const FullyCustomizeTrip = () => {
       );
     }
   }, [myDays]);
+ 
 
-  const handleLocationChange = (index, event, selectedDate) => {
+  /**--------------this will hold the data for creating the map------------------*/
+  
+
+  const handleLocationChange = (index, event, selectedDate,destinationData) => {
     const newDayData = [...dayData];
-
+    /** find the selected location using the id */
+ 
     newDayData[index].selectedLocation = event.target.value;
     newDayData[index].date = selectedDate;
     newDayData[index].day = index + 1;
     setDayData(newDayData);
-  };
 
+    /**----------------this is where we will prepare our map Data---------------------*/
+    const locationData = destinationData.find((dest) => 
+      dest.location.some((loc) => loc.name === event.target.value)
+    );
+
+    const selectedLocation = locationData?.location.find(
+      (loc) => loc.name === event.target.value
+    );
+
+    const coordinates = selectedLocation?.coordinates;
+    console.log('------------------Coordinates:', coordinates);
+    console.log('---------------locationdata is', locationData)
+   };
+
+ 
   /** to selecte hotels and calculate their price */
   const handleHotelChange = (index, event, hotels) => {
     const selectedHotelId = event.target.value;
@@ -532,7 +552,8 @@ const FullyCustomizeTrip = () => {
                         handleLocationChange(
                           index,
                           event,
-                          new Date(datesObjects[index]?.date).toISOString()
+                          new Date(datesObjects[index]?.date).toISOString(),
+                          destinationLocations
                         )
                       }
                       className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm 
