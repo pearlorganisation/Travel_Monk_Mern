@@ -183,27 +183,22 @@ const FullyCustomizeTrip = () => {
   const [selectedVehicleImage, setSelectedVehicleImage] = useState("");
 
   const { startDate, endDate, destination } = location.state ?? {};
-  // console.log("------------destination", startDate, endDate, destination);
-
-  // console.log("------------destination hotels", destinationHotels);
+ 
 
   /** calculating the days difference */
   const calculateDaysBetweenDates = (startDate, endDate) => {
-    // Convert the date strings into Date objects
+    
     const start = new Date(startDate);
     const end = new Date(endDate);
 
-    // Calculate the difference in time (milliseconds)
+  
     const timeDifference = end - start;
-
-    // Convert the difference to days
     const daysDifference = timeDifference / (1000 * 60 * 60 * 24);
-    // console.log(daysDifference, "diff");
+   
     return daysDifference;
   };
 
   const myDays = calculateDaysBetweenDates(startDate, endDate);
-  /** duration that is day and nights of the customized package */
   const days = parseInt(myDays);
   const nights = parseInt(myDays - 1);
 
