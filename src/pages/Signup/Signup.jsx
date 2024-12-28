@@ -2,7 +2,6 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../../features/auth/authActions";
 import ClipLoader from "react-spinners/ClipLoader";
-import ErrorMessage from "../../components/Error/Error";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 const Signup = () => {
@@ -11,12 +10,6 @@ const Signup = () => {
   const { register, handleSubmit } = useForm();
 
   const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   if (success) {
-  //     navigate("/login");
-  //   }
-  // }, [navigate, success]);
 
   const submitForm = async (info) => {
     dispatch(registerUser(info));

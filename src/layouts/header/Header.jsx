@@ -8,7 +8,6 @@ export default function Header() {
   const [state, setState] = useState(false);
   // const [isLogin, setIsLogin] = useState(false);
 
- 
   const navigation = [
     { title: "Home", path: "/" },
     { title: "International Packages", path: "/international_packages" },
@@ -31,7 +30,7 @@ export default function Header() {
   // to check for is userlogged in
   const { isUserLoggedIn } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  
+
   const handleLogout = () => {
     dispatch(logout());
   };
@@ -194,7 +193,8 @@ export default function Header() {
                     Sign Up
                   </Link>
                 </div>
-              ) : ( <ProfileMenu />
+              ) : (
+                <ProfileMenu />
               )}
             </div>
           </div>

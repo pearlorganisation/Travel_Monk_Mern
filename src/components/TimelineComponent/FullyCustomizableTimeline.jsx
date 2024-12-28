@@ -98,13 +98,13 @@ const TimelineItemFully = ({ activities, hotel, day, location, index }) => {
               ))}
           </ul>
 
-          {/* <span className="block text-2xl capitalize font-normal mt-2 text-green-500">
+          <span className="block text-2xl capitalize font-normal mt-2 text-green-500">
             Hotel
           </span>
 
           <span className="block text-2xl capitalize font-normal mt-2 text-red-500">
             {hotel.name}
-          </span> */}
+          </span>
 
           <span className="block text-2xl capitalize font-normal mt-2 text-green-500">
             Location
