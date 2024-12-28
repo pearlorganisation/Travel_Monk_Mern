@@ -222,6 +222,7 @@ const FullyCustomizeTrip = () => {
  
 
   /**----------------------------States--------------------------------- */
+   
 
   /** states for claculating the selected hotels price */
   const [hotelPrices, setHotelPrices] = useState([]); // Array to store prices for each day
@@ -288,9 +289,27 @@ const FullyCustomizeTrip = () => {
       );
     }
   }, [myDays]);
- 
 
-  /**--------------this will hold the data for creating the map------------------*/
+  /**---------------------map data-------------------------*/
+  const [mapData, setMapData] = useState(
+    Array.from({length: myDays},()=>({
+      latitude:"",
+      longitude:""
+    })) || []
+  ) 
+
+  useEffect(()=>{
+    if(myDays){
+      setMapData(
+        Array.from({length: myDays},()=>({
+          latitude:"",
+          longitude:""
+        })) || []
+      )
+    }
+  },[myDays])
+ 
+ console.log('---------------------mapData', mapData)
   
 
   const handleLocationChange = (index, event, selectedDate,destinationData) => {
@@ -312,6 +331,8 @@ const FullyCustomizeTrip = () => {
     );
 
     const coordinates = selectedLocation?.coordinates;
+    mapData[index].latitude = coordinates?.coordinates[0] ?? 0.0
+    mapData[index].longitude = coordinates?.coordinates[1] ?? 0.0 
     console.log('------------------Coordinates:', coordinates);
     console.log('---------------locationdata is', locationData)
    };
