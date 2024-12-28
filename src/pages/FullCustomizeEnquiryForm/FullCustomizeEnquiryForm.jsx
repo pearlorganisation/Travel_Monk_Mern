@@ -39,20 +39,35 @@ const FullCustomizeEnquiryForm = () => {
     startDate,
     endDate,
   } = location.state ?? {};
-  const newItinery = [...itinerary];
 
+  const newItinery = [...itinerary];
+  
+  /**-----------taking only the values that we will send to the backend------------*/
+  const userData = newItinery.map((item,index)=>{
+    const container ={}
+
+    container.selectedLocation = item.selectedLocation
+    container.selectedHotel = item.selectedHotel.hotelId
+    container.selectedActivities = item.selectedActivities
+    container.day= item.day
+    container.date = item.date
+
+    return container
+  })
   console.log(
     "----------------------------estimated iti is",
 
     newItinery
   );
 
+  console.log('---------------------the userdata is', userData)
+
   console.log("----------------------the duration", duration);
   const submitForm = (data) => {
     const formData = {
       ...data,
       user: userInfo?._id,
-      itinerary: itinerary,
+      itinerary: userData,
       estimatedPrice: Estimated_Price,
       selectedVehicle: vehicleId,
       destination: destinationId,
