@@ -13,6 +13,7 @@ import { getHotelsByDestination } from "../../features/hotel/hotelActions";
 import { getDestinationVehicle } from "../../features/DestinationVehicle/destinationVehicleaction";
 import moment from "moment";
 import CustomDropdownIndicator from "../../components/CustomDropdownIcon/CustomDropdownIcon";
+import { DestinationLocation } from "../../features/Location/locationAction";
 
 const tripData = [
   {
@@ -169,6 +170,7 @@ const FullyCustomizeTrip = () => {
   const { destinationVehicles } = useSelector(
     (state) => state.destination_vehicle
   );
+  const { destinationLocations } = useSelector((state)=>state.locations) // holds locations based on the destinations
 
   const { isUserLoggedIn } = useSelector((state) => state.auth);
 
@@ -181,27 +183,22 @@ const FullyCustomizeTrip = () => {
   const [selectedVehicleImage, setSelectedVehicleImage] = useState("");
 
   const { startDate, endDate, destination } = location.state ?? {};
-  // console.log("------------destination", startDate, endDate, destination);
-
-  // console.log("------------destination hotels", destinationHotels);
+ 
 
   /** calculating the days difference */
   const calculateDaysBetweenDates = (startDate, endDate) => {
-    // Convert the date strings into Date objects
+    
     const start = new Date(startDate);
     const end = new Date(endDate);
 
-    // Calculate the difference in time (milliseconds)
+  
     const timeDifference = end - start;
-
-    // Convert the difference to days
     const daysDifference = timeDifference / (1000 * 60 * 60 * 24);
-    // console.log(daysDifference, "diff");
+   
     return daysDifference;
   };
 
   const myDays = calculateDaysBetweenDates(startDate, endDate);
-  /** duration that is day and nights of the customized package */
   const days = parseInt(myDays);
   const nights = parseInt(myDays - 1);
 
@@ -220,10 +217,12 @@ const FullyCustomizeTrip = () => {
     return dates;
   };
 
-  const datesRange = getDatesInRange(startDate, endDate);
+  const datesRange = getDatesInRange(startDate, endDate); // getting the range of the date
   const datesObjects = datesRange.map((date) => ({ date }));
+ 
 
   /**----------------------------States--------------------------------- */
+   
 
   /** states for claculating the selected hotels price */
   const [hotelPrices, setHotelPrices] = useState([]); // Array to store prices for each day
@@ -264,6 +263,7 @@ const FullyCustomizeTrip = () => {
     dispatch(getHotelsByDestination(id));
     dispatch(getSingleDestination(id));
     dispatch(getDestinationVehicle(id));
+    dispatch(DestinationLocation(id)); // get the location based on the destination
   }, []);
 
   const [dayData, setDayData] = useState(
@@ -290,15 +290,54 @@ const FullyCustomizeTrip = () => {
     }
   }, [myDays]);
 
-  const handleLocationChange = (index, event, selectedDate) => {
-    const newDayData = [...dayData];
+  /**---------------------map data-------------------------*/
+  const [mapData, setMapData] = useState(
+    Array.from({length: myDays},()=>({
+      latitude:"",
+      longitude:""
+    })) || []
+  ) 
 
+  useEffect(()=>{
+    if(myDays){
+      setMapData(
+        Array.from({length: myDays},()=>({
+          latitude:"",
+          longitude:""
+        })) || []
+      )
+    }
+  },[myDays])
+ 
+ console.log('---------------------mapData', mapData)
+  
+
+  const handleLocationChange = (index, event, selectedDate,destinationData) => {
+    const newDayData = [...dayData];
+    /** find the selected location using the id */
+ 
     newDayData[index].selectedLocation = event.target.value;
     newDayData[index].date = selectedDate;
     newDayData[index].day = index + 1;
     setDayData(newDayData);
-  };
 
+    /**----------------this is where we will prepare our map Data---------------------*/
+    const locationData = destinationData.find((dest) => 
+      dest.location.some((loc) => loc.name === event.target.value)
+    );
+
+    const selectedLocation = locationData?.location.find(
+      (loc) => loc.name === event.target.value
+    );
+
+    const coordinates = selectedLocation?.coordinates;
+    mapData[index].latitude = coordinates?.coordinates[0] ?? 0.0
+    mapData[index].longitude = coordinates?.coordinates[1] ?? 0.0 
+    console.log('------------------Coordinates:', coordinates);
+    console.log('---------------locationdata is', locationData)
+   };
+
+ 
   /** to selecte hotels and calculate their price */
   const handleHotelChange = (index, event, hotels) => {
     const selectedHotelId = event.target.value;
@@ -534,7 +573,8 @@ const FullyCustomizeTrip = () => {
                         handleLocationChange(
                           index,
                           event,
-                          new Date(datesObjects[index]?.date).toISOString()
+                          new Date(datesObjects[index]?.date).toISOString(),
+                          destinationLocations
                         )
                       }
                       className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm 
@@ -542,12 +582,19 @@ const FullyCustomizeTrip = () => {
                       transition-all duration-200"
                     >
                       <option key="choose">Choose Location</option>
-                      {singleDestination?.data?.locations?.[
+                      {/* {singleDestination?.data?.locations?.[
                         index
                       ]?.location?.map((loc, index) => (
                         <option key={index} value={loc}>
                           {" "}
                           {loc}
+                        </option>
+                      ))} */}
+
+                      {destinationLocations?.[index]?.location?.map((loc, index)=>(
+                        <option key={index} value={loc.name}>
+                         {" "}
+                         {loc.name}
                         </option>
                       ))}
                     </select>
