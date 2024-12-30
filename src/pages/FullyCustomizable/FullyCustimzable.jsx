@@ -14,6 +14,7 @@ import { getDestinationVehicle } from "../../features/DestinationVehicle/destina
 import moment from "moment";
 import CustomDropdownIndicator from "../../components/CustomDropdownIcon/CustomDropdownIcon";
 import { DestinationLocation } from "../../features/Location/locationAction";
+import GoogleMapsEmbed from "../../components/MyEmbed/MyEmbed";
 
 const tripData = [
   {
@@ -734,6 +735,7 @@ const FullyCustomizeTrip = () => {
           </button>
         </div>
       </div>
+      <GoogleMapsEmbed  data={mapData}/>
     </div>
   );
 };

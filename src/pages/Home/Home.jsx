@@ -71,7 +71,7 @@ const Home = () => {
 
       <Roadmap />
 
-      <GoogleMapsEmbed />
+      {/* <GoogleMapsEmbed /> */}
 
       {/* <Map /> */}
       {/* <Upcoming />
