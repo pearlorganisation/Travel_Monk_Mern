@@ -13,7 +13,7 @@ import IndianDestinations from "../pages/IndianDestinations/IndianDestinations";
 import InternationalDestinations from "../pages/InternatonalDestinations/InternationalDestinations";
 import PackageDetails from "../pages/PackageDetails/PackageDetails";
 import CruizeListing from "../pages/CruizeListing/CruizeListing";
-import Hotels from "../pages/Hotels/Hotels";
+import Hotels from "../pages/Hotel/Hotels";
 import BusRides from "../pages/BusTrip/busRide";
 import Details from "../pages/BusDetails/Details";
 import { ForgotPassword } from "../components/ForgotPassword/ForgotPassword";
@@ -41,7 +41,7 @@ const Routes = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/hotels",
+        path: "/hotels-dest/:id",
         element: <Hotels />,
       },
       {
@@ -144,7 +144,7 @@ const Routes = createBrowserRouter([
       {
         path:"full-customize-package-enquiry",
         element:<FullCustomizeEnquiryForm />
-      }
+      } 
     ],
   },
 ]);
