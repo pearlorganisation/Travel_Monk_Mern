@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { getHotelsByDestination } from '../../features/hotel/hotelActions'
 import { baseURL } from '../../services/axiosInterceptor'
+import { useForm } from 'react-hook-form'
 
 const priceRanges =[
     {
@@ -33,8 +34,12 @@ const Hotels = () => {
     const location = useLocation()
     const { destinationHotels } = useSelector((state)=> state.hotels);
     const [selectedRange, setSelectedRange] = useState([])
-    const oldRangw =[...selectedRange]
-    console.log('----------------old range is', oldRangw)
+    const [searchQuery, setSearchQuery] = useState("")   
+    const { handleSubmit , register, watch} = useForm()
+
+    /** the search query is */
+    // const searchQuery = watch("searchQuery")
+    // console.log("---------------the search query is", searchQuery)
     useEffect(()=>{
         const searchParams = new URLSearchParams(location.search);
         const existingPriceRange = searchParams.getAll("priceRange")
@@ -50,11 +55,12 @@ const Hotels = () => {
             {
                 replace: true
             })
-                dispatch(getHotelsByDestination({id: id, priceRange:selectedRange}))
+                dispatch(getHotelsByDestination({id: id, priceRange:selectedRange, searchQuery: searchQuery}))
         }
                     
-    },[id, selectedRange, navigate, location, dispatch])
-    
+    },[id, selectedRange, navigate, location, dispatch,searchQuery])
+ 
+
 
     /**------------handle for selecting the price range---------------*/
     const handleSelectRange = (e)=>{
@@ -66,8 +72,14 @@ const Hotels = () => {
       }
       setSelectedRange(updatedRange)
     }
-console.log('-------teh selected range is', selectedRange)
-  return (
+   
+    /**----------------------Seaech query handle--------------------*/
+    const handleSearchQuery =(e)=>{
+        setSearchQuery(e.target.value)
+    }
+    console.log("search query is",searchQuery)
+
+    return (
       <div className="container mx-auto p-4">
           {/* Search Bar Section */}
           <div className="w-full mb-6">
@@ -87,11 +99,15 @@ console.log('-------teh selected range is', selectedRange)
                <div className="w-1/5 bg-gray-50 p-4 rounded-lg">
                    <h2 className="text-lg font-semibold">Filters</h2>
                    <div>
-                    <input
-                    type='text'
-                    placeholder='Search by Locality or hotel name'
-                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                     />
+                    
+                          <input
+                              type='text'
+                              onChange={e=>handleSearchQuery(e)}
+                               placeholder='Search by Locality or hotel name'
+                              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          />
+              
+                    
                    </div>
                    {/**------------------Filter by price range-------------------*/}
                    <div className='mt-4'>
