@@ -312,9 +312,9 @@ const handleHotelTraveller = (e)=>{
 console.log('----------------- the actionsresult value is', actionResult)
     if (actionResult?.data?.length > 0) {
       navigate(`hotels-dest/${actionResult.data[0]._id}`
-      //   , {
-      //   state: { startDate, endDate, destination },
-      // }
+        , {
+          state: { hotelStartDate, HotelEndDate, hotelTravellers },
+      }
     );
     } else {
       console.log("No results found for the selected destination.");

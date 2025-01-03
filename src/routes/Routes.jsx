@@ -29,6 +29,7 @@ import ChangePassword from "../pages/ChangePassword/ChangePassword";
 import ResetPassword from "../pages/ResetPassword/ResetPassword";
 import PrebuiltEnquiryForm from "../pages/PrebuiltEnquiryForm/PrebuiltEnquiryForm";
 import FullCustomizeEnquiryForm from "../pages/FullCustomizeEnquiryForm/FullCustomizeEnquiryForm";
+import SingleHotelDetails from "../pages/Hotel/SingleHotelDetails";
 
 const Routes = createBrowserRouter([
   {
@@ -144,6 +145,10 @@ const Routes = createBrowserRouter([
       {
         path:"full-customize-package-enquiry",
         element:<FullCustomizeEnquiryForm />
+      },
+      {
+        path:"/hotel-details/:id",
+        element:<SingleHotelDetails />
       } 
     ],
   },

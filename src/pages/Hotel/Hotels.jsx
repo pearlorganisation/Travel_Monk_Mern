@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { getHotelsByDestination } from '../../features/hotel/hotelActions'
 import { baseURL } from '../../services/axiosInterceptor'
 import { useForm } from 'react-hook-form'
@@ -36,6 +36,10 @@ const Hotels = () => {
     const [selectedRange, setSelectedRange] = useState([])
     const [searchQuery, setSearchQuery] = useState("")   
     const { handleSubmit , register, watch} = useForm()
+    
+    /** getting the passed state from the hero component */
+    const { hotelStartDate, HotelEndDate, hotelTravellers } = location.state ?? {}
+    console.log("the states from hero is ", hotelStartDate, HotelEndDate, hotelTravellers)
 
     /** the search query is */
     // const searchQuery = watch("searchQuery")
@@ -183,6 +187,12 @@ const Hotels = () => {
                                       </div>
                                   </div>
                               </div>
+                              <Link to={`/hotel-details/${hotel?._id}`} state={hotel}>
+                                  <div>
+                                      View Details
+                                  </div>
+                            </Link>
+                           
                           </div>
                       ))}
                   </div>
