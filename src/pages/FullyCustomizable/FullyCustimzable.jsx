@@ -261,7 +261,7 @@ const FullyCustomizeTrip = () => {
 
   useEffect(() => {
     dispatch(getAllActivitiesByDestination(id));
-    dispatch(getHotelsByDestination(id));
+    dispatch(getHotelsByDestination({id:id}));
     dispatch(getSingleDestination(id));
     dispatch(getDestinationVehicle(id));
     dispatch(DestinationLocation(id)); // get the location based on the destination
@@ -359,7 +359,7 @@ const FullyCustomizeTrip = () => {
     };
     setDayData(newDayData);
     /** calculating the selected hotel prices */
-    const startingPrice = selected_Hotel ? selected_Hotel.startingPrice : 0;
+    const startingPrice = selected_Hotel ? selected_Hotel.estimatedPrice : 0;
     const updatedHotelPrices = [...hotelPrices];
     updatedHotelPrices[index] = startingPrice;
     setHotelPrices(updatedHotelPrices);
