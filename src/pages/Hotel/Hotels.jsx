@@ -55,7 +55,7 @@ const Hotels = () => {
             {
                 replace: true
             })
-                dispatch(getHotelsByDestination({id: id, priceRange:selectedRange, searchQuery: searchQuery}))
+                dispatch(getHotelsByDestination({id: id, priceRange:selectedRange, search: searchQuery}))
         }
                     
     },[id, selectedRange, navigate, location, dispatch,searchQuery])

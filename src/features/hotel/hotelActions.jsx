@@ -41,7 +41,7 @@ export const getSingleHotel = createAsyncThunk(
 
 export const getHotelsByDestination = createAsyncThunk(
   "hotels/by-destination",
-  async ({id, priceRange, searchQuery}, thunkAPI) => {
+  async ({id, priceRange, search}, thunkAPI) => {
     try {
       const config = {
         headers: {
@@ -49,10 +49,15 @@ export const getHotelsByDestination = createAsyncThunk(
         },
       };
       const { data } = await axiosInstance.get(
-        `/api/v1/destinations/${id}/hotels?priceRange=${priceRange}?search=${searchQuery}`,
-        config
-      );
-      return data?.data;
+        `/api/v1/destinations/${id}/hotels`,{
+         params:{
+          priceRange,
+          search
+         },
+         config
+        }
+       );
+      return data.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
