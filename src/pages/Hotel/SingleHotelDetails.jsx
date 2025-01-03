@@ -8,17 +8,40 @@ const SingleHotelDetails = () => {
   const state = location.state ?? {}
   console.log('------------location state data', state)
   const {
-    name,
-    city,
-    state: hotelState,
-    country,
-    estimatedPrice,
-    amenities,
-    googleMapsUrl,
-    image,
-    createdAt
+    // name,
+    // city,
+    // state: hotelState,
+    // country,
+    // estimatedPrice,
+    // amenities,
+    // googleMapsUrl,
+    // image,
+    // createdAt,
+    hotel,
+    //this part is data from the home page with trip start data and end date
+    hotelStartDate,
+    hotelEndDate,
+    hotelTravellers
   } = state;
+const{
+  name,
+  city,
+  state: hotelState,
+  country,
+  estimatedPrice,
+  amenities,
+  googleMapsUrl,
+  image,
+  createdAt,
+} = hotel
 
+  /**-------------to calculate the estimated value of the hotel according to the hotel travellers-------------*/
+  let Estimated_Hotel_Value = (hotelTravellers, estimatedPrice)=>{
+    let travellersCount = parseInt(hotelTravellers)
+    let cost = estimatedPrice * Math.ceil(travellersCount/3)
+    return cost
+  }
+  let finalValue = Estimated_Hotel_Value(hotelTravellers,estimatedPrice) 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 min-h-screen">
       {/* Hotel Header */}
@@ -69,6 +92,10 @@ const SingleHotelDetails = () => {
             <div className="text-3xl font-bold text-blue-600 mb-2">
               ₹{estimatedPrice}
               <span className="text-sm font-normal text-gray-600">/night</span>
+            </div>
+            <div className="text-3xl font-bold text-blue-600 mb-2">
+              The Estimate Price for hotel will be around - ₹{finalValue} for
+              <span className="text-3xl pl-2 font-bold text-gray-600">{hotelTravellers} people</span>
             </div>
             <button className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition duration-200">
               Book Now

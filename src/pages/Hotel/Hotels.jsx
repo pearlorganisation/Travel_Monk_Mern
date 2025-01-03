@@ -42,8 +42,7 @@ const Hotels = () => {
     console.log("the states from hero is ", hotelStartDate, HotelEndDate, hotelTravellers)
 
     /** the search query is */
-    // const searchQuery = watch("searchQuery")
-    // console.log("---------------the search query is", searchQuery)
+ 
     useEffect(()=>{
         const searchParams = new URLSearchParams(location.search);
         const existingPriceRange = searchParams.getAll("priceRange")
@@ -60,7 +59,7 @@ const Hotels = () => {
             {
             })
                 dispatch(getHotelsByDestination({id: id, priceRange:selectedRange, search: searchQuery}))
-        }if(searchQuery.length>0){
+        }if(searchQuery.length>=0){
         dispatch(getHotelsByDestination({ id: id, priceRange: selectedRange, search: searchQuery }))
         }
  
@@ -187,7 +186,15 @@ const Hotels = () => {
                                       </div>
                                   </div>
                               </div>
-                              <Link to={`/hotel-details/${hotel?._id}`} state={hotel}>
+                              <Link 
+                                  to={`/hotel-details/${hotel?._id}`} 
+                                  state={{ 
+                                      hotel, 
+                                      hotelStartDate, 
+                                      HotelEndDate, 
+                                      hotelTravellers 
+                                  }}
+                              >
                                   <div>
                                       View Details
                                   </div>
@@ -199,7 +206,6 @@ const Hotels = () => {
               </div>
           </div>
       </div>
-
   )
 }
 
