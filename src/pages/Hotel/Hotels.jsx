@@ -43,8 +43,9 @@ const Hotels = () => {
     useEffect(()=>{
         const searchParams = new URLSearchParams(location.search);
         const existingPriceRange = searchParams.getAll("priceRange")
-
-        if(existingPriceRange.sort().join(",") !== selectedRange.sort().join(",")){
+        const searchquery = searchParams.get("search")
+        console.log("======= the search query is", typeof searchQuery)
+        if(existingPriceRange.sort().join(",") !== selectedRange.sort().join(",")  ){
             searchParams.delete("priceRange")
 
             selectedRange.forEach((range) => searchParams.append("priceRange", range))   
@@ -53,11 +54,12 @@ const Hotels = () => {
                 search: decodeURIComponent(searchParams.toString())
             },
             {
-                replace: true
             })
                 dispatch(getHotelsByDestination({id: id, priceRange:selectedRange, search: searchQuery}))
+        }if(searchQuery.length>0){
+        dispatch(getHotelsByDestination({ id: id, priceRange: selectedRange, search: searchQuery }))
         }
-                    
+ 
     },[id, selectedRange, navigate, location, dispatch,searchQuery])
  
 
