@@ -88,7 +88,7 @@ console.log('===========pdf data is', pdfData)
         <>
           <div className="w-full grid grid-cols-1  bg-white rounded-2xl shadow-2xl overflow-hidden">
             {/**temporary download section */}
-            <div>Download Pdf
+            <div className="flex justify-end">
               
               <FullyCustomizePdfDownload data={pdfData} />
             </div>

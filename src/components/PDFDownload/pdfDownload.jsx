@@ -75,7 +75,7 @@ const FullyCustomizePdfDownload = ({ data }) => (
                 }}
             >
                 {({ loading }) =>
-                    loading ? 'Preparing document...' : 'Download PDF'
+                    loading ? 'Preparing document...' : 'Download PDF of Trip'
                 }
             </PDFDownloadLink>
         </button>
