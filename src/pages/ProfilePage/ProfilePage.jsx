@@ -4,6 +4,7 @@ import { getAuthUserDetails } from "../../features/user/userActions";
 import { Link } from "react-router-dom";
 import { getUserBookings } from "../../features/previousBookings/previousBookingsActions";
 import moment from "moment";
+import PreviousBooking from "../../components/PDFDownload/bookingsPdfDownload";
 
 const ProfilePage = () => {
   const [showBookings, setShowBookings] = useState(false);
@@ -65,6 +66,9 @@ const ProfilePage = () => {
                       key={booking.bookingId}
                       className="bg-white p-4 rounded-md shadow-sm mt-3 border border-gray-200"
                     >
+                      <div>
+                        <PreviousBooking data={booking} />
+                      </div>
                       <div className="flex justify-between">
                         <div>
                           <p className="font-semibold text-gray-800">
