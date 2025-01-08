@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { submitContact } from "./contactAction";
+import { hotelContact, submitContact } from "./contactAction";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -31,13 +31,31 @@ const contactSlice = createSlice({
             .addCase(submitContact.fulfilled, (state) => {
                 state.loading = false;
                 state.success = true;
+                state.error = null
             })
             .addCase(submitContact.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
                 state.success = false;
                 toast("Failed to submit the form");
-            });
+            })
+            .addCase(hotelContact.pending,state=>{
+                state.loading = true
+                state.error = null;
+                state.success = false; 
+            })
+            .addCase(hotelContact.rejected,(state,action)=>{
+                state.loading = false;
+                state.error = action.payload;
+                state.success = false;
+                toast("Failed to submit the form");  
+            })
+            .addCase(hotelContact.fulfilled, (state,action)=>{
+                state.loading = false;
+                state.success = true;
+                state.error = null
+                toast("Contact Submitted Successfully")  
+            })
     },
 });
 

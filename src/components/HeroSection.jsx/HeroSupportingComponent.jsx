@@ -293,7 +293,7 @@ const [hotelTravellers, setHotelTravellers] = useState("");
   };
 /**----------------------------Handle for selecting the no of hotel travellers--------------------------------*/
 const handleHotelTraveller = (e)=>{
-  setHotelTravellers(e.target.value)
+  setHotelTravellers(parseInt(e.target.value))
 }
 
   // Debounced search handler

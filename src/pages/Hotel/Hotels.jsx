@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { getHotelsByDestination } from '../../features/hotel/hotelActions'
 import { baseURL } from '../../services/axiosInterceptor'
 import { useForm } from 'react-hook-form'
-
+import { searchDestination } from '../../features/destination/destinationActions'
+import moment from 'moment/moment'
 const priceRanges =[
     {
         id:1,
@@ -32,22 +33,57 @@ const Hotels = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const location = useLocation()
+    const [ searchParams, setSearchParams] = useSearchParams({})
+     
     const { destinationHotels } = useSelector((state)=> state.hotels);
     const [selectedRange, setSelectedRange] = useState([])
     const [searchQuery, setSearchQuery] = useState("")   
-    const { handleSubmit , register, watch} = useForm()
+    const { handleSubmit , register, watch, formState:{errors}} = useForm()
+    const [newDestinationId,setNewDestinationId] = useState(id)
+    console.log('-------------the new destination id', newDestinationId)
+     
+    let { hotelStartDate, HotelEndDate, hotelTravellers } = location.state ?? {}
     
-    /** getting the passed state from the hero component */
-    const { hotelStartDate, HotelEndDate, hotelTravellers } = location.state ?? {}
+    
+    /** hotels page details */
+    const hotelPageCheckInDate = watch("checkIn")
+    const hotelPageCheckOutDate = watch("checkOut")
+    const hotelPageTravellerCount = watch("travellers")
+    console.log("hotel page selected date and passengers", hotelPageCheckInDate, hotelPageCheckOutDate, hotelPageTravellerCount)
+    if(hotelPageCheckInDate && hotelPageCheckOutDate && hotelPageTravellerCount){
+        hotelStartDate = hotelPageCheckInDate
+        HotelEndDate = hotelPageCheckOutDate
+        hotelTravellers = parseInt(hotelPageTravellerCount)
+    }
+
     console.log("the states from hero is ", hotelStartDate, HotelEndDate, hotelTravellers)
 
-    /** the search query is */
- 
+
+    // function convertDatesToLocalDate(startDateString, endDateString) {
+    //     const startDate = moment(startDateString, 'ddd MMM DD YYYY HH:mm:ss Z');
+    //     const endDate = moment(endDateString, 'ddd MMM DD YYYY HH:mm:ss Z');
+
+
+    //     const startDateLocal = startDate.format('YYYY-MM-DD'); // Or any other desired format
+    //     const endDateLocal = endDate.format('YYYY-MM-DD');
+
+
+    //     return { startDateLocal, endDateLocal };
+    // }
+
+    // const { startDateLocal, endDateLocal } = convertDatesToLocalDate(hotelStartDate, HotelEndDate);
+
+    // console.log("Start Date (Local):", startDateLocal);
+    // console.log("End Date (Local):", endDateLocal);
+    
+    /** check in date  and check out date  and no of travellers in this page*/
+   
+
+
     useEffect(()=>{
         const searchParams = new URLSearchParams(location.search);
         const existingPriceRange = searchParams.getAll("priceRange")
-        const searchquery = searchParams.get("search")
-        console.log("======= the search query is", typeof searchQuery)
+        // console.log("======= the search query is", typeof searchQuery)
         if(existingPriceRange.sort().join(",") !== selectedRange.sort().join(",")  ){
             searchParams.delete("priceRange")
 
@@ -58,19 +94,19 @@ const Hotels = () => {
             },
             {
             })
-                dispatch(getHotelsByDestination({id: id, priceRange:selectedRange, search: searchQuery}))
+                dispatch(getHotelsByDestination({id: newDestinationId, priceRange:selectedRange, search: searchQuery}))
         }if(searchQuery.length>=0){
-        dispatch(getHotelsByDestination({ id: id, priceRange: selectedRange, search: searchQuery }))
+        dispatch(getHotelsByDestination({ id: newDestinationId, priceRange: selectedRange, search: searchQuery }))
         }
  
-    },[id, selectedRange, navigate, location, dispatch,searchQuery])
+    },[selectedRange, navigate, location, dispatch,searchQuery, newDestinationId])
  
 
 
     /**------------handle for selecting the price range---------------*/
     const handleSelectRange = (e)=>{
       let updatedRange = [...selectedRange];
-      if(updatedRange .includes(e.target.value)){
+      if(updatedRange.includes(e.target.value)){
         updatedRange = updatedRange.filter((rg)=> rg !== e.target.value)
       }else{
         updatedRange.push(e.target.value)
@@ -82,39 +118,99 @@ const Hotels = () => {
     const handleSearchQuery =(e)=>{
         setSearchQuery(e.target.value)
     }
-    console.log("search query is",searchQuery)
+    // console.log("search query is",searchQuery)
 
+    /*-------------------------for submitting the form to get new hotels based on the new location------------------------- */
+    
+    console.log('----------the current location is', location) 
+    console.log('------------the entered value is', watch("hotelDestination"))
+    const submitForm = async(data)=>{
+        const { hotelDestination } = data;
+       try {
+        const actionResult = await dispatch(
+           searchDestination(hotelDestination)
+        ).unwrap();
+        if(actionResult?.data?.length > 0){
+           setNewDestinationId(actionResult.data[0]._id)
+            
+         }else{
+            console.log("No results found for the selected destination.");
+        }
+       } catch (error) {
+           console.error("Failed to fetch destination data:", error);
+
+       }
+    }
     return (
       <div className="container mx-auto p-4">
-          {/* Search Bar Section */}
-          <div className="w-full mb-6">
-              <div className="flex gap-2">
-                  <input
-                      type="text"
-                      placeholder="Search hotels..."
-                      className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                  <button className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-                      Search
-                  </button>
-              </div>
-          </div>
+        {/* Search Bar Section */}
+                    <form onSubmit={handleSubmit(submitForm)}>
+                        <div className="w-full mb-6">
+                            <div className="flex flex-col md:flex-row gap-2 items-center">
+                                <div className='flex flex-col w-full'>
+                                    <label htmlFor="hotelDestination" className="text-gray-600 mb-1">Type Destination</label>
+                                    <input
+                                        id='hotelDestination'
+                                        type="text"
+                                        placeholder="Search hotels By Destination..."
+                                        {...register("hotelDestination")}
+                                        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    />
+                                </div>
+                                
+                                <div className="flex flex-col w-full">
+                                    <label htmlFor="checkIn" className="text-gray-600 mb-1">Check In</label>
+                                    <input
+                                        type="date"
+                                        id="checkIn"
+                                        {...register("checkIn")}
+                                        className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    />
+                                </div>
+                                <div className="flex flex-col w-full">
+                                    <label htmlFor="checkOut" className="text-gray-600 mb-1">Check Out</label>
+                                    <input
+                                        type="date"
+                                        id="checkOut"
+                                        {...register("checkOut")}
+                                        className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    />
+                                </div>
+                        <div className="flex flex-col w-full">
+                            <label htmlFor="travellers" className="text-gray-600 mb-1">No Of Travellers</label>
+                            <input
+                                type="text"
+                                id="travellers"
+                                {...register("travellers")}
+                                className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                        </div>
+                                <button
+                                    type="submit"
+                                    className="px-6 py-2 mt-6 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                                >
+                                    Search
+                                </button>
+                            </div>
+                        </div>
+                    </form>
 
-           <div className="flex gap-4">
-               <div className="w-1/5 bg-gray-50 p-4 rounded-lg">
-                   <h2 className="text-lg font-semibold">Filters</h2>
-                   <div>
-                    
-                          <input
-                              type='text'
-                              onChange={e=>handleSearchQuery(e)}
-                               placeholder='Search by Locality or hotel name'
-                              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                          />
-              
-                    
-                   </div>
-                   {/**------------------Filter by price range-------------------*/}
+
+                   <div className="flex flex-col md:flex-row gap-4">
+                       <div className="w-full md:w-1/5 bg-gray-50 p-4 rounded-lg">
+                           <h2 className="text-lg font-semibold">Filters</h2>
+                           <div>
+                            
+                                  <input
+                                      type='text'
+                                      onChange={e=>handleSearchQuery(e)}
+                                       placeholder='Search by Locality or hotel name'
+                                      className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                  />
+                      
+                            
+                           </div>
+                           {/**------------------Filter by price range-------------------*/}
                    <div className='mt-4'>
                      <h1>Filter by Estimate Price</h1>
                         <div>
@@ -186,19 +282,18 @@ const Hotels = () => {
                                       </div>
                                   </div>
                               </div>
-                              <Link 
-                                  to={`/hotel-details/${hotel?._id}`} 
-                                  state={{ 
-                                      hotel, 
-                                      hotelStartDate, 
-                                      HotelEndDate, 
-                                      hotelTravellers 
+                              <Link
+                                  to={`/hotel-details/${hotel?._id}`}
+                                  state={{
+                                      hotel,
+                                      hotelStartDate,
+                                      HotelEndDate,
+                                      hotelTravellers
                                   }}
+                                  className="block w-full text-center py-3 px-6 rounded-lg font-semibold text-white bg-indigo-600 hover:bg-indigo-700 transition-colors duration-200 shadow-sm hover:shadow-md"
                               >
-                                  <div>
-                                      View Details
-                                  </div>
-                            </Link>
+                                  View Details
+                              </Link>
                            
                           </div>
                       ))}

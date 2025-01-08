@@ -69,7 +69,7 @@ const Home = () => {
 
       {/* <EmbedGoogleMap /> */}
 
-      <Roadmap />
+      {/* <Roadmap /> */}
 
       {/* <GoogleMapsEmbed /> */}
 

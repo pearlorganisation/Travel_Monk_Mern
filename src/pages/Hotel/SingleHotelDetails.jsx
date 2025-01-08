@@ -1,24 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
 import { baseURL } from '../../services/axiosInterceptor'
+import HotelContactForm from '../Forms/HotelContactForm'
 
 const SingleHotelDetails = () => {
   const { id } = useParams()
   const location = useLocation()
+  /** states for opening the modal of form */
+  const [isOpen, setIsOpen] = useState(false);
+  const handleOpen = (e)=>{
+    // e.stopPropagation()
+    setIsOpen(!isOpen)
+  }
+
   const state = location.state ?? {}
   console.log('------------location state data', state)
   const {
-    // name,
-    // city,
-    // state: hotelState,
-    // country,
-    // estimatedPrice,
-    // amenities,
-    // googleMapsUrl,
-    // image,
-    // createdAt,
     hotel,
-    //this part is data from the home page with trip start data and end date
     hotelStartDate,
     hotelEndDate,
     hotelTravellers
@@ -97,8 +95,8 @@ const{
               The Estimate Price for hotel will be around - ₹{finalValue} for
               <span className="text-3xl pl-2 font-bold text-gray-600">{hotelTravellers} people</span>
             </div>
-            <button className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition duration-200">
-              Book Now
+            <button onClick={()=>handleOpen()} className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition duration-200">
+                Book Through Our Travel Advisor           
             </button>
           </div>
 
@@ -132,6 +130,7 @@ const{
           </div>
         </div>
       </div>
+      {isOpen && <HotelContactForm data={location.state} setFormOpen={setIsOpen} />}
     </div>
   )
 }

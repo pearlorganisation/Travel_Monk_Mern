@@ -66,7 +66,7 @@ const ProfilePage = () => {
                       key={booking.bookingId}
                       className="bg-white p-4 rounded-md shadow-sm mt-3 border border-gray-200"
                     >
-                      <div>
+                      <div className="flex justify-end mb-2">
                         <PreviousBooking data={booking} />
                       </div>
                       <div className="flex justify-between">
