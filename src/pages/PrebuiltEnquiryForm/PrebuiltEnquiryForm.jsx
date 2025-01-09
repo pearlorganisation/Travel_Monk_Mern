@@ -56,9 +56,9 @@ const PrebuiltEnquiryForm = () => {
         <>
           <div className="w-full grid grid-cols-1  bg-white rounded-2xl shadow-2xl overflow-hidden">
             {/* Information Section */}
-            <div>
+            {/* <div>
               <Customize_trip_pdf data={pdfData} />
-            </div>
+            </div> */}
             <div
               id="info"
               className="bg-[#007E8F] text-white  flex flex-col justify-center items-start py-6"
