@@ -20,7 +20,18 @@ const ProfilePage = () => {
   const { fullyCustomizedEnquiries } = useSelector((state) => state.fullyCustomizePackage)
   const { prebuiltEnquiries } = useSelector((state) => state.prebuiltPackage)
   const { userBookings } = useSelector((state) => state.previousBookings);
-
+ 
+  let imageName = []
+  let lastProfileName
+  if(userInfo){
+   imageName.push(userInfo?.name ?? "No Name Available")
+    console.log("the image name", imageName)
+    let newImageName = imageName[0].split(' ')
+    console.log(newImageName)
+    lastProfileName = newImageName[0][0] + newImageName[1][0];
+  }
+   
+  console.log("last profile name is", lastProfileName)
   useEffect(() => {
     dispatch(getAuthUserDetails());
   }, []);
@@ -31,16 +42,24 @@ const ProfilePage = () => {
     dispatch(getMyFullyCustomizedEnquiries())
   }, []);
 
+  // if (showPrebuiltEnquiries) {
+  //   dispatch(getMyPrebuiltEnquiry())
+  // }; if (showFullyCustomizedEnquiries) {
+  //   dispatch(getMyFullyCustomizedEnquiries())
+  // };
   return (
     <div className="bg-gray-50 min-h-screen">
       <div className="container mx-auto p-8 md:p-12">
         <div className="bg-white p-6 rounded-lg shadow-md">
           <div className="flex items-center mb-6">
-            <img
-              src={userInfo?.profilePicture}
-              alt="Profile"
+            {/* <img
+              // src={userInfo?.profilePicture}
+              alt={`${lastProfileName}`}
               className="rounded-full h-24 w-24 mr-6 border-4 border-white shadow-lg"
-            />
+            /> */}
+            <div className="rounded-full h-24 w-24 mr-6 border-4  bg-gray-100border-white shadow-lg flex justify-center items-center ">
+              <h1 className="text-3xl">{lastProfileName}</h1>
+            </div>
             <div>
               <h2 className="text-3xl font-semibold text-gray-800">
                 {userInfo?.name}
