@@ -12,6 +12,7 @@ const hotelState = {
   hotels: [],
   singleHotel: {},
   destinationHotels: {},
+  paginate:{},
   message: "",
 };
 
@@ -66,7 +67,8 @@ export const hotelsSlice = createSlice({
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.destinationHotels = action.payload;
+        state.destinationHotels = action.payload.data;
+        state.paginate = action.payload.pagination
       });
   },
 });

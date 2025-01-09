@@ -34,9 +34,9 @@ const Home = () => {
 
   console.log(popular?.data, "popular destination names");
 
-  useEffect(() => {
-    dispatch(getAuthUserDetails());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getAuthUserDetails());
+  // }, []);
 
   useEffect(() => {
     dispatch(getPopularDestination());
@@ -69,7 +69,9 @@ const Home = () => {
 
       {/* <EmbedGoogleMap /> */}
 
-      <GoogleMapsEmbed />
+      {/* <Roadmap /> */}
+
+      {/* <GoogleMapsEmbed /> */}
 
       {/* <Map /> */}
       {/* <Upcoming />
