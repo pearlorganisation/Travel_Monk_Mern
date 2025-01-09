@@ -6,6 +6,7 @@ import { baseURL } from '../../services/axiosInterceptor'
 import { useForm } from 'react-hook-form'
 import { searchDestination } from '../../features/destination/destinationActions'
 import moment from 'moment/moment'
+import Pagination from '../../components/Pagination/Pagination'
 const priceRanges =[
     {
         id:1,
@@ -35,16 +36,28 @@ const Hotels = () => {
     const location = useLocation()
     const [ searchParams, setSearchParams] = useSearchParams({})
      
-    const { destinationHotels } = useSelector((state)=> state.hotels);
+    const { destinationHotels, paginate } = useSelector((state)=> state.hotels);
     const [selectedRange, setSelectedRange] = useState([])
     const [searchQuery, setSearchQuery] = useState("")   
     const { handleSubmit , register, watch, formState:{errors}} = useForm()
     const [newDestinationId,setNewDestinationId] = useState(id)
     console.log('-------------the new destination id', newDestinationId)
-     
+    const [currentPage, setCurrentPage] = useState(1)
+
     let { hotelStartDate, HotelEndDate, hotelTravellers } = location.state ?? {}
     
-    
+    /**Pagination Logic */
+    const totalPages = Math.ceil(paginate?.total / paginate?.limit)
+    console.log('------------total pages', totalPages)
+
+    const handleChangePage = (page) => {
+        if (page > 0 && page <= totalPages) {
+            setCurrentPage(page)
+        }
+    }
+
+
+
     /** hotels page details */
     const hotelPageCheckInDate = watch("checkIn")
     const hotelPageCheckOutDate = watch("checkOut")
@@ -57,28 +70,6 @@ const Hotels = () => {
     }
 
     console.log("the states from hero is ", hotelStartDate, HotelEndDate, hotelTravellers)
-
-
-    // function convertDatesToLocalDate(startDateString, endDateString) {
-    //     const startDate = moment(startDateString, 'ddd MMM DD YYYY HH:mm:ss Z');
-    //     const endDate = moment(endDateString, 'ddd MMM DD YYYY HH:mm:ss Z');
-
-
-    //     const startDateLocal = startDate.format('YYYY-MM-DD'); // Or any other desired format
-    //     const endDateLocal = endDate.format('YYYY-MM-DD');
-
-
-    //     return { startDateLocal, endDateLocal };
-    // }
-
-    // const { startDateLocal, endDateLocal } = convertDatesToLocalDate(hotelStartDate, HotelEndDate);
-
-    // console.log("Start Date (Local):", startDateLocal);
-    // console.log("End Date (Local):", endDateLocal);
-    
-    /** check in date  and check out date  and no of travellers in this page*/
-   
-
 
     useEffect(()=>{
         const searchParams = new URLSearchParams(location.search);
@@ -94,12 +85,12 @@ const Hotels = () => {
             },
             {
             })
-                dispatch(getHotelsByDestination({id: newDestinationId, priceRange:selectedRange, search: searchQuery}))
+            dispatch(getHotelsByDestination({ id: newDestinationId, priceRange: selectedRange, search: searchQuery, page: currentPage }))
         }if(searchQuery.length>=0){
-        dispatch(getHotelsByDestination({ id: newDestinationId, priceRange: selectedRange, search: searchQuery }))
+            dispatch(getHotelsByDestination({ id: newDestinationId, priceRange: selectedRange, search: searchQuery, page: currentPage }))
         }
  
-    },[selectedRange, navigate, location, dispatch,searchQuery, newDestinationId])
+    },[selectedRange, navigate, location, dispatch,searchQuery, newDestinationId, currentPage])
  
 
 
@@ -300,6 +291,8 @@ const Hotels = () => {
                   </div>
               </div>
           </div>
+            <Pagination paginate={paginate} currentPage={currentPage} totalPages={totalPages} handlePageClick={handleChangePage} />
+
       </div>
   )
 }

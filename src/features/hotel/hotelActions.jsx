@@ -41,7 +41,7 @@ export const getSingleHotel = createAsyncThunk(
 
 export const getHotelsByDestination = createAsyncThunk(
   "hotels/by-destination",
-  async ({id, priceRange, search}, thunkAPI) => {
+  async ({id, priceRange, search , page}, thunkAPI) => {
     try {
       const config = {
         headers: {
@@ -52,12 +52,13 @@ export const getHotelsByDestination = createAsyncThunk(
         `/api/v1/destinations/${id}/hotels`,{
          params:{
           priceRange,
-          search
+          search,
+          page
          },
          config
         }
        );
-      return data.data;
+      return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
