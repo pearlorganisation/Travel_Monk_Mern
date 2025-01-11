@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { ClipLoader } from "react-spinners";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { userLogin } from "../../features/auth/authActions";
 import ErrorMessage from "../../components/Error/Error";
 
@@ -17,9 +17,9 @@ const Login = () => {
   const submitForm = (data) => {
     dispatch(userLogin(data));
   };
-  
-  const { isUserLoggedIn } = useSelector((state)=>state.auth)
-  if(isUserLoggedIn){
+
+  const { isUserLoggedIn } = useSelector((state) => state.auth);
+  if (isUserLoggedIn) {
     navigate("/");
   }
 
@@ -133,23 +133,19 @@ const Login = () => {
                       Forgot Password
                     </a>
                   </div>
-
-                  <p className="mt-6 text-xs text-gray-600 text-center">
-                    I agree to abide by Travel Monks
-                    <a
-                      href="#"
-                      className="border-b border-gray-500 border-dotted"
+                  <div className="flex items-center gap-2 text-sm">
+                    <span className="text-gray-600">
+                      Don’t have an account yet?
+                    </span>
+                    <Link
+                      to="/signup"
+                      className="inline-flex items-center gap-1 font-medium"
                     >
-                      Terms of Service
-                    </a>
-                    and its
-                    <a
-                      href="#"
-                      className="border-b border-gray-500 border-dotted"
-                    >
-                      Privacy Policy
-                    </a>
-                  </p>
+                      <span className="font-bold text-[#007E8F] hover:text-[#439ca8]">
+                        Sign up
+                      </span>
+                    </Link>
+                  </div>
                 </div>
               </form>
             </div>
