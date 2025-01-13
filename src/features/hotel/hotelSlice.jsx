@@ -12,6 +12,7 @@ const hotelState = {
   hotels: [],
   singleHotel: {},
   destinationHotels: {},
+  paginate:{},
   message: "",
 };
 
@@ -55,19 +56,19 @@ export const hotelsSlice = createSlice({
       .addCase(getHotelsByDestination.pending, (state) => {
         state.isLoading = true;
       })
-
-      .addCase(getHotelsByDestination.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = false;
-        state.isError = true;
-        state.destinationHotels = {};
-        state.message = action.error;
+      .addCase(getHotelsByDestination.rejected,(state,action)=>{
+        state.isLoading = false
+        state.isSuccess = false
+        state.isError = true
+        state.destinationHotels={}
+        state.message = action.error
       })
       .addCase(getHotelsByDestination.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.destinationHotels = action.payload;
+        state.destinationHotels = action.payload.data;
+        state.paginate = action.payload.pagination
       });
   },
 });

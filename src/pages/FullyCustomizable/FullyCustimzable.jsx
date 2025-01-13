@@ -13,6 +13,8 @@ import { getHotelsByDestination } from "../../features/hotel/hotelActions";
 import { getDestinationVehicle } from "../../features/DestinationVehicle/destinationVehicleaction";
 import moment from "moment";
 import CustomDropdownIndicator from "../../components/CustomDropdownIcon/CustomDropdownIcon";
+import { DestinationLocation } from "../../features/Location/locationAction";
+import GoogleMapsEmbed from "../../components/MyEmbed/MyEmbed";
 
 const tripData = [
   {
@@ -169,6 +171,7 @@ const FullyCustomizeTrip = () => {
   const { destinationVehicles } = useSelector(
     (state) => state.destination_vehicle
   );
+  const { destinationLocations } = useSelector((state)=>state.locations) // holds locations based on the destinations
 
   const { isUserLoggedIn } = useSelector((state) => state.auth);
 
@@ -181,27 +184,22 @@ const FullyCustomizeTrip = () => {
   const [selectedVehicleImage, setSelectedVehicleImage] = useState("");
 
   const { startDate, endDate, destination } = location.state ?? {};
-  // console.log("------------destination", startDate, endDate, destination);
-
-  // console.log("------------destination hotels", destinationHotels);
+ 
 
   /** calculating the days difference */
   const calculateDaysBetweenDates = (startDate, endDate) => {
-    // Convert the date strings into Date objects
+    
     const start = new Date(startDate);
     const end = new Date(endDate);
 
-    // Calculate the difference in time (milliseconds)
+  
     const timeDifference = end - start;
-
-    // Convert the difference to days
     const daysDifference = timeDifference / (1000 * 60 * 60 * 24);
-    // console.log(daysDifference, "diff");
+   
     return daysDifference;
   };
 
   const myDays = calculateDaysBetweenDates(startDate, endDate);
-  /** duration that is day and nights of the customized package */
   const days = parseInt(myDays);
   const nights = parseInt(myDays - 1);
 
@@ -220,10 +218,12 @@ const FullyCustomizeTrip = () => {
     return dates;
   };
 
-  const datesRange = getDatesInRange(startDate, endDate);
+  const datesRange = getDatesInRange(startDate, endDate); // getting the range of the date
   const datesObjects = datesRange.map((date) => ({ date }));
+ 
 
   /**----------------------------States--------------------------------- */
+   
 
   /** states for claculating the selected hotels price */
   const [hotelPrices, setHotelPrices] = useState([]); // Array to store prices for each day
@@ -261,9 +261,10 @@ const FullyCustomizeTrip = () => {
 
   useEffect(() => {
     dispatch(getAllActivitiesByDestination(id));
-    dispatch(getHotelsByDestination(id));
+    dispatch(getHotelsByDestination({id:id}));
     dispatch(getSingleDestination(id));
     dispatch(getDestinationVehicle(id));
+    dispatch(DestinationLocation(id)); // get the location based on the destination
   }, []);
 
   const [dayData, setDayData] = useState(
@@ -290,15 +291,54 @@ const FullyCustomizeTrip = () => {
     }
   }, [myDays]);
 
-  const handleLocationChange = (index, event, selectedDate) => {
-    const newDayData = [...dayData];
+  /**---------------------map data-------------------------*/
+  const [mapData, setMapData] = useState(
+    Array.from({length: myDays},()=>({
+      latitude:"",
+      longitude:""
+    })) || []
+  ) 
 
+  useEffect(()=>{
+    if(myDays){
+      setMapData(
+        Array.from({length: myDays},()=>({
+          latitude:"",
+          longitude:""
+        })) || []
+      )
+    }
+  },[myDays])
+ 
+ console.log('---------------------mapData', mapData)
+  
+
+  const handleLocationChange = (index, event, selectedDate,destinationData) => {
+    const newDayData = [...dayData];
+    /** find the selected location using the id */
+ 
     newDayData[index].selectedLocation = event.target.value;
     newDayData[index].date = selectedDate;
     newDayData[index].day = index + 1;
     setDayData(newDayData);
-  };
 
+    /**----------------this is where we will prepare our map Data---------------------*/
+    const locationData = destinationData.find((dest) => 
+      dest.location.some((loc) => loc.name === event.target.value)
+    );
+
+    const selectedLocation = locationData?.location.find(
+      (loc) => loc.name === event.target.value
+    );
+
+    const coordinates = selectedLocation?.coordinates;
+    mapData[index].latitude = coordinates?.coordinates[0] ?? 0.0
+    mapData[index].longitude = coordinates?.coordinates[1] ?? 0.0 
+    console.log('------------------Coordinates:', coordinates);
+    console.log('---------------locationdata is', locationData)
+   };
+
+ 
   /** to selecte hotels and calculate their price */
   const handleHotelChange = (index, event, hotels) => {
     const selectedHotelId = event.target.value;
@@ -311,15 +351,15 @@ const FullyCustomizeTrip = () => {
     const newDayData = [...dayData];
 
     /** setting the hotel of current index */
-    newDayData[index].selectedHotel = event.target.value;
+    // newDayData[index].selectedHotel = event.target.value;
 
-    // newDayData[index].selectedHotel = {
-    //   name: selected_Hotel.name,
-    //   hotelId: selected_Hotel._id,
-    // };
+    newDayData[index].selectedHotel = {
+      name: selected_Hotel.name,
+      hotelId: selected_Hotel._id,
+    };
     setDayData(newDayData);
     /** calculating the selected hotel prices */
-    const startingPrice = selected_Hotel ? selected_Hotel.startingPrice : 0;
+    const startingPrice = selected_Hotel ? selected_Hotel.estimatedPrice : 0;
     const updatedHotelPrices = [...hotelPrices];
     updatedHotelPrices[index] = startingPrice;
     setHotelPrices(updatedHotelPrices);
@@ -350,13 +390,10 @@ const FullyCustomizeTrip = () => {
 
   /**------------------Handle for Enquiry-------------------------*/
   const handleEnquiry = () => {
-    const invalidEntry = dayData.find(
-      (day) =>
-        !day.selectedLocation ||
-        !day.selectedHotel ||
-        Object.keys(day.selectedHotel).length === 0 ||
-        !Array.isArray(day.selectedActivities) ||
-        day.selectedActivities.length === 0
+    const invalidEntry = dayData.find(day =>
+      !day.selectedLocation ||  
+      !day.selectedHotel || Object.keys(day.selectedHotel).length === 0 || 
+      !Array.isArray(day.selectedActivities) || day.selectedActivities.length === 0  
     );
 
     if (invalidEntry) {
@@ -390,7 +427,7 @@ const FullyCustomizeTrip = () => {
         endDate,
       },
     });
-  };
+  } 
   return (
     <div className="bg-gray-200 relative">
       <div className="px-24 mt-4">
@@ -450,58 +487,11 @@ const FullyCustomizeTrip = () => {
                   className="p-4 border rounded-lg shadow-md cursor-pointer bg-purple-300 h-56"
                 >
                   <p className="text-lg font-semibold">
-                    Name: {vehicle?.vehicleName}
+                    Vehicle: {vehicle?.vehicleName}
                   </p>
-                  <p className="text-gray-600">
+                  {/* <p className="text-gray-600">
                     Price: {vehicle?.pricePerDay} /- per day
-                  </p>
-
-                  <img
-                    src={vehicle?.images[0]?.secure_url}
-                    className="w-28 h-20 mt-8"
-                  />
-                </div>
-              ))}
-            </div>
-
-            {/* Close button */}
-            <button
-              onClick={closeModal}
-              className="mt-4 px-4 py-2 bg-red-500 text-white font-bold rounded hover:bg-red-600"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
-
-      {isModalOpen && (
-        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-1/2">
-            <h2 className="text-xl font-bold mb-4">Select a Vehicle</h2>
-
-            {/* Vehicle List */}
-            <div className=" flex flex-row gap-6">
-              {destinationVehicles?.map((vehicle) => (
-                <div
-                  key={vehicle?._id}
-                  onClick={() => {
-                    handleSelectVehicle(
-                      vehicle?.vehicleName,
-                      vehicle?.pricePerDay,
-                      vehicle?._id,
-                      vehicle?.images[0]?.secure_url
-                    );
-                    closeModal(); // Close the modal after selection
-                  }}
-                  className="p-4 border rounded-lg shadow-md cursor-pointer bg-purple-300 h-56"
-                >
-                  <p className="text-lg font-semibold">
-                    Name: {vehicle?.vehicleName}
-                  </p>
-                  <p className="text-gray-600">
-                    Price: {vehicle?.pricePerDay} /- per day
-                  </p>
+                  </p> */}
 
                   <img
                     src={vehicle?.images[0]?.secure_url}
@@ -584,7 +574,8 @@ const FullyCustomizeTrip = () => {
                         handleLocationChange(
                           index,
                           event,
-                          new Date(datesObjects[index]?.date).toISOString()
+                          new Date(datesObjects[index]?.date).toISOString(),
+                          destinationLocations
                         )
                       }
                       className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm 
@@ -592,12 +583,19 @@ const FullyCustomizeTrip = () => {
                       transition-all duration-200"
                     >
                       <option key="choose">Choose Location</option>
-                      {singleDestination?.data?.locations?.[
+                      {/* {singleDestination?.data?.locations?.[
                         index
                       ]?.location?.map((loc, index) => (
                         <option key={index} value={loc}>
                           {" "}
                           {loc}
+                        </option>
+                      ))} */}
+
+                      {destinationLocations?.[index]?.location?.map((loc, index)=>(
+                        <option key={index} value={loc.name}>
+                         {" "}
+                         {loc.name}
                         </option>
                       ))}
                     </select>
@@ -610,7 +608,7 @@ const FullyCustomizeTrip = () => {
                     </label>
                     <select
                       // value={dayData[index]?.selectedHotel?.hotelId}
-                      value={dayData[index]?.selectedHotel}
+                      value={dayData[index]?.selectedHotel[0]}
                       onChange={(event) =>
                         handleHotelChange(index, event, destinationHotels)
                       }
@@ -737,174 +735,9 @@ const FullyCustomizeTrip = () => {
           </button>
         </div>
       </div>
+      <GoogleMapsEmbed  data={mapData}/>
     </div>
   );
 };
 
 export default FullyCustomizeTrip;
-
-/**main ui of day data selection */
-const mainUi = () => {
-  return (
-    <div className="grid grid-cols-1 mt-4">
-      <div className="">
-        {dayData?.map((day, index) => {
-          return (
-            <div className="flex flex-row gap-2 items-center justify-start px-8 mt-2">
-              <svg
-                width="24"
-                height="25"
-                viewBox="0 0 24 25"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <rect x="2" y="6.5" width="20" height="3" fill="black" />
-                <rect x="2" y="15.5" width="20" height="3" fill="black" />
-                <rect x="2" y="6.5" width="20" height="3" fill="black" />
-                <rect x="2" y="15.5" width="20" height="3" fill="black" />
-              </svg>
-
-              <div className="w-6 h-6 bg-red-500 rounded-full">
-                <h1 className="text-white px-2">{index + 1}</h1>
-              </div>
-
-              <div className="bg-white border border-gray-200 rounded-md p-2 flex flex-row">
-                <div className="grid grid-cols-2  w-full">
-                  <div className="flex flex-row items-center gap-8">
-                    <svg
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <g clip-path="url(#clip0_1779_681)">
-                        <path
-                          d="M18.3 5.70997C17.91 5.31997 17.28 5.31997 16.89 5.70997L12 10.59L7.10997 5.69997C6.71997 5.30997 6.08997 5.30997 5.69997 5.69997C5.30997 6.08997 5.30997 6.71997 5.69997 7.10997L10.59 12L5.69997 16.89C5.30997 17.28 5.30997 17.91 5.69997 18.3C6.08997 18.69 6.71997 18.69 7.10997 18.3L12 13.41L16.89 18.3C17.28 18.69 17.91 18.69 18.3 18.3C18.69 17.91 18.69 17.28 18.3 16.89L13.41 12L18.3 7.10997C18.68 6.72997 18.68 6.08997 18.3 5.70997Z"
-                          fill="#323232"
-                        />
-                      </g>
-                      <defs>
-                        <clipPath id="clip0_1779_681">
-                          <rect width="24" height="24" fill="white" />
-                        </clipPath>
-                      </defs>
-                    </svg>
-
-                    <div className="flex flex-col gap-1">
-                      {/**  show date here */}
-                      <h2 className="text-gray-700 font-medium">
-                        {/* {new Date().toDateString()} */}
-                        {moment(datesObjects[index]?.date).format(
-                          "DD MMM YYYY"
-                        )}
-                      </h2>
-                    </div>
-
-                    <div className="flex flex-col gap-3 ">
-                      <h1> Select Location </h1>
-                      <select
-                        value={dayData[index]?.selectedLocation}
-                        onChange={(event) =>
-                          handleLocationChange(
-                            index,
-                            event,
-                            new Date(datesObjects[index]?.date).toISOString()
-                          )
-                        }
-                        className="bg-blue-100 border-2 border-[#1f1f1f] rounded-md px-2 py-2 flex flex-row gap-2"
-                      >
-                        <option key="choose"> Choose Location</option>
-                        {singleDestination?.data?.locations?.[
-                          index
-                        ]?.location?.map((loc, index) => (
-                          <option key={index} value={loc}>
-                            {" "}
-                            {loc}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div className="flex flex-col gap-3 ">
-                      <h1> Select Hotel </h1>
-                      <select
-                        value={dayData[index]?.selectedHotel}
-                        onChange={(event) =>
-                          handleHotelChange(index, event, destinationHotels)
-                        }
-                        className="bg-blue-100 border-2 border-[#1f1f1f] rounded-md px-2 py-2 flex flex-row gap-2"
-                      >
-                        <option key="choose"> Choose Hotel</option>
-                        {Array.isArray(destinationHotels) &&
-                          destinationHotels?.map((hotel) => (
-                            <option key={hotel._id} value={hotel._id}>
-                              {" "}
-                              {hotel.name}
-                            </option>
-                          ))}
-                      </select>
-                    </div>
-
-                    <div className="flex flex-col gap-3 ">
-                      <h1> Select Activity </h1>
-
-                      <Select
-                        placeholder="Choose Activity"
-                        isMulti
-                        value={dayData[index]?.selectedActivities || []} // Ensure a default value
-                        onChange={(selectedOptions) =>
-                          handleActivityChange(selectedOptions, index)
-                        }
-                        options={activitiesOption}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-      {/** select vehicle section */}
-      <div className="p-4">
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {Array.isArray(destinationVehicles) &&
-            destinationVehicles?.map((vehicle) => (
-              <div
-                key={vehicle?._id}
-                onClick={() =>
-                  handleSelectVehicle(
-                    vehicle?.vehicleName,
-                    vehicle?.pricePerDay,
-                    vehicle?._id
-                  )
-                }
-                className="p-4 border rounded-lg shadow-md cursor-pointer hover:bg-gray-100"
-              >
-                <p className="text-lg font-semibold">
-                  Name: {vehicle?.vehicleName}
-                </p>
-                <p className="text-gray-600">Price: {vehicle?.pricePerDay}</p>
-              </div>
-            ))}
-        </div>
-        {selectedVehicleName && (
-          <div className="mt-6 p-4 bg-blue-50 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold text-blue-700">
-              Selected Vehicle
-            </h3>
-            <p className="text-lg">Name: {selectedVehicleName}</p>
-            <p className="text-lg">Price: {selectedVehiclePrice}</p>
-          </div>
-        )}
-      </div>
-      <div className="w-full bg-cyan-300">
-        <p>Your Estimated price of Trip is: {Total_Estimated_Price}</p>
-        <button onClick={handleEnquiry}>
-          To move forward submit this form
-        </button>
-      </div>
-    </div>
-  );
-};

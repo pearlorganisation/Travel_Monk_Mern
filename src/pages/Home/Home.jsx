@@ -34,9 +34,9 @@ const Home = () => {
 
   console.log(popular?.data, "popular destination names");
 
-  useEffect(() => {
-    dispatch(getAuthUserDetails());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getAuthUserDetails());
+  // }, []);
 
   useEffect(() => {
     dispatch(getPopularDestination());
@@ -67,14 +67,9 @@ const Home = () => {
         <WhatsAppLogo />
       </div>
 
-      {/* <EmbedGoogleMap /> */}
-
-      <GoogleMapsEmbed />
-
-      {/* <Map /> */}
-      {/* <Upcoming />
+      <Upcoming />
       <Distinguish />
-      <GetinTouch /> */}
+      <GetinTouch />
       {/* <HotelDetails />
       <FindHotel /> */}
     </div>

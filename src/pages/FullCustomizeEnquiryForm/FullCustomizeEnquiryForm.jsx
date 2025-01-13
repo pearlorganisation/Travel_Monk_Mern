@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { sendFullyCustomizePackageEnquiry } from "../../features/FullyCustomizePackage/FullCustomizePackageAction";
 import RoadmapFully from "../../components/TimelineComponent/FullyCustomizableTimeline";
-
+import FullyCustomizePdfDownload from "../../components/PDFDownload/pdfDownload";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 const FullCustomizeEnquiryForm = () => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -19,7 +20,7 @@ const FullCustomizeEnquiryForm = () => {
   console.log(userInfo, "my user info");
 
   useEffect(() => {
-    if (!userInfo) navigate("/login");
+    if (!isUserLoggedIn) navigate("/login");
   }, []);
   const {
     register,
@@ -39,20 +40,38 @@ const FullCustomizeEnquiryForm = () => {
     startDate,
     endDate,
   } = location.state ?? {};
-  const newItinery = [...itinerary];
+  /** DATA FOR DOWNLOADING THE PDF */ 
+  const pdfData = location.state.itinerary;
+console.log('===========pdf data is', pdfData)
 
+  const newItinery = [...itinerary];
+  
+  /**-----------taking only the values that we will send to the backend------------*/
+  const userData = newItinery.map((item,index)=>{
+    const container ={}
+
+    container.selectedLocation = item.selectedLocation
+    container.selectedHotel = item.selectedHotel.hotelId
+    container.selectedActivities = item.selectedActivities
+    container.day= item.day
+    container.date = item.date
+
+    return container
+  })
   console.log(
     "----------------------------estimated iti is",
 
     newItinery
   );
 
+  console.log('---------------------the userdata is', userData)
+
   console.log("----------------------the duration", duration);
   const submitForm = (data) => {
     const formData = {
       ...data,
       user: userInfo?._id,
-      itinerary: itinerary,
+      itinerary: userData,
       estimatedPrice: Estimated_Price,
       selectedVehicle: vehicleId,
       destination: destinationId,
@@ -68,73 +87,11 @@ const FullCustomizeEnquiryForm = () => {
       {isUserLoggedIn ? (
         <>
           <div className="w-full grid grid-cols-1  bg-white rounded-2xl shadow-2xl overflow-hidden">
-            {/* Information Section */}
-            {/* <div
-              id="info"
-              className="bg-indigo-600 text-white p-10 flex flex-col justify-center space-y-6"
-            >
-              <div className="space-y-4">
-                <h2 className="text-3xl font-bold">
-                  Estimated Package Price {Estimated_Price}
-                </h2>
-                <div className="text-5xl font-extrabold text-white/90"></div>
-                <p className="text-lg text-white/80">
-                  Please submit this form, and one of our executives will reach
-                  out to you for further processes.
-                </p>
-              </div>
-              <div className="bg-white/10 p-6 rounded-xl">
-                <h3 className="text-xl font-semibold mb-3">What to Expect</h3>
-                <ul className="space-y-2 text-white/80">
-                  <li className="flex items-center space-x-2">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 text-green-400"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    <span>Quick Response</span>
-                  </li>
-                  <li className="flex items-center space-x-2">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 text-green-400"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    <span>Personalized Consultation</span>
-                  </li>
-                  <li className="flex items-center space-x-2">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 text-green-400"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    <span>Detailed Information</span>
-                  </li>
-                </ul>
-              </div>
+            {/**temporary download section */}
+            {/* <div className="flex justify-end">
+              
+              <FullyCustomizePdfDownload data={pdfData} />
             </div> */}
-
             <div
               id="info"
               className="bg-[#007E8F] text-white  flex flex-col justify-center items-start py-6"
@@ -143,6 +100,7 @@ const FullCustomizeEnquiryForm = () => {
                 {/* <div className="text-5xl font-extrabold text-white/90">
                   {packageDetails.name}
                 </div> */}
+                 
                 <h2 className="text-3xl font-bold">Estimated Package Price</h2>
                 <div className="text-5xl font-extrabold text-white/90">
                   ₹ {Estimated_Price}

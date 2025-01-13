@@ -28,68 +28,9 @@ const HeroSupportingComponent = ({ data }, ref) => {
 
   const dispatch = useDispatch();
   const { register, handleSubmit, watch, setValue, getValues } = useForm();
-  const inputValue = watch("destination", "");
-
+ 
   const navigate = useNavigate();
-  const result = useSelector((state) => state.destination);
-
-  const [query, setQuery] = useState("");
-  // const [results, setResults] = useState([]);
-  // const [isSearching, setIsSearching] = useState(false);
-
-  // Debounce function
-  // const debounce = (func, delay) => {
-  //   let timeoutId;
-  //   return (...args) => {
-  //     if (timeoutId) clearTimeout(timeoutId);
-  //     timeoutId = setTimeout(() => func(...args), delay);
-  //   };
-  // };
-
-  // const fetchDestinations = async (searchQuery) => {
-  //   if (!searchQuery) {
-  //     setResults([]);
-  //     return;
-  //   }
-
-  //   setIsSearching(true);
-  //   try {
-  //     const response = await axios.get(
-  //       `http://localhost:5000/api/v1/destinations/search?destination=${searchQuery}`
-  //     );
-  //     setResults(response.data.data || []);
-  //   } catch (error) {
-  //     console.error("Error fetching destinations:", error);
-  //     setResults([]);
-  //   }
-  //   setIsSearching(false);
-  // };
-
-  // Debounced search handler
-  // const debouncedSearch = useCallback(debounce(fetchDestinations, 300), []);
-
-  // Handle input change
-  // const handleInputChange = (e) => {
-  //   const value = e.target.value;
-  //   setQuery(value);
-  //   debouncedSearch(value);
-  // };
-
-  // Handle result click
-  // const handleResultClick = (destination) => {
-  //   setQuery(destination.name); // Update input with selected value
-  //   setResults([]); // Clear dropdown
-  // };
-
-  // const submitForm = async (info) => {
-  //   dispatch(searchDestination(info.destination));
-
-  //   {
-  //     result?.isSuccess &&
-  //       result?.searchResult?.length > 0 &&
-  //       navigate(`fully-customize/${result?.searchResult[0]?._id}`);
-  //   }
-  // };
+  const result = useSelector((state) => state.destination);  
 
   /** getting the value of the destination field */
   const destinationFieldName = getValues("destination");
@@ -300,7 +241,88 @@ const HeroSupportingComponent = ({ data }, ref) => {
       ),
     },
   ];
+/**---------------------------------this is for the hotels section-------------------------------*/
 
+/**----------------------------------states for hotels searching----------------------------*/
+const [hotelDestination, setHotelDestination] = useState("")
+const [hotelResult, setHotelResult] = useState([])
+const [isHotelSearching, setIsHotelSearching] = useState(false)
+const [hotelStartDate, setHotelStartDate] = useState(null);
+const [HotelEndDate, setHotelEndDate] = useState(null);
+const [hotelTravellers, setHotelTravellers] = useState("");
+
+//handle input change for hotels//
+  const handleInputChangeHotel = (e) => {
+    const value = e.target.value;
+    // setQuery(value);
+    setHotelDestination(value);
+    console.log(value, "my qury value");
+    debouncedSearchHotel(value);
+    setValue("hotelDestination", value);
+  };
+  const handleResultClickHotel = (destinationP) => {
+    setHotelDestination(destinationP.name);
+    setValue("hotelDestination", destinationP.name);
+    setHotelResult([]);  
+  };
+  /** debounce logic for the  */
+  const debounceHotel = (func, delay) => {
+    let timeoutId;
+    return (...args) => {
+      if (timeoutId) clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => func(...args), delay);
+    };
+  };
+  const fetchHotelDestinations = async (searchQuery) => {
+    if (!searchQuery) {
+      setHotelResult([]);
+      return;
+    }
+
+    setIsHotelSearching(true);
+    try {
+      const response = await axiosInstance.get(
+        `/api/v1/destinations/search?destination=${searchQuery}`
+      );
+      setHotelResult(response.data.data || []);
+    } catch (error) {
+      console.error("Error fetching destinations:", error);
+      setHotelResult([]);
+    }
+    setIsHotelSearching(false);
+  };
+/**----------------------------Handle for selecting the no of hotel travellers--------------------------------*/
+const handleHotelTraveller = (e)=>{
+  setHotelTravellers(parseInt(e.target.value))
+}
+
+  // Debounced search handler
+  const debouncedSearchHotel = useCallback(debounceHotel(fetchHotelDestinations, 300), []);
+
+  const hotelDest = watch("hotelDestination")
+ 
+  /** handle to submit the form and get the hotels at that destination */
+  const submitHotelForm = async(data)=>{
+    const { hotelDestination } = data;
+    // console.log("the hotel destination is",hotelDestination)
+    try{
+    const actionResult = await dispatch(
+      searchDestination(hotelDestination)
+    ).unwrap();
+console.log('----------------- the actionsresult value is', actionResult)
+    if (actionResult?.data?.length > 0) {
+      navigate(`hotels-dest/${actionResult.data[0]._id}`
+        , {
+          state: { hotelStartDate, HotelEndDate, hotelTravellers },
+      }
+    );
+    } else {
+      console.log("No results found for the selected destination.");
+    }
+  } catch (error) {
+    console.error("Failed to fetch destination data:", error);
+  }
+  }
   return (
     <div className="bg-white p-6 rounded-3xl shadow-lg lg:w-[750px] mx-auto">
       {data === "Trip" && (
@@ -447,91 +469,153 @@ const HeroSupportingComponent = ({ data }, ref) => {
           </div>
         </div>
       )}
+      {/**------------------------------------------------------------------Hotel Section--------------------------------------------------------------*/}
       {data === "Hotel" && (
-        <form>
-          <div className="grid grid-cols-[auto_auto_auto_155px_auto] gap-2  ">
-            {hotelsData?.map((el, index) => {
-              return (
-                <div class="relative p-2" key={index}>
-                  <div className=" flex justify-start items-center">
-                    <label
-                      htmlFor="base-input"
-                      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      {el.label}
-                    </label>
+        
+          <div className="space-y-6">
+            <div className="flex flex-col-reverse md:flex-row gap-6">
+              {/* Left Side: Destination Search */}
+
+              <div className="flex-grow">
+                <form onSubmit={handleSubmit(submitHotelForm)} className="space-y-4">
+                  <div className="flex flex-row gap-4">
+                    <div className="relative">
+                      <label
+                        htmlFor="hotelDestination"
+                        className="block mb-2 text-sm font-medium text-gray-700"
+                      >
+                        Search Destination
+                      </label>
+                      <div className="relative rounded-md">
+                        <div className="absolute inset-y-0 left-4 pl-[-2] flex items-center pointer-events-none ">
+                          <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 20 20"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <g clipPath="url(#clip0_972_1398)">
+                              <path
+                                d="M9.99996 1.66669C6.77496 1.66669 4.16663 4.27502 4.16663 7.50002C4.16663 11.875 9.99996 18.3334 9.99996 18.3334C9.99996 18.3334 15.8333 11.875 15.8333 7.50002C15.8333 4.27502 13.225 1.66669 9.99996 1.66669ZM5.83329 7.50002C5.83329 5.20002 7.69996 3.33335 9.99996 3.33335C12.3 3.33335 14.1666 5.20002 14.1666 7.50002C14.1666 9.90002 11.7666 13.4917 9.99996 15.7334C8.26663 13.5084 5.83329 9.87502 5.83329 7.50002Z"
+                                fill="#5C5C5C"
+                              />
+                              <path
+                                d="M9.99996 9.58335C11.1506 9.58335 12.0833 8.65061 12.0833 7.50002C12.0833 6.34943 11.1506 5.41669 9.99996 5.41669C8.84937 5.41669 7.91663 6.34943 7.91663 7.50002C7.91663 8.65061 8.84937 9.58335 9.99996 9.58335Z"
+                                fill="#5C5C5C"
+                              />
+                            </g>
+                            <defs>
+                              <clipPath id="clip0_972_1398">
+                                <rect width="20" height="20" fill="white" />
+                              </clipPath>
+                            </defs>
+                          </svg>
+                        </div>
+
+                        <input
+                          type="text"
+                          autoComplete={false}
+                          autoCorrect={false}
+                          {...register("hotelDestination")}
+                          value={hotelDestination}
+                          onChange={handleInputChangeHotel}              
+                          placeholder="Search"
+                          className="w-full px-4 py-2 pl-10 border border-black/50 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#007E8F]"
+                        />
+                        {hotelResult.length > 0 && (
+                          <ul className="absolute z-10 w-full bg-white border rounded-md shadow-lg mt-1 max-h-60 overflow-auto">
+                            {hotelResult?.map((destinationP, index) => (
+                              <li
+                                key={index}
+                                onClick={() => handleResultClickHotel(destinationP)}
+                                className="px-4 py-2 hover:bg-blue-100 cursor-pointer"
+                              >
+                                {destinationP.name}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                        {isHotelSearching && (
+                          <div className="absolute z-10 mt-1 text-gray-500">
+                            Searching...
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Action Buttons */}
+                    </div>
+
+                    <div className="relative">
+                      <label
+                        htmlFor="hotelTraveller"
+                        className="block mb-2 text-sm font-medium text-gray-700"
+                      >
+                        Number of Travellers
+                      </label>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          {...register("hotelTravellers")}
+                          value={hotelTravellers}
+                          placeholder="Travellers"
+                          onChange={handleHotelTraveller}
+                          className="w-full px-4 py-2 border border-black/50 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#007E8F]"
+                        />
+                      </div>
+
+                      {/* Action Buttons */}
+                    </div>
+
+                    <div className="flex flex-col ">
+                      <label className="block mb-2 text-sm font-medium text-gray-700">
+                        Start Date
+                      </label>
+                      <DatePicker
+                        required
+                        selectsStart
+                        selected={hotelStartDate}
+                        onChange={(date) => setHotelStartDate(date)}
+                        dateFormat="yyyy-MM-dd"
+                        className="w-full px-3 py-2 border border-black/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#007E8F] focus:border-transparent"
+                        placeholderText="Select Start Date"
+                      />
+                    </div>
+                    <div className="flex flex-col">
+                      <label className="block mb-2 text-sm font-medium text-gray-700">
+                        End Date
+                      </label>
+                      <DatePicker
+                        required
+                        selectsEnd
+                        selected={HotelEndDate}
+                        onChange={(date) => setHotelEndDate(date)}
+                        minDate={startDate}
+                        // maxDate={maxDate}
+                        dateFormat="yyyy-MM-dd"
+                        className="w-full px-3 py-2 border border-black/50  rounded-lg focus:outline-none focus:ring-2 focus:ring-[#007E8F] focus:border-transparent"
+                        placeholderText="Select End Date"
+                      />
+                    </div>
                   </div>
 
-                  <div>
-                    <div class="absolute top-8    justify-center inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-                      {el.img}
-                    </div>
-                    <input
-                      type="text"
-                      id="email-address-icon"
-                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder={el.placeholder}
-                    />
+                  <div className="flex items-center justify-center">
+                    <button
+                      type="submit"
+                      className="text-white bg-[#007E8F] items-center justify-center flex hover:bg-[#439ca8] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md px-6 py-2.5 text-center transition duration-300 ease-in-out"
+                    >
+                      Find Your Hotel
+                    </button>
                   </div>
-                </div>
-              );
-            })}
+                </form>
+              </div>
+ 
+            </div>
           </div>
-          <div className="flex justify-center items-center py-6 ">
-            <button
-              type="submit"
-              class="text-white bg-[#007E8F] hover:bg-[#439ca8] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md w-1/6   h-10  text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            >
-              Search
-            </button>
-          </div>
-        </form>
+        
       )}
     </div>
   );
 };
 
-export default HeroSupportingComponent;
-/**---------------------------for later------------------------- */
-// {
-//   data === "Hotel" && (
-//     <form>
-//       <div className="grid grid-cols-[auto_auto_auto_155px_auto] gap-2  ">
-//         {hotelsData?.map((el, index) => {
-//           return (
-//             <div class="relative p-2" key={index}>
-//               <div className=" flex justify-start items-center">
-//                 <label
-//                   htmlFor="base-input"
-//                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-//                 >
-//                   {el.label}
-//                 </label>
-//               </div>
-
-//               <div>
-//                 <div class="absolute top-8    justify-center inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-//                   {el.img}
-//                 </div>
-//                 <input
-//                   type="text"
-//                   id="email-address-icon"
-//                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-//                   placeholder={el.placeholder}
-//                 />
-//               </div>
-//             </div>
-//           );
-//         })}
-//       </div>
-//       <div className="flex justify-center items-center py-6 ">
-//         <button
-//           type="submit"
-//           class="text-white bg-[#007E8F] hover:bg-[#439ca8] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md w-1/6   h-10  text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-//         >
-//           Search
-//         </button>
-//       </div>
-//     </form>
-//   )
-// }
+export default HeroSupportingComponent; 

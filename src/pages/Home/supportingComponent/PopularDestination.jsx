@@ -4,8 +4,12 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination } from "swiper/modules";
 import { Link } from "react-router-dom";
+import { baseURL } from "../../../services/axiosInterceptor";
 
 const PopularDestination = ({ data }) => {
+  console.log(data, "popular destination");
+
+  console.log(baseURL, "baseURL");
   return (
     <div className="bg-[#f5f5f5] py-8">
       <div className="container mx-auto max-w-6xl">
@@ -61,7 +65,7 @@ const PopularDestination = ({ data }) => {
                     <div
                       className="bg-cover bg-center max-w-full sm:w-[400px] h-[300px] rounded-lg shadow-lg bg-opacity-50"
                       style={{
-                        backgroundImage: `linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${destination?.image?.secure_url})`,
+                        backgroundImage: `linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${baseURL}/${destination?.image?.path})`,
                       }}
                     >
                       <div className=" bg-opacity-50 h-full max-w-full flex items-center rounded-lg">

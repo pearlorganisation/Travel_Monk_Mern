@@ -13,7 +13,7 @@ import IndianDestinations from "../pages/IndianDestinations/IndianDestinations";
 import InternationalDestinations from "../pages/InternatonalDestinations/InternationalDestinations";
 import PackageDetails from "../pages/PackageDetails/PackageDetails";
 import CruizeListing from "../pages/CruizeListing/CruizeListing";
-import Hotels from "../pages/Hotels/Hotels";
+import Hotels from "../pages/Hotel/Hotels";
 import BusRides from "../pages/BusTrip/busRide";
 import Details from "../pages/BusDetails/Details";
 import { ForgotPassword } from "../components/ForgotPassword/ForgotPassword";
@@ -29,6 +29,7 @@ import ChangePassword from "../pages/ChangePassword/ChangePassword";
 import ResetPassword from "../pages/ResetPassword/ResetPassword";
 import PrebuiltEnquiryForm from "../pages/PrebuiltEnquiryForm/PrebuiltEnquiryForm";
 import FullCustomizeEnquiryForm from "../pages/FullCustomizeEnquiryForm/FullCustomizeEnquiryForm";
+import SingleHotelDetails from "../pages/Hotel/SingleHotelDetails";
 
 const Routes = createBrowserRouter([
   {
@@ -41,7 +42,7 @@ const Routes = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/hotels",
+        path: "/hotels-dest/:id",
         element: <Hotels />,
       },
       {
@@ -144,7 +145,11 @@ const Routes = createBrowserRouter([
       {
         path:"full-customize-package-enquiry",
         element:<FullCustomizeEnquiryForm />
-      }
+      },
+      {
+        path:"/hotel-details/:id",
+        element:<SingleHotelDetails />
+      } 
     ],
   },
 ]);

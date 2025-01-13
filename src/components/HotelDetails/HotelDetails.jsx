@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import { getSingleHotel } from "../../features/hotel/hotelActions";
 
 const HotelDetails = () => {
-  const { id } = useParams();
+  const { id } = useParams();                
 
   const { singleHotel } = useSelector((state) => state.hotels);
   const dispatch = useDispatch();

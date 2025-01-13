@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { sendPrebuiltPackageEnquiry } from "./prebuiltPackageAction"
+import { getMyPrebuiltEnquiry, sendPrebuiltPackageEnquiry } from "./prebuiltPackageAction"
 import { toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css";
 
@@ -7,6 +7,7 @@ const initialState= {
     isLoading: false,
     isSuccess: false,
     isError: false,
+    prebuiltEnquiries:{}
 }
 
 const prebuiltEnquirySlice = createSlice({
@@ -17,6 +18,8 @@ const prebuiltEnquirySlice = createSlice({
         builder
         .addCase(sendPrebuiltPackageEnquiry.pending,(state)=>{
             state.isLoading = true
+            state.isError= false
+            state.isSuccess= false
         })
         .addCase(sendPrebuiltPackageEnquiry.rejected,(state,action)=>{
             state.isLoading = false
@@ -29,6 +32,24 @@ const prebuiltEnquirySlice = createSlice({
             state.isSuccess = true
             state.isError = false
             toast("Enquiry is submitted")
+        })
+        .addCase(getMyPrebuiltEnquiry.pending,(state)=>{
+            state.isLoading = true
+            state.isSuccess = false
+            state.isError = false
+        })
+        .addCase(getMyPrebuiltEnquiry.rejected,(state,action)=>{
+            state.isError = true
+            state.isSuccess = false
+            state.isLoading = false
+            toast(action.payload,{position:"top-center"})
+        })
+        .addCase(getMyPrebuiltEnquiry.fulfilled,(state,action)=>{
+            state.isSuccess = true
+            state.isError = false
+            state.isLoading = false
+            state.prebuiltEnquiries = action.payload
+            toast("Enquiries received")
         })
     }
 })

@@ -114,17 +114,17 @@ export default function CruiseContactForm() {
             </p>
             <div>
               <ul className="mt-6 flex flex-wrap gap-x-10 gap-y-6 items-center">
-                {contactMethods.map((item, idx) => (
+                {contactMethods?.map((item, idx) => (
                   <li key={idx} className="flex items-center gap-x-3">
-                    <div className="flex-none text-gray-400">{item.icon}</div>
+                    <div className="flex-none text-gray-400">{item?.icon}</div>
                     <a
                       href={`${
-                        item.isEmail
+                        item?.isEmail
                           ? `mailto:${item.contact}`
-                          : `tel:${item.contact}`
+                          : `tel:${item?.contact}`
                       }    `}
                     >
-                      {item.contact}
+                      {item?.contact}
                     </a>
                   </li>
                 ))}

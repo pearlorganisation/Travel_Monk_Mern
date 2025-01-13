@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { sendPrebuiltPackageEnquiry } from "../../features/PrebuiltPackage/prebuiltPackageAction";
 import Roadmap from "../../components/TimelineComponent/TimelineComponent";
+import Customize_trip_pdf from "../../components/PDFDownload/Customize_trip_pdf";
 
 const PrebuiltEnquiryForm = () => {
   const location = useLocation();
@@ -15,7 +16,9 @@ const PrebuiltEnquiryForm = () => {
   /** extarcting the data  */
   const { Estimate_Price, packageDetails, itinerary, selectedVehicle } =
     location.state || {};
-
+  
+  const pdfData = itinerary;
+  console.log("the pdf data is", pdfData)
   const {
     register,
     handleSubmit,
@@ -53,6 +56,9 @@ const PrebuiltEnquiryForm = () => {
         <>
           <div className="w-full grid grid-cols-1  bg-white rounded-2xl shadow-2xl overflow-hidden">
             {/* Information Section */}
+            {/* <div>
+              <Customize_trip_pdf data={pdfData} />
+            </div> */}
             <div
               id="info"
               className="bg-[#007E8F] text-white  flex flex-col justify-center items-start py-6"

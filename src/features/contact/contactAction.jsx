@@ -29,3 +29,24 @@ export const submitContact = createAsyncThunk("contact/form",
         }
     }
 )
+
+export const hotelContact = createAsyncThunk(
+    "submit/hotel-contact",async(userData, {rejectWithValue})=>{
+        try {
+            const config ={
+                headers:{
+                    "Content-Type":"application/json"
+                }
+            }
+            const {data} = await axiosInstance.post(`/api/v1/contacts/hotel`, userData,config)
+            return data
+        } catch (error) {
+            if (error.response && error.response.data.message) {
+                return rejectWithValue(error.response.data.message);
+            } else {
+
+                return rejectWithValue(error.message);
+            }   
+        }
+    }
+)

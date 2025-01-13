@@ -41,7 +41,7 @@ const CustomizeTrip = () => {
   const { destinationHotels } = useSelector((state) => state.hotels);
 
   useEffect(() => {
-    dispatch(getHotelsByDestination(singleDestination?.data?._id));
+    dispatch(getHotelsByDestination({id:singleDestination?.data?._id}));
   }, []);
 
   const handleSelect = (vehicleName, vehiclePrice, vehicleId, vehicleImage) => {
@@ -109,6 +109,11 @@ const CustomizeTrip = () => {
   }, [singlePackage?.data]);
 
   const [hotelPrices, setHotelPrices] = useState([]); // Array to store prices for each day
+  useEffect(() => {
+    if (singlePackage?.data?.itinerary) {
+      setHotelPrices(Array(singlePackage.data.itinerary.length).fill(0));
+    }
+  }, [singlePackage?.data]);
   const [totalHotelPrices, setTotalHotelPrice] = useState(0);
   const handleHotelChange = (index, event, hotels, currentLocation) => {
     console.log("---------------location", currentLocation);
@@ -127,7 +132,7 @@ const CustomizeTrip = () => {
     };
     setDayData(newDayData);
 
-    const startingPrice = selectedHotel ? selectedHotel.startingPrice : 0;
+    const startingPrice = selectedHotel ? selectedHotel.estimatedPrice : 0;
 
     const updatedHotelPrices = [...hotelPrices];
     updatedHotelPrices[index] = startingPrice;
@@ -236,11 +241,11 @@ const CustomizeTrip = () => {
                   className="p-4 border rounded-lg shadow-md cursor-pointer bg-purple-300 h-56"
                 >
                   <p className="text-lg font-semibold">
-                    Name: {vehicle?.vehicleName}
+                    Vehicle: {vehicle?.vehicleName}
                   </p>
-                  <p className="text-gray-600">
+                  {/* <p className="text-gray-600">
                     Price: {vehicle?.pricePerDay} /- per day
-                  </p>
+                  </p> */}
 
                   <img
                     src={vehicle?.images[0]?.secure_url}
