@@ -10,7 +10,11 @@ const Login = () => {
   const { loading, error, userInfo } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   const navigate = useNavigate();
 
@@ -73,16 +77,33 @@ const Login = () => {
                     className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
                     type="email"
                     placeholder="Email"
-                    required
-                    {...register("email")}
+                    {...register("email", {
+                      required: "Email is required",
+                      pattern: {
+                        value:
+                          /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                        message: "Please enter a valid email address",
+                      },
+                    })}
                   />
+                  {errors.email && (
+                    <p className="text-red-500 text-sm mt-2">
+                      {errors.email.message}
+                    </p>
+                  )}
                   <input
                     className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
                     type="password"
-                    required
-                    {...register("password")}
+                    {...register("password", {
+                      required: "Password is required",
+                    })}
                     placeholder="Password"
                   />
+                  {errors.password && (
+                    <p className="text-red-500 text-sm mt-2">
+                      {errors.password.message}
+                    </p>
+                  )}
                   <button
                     type="submit"
                     className="mt-5 tracking-wide font-semibold bg-[#007E8F] text-white-500 w-full py-4 rounded-lg hover:bg-[#439ca8] transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
