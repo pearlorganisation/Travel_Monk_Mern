@@ -67,16 +67,9 @@ const Home = () => {
         <WhatsAppLogo />
       </div>
 
-      {/* <EmbedGoogleMap /> */}
-
-      {/* <Roadmap /> */}
-
-      {/* <GoogleMapsEmbed /> */}
-
-      {/* <Map /> */}
-      {/* <Upcoming />
+      <Upcoming />
       <Distinguish />
-      <GetinTouch /> */}
+      <GetinTouch />
       {/* <HotelDetails />
       <FindHotel /> */}
     </div>
