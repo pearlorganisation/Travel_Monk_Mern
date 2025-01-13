@@ -10,41 +10,43 @@ import HotelDetails from "./supportingComponent/HotelDetails";
 import FindHotel from "./supportingComponent/FindHotel";
 import Reviews from "../../components/HeroSection.jsx/Reviews/Reviews";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getAllIndianDestinations,
-  getAllInternationalDestinations,
-} from "../../features/trips/tripsSlice";
+import { getAllDestinations } from "../../features/trips/tripActions";
+import { getAuthUserDetails } from "../../features/user/userActions";
+import { getPopularDestination } from "../../features/destination/destinationActions";
+import WhatsAppLogo from "../../components/Whatsapp/WhatsLogo";
+
+import { useNavigate } from "react-router-dom";
+import Roadmap from "../../components/TimelineComponent/TimelineComponent";
+import GoogleMapsEmbed from "../../components/MyEmbed/MyEmbed";
 
 const Home = () => {
+  const navigate = useNavigate();
+
+  // if (localStorage.getItem("packageDetails")) {
+  //   navigate("/full-customize-package-enquiry");
+  // }
+
   const dispatch = useDispatch();
 
-  const [indianData, setIndianData] = useState([]);
+  const { popular } = useSelector((state) => state.destination);
 
-  const indiandestinationState = useSelector(
-    (state) => state.trip.indiandestination.data
-  );
-  const internationalDestinationState = useSelector(
-    (state) => state.trip.internationaldestination.data
-  );
+  const userState = useSelector((state) => state.user);
+
+  console.log(popular?.data, "popular destination names");
 
   useEffect(() => {
-    getIndianDestinations();
-    getInternationalDestinations();
+    dispatch(getAuthUserDetails());
   }, []);
 
-  const getIndianDestinations = () => {
-    dispatch(getAllIndianDestinations());
-    setIndianData(indiandestinationState);
-  };
+  useEffect(() => {
+    dispatch(getPopularDestination());
+  }, []);
 
-  const getInternationalDestinations = () => {
-    dispatch(getAllInternationalDestinations());
-  };
+  const indianData = popular?.data?.filter((data) => data.type == "Indian");
+  const internationalData = popular?.data?.filter(
+    (data) => data.type == "International"
+  );
 
-  // console.log("Indian DEstionations", indiandestinationState);
-  // console.log("International DEstionations", internationalDestinationState);
-
-  console.log("Indian state data", indianData);
   return (
     <div className="">
       <div
@@ -58,19 +60,23 @@ const Home = () => {
       </div>
       <Reviews />
       <HowitWorks />
-      <PopularDestination
-        data={indiandestinationState ? indiandestinationState : []}
-      />
-      <PopularItineraries
-        data={
-          internationalDestinationState ? internationalDestinationState : []
-        }
-      />
-      <Upcoming />
+      <PopularDestination data={indianData ? indianData : []} />
+      <PopularItineraries data={internationalData ? internationalData : []} />
+
+      <div className="flex items-center justify-end px-20 mb-6">
+        <WhatsAppLogo />
+      </div>
+
+      {/* <EmbedGoogleMap /> */}
+
+      <GoogleMapsEmbed />
+
+      {/* <Map /> */}
+      {/* <Upcoming />
       <Distinguish />
-      <GetinTouch />
-      <HotelDetails />
-      <FindHotel />
+      <GetinTouch /> */}
+      {/* <HotelDetails />
+      <FindHotel /> */}
     </div>
   );
 };

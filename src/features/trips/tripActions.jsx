@@ -1,56 +1,73 @@
-import axios from "axios";
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { axiosInstance } from "../../services/axiosInterceptor";
 
-const backendURL = "https://travel-monk-backend.onrender.com";
-const localURL = "http://localhost:5000";
+export const getAllDestinations = createAsyncThunk(
+  "trip/Dest/get",
+  async (destType, thunkAPI) => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const { data } = await axiosInstance.get(
+        `/api/v1/destinations?type=${destType}`,
+        config
+      );
 
-const getIndianDestinations = async () => {
-  const response = await axios.get("http://localhost:5000/api/v1/trips/indian");
-
-  if (response.data) {
-    console.log("Data", response.data);
-    return response.data;
+      if (data) {
+        console.log("Data", data);
+        return data;
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
   }
-};
+);
 
-const getSingleIndianDestination = async (id) => {
-  const response = await axios.get(
-    `http://localhost:5000/api/v1/trips/indian/${id}`
-  );
+export const getSingleDestination = createAsyncThunk(
+  "trip/singleDest/get",
+  async (id, thunkAPI) => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const { data } = await axiosInstance.get(
+        `/api/v1/destinations/${id}`,
+        config
+      );
 
-  if (response.data) {
-    console.log("Data", response.data);
-    return response.data;
+      if (data) {
+        console.log("Data", data);
+        return data;
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
   }
-};
+);
 
-const getSingleInternationalDestination = async (id) => {
-  const response = await axios.get(
-    `http://localhost:5000/api/v1/trips/international/${id}`
-  );
+export const getAllActivitiesByDestination = createAsyncThunk(
+  "activities/singleIndianDest/get",
+  async (id, thunkAPI) => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const response = await axiosInstance.get(
+        `/api/v1/destinations/${id}/activities`,
+        config
+      );
 
-  if (response.data) {
-    console.log("Data", response.data);
-    return response.data;
+      if (response.data) {
+        return response.data;
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
   }
-};
-
-const getInternationalDestinations = async () => {
-  console.log("Hit International API");
-  const response = await axios.get(
-    "http://localhost:5000/api/v1/trips/international"
-  );
-
-  if (response.data) {
-    console.log("Data", response.data);
-    return response.data;
-  }
-};
-
-export const tripService = {
-  getIndianDestinations,
-  getInternationalDestinations,
-  getSingleIndianDestination,
-  getSingleInternationalDestination,
-};
-
-// `${backendURL}/api/v1/trips/indian`
+);

@@ -1,8 +1,8 @@
 import React from "react";
 
-const HotelDetails = () => {
+const HotelDetail = () => {
   return (
-    <>
+    <div>
       {/* <div class="bg-gray-900 flex items-center justify-center min-h-screen"> */}
       <div class="bg-white rounded-lg shadow-lg p-6 max-w-6xl mx-auto w-full">
         <h2 class="text-xl font-semibold mb-2">
@@ -50,8 +50,8 @@ const HotelDetails = () => {
           Change
         </button>
       </div>
-    </>
+    </div>
   );
 };
 
-export default HotelDetails;
+export default HotelDetail;

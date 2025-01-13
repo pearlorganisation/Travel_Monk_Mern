@@ -1,5 +1,5 @@
 import SearchBar from "../../components/SearchBar/SearchBar";
-const Product = () => {
+const Hotels = () => {
   return (
     <div className="">
       <SearchBar />
@@ -7,4 +7,4 @@ const Product = () => {
   );
 };
 
-export default Product;
+export default Hotels;

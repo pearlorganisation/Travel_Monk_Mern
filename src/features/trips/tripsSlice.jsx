@@ -1,56 +1,17 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { tripService } from "./tripActions";
-
-export const getAllIndianDestinations = createAsyncThunk(
-  "trip/indianDest/get",
-  async (thunkAPI) => {
-    try {
-      return tripService.getIndianDestinations();
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
-export const getSingleIndianDesstination = createAsyncThunk(
-  "trip/singleIndianDest/get",
-  async (id, thunkAPI) => {
-    try {
-      return tripService.getSingleIndianDestination(id);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
-
-export const getSingleInterDestination = createAsyncThunk(
-  "trip/singleInterDest/get",
-  async (id, thunkAPI) => {
-    try {
-      return tripService.getSingleInternationalDestination(id);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
-
-export const getAllInternationalDestinations = createAsyncThunk(
-  "trip/internationalDest/get",
-  async (thunkAPI) => {
-    try {
-      return tripService.getInternationalDestinations();
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
+import { createSlice } from "@reduxjs/toolkit";
+import {
+  getAllDestinations,
+  getSingleDestination,
+  getAllActivitiesByDestination,
+} from "./tripActions";
 
 const destinationState = {
   isLoading: false,
   isError: false,
   isSuccess: false,
-  indiandestination: "",
-  singleDestination: "",
-  internationaldestination: "",
+  destinations: null,
+  singleDestination: null,
+  activities: null,
   message: "",
 };
 
@@ -60,62 +21,50 @@ export const tripsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getAllIndianDestinations.pending, (state) => {
+      .addCase(getAllDestinations.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getAllIndianDestinations.fulfilled, (state, action) => {
+      .addCase(getAllDestinations.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.indiandestination = action.payload;
+        state.destinations = action.payload;
       })
-      .addCase(getAllIndianDestinations.rejected, (state, action) => {
+      .addCase(getAllDestinations.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
       })
 
-      .addCase(getSingleIndianDesstination.pending, (state) => {
+      .addCase(getSingleDestination.pending, (state) => {
         state.isLoading = true;
+        state.isSuccess = false;
       })
-      .addCase(getSingleIndianDesstination.fulfilled, (state, action) => {
+      .addCase(getSingleDestination.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
         state.singleDestination = action.payload;
       })
-      .addCase(getSingleIndianDesstination.rejected, (state, action) => {
+      .addCase(getSingleDestination.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
+        // state.singleDestination = null;
         state.message = action.error;
       })
-      .addCase(getAllInternationalDestinations.pending, (state) => {
+
+      .addCase(getAllActivitiesByDestination.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getAllInternationalDestinations.fulfilled, (state, action) => {
+      .addCase(getAllActivitiesByDestination.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.internationaldestination = action.payload;
+        state.activities = action.payload;
       })
-      .addCase(getAllInternationalDestinations.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.isSuccess = false;
-        state.message = action.error;
-      })
-      .addCase(getSingleInterDestination.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(getSingleInterDestination.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isError = false;
-        state.isSuccess = true;
-        state.singleDestination = action.payload;
-      })
-      .addCase(getSingleInterDestination.rejected, (state, action) => {
+      .addCase(getAllActivitiesByDestination.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;

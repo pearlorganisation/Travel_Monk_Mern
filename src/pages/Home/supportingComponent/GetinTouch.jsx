@@ -66,7 +66,7 @@ const GetinTouch = () => {
             </div>
           </div>
         </form>
-        <div>
+        {/* <div>
           <h1 className="text-3xl text-center font-bold p-5">
             Where are you going to take your next selfie?
           </h1>
@@ -75,7 +75,7 @@ const GetinTouch = () => {
           <button className="btn px-16 py-4 bg-[#007e8f] text-white">
             Customise your Trip
           </button>
-        </div>
+        </div> */}
       </div>
     </>
   );
