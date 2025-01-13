@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../../features/auth/authActions";
 import ClipLoader from "react-spinners/ClipLoader";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 const Signup = () => {
   const { loading, success } = useSelector((state) => state.auth);
@@ -79,7 +79,7 @@ const Signup = () => {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="mt-5 tracking-wide font-semibold bg-green-400 text-white-500 w-full py-4 rounded-lg hover:bg-green-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                    className="mt-5 tracking-wide font-semibold bg-[#007E8F] text-white-500 w-full py-4 rounded-lg hover:bg-[#439ca8] transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
                   >
                     {loading ? (
                       <ClipLoader />
@@ -87,22 +87,19 @@ const Signup = () => {
                       <span className="">Register</span>
                     )}
                   </button>
-                  <p className="mt-6 text-xs text-gray-600 text-center">
-                    I agree to abide by Travel Monk
-                    <a
-                      href="#"
-                      className="border-b border-gray-500 border-dotted ml-2 mr-2"
+                  <div className="flex items-center gap-2 text-sm">
+                    <span className="text-gray-600">
+                      Already have an account?
+                    </span>
+                    <Link
+                      to="/login"
+                      className="inline-flex items-center gap-1 font-medium"
                     >
-                      Terms of Service
-                    </a>
-                    and its
-                    <a
-                      href="#"
-                      className="border-b border-gray-500 border-dotted ml-2 mr-2"
-                    >
-                      Privacy Policy
-                    </a>
-                  </p>
+                      <span className="font-bold text-[#007E8F] hover:text-[#439ca8]">
+                        Login here
+                      </span>
+                    </Link>
+                  </div>
                 </div>
               </form>
             </div>

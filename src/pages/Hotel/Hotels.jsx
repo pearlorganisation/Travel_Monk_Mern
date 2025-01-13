@@ -45,7 +45,15 @@ const Hotels = () => {
     const [currentPage, setCurrentPage] = useState(1)
 
     let { hotelStartDate, HotelEndDate, hotelTravellers } = location.state ?? {}
+     
+    /** min and max price filter */
+    const maximamPrice = watch("maxPrice")
+    const minimamPrice = watch("minPrice")
     
+    console.log("the minimam and maximam price is", minimamPrice, maximamPrice)
+
+
+
     /**Pagination Logic */
     const totalPages = Math.ceil(paginate?.total / paginate?.limit)
     console.log('------------total pages', totalPages)
@@ -70,6 +78,20 @@ const Hotels = () => {
     }
 
     console.log("the states from hero is ", hotelStartDate, HotelEndDate, hotelTravellers)
+
+    let disableMinMax = false
+    let disablePriceRange = false
+
+    // if(maximamPrice > 0 && minimamPrice > 0){
+    //     disablePriceRange = true
+    //     disableMinMax = false
+    // }else if(maximamPrice === 0 || minimamPrice === 0){
+    //     disablePriceRange = false
+    //     disableMinMax= false
+    // }else if(selectedRange.length > 0){
+    //     disablePriceRange= true
+    //     disableMinMax = 
+    // }
 
     useEffect(()=>{
         const searchParams = new URLSearchParams(location.search);
@@ -221,6 +243,31 @@ const Hotels = () => {
                             ))}
                         </div>
                    </div>
+                    <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
+                        <h1 className="text-2xl font-bold text-gray-800 mb-6">Enter your own price range</h1>
+                        <form className="space-y-4">
+                            <div className="flex gap-4">
+                                <div className="flex-1">
+                                    <input
+                                        type="text"
+                                        id="minPrice"
+                                        placeholder="Min Price"
+                                        {...register("minPrice")}
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    />
+                                </div>
+                                <div className="flex-1">
+                                    <input
+                                        type="number"
+                                        id="maxPrice"
+                                        {...register("maxPrice")}
+                                        placeholder="Max Price"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
               </div>
 
                <div className="w-4/5 bg-white p-4 rounded-lg">

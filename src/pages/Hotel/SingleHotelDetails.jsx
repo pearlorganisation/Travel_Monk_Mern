@@ -89,7 +89,7 @@ const{
             <h2 className="text-2xl font-semibold mb-4">Price Details</h2>
             <div className="text-3xl font-bold text-blue-600 mb-2">
               ₹{estimatedPrice}
-              <span className="text-sm font-normal text-gray-600">/night</span>
+              <span className="text-sm font-normal text-gray-600">/night for Triple Sharing</span>
             </div>
             <div className="text-3xl font-bold text-blue-600 mb-2">
               The Estimate Price for hotel will be around - ₹{finalValue} for

@@ -487,11 +487,11 @@ const FullyCustomizeTrip = () => {
                   className="p-4 border rounded-lg shadow-md cursor-pointer bg-purple-300 h-56"
                 >
                   <p className="text-lg font-semibold">
-                    Name: {vehicle?.vehicleName}
+                    Vehicle: {vehicle?.vehicleName}
                   </p>
-                  <p className="text-gray-600">
+                  {/* <p className="text-gray-600">
                     Price: {vehicle?.pricePerDay} /- per day
-                  </p>
+                  </p> */}
 
                   <img
                     src={vehicle?.images[0]?.secure_url}
