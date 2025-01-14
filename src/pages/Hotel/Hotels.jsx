@@ -71,10 +71,10 @@ const Hotels = () => {
     const hotelPageCheckOutDate = watch("checkOut")
     const hotelPageTravellerCount = watch("travellers")
     console.log("hotel page selected date and passengers", hotelPageCheckInDate, hotelPageCheckOutDate, hotelPageTravellerCount)
-    if(hotelPageCheckInDate && hotelPageCheckOutDate && hotelPageTravellerCount){
-        hotelStartDate = hotelPageCheckInDate
-        HotelEndDate = hotelPageCheckOutDate
-        hotelTravellers = parseInt(hotelPageTravellerCount)
+    if(hotelPageCheckInDate || hotelPageCheckOutDate || hotelPageTravellerCount){
+        hotelStartDate = hotelPageCheckInDate ?? hotelStartDate
+        HotelEndDate = hotelPageCheckOutDate ?? HotelEndDate
+        hotelTravellers = parseInt(hotelPageTravellerCount) ?? parseInt(hotelTravellers)
     }
 
     console.log("the states from hero is ", hotelStartDate, HotelEndDate, hotelTravellers)
