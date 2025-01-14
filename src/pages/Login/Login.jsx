@@ -99,11 +99,19 @@ const Login = () => {
                     })}
                     placeholder="Password"
                   />
-                  {errors.password && (
-                    <p className="text-red-500 text-sm mt-2">
-                      {errors.password.message}
-                    </p>
-                  )}
+
+                  <div className="flex justify-between">
+                    <div></div>
+                    <div className="flex items-center justify-center mt-3 text-[#007E8F] hover:text-[#439ca8]">
+                      {" "}
+                      <a
+                        className="text-center justify-center"
+                        href="/forgot-password"
+                      >
+                        Forgot Password
+                      </a>
+                    </div>
+                  </div>
                   <button
                     type="submit"
                     className="mt-5 tracking-wide font-semibold bg-[#007E8F] text-white-500 w-full py-4 rounded-lg hover:bg-[#439ca8] transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
@@ -114,16 +122,8 @@ const Login = () => {
                       <span className="">Sign In</span>
                     )}
                   </button>
-                  <div className="flex items-center justify-center mt-3">
-                    {" "}
-                    <a
-                      className="text-center justify-center"
-                      href="/forgot-password"
-                    >
-                      Forgot Password
-                    </a>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm">
+
+                  <div className="flex items-center gap-2 text-sm mt-2">
                     <span className="text-gray-600">
                       Don’t have an account yet?
                     </span>

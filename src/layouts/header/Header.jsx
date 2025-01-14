@@ -35,8 +35,29 @@ export default function Header() {
     dispatch(logout());
   };
 
+  const [isTransparent, setIsTransparent] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        setIsTransparent(true);
+      } else {
+        setIsTransparent(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
-    <nav className="bg-black  w-full border-b md:border-0 md:static  z-50">
+    <nav
+      className={`${
+        isTransparent ? "transparent" : "black"
+      } bg-black w-full border-b md:border-0 md:static z-50`}
+    >
       <div className="items-center px-4 max-w-screen-xl mx-auto md:flex md:px-8">
         <div className="flex items-center justify-between py-3 md:py-5 md:block">
           <Link to="/">
@@ -121,7 +142,7 @@ export default function Header() {
               return (
                 <li
                   key={idx}
-                  className="text-white text-sm 
+                  className="text-white text-xs
                   hover:text-[#007E8F] border-b-transparent  duration-150"
                 >
                   <Link to={item.path} className="">
@@ -144,7 +165,7 @@ export default function Header() {
                     backgroundColor:
                       "linear-gradient(90deg, rgba(255,255,255,0.1) 10%, rgba(255,255,255,1) 40%)",
                   }}
-                  className="block lg:min-w-72 p-1 text-sm border border-[#DDE2E4] text-gray-900 bg-gradient-to-b from-gray-950 to-gray-600  rounded-md "
+                  className="block lg:min-w-72 p-1 text-sm border border-[#DDE2E4] text-gray-900 bg-transparent rounded-md "
                   placeholder=""
                   required
                 />
@@ -175,20 +196,21 @@ export default function Header() {
           </div>
 
           <div className="hidden md:inline-block " data-aos="fade-left">
-            <div className="flexflex-row gap-6 items-center justify-center">
+            <div className="flex flex-row gap-6 items-center justify-center">
               {!isUserLoggedIn ? (
-                <div>
+                <div className="flex flex-row gap-6 items-center justify-center">
                   <Link
                     to="/login"
                     data-aos="zoom-out"
                     data-aos-delay="800"
-                    className="hover:text-[#007E8F] border-b-2 text-white border-b-transparent hover:border-b-[#007E8F] duration-150 mr-2"
+                    className="hover:text-[#007E8F]  text-white border-b-transparent  duration-150 mr-2"
                   >
                     Login
                   </Link>
+
                   <Link
                     to="/signup"
-                    className="hover:text-[#007E8F] border-b-2 text-white border-b-transparent hover:border-b-[#007E8F] duration-150"
+                    className=" border-b-2 rounded-full bg-[#007E8F] hover:bg-[#439CA8] px-2 py-2 text-white border-b-transparent hover:border-b-[#007E8F] duration-150"
                   >
                     Sign Up
                   </Link>

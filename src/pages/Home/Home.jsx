@@ -18,6 +18,8 @@ import WhatsAppLogo from "../../components/Whatsapp/WhatsLogo";
 import { useNavigate } from "react-router-dom";
 import Roadmap from "../../components/TimelineComponent/TimelineComponent";
 import GoogleMapsEmbed from "../../components/MyEmbed/MyEmbed";
+import ChoseTravelMonkSec from "../../components/chooseTravelMonk/choseTravelMonk";
+import Testimonials from "./testimonials/testimonals";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -67,16 +69,12 @@ const Home = () => {
         <WhatsAppLogo />
       </div>
 
-      {/* <EmbedGoogleMap /> */}
-
-      {/* <Roadmap /> */}
-
-      {/* <GoogleMapsEmbed /> */}
-
-      {/* <Map /> */}
-      {/* <Upcoming />
+      <Upcoming />
       <Distinguish />
-      <GetinTouch /> */}
+      <ChoseTravelMonkSec/>
+      <Testimonials/>
+      <GetinTouch />
+
       {/* <HotelDetails />
       <FindHotel /> */}
     </div>
