@@ -7,7 +7,7 @@ import { Pagination } from "swiper/modules";
 const Upcoming = () => {
   return (
     <>
-      <div class="bg-gray-100 flex items-center justify-center min-h-[15rem]  border">
+      <div class="bg-gray-100 flex items-center justify-center min-h-[15rem]  border  ">
         <div class="text-center">
           <h2 class="text-2xl font-bold mb-6 ">Join Upcoming Group Trips</h2>
           <div class="flex flex-wrap justify-center gap-4">
