@@ -15,6 +15,7 @@ import moment from "moment";
 import CustomDropdownIndicator from "../../components/CustomDropdownIcon/CustomDropdownIcon";
 import { DestinationLocation } from "../../features/Location/locationAction";
 import GoogleMapsEmbed from "../../components/MyEmbed/MyEmbed";
+import { baseURL } from "../../services/axiosInterceptor";
 
 const tripData = [
   {
@@ -247,24 +248,21 @@ const FullyCustomizeTrip = () => {
     setSelectedVehicleImage(vehicleImage);
   };
 
-  // console.log(
-  //   selectedVehiclePrice,
-  //   "-----------------------selected vehicle price"
-  // );
+   
   /** data prepared for the options to use in the react-select */
   let activitiesOption = activities?.map((activity) => ({
     label: activity?.name,
     value: activity?._id,
   }));
 
-  // console.log("---------------------activites option", activitiesOption)
+ 
 
   useEffect(() => {
     dispatch(getAllActivitiesByDestination(id));
     dispatch(getHotelsByDestination({id:id}));
     dispatch(getSingleDestination(id));
     dispatch(getDestinationVehicle(id));
-    dispatch(DestinationLocation(id)); // get the location based on the destination
+    dispatch(DestinationLocation(id));  
   }, []);
 
   const [dayData, setDayData] = useState(
@@ -480,7 +478,7 @@ const FullyCustomizeTrip = () => {
                       vehicle?.vehicleName,
                       vehicle?.pricePerDay,
                       vehicle?._id,
-                      vehicle?.images[0]?.secure_url
+                      vehicle?.image?.path
                     );
                     closeModal(); // Close the modal after selection
                   }}
@@ -494,7 +492,7 @@ const FullyCustomizeTrip = () => {
                   </p> */}
 
                   <img
-                    src={vehicle?.images[0]?.secure_url}
+                    src={`${baseURL}/${vehicle?.image?.path}`}
                     className="w-28 h-20 mt-8"
                   />
                 </div>
