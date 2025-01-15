@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
   getAllHotels,
+  getBestHotels,
   getHotelsByDestination,
   getSingleHotel,
 } from "./hotelActions";
@@ -10,9 +11,10 @@ const hotelState = {
   isError: false,
   isSuccess: false,
   hotels: [],
+  bestHotels: [],
   singleHotel: {},
   destinationHotels: {},
-  paginate:{},
+  paginate: {},
   message: "",
 };
 
@@ -38,6 +40,22 @@ export const hotelsSlice = createSlice({
         state.message = action.error;
       })
 
+      .addCase(getBestHotels.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getBestHotels.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.bestHotels = action.payload;
+      })
+      .addCase(getBestHotels.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
+      })
+
       .addCase(getSingleHotel.pending, (state) => {
         state.isLoading = true;
       })
@@ -56,19 +74,19 @@ export const hotelsSlice = createSlice({
       .addCase(getHotelsByDestination.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getHotelsByDestination.rejected,(state,action)=>{
-        state.isLoading = false
-        state.isSuccess = false
-        state.isError = true
-        state.destinationHotels={}
-        state.message = action.error
+      .addCase(getHotelsByDestination.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = false;
+        state.isError = true;
+        state.destinationHotels = {};
+        state.message = action.error;
       })
       .addCase(getHotelsByDestination.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
         state.destinationHotels = action.payload.data;
-        state.paginate = action.payload.pagination
+        state.paginate = action.payload.pagination;
       });
   },
 });
