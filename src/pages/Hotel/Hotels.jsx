@@ -78,21 +78,6 @@ const Hotels = () => {
     }
 
     console.log("the states from hero is ", hotelStartDate, HotelEndDate, hotelTravellers)
-
-    let disableMinMax = false
-    let disablePriceRange = false
-
-    // if(maximamPrice > 0 && minimamPrice > 0){
-    //     disablePriceRange = true
-    //     disableMinMax = false
-    // }else if(maximamPrice === 0 || minimamPrice === 0){
-    //     disablePriceRange = false
-    //     disableMinMax= false
-    // }else if(selectedRange.length > 0){
-    //     disablePriceRange= true
-    //     disableMinMax = 
-    // }
-
     useEffect(()=>{
         const searchParams = new URLSearchParams(location.search);
         const existingPriceRange = searchParams.getAll("priceRange")
@@ -154,6 +139,9 @@ const Hotels = () => {
 
        }
     }
+
+
+    
     return (
       <div className="container mx-auto p-4">
         {/* Search Bar Section */}
@@ -243,37 +231,13 @@ const Hotels = () => {
                             ))}
                         </div>
                    </div>
-                    <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
-                        <h1 className="text-2xl font-bold text-gray-800 mb-6">Enter your own price range</h1>
-                        <form className="space-y-4">
-                            <div className="flex gap-4">
-                                <div className="flex-1">
-                                    <input
-                                        type="text"
-                                        id="minPrice"
-                                        placeholder="Min Price"
-                                        {...register("minPrice")}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    />
-                                </div>
-                                <div className="flex-1">
-                                    <input
-                                        type="number"
-                                        id="maxPrice"
-                                        {...register("maxPrice")}
-                                        placeholder="Max Price"
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    />
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                   
               </div>
 
                <div className="w-4/5 bg-white p-4 rounded-lg">
                    <h1 className="text-2xl font-bold mb-4">Hotels</h1>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {destinationHotels.length > 0 && destinationHotels?.map((hotel) => (
+                      {destinationHotels.length > 0 ? destinationHotels?.map((hotel) => (
                           <div key={hotel._id} className="bg-gray-50 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
                               {/* Hotel Image */}
                               <div className="relative h-48 w-full">
@@ -334,7 +298,7 @@ const Hotels = () => {
                               </Link>
                            
                           </div>
-                      ))}
+                      )):<h1>No Hotels found for this location...</h1>}
                   </div>
               </div>
           </div>

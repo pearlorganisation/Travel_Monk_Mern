@@ -155,7 +155,7 @@ export default function Header() {
         </div>
 
         <div className="flex flex-row justify-between">
-          <div className="hidden md:inline-block mr-20">
+          {/* <div className="hidden md:inline-block mr-20">
             <form className="">
               <div className="relative">
                 <input
@@ -193,7 +193,7 @@ export default function Header() {
                 </button>
               </div>
             </form>
-          </div>
+          </div> */}
 
           <div className="hidden md:inline-block " data-aos="fade-left">
             <div className="flex flex-row gap-6 items-center justify-center">

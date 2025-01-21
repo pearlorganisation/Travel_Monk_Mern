@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { logout } from "../../features/auth/authSlice";
 import { userLogout } from "../../features/auth/authActions";
 import Cookies from "js-cookie";
-
+import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 const ProfileMenu = () => {
   const [showDropdown, setShowDropdown] = useState(false);
 
@@ -47,7 +47,7 @@ const ProfileMenu = () => {
         className="text-red-500 px-6 py-2 border-2 border-[#007E8F] rounded-md"
         onClick={toggleDropdown}
       >
-        User
+        <PersonOutlinedIcon />
       </button>
       {showDropdown && (
         <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md">
