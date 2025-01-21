@@ -6,11 +6,12 @@ import { submitContact } from "../../../features/contact/contactAction";
 const GetinTouch = () => {
  const {register,handleSubmit,reset}=useForm()
  const dispatch=useDispatch()
-  const SubmitForm=(data)=>{
-console.log(data)
-const formData={data}
-dispatch(submitContact(formData))
-
+const page = window.location.pathname
+console.log("the page url is", page)
+ const SubmitForm=(data)=>{
+    // console.log(data)
+    const formData={...data, page}
+    dispatch(submitContact(formData))
   }
   return (
     <><div className="bg-gray-100 py-20 ">
