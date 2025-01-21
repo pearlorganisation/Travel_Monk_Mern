@@ -33,7 +33,7 @@ import SingleHotelDetails from "../pages/Hotel/SingleHotelDetails";
 import PrivacyPolicy from "../pages/PrivacyPolicy/PrivacyPolicy";
 import CancleationPolicy from "../pages/cancellationPolicy/cancellationPolicy";
 import TermCondition from "../pages/Term&Condition/Term&Condition";
-import CompanyProfile from "../pages/shivenpage";
+
 
 const Routes = createBrowserRouter([
   {
@@ -165,10 +165,7 @@ const Routes = createBrowserRouter([
         path:'/term-condition',
         element:<TermCondition/>
       },
-      {
-        path:'/shiven',
-        element:<CompanyProfile/>
-      }
+     
     ],
   },
 ]);
