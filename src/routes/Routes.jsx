@@ -30,6 +30,10 @@ import ResetPassword from "../pages/ResetPassword/ResetPassword";
 import PrebuiltEnquiryForm from "../pages/PrebuiltEnquiryForm/PrebuiltEnquiryForm";
 import FullCustomizeEnquiryForm from "../pages/FullCustomizeEnquiryForm/FullCustomizeEnquiryForm";
 import SingleHotelDetails from "../pages/Hotel/SingleHotelDetails";
+import PrivacyPolicy from "../pages/PrivacyPolicy/PrivacyPolicy";
+import CancleationPolicy from "../pages/cancellationPolicy/cancellationPolicy";
+import TermCondition from "../pages/Term&Condition/Term&Condition";
+import CompanyProfile from "../pages/shivenpage";
 
 const Routes = createBrowserRouter([
   {
@@ -130,10 +134,10 @@ const Routes = createBrowserRouter([
         path: "contact",
         element: <ContactUs />,
       },
-      {
-        path: "contact",
-        element: <ContactUs />,
-      },
+      // {
+      //   path: "contact",
+      //   element: <ContactUs />,
+      // },
       {
         path: "change-password",
         element: <ChangePassword />,
@@ -149,7 +153,22 @@ const Routes = createBrowserRouter([
       {
         path:"/hotel-details/:id",
         element:<SingleHotelDetails />
-      } 
+      } ,
+      {
+        path:'/privacy-policy',
+        element:<PrivacyPolicy/>
+      }
+      ,{
+        path:'/cancleation-policy',
+        element:<CancleationPolicy/>
+      },{
+        path:'/term-condition',
+        element:<TermCondition/>
+      },
+      {
+        path:'/shiven',
+        element:<CompanyProfile/>
+      }
     ],
   },
 ]);

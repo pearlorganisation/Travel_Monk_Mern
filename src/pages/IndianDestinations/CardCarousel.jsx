@@ -39,7 +39,7 @@ function CardCarousel({ data }) {
         {...settings}
       >
         {data?.map((cardData, i) => (
-          <div key={i} className="h-96  w-40 p-2    flex ">
+          <div key={i} className="h-96  w-40 p-2  overflow-hidden   flex ">
             <Link to={`/packages/${cardData?._id}`}>
               <div className=" h-full relative z-0 w-full">
                 <img

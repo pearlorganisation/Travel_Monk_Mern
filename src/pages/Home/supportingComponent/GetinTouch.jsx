@@ -1,14 +1,25 @@
 import React from "react";
+import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { submitContact } from "../../../features/contact/contactAction";
 
 const GetinTouch = () => {
+ const {register,handleSubmit,reset}=useForm()
+ const dispatch=useDispatch()
+  const SubmitForm=(data)=>{
+console.log(data)
+const formData={data}
+dispatch(submitContact(formData))
+
+  }
   return (
-    <><div className="bg-gray-100 py-20">
+    <><div className="bg-gray-100 py-20 ">
          <h1 className="text-2xl font-bold mb-2 text-center">Get in touch</h1>
          <p className="text-center mb-6">Please share your specific request</p>
-      <div className="bg-white p-10 rounded-lg shadow-lg w-full max-w-6xl m container mx-auto mt-10" style={{boxShadow:" rgba(0, 0, 0, 0.35) 0px 5px 15px"}} >
+      <div className="bg-white p-10 rounded-lg shadow-lg  max-w-4xl  container mx-auto mt-10" style={{boxShadow:" rgba(0, 0, 0, 0.35) 0px 5px 15px"}} >
    
-        <form>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+        <form onSubmit={handleSubmit(SubmitForm)}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4 ">
             <div className="space-y-4">
               <div>
                 <label htmlFor="contact-name" className="block text-gray-700">
@@ -17,6 +28,8 @@ const GetinTouch = () => {
                 <input
                   type="text"
                   id="contact-name"
+                  required
+                  {...register("name")}
                   className="w-full mt-2 p-2 border rounded-lg focus:outline-none bg-[#F5F5F5] focus:border-gray-400"
                 />
               </div>
@@ -27,6 +40,8 @@ const GetinTouch = () => {
                 <input
                   type="text"
                   id="contact-number"
+                  required
+                  {...register("phoneNumber")}
                   className="w-full mt-2 p-2 border rounded-lg focus:outline-none bg-[#F5F5F5] focus:border-gray-400"
                 />
               </div>
@@ -37,6 +52,8 @@ const GetinTouch = () => {
                 <input
                   type="email"
                   id="email"
+                  required
+                  {...register("email")}
                   className="w-full mt-2 p-2 border rounded-lg focus:outline-none bg-[#F5F5F5] focus:border-gray-400"
                 />
               </div>
@@ -49,6 +66,7 @@ const GetinTouch = () => {
                 <textarea
                   id="message"
                   rows="4"
+                  {...register("message")}
                   className="w-full mt-2 p-2 border rounded-lg focus:outline-none bg-[#F5F5F5] focus:border-gray-400"
                 ></textarea>
               </div>

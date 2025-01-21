@@ -128,7 +128,7 @@ const Signup = () => {
                     {loading ? (
                       <ClipLoader />
                     ) : (
-                      <span className="">Register</span>
+                      <span className="text-white">Register</span>
                     )}
                   </button>
                   <div className="flex items-center gap-2 text-sm">

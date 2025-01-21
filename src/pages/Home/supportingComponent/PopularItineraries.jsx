@@ -308,8 +308,8 @@ import { baseURL } from "../../../services/axiosInterceptor";
 
 const PopularItineraries = ({ data }) => {
   return (
-    <div className="bg-[#f5f5f5] py-8">
-      <div className="container mx-auto max-w-6xl relative">
+    <div className="bg-[#f5f5f5] overflow-hidden py-8">
+      <div className="container mx-auto max-w-6xl relative  overflow-hidden">
         <h2 className="text-start text-2xl font-bold mb-6">
           Most Popular International Destinations
         </h2>
