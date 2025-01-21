@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getSingleDestination } from "../../features/trips/tripActions";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { baseURL } from "../../services/axiosInterceptor";
 
 const InternationalDestinations = () => {
   const { id } = useParams();
@@ -18,7 +19,7 @@ const InternationalDestinations = () => {
   return (
     <div>
       <img
-        src={singleDestination?.data?.banner?.secure_url}
+        src={`${baseURL}/${singleDestination?.data?.banner?.path}`}
         className="w-full h-72"
       />
       <h1> Name : {singleDestination?.data?.name} </h1>

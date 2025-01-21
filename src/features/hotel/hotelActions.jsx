@@ -17,6 +17,30 @@ export const getAllHotels = createAsyncThunk("hotels/get", async (thunkAPI) => {
     return thunkAPI.rejectWithValue(error);
   }
 });
+
+export const getBestHotels = createAsyncThunk(
+  "best-hotels/get",
+  async (thunkAPI) => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const response = await axiosInstance.get(
+        `/api/v1/hotels?isBest=true`,
+        config
+      );
+
+      if (response.data) {
+        return response.data;
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 export const getSingleHotel = createAsyncThunk(
   "singleHotel/get",
   async (id, thunkAPI) => {
@@ -41,7 +65,7 @@ export const getSingleHotel = createAsyncThunk(
 
 export const getHotelsByDestination = createAsyncThunk(
   "hotels/by-destination",
-  async ({id, priceRange, search , page}, thunkAPI) => {
+  async ({ id, priceRange, search, page }, thunkAPI) => {
     try {
       const config = {
         headers: {
@@ -49,15 +73,16 @@ export const getHotelsByDestination = createAsyncThunk(
         },
       };
       const { data } = await axiosInstance.get(
-        `/api/v1/destinations/${id}/hotels`,{
-         params:{
-          priceRange,
-          search,
-          page
-         },
-         config
+        `/api/v1/destinations/${id}/hotels`,
+        {
+          params: {
+            priceRange,
+            search,
+            page,
+          },
+          config,
         }
-       );
+      );
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error);

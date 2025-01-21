@@ -4,6 +4,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import IconWithName from "./IconWithName";
 import { Link } from "react-router-dom";
+import { baseURL } from "../../services/axiosInterceptor";
 
 function CardCarousel({ data }) {
   let sliderRef = useRef(null);
@@ -44,7 +45,7 @@ function CardCarousel({ data }) {
               <div className=" h-full relative z-0 w-full">
                 <img
                   className="absolute inset-0  rounded-lg z-0 w-full h-full object-cover"
-                  src={cardData?.image?.secure_url}
+                  src={`${baseURL}/${cardData?.image?.path}`}
                   alt="img"
                 />
 
@@ -64,12 +65,12 @@ function CardCarousel({ data }) {
                         iconName="https://wanderon.in/assets/images/new-location.svg"
                         label={`${cardData?.duration?.days}D/${cardData?.duration?.nights}N`}
                       />
-                      <IconWithName
+                      {/* <IconWithName
                         iconName="https://wanderon.in/assets/images/new-calender.svg"
                         label={`${parseDate(
                           cardData?.startDate
                         )} to ${parseDate(cardData?.endDate)}`}
-                      />
+                      /> */}
                     </div>
 
                     <div className="flex  justify-between">

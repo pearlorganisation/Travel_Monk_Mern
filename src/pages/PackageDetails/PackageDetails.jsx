@@ -8,10 +8,11 @@ import { submitContact } from "../../features/contact/contactAction";
 import { useForm } from "react-hook-form";
 import { resetContactForm } from "../../features/contact/contactSlice";
 import axios from "axios";
+import { baseURL } from "../../services/axiosInterceptor";
 
 const PackageDetails = () => {
- const dispatch = useDispatch();
- const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { id } = useParams();
 
@@ -24,31 +25,34 @@ const PackageDetails = () => {
   };
 
   const { data } = useSelector((state) => state.packages.singlePackage);
- 
+
   const handleBookNow = () => {
-    navigate("/confirm-package", { state: { startingPrice: data?.startingPrice , packagename: data?.name , id:id } }); // passing data as state 
+    navigate("/confirm-package", {
+      state: {
+        startingPrice: data?.startingPrice,
+        packagename: data?.name,
+        id: id,
+      },
+    }); // passing data as state
   };
 
   /*-------------------------------------------------Handle for submitting the contact us form----------------------------------------------- */
   const { loading, success, error } = useSelector((state) => state.contact);
-  const { register , handleSubmit } = useForm();
-  
+  const { register, handleSubmit } = useForm();
 
   const submitForm = async (info) => {
-    dispatch(submitContact(info))
+    dispatch(submitContact(info));
   };
 
   if (success) {
-    
     dispatch(resetContactForm());
   }
   return (
     <div className="">
       <img
-        src={
-          data?.banner?.secure_url ||
-          "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=1421&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        }
+        src={`
+          ${baseURL}/${data?.banner?.path}
+          `}
         className="w-full h-96"
       />
       <div className="grid grid-cols-1 lg:grid-cols-[65%_auto] gap-6 px-20 py-6">
@@ -146,7 +150,10 @@ const PackageDetails = () => {
               per person
             </span>
           </h1>
-          <button onClick={handleBookNow} className="w-[100%] px-6 py-4 rounded-full bg-[#2DA5F3] text-white mt-4">
+          <button
+            onClick={handleBookNow}
+            className="w-[100%] px-6 py-4 rounded-full bg-[#2DA5F3] text-white mt-4"
+          >
             {" "}
             BOOK NOW{" "}
           </button>
@@ -200,7 +207,7 @@ const PackageDetails = () => {
                   id="phoneNumber"
                   type="text"
                   name="phoneNumber"
-                 {...register("phoneNumber")}
+                  {...register("phoneNumber")}
                   required
                   placeholder="e.g. John Smith"
                   class="relative w-full h-12 px-4 pl-12 placeholder-transparent transition-all border rounded outline-none focus-visible:outline-none peer border-slate-200 text-slate-500 autofill:bg-white invalid:border-pink-500 invalid:text-pink-500 focus:border-[#2DA5F3] focus:outline-none invalid:focus:border-pink-500 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400"
@@ -278,7 +285,7 @@ const PackageDetails = () => {
                   </g>
                 </svg>
               </div>
-{/**  message */}
+              {/**  message */}
               <div className="relative my-6">
                 <textarea
                   id="message"
@@ -291,9 +298,7 @@ const PackageDetails = () => {
                 <label
                   htmlFor="message"
                   className="cursor-text absolute left-2 -top-2 z-[1] px-2 text-xs text-slate-400 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:left-4 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:left-2 peer-focus:text-xs peer-focus:text-[#2DA5F3]"
-                >
-                  
-                </label>
+                ></label>
               </div>
               <div className="flex items-center justify-center mb-4">
                 {" "}

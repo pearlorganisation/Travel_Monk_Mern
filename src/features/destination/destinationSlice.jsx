@@ -12,6 +12,7 @@ const searchState = {
   searchResult: null,
   packagesByDestination: null,
   popular: [],
+  bestSellerPackages: [],
   message: "",
 };
 

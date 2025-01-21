@@ -1,45 +1,41 @@
-import React, { useState } from 'react'
-import { useLocation, useParams } from 'react-router-dom'
-import { baseURL } from '../../services/axiosInterceptor'
-import HotelContactForm from '../Forms/HotelContactForm'
+import React, { useState } from "react";
+import { useLocation, useParams } from "react-router-dom";
+import { baseURL } from "../../services/axiosInterceptor";
+import HotelContactForm from "../Forms/HotelContactForm";
 
 const SingleHotelDetails = () => {
-  const { id } = useParams()
-  const location = useLocation()
+  const { id } = useParams();
+  const location = useLocation();
   /** states for opening the modal of form */
   const [isOpen, setIsOpen] = useState(false);
-  const handleOpen = (e)=>{
+  const handleOpen = (e) => {
     // e.stopPropagation()
-    setIsOpen(!isOpen)
-  }
+    setIsOpen(!isOpen);
+  };
 
-  const state = location.state ?? {}
-  console.log('------------location state data', state)
+  const state = location.state ?? {};
+  console.log("------------location state data", state);
+  const { hotel, hotelStartDate, hotelEndDate, hotelTravellers } = state;
   const {
-    hotel,
-    hotelStartDate,
-    hotelEndDate,
-    hotelTravellers
-  } = state;
-const{
-  name,
-  city,
-  state: hotelState,
-  country,
-  estimatedPrice,
-  amenities,
-  googleMapsUrl,
-  image,
-  createdAt,
-} = hotel
+    name,
+    city,
+    state: hotelState,
+    country,
+    estimatedPrice,
+    amenities,
+    googleMapsUrl,
+    image,
+    createdAt,
+  } = hotel;
 
   /**-------------to calculate the estimated value of the hotel according to the hotel travellers-------------*/
-  let Estimated_Hotel_Value = (hotelTravellers, estimatedPrice)=>{
-    let travellersCount = parseInt(hotelTravellers)
-    let cost = estimatedPrice * Math.ceil(travellersCount/3)
-    return cost
-  }
-  let finalValue = Estimated_Hotel_Value(hotelTravellers,estimatedPrice) 
+  let Estimated_Hotel_Value = (hotelTravellers, estimatedPrice) => {
+    let travellersCount = parseInt(hotelTravellers);
+    let cost = estimatedPrice * Math.ceil(travellersCount / 3);
+    return cost;
+  };
+  let finalValue = Estimated_Hotel_Value(hotelTravellers, estimatedPrice);
+  finalValue = !isNaN(finalValue) ? finalValue : 0;
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 min-h-screen">
       {/* Hotel Header */}
@@ -57,7 +53,7 @@ const{
           <div className="rounded-lg overflow-hidden shadow-lg mb-6">
             {image?.path && (
               <img
-              // src={`${baseURL}/${hotel?.image.path}`}
+                // src={`${baseURL}/${hotel?.image.path}`}
                 src={`${baseURL}/${image.path}`}
                 alt={name}
                 className="w-full h-96 object-cover"
@@ -89,14 +85,21 @@ const{
             <h2 className="text-2xl font-semibold mb-4">Price Details</h2>
             <div className="text-3xl font-bold text-blue-600 mb-2">
               ₹{estimatedPrice}
-              <span className="text-sm font-normal text-gray-600">/night for Triple Sharing</span>
+              <span className="text-sm font-normal text-gray-600">
+                /night for Triple Sharing
+              </span>
             </div>
-            <div className="text-3xl font-bold text-blue-600 mb-2">
-              The Estimate Price for hotel will be around - ₹{finalValue} for
+            {/* {finalValue &&  <div className="text-3xl font-bold text-blue-600 mb-2">
+              The Estimate Price for hotel will be around - ₹{finalValue ?? "No Value "} for
               <span className="text-3xl pl-2 font-bold text-gray-600">{hotelTravellers} people</span>
-            </div>
-            <button onClick={()=>handleOpen()} className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition duration-200">
-                Book Through Our Travel Advisor           
+            </div>} */}
+
+            {finalValue}
+            <button
+              onClick={() => handleOpen()}
+              className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition duration-200"
+            >
+              Book Through Our Travel Advisor
             </button>
           </div>
 
@@ -130,9 +133,11 @@ const{
           </div>
         </div>
       </div>
-      {isOpen && <HotelContactForm data={location.state} setFormOpen={setIsOpen} />}
+      {isOpen && (
+        <HotelContactForm data={location.state} setFormOpen={setIsOpen} />
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default SingleHotelDetails
+export default SingleHotelDetails;

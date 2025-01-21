@@ -18,6 +18,7 @@ import WhatsAppLogo from "../../components/Whatsapp/WhatsLogo";
 import { useNavigate } from "react-router-dom";
 import Roadmap from "../../components/TimelineComponent/TimelineComponent";
 import GoogleMapsEmbed from "../../components/MyEmbed/MyEmbed";
+import { getBestHotels } from "../../features/hotel/hotelActions";
 import ChoseTravelMonkSec from "../../components/chooseTravelMonk/choseTravelMonk";
 import Testimonials from "./testimonials/testimonals";
 
@@ -32,9 +33,13 @@ const Home = () => {
 
   const { popular } = useSelector((state) => state.destination);
 
+  const { bestHotels } = useSelector((state) => state.hotels);
+
   const userState = useSelector((state) => state.user);
 
   console.log(popular?.data, "popular destination names");
+
+  console.log(bestHotels, "Best Hotels");
 
   // useEffect(() => {
   //   dispatch(getAuthUserDetails());
@@ -42,6 +47,10 @@ const Home = () => {
 
   useEffect(() => {
     dispatch(getPopularDestination());
+  }, []);
+
+  useEffect(() => {
+    dispatch(getBestHotels());
   }, []);
 
   const indianData = popular?.data?.filter((data) => data.type == "Indian");
@@ -70,9 +79,9 @@ const Home = () => {
       </div>
 
       <Upcoming />
-      <Distinguish />
-      <ChoseTravelMonkSec/>
-      <Testimonials/>
+      <Distinguish hotels={bestHotels?.data} />
+      <ChoseTravelMonkSec />
+      <Testimonials />
       <GetinTouch />
 
       {/* <HotelDetails />

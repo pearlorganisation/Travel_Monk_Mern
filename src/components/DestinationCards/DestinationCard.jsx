@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { baseURL } from "../../services/axiosInterceptor";
 
 const DestinationCard = ({ data }) => {
   console.log(data, "destination card data");
@@ -10,7 +11,7 @@ const DestinationCard = ({ data }) => {
           <div key={index} className="shadow-md rounded-lg overflow-hidden">
             <Link to={`/destination/${destination._id}`}>
               <img
-                src={destination?.image?.secure_url}
+                src={`${baseURL}/${destination?.image?.path}`}
                 alt={destination?.name}
                 className="w-full h-48 object-cover"
               />
