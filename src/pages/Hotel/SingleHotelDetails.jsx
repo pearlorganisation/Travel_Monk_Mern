@@ -50,11 +50,11 @@ const SingleHotelDetails = () => {
   let startDate = watch("startDate")
   let endDate = watch("endDate")
 
-  console.log("start and end date", startDate, endDate)
+  // console.log("start and end date", startDate, endDate)
   let finalStartDate = hotelStartDate ?? startDate;
   let finalEndDate = HotelEndDate ?? endDate;
   let finalPassenger = hotelTravellers ?? passenger;
-  console.log("the final start and end date will be", finalStartDate, finalEndDate, finalPassenger)
+  // console.log("the final start and end date will be", finalStartDate, finalEndDate, finalPassenger)
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 min-h-screen">
       {/* Hotel Header */}
