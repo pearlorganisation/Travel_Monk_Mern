@@ -210,7 +210,7 @@ export default function Header() {
 
                   <Link
                     to="/signup"
-                    className=" border-b-2 rounded-full bg-[#007E8F] hover:bg-[#439CA8] px-2 py-2 text-white border-b-transparent hover:border-b-[#007E8F] duration-150"
+                    className=" border-b-2 rounded-full bg-[#007E8F] hover:bg-[#439CA8] px-4 py-2 text-white border-b-transparent hover:border-b-[#007E8F] duration-150"
                   >
                     Sign Up
                   </Link>

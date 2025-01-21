@@ -17,8 +17,8 @@ const AboutUs = () => {
           backgroundPosition: "center",
         }}
       >
-        <div className="text-white w-full h-96 justify-start items-center flex">
-          <h1 className="text-4xl text-white font-bold ml-32">About us</h1>
+        <div className="text-white w-full h-96 justify-center items-center flex">
+          <h1 className="text-4xl text-white font-bold">About us</h1>
         </div>
       </div>
 

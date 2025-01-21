@@ -119,7 +119,7 @@ const Login = () => {
                     {loading ? (
                       <ClipLoader />
                     ) : (
-                      <span className="">Sign In</span>
+                      <span className="text-white">Sign In</span>
                     )}
                   </button>
 

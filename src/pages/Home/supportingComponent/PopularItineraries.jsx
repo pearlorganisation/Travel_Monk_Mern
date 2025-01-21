@@ -308,8 +308,8 @@ import { baseURL } from "../../../services/axiosInterceptor";
 
 const PopularItineraries = ({ data }) => {
   return (
-    <div className="bg-[#f5f5f5] py-8">
-      <div className="container mx-auto max-w-6xl relative">
+    <div className="bg-[#f5f5f5] overflow-hidden py-8">
+      <div className="container mx-auto max-w-6xl relative  overflow-hidden">
         <h2 className="text-start text-2xl font-bold mb-6">
           Most Popular International Destinations
         </h2>
@@ -426,10 +426,10 @@ const PopularItineraries = ({ data }) => {
             ))}
         </Swiper>
 
-        <div className="swiper-button-prev absolute lg:!-left-[80px]  bg-[#007E8F] !text-[#ffff] !px-8 !py-8 !rounded-full !h-6 !w-6 !mt-4 top-1/2 transform -translate-y-1/2 z-10 !text-xs !font-semibold scale-50 flex items-center justify-center"></div>
+        <div className="swiper-button-prev absolute lg:-!left-[10px]  bg-[#007E8F] !text-[#ffff] !px-8 !py-8 !rounded-full !h-6 !w-6 !mt-4 top-1/2 transform -translate-y-1/2 z-10 !text-xs !font-semibold scale-50 flex items-center justify-center"></div>
 
 {/* Swiper Next Button */}
-<button className="swiper-button-next absolute lg:!-right-[80px] bg-[#007E8F] !text-[#ffff] !px-8 !py-8 !rounded-full !h-6 !w-6 !mt-4 top-1/2 transform -translate-y-1/2 z-10 !text-xs !font-semibold scale-50 flex items-center justify-center"></button>
+<button className="swiper-button-next absolute lg:-!right-[10px] bg-[#007E8F] !text-[#ffff] !px-8 !py-8 !rounded-full !h-6 !w-6 !mt-4 top-1/2 transform -translate-y-1/2 z-10 !text-xs !font-semibold scale-50 flex items-center justify-center"></button>
 
         {/* Explore All Link */}
         <div className="text-right mt-4 mb-6">
