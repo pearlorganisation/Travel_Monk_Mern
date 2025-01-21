@@ -4,11 +4,11 @@ import { useDispatch } from "react-redux";
 import { hotelContact } from "../../features/contact/contactAction";
 import { useLocation } from "react-router-dom";
 
-const HotelContactForm = ({ data, setFormOpen }) => {
+const HotelContactForm = ({ data, setFormOpen, estimatedPrice, startDate, endDate, travellers }) => {
   const location = useLocation();
   // console.log("============location name", location.pathname)
   const { hotel, hotelStartDate, HotelEndDate, hotelTravellers } = data;
-
+console.log("form data is", hotelStartDate, HotelEndDate, hotelTravellers)
   const dispatch = useDispatch();
   const {
     handleSubmit,
@@ -19,10 +19,11 @@ const HotelContactForm = ({ data, setFormOpen }) => {
   const submitForm = (data) => {
     const formData = {
       ...data,
+      estimatedPrice:estimatedPrice,
       location: hotel.city,
-      checkIn: hotelStartDate,
-      checkOut: HotelEndDate,
-      numberOfPersons: hotelTravellers,
+      checkIn: startDate,
+      checkOut: endDate,
+      numberOfPersons: travellers,
       hotel: hotel._id,
       page: location.pathname,
     };

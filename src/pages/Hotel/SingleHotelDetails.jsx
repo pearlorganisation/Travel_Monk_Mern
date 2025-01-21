@@ -16,12 +16,12 @@ const SingleHotelDetails = () => {
 
   const { watch ,register, getValues } = useForm({
     defaultValues:{
-      passenger:1
+      passenger:0
     }
   })
   const state = location.state ?? {};
   console.log("------------location state data", state);
-  const { hotel, hotelStartDate, hotelEndDate, hotelTravellers } = state;
+  const { hotel, hotelStartDate, HotelEndDate, hotelTravellers } = state;
   const {
     name,
     city,
@@ -45,10 +45,16 @@ const SingleHotelDetails = () => {
 
   /** calculating ultimate final value */
   let passenger = watch("passenger")
-  console.log("the passenger is", passenger)
   let ultimateFinalValue = finalValue == 0 ? Estimated_Hotel_Value(passenger, estimatedPrice) : finalValue
+  
+  let startDate = watch("startDate")
+  let endDate = watch("endDate")
 
-  console.log("ultimate final value is", ultimateFinalValue)
+  console.log("start and end date", startDate, endDate)
+  let finalStartDate = hotelStartDate ?? startDate;
+  let finalEndDate = HotelEndDate ?? endDate;
+  let finalPassenger = hotelTravellers ?? passenger;
+  console.log("the final start and end date will be", finalStartDate, finalEndDate, finalPassenger)
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 min-h-screen">
       {/* Hotel Header */}
@@ -102,21 +108,43 @@ const SingleHotelDetails = () => {
                   /night for Triple Sharing
                   </span>
                 </div>
-                <form className="mb-4">
-                  <label htmlFor="ultimate" className="block text-sm font-medium text-gray-700 mb-2">
-                  Number of Passengers
-                  </label>
-                  <input
-                  id="passenger"
-                  type="number"
-                  defaultValue={1}
-                  {...register("passenger", { required: "Value is required" })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  />
-                </form>
-                <div className="text-xl font-semibold text-gray-800 mb-4">
-                  Estimated Cost: ₹{finalValue==0 ? ultimateFinalValue: finalValue}
-                </div>
+            {finalValue === 0 ? 
+            <form className="mb-4">
+              <label htmlFor="passenger" className="block text-sm font-medium text-gray-700 mb-2">
+                Number of Passengers
+              </label>
+              <input
+                id="passenger"
+                type="number"
+                defaultValue={1}
+                {...register("passenger", { required: "Value is required" })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+                <label htmlFor="startDate" className="block text-sm font-medium text-gray-700 mb-2">
+                  Enter Start Date
+                </label>
+                <input
+                id="startDate"
+                type="date"
+                {...register("startDate",{required:"Value is required"})} 
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+                <label htmlFor="endDate" className="block text-sm font-medium text-gray-700 mb-2">
+                  Enter End Date
+                </label>
+              <input
+              id="endDate"
+              type="date"
+              {...register("endDate",{required:"Value is required"})}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+               />
+            </form>  : <></>
+             }
+            <div className="text-xl font-semibold text-gray-800 mb-4">
+              Estimated Cost: ₹{finalValue == 0 ? ultimateFinalValue : finalValue}
+            </div> 
+                
+                 
                 <button
                   onClick={() => handleOpen()}
                   className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition duration-200"
@@ -156,7 +184,7 @@ const SingleHotelDetails = () => {
         </div>
       </div>
       {isOpen && (
-        <HotelContactForm data={location.state} setFormOpen={setIsOpen} />
+        <HotelContactForm data={location.state} startDate={finalStartDate} endDate={finalEndDate} travellers={finalPassenger} estimatedPrice={ultimateFinalValue} setFormOpen={setIsOpen} />
       )}
     </div>
   );
