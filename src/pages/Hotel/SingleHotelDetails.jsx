@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { baseURL } from "../../services/axiosInterceptor";
 import HotelContactForm from "../Forms/HotelContactForm";
+import { useForm } from "react-hook-form";
 
 const SingleHotelDetails = () => {
   const { id } = useParams();
@@ -13,6 +14,11 @@ const SingleHotelDetails = () => {
     setIsOpen(!isOpen);
   };
 
+  const { watch ,register, getValues } = useForm({
+    defaultValues:{
+      passenger:1
+    }
+  })
   const state = location.state ?? {};
   console.log("------------location state data", state);
   const { hotel, hotelStartDate, hotelEndDate, hotelTravellers } = state;
@@ -36,6 +42,13 @@ const SingleHotelDetails = () => {
   };
   let finalValue = Estimated_Hotel_Value(hotelTravellers, estimatedPrice);
   finalValue = !isNaN(finalValue) ? finalValue : 0;
+
+  /** calculating ultimate final value */
+  let passenger = watch("passenger")
+  console.log("the passenger is", passenger)
+  let ultimateFinalValue = finalValue == 0 ? Estimated_Hotel_Value(passenger, estimatedPrice) : finalValue
+
+  console.log("ultimate final value is", ultimateFinalValue)
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 min-h-screen">
       {/* Hotel Header */}
@@ -80,30 +93,39 @@ const SingleHotelDetails = () => {
 
         {/* Right Column - Price and Map */}
         <div className="lg:col-span-1">
-          {/* Price Card */}
-          <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-            <h2 className="text-2xl font-semibold mb-4">Price Details</h2>
-            <div className="text-3xl font-bold text-blue-600 mb-2">
-              ₹{estimatedPrice}
-              <span className="text-sm font-normal text-gray-600">
-                /night for Triple Sharing
-              </span>
-            </div>
-            {/* {finalValue &&  <div className="text-3xl font-bold text-blue-600 mb-2">
-              The Estimate Price for hotel will be around - ₹{finalValue ?? "No Value "} for
-              <span className="text-3xl pl-2 font-bold text-gray-600">{hotelTravellers} people</span>
-            </div>} */}
+       
+                <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+                <h2 className="text-2xl font-semibold mb-4">Price Details</h2>
+                <div className="text-3xl font-bold text-blue-600 mb-2">
+                  ₹{estimatedPrice}
+                  <span className="text-sm font-normal text-gray-600">
+                  /night for Triple Sharing
+                  </span>
+                </div>
+                <form className="mb-4">
+                  <label htmlFor="ultimate" className="block text-sm font-medium text-gray-700 mb-2">
+                  Number of Passengers
+                  </label>
+                  <input
+                  id="passenger"
+                  type="number"
+                  defaultValue={1}
+                  {...register("passenger", { required: "Value is required" })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                </form>
+                <div className="text-xl font-semibold text-gray-800 mb-4">
+                  Estimated Cost: ₹{finalValue==0 ? ultimateFinalValue: finalValue}
+                </div>
+                <button
+                  onClick={() => handleOpen()}
+                  className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition duration-200"
+                >
+                  Book Through Our Travel Advisor
+                </button>
+                </div>
 
-            {finalValue}
-            <button
-              onClick={() => handleOpen()}
-              className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition duration-200"
-            >
-              Book Through Our Travel Advisor
-            </button>
-          </div>
-
-          {/* Map Section */}
+                {/* Map Section */}
           <div className="bg-white rounded-lg shadow-lg p-6">
             <h2 className="text-2xl font-semibold mb-4">Location</h2>
             <div
