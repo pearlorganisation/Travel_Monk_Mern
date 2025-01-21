@@ -19,6 +19,8 @@ import { useNavigate } from "react-router-dom";
 import Roadmap from "../../components/TimelineComponent/TimelineComponent";
 import GoogleMapsEmbed from "../../components/MyEmbed/MyEmbed";
 import { getBestHotels } from "../../features/hotel/hotelActions";
+import ChoseTravelMonkSec from "../../components/chooseTravelMonk/choseTravelMonk";
+import Testimonials from "./testimonials/testimonals";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -78,7 +80,10 @@ const Home = () => {
 
       <Upcoming />
       <Distinguish hotels={bestHotels?.data} />
+      <ChoseTravelMonkSec />
+      <Testimonials />
       <GetinTouch />
+
       {/* <HotelDetails />
       <FindHotel /> */}
     </div>

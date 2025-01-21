@@ -1,4 +1,5 @@
 import React from "react";
+import { baseURL } from "../../services/axiosInterceptor";
 
 function HeroBanner({ data }) {
   return (
@@ -7,7 +8,7 @@ function HeroBanner({ data }) {
         <>
           <img
             className="absolute inset-0 z-0 w-full h-screen  object-cover"
-            src={data[0]?.packageDestination?.banner?.secure_url}
+            src={`${baseURL}/${data[0]?.packageDestination?.banner?.path}`}
             alt="banner image"
           />
 

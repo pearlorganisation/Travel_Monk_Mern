@@ -7,7 +7,11 @@ import { useEffect } from "react";
 const Signup = () => {
   const { loading, success } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   const navigate = useNavigate();
 
@@ -52,30 +56,70 @@ const Signup = () => {
           <div className="mt-12 flex flex-col items-center">
             <div className="w-full flex-1 mt-8">
               <form onSubmit={handleSubmit(submitForm)}>
-                {/* {error && <ErrorMessage>{error}</ErrorMessage>} */}
                 <div className="mx-auto max-w-xs">
                   <input
                     className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
                     type="text"
                     placeholder="Full Name"
-                    required
-                    {...register("name")}
+                    {...register("name", { required: "Full name is required" })}
                   />
+                  {errors.name && (
+                    <p className="text-red-500 text-sm mt-2">
+                      {errors.name.message}
+                    </p>
+                  )}
 
                   <input
                     className="w-full px-8 py-4 mt-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
                     type="email"
                     placeholder="Email"
-                    required
-                    {...register("email")}
+                    {...register("email", {
+                      required: "Email is required",
+                      pattern: {
+                        value:
+                          /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                        message: "Please enter a valid email address",
+                      },
+                    })}
                   />
+                  {errors.email && (
+                    <p className="text-red-500 text-sm mt-2">
+                      {errors.email.message}
+                    </p>
+                  )}
+
+                  <input
+                    className="w-full px-8 py-4 mt-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+                    type="tel"
+                    placeholder="Mobile Number"
+                    {...register("mobileNumber", {
+                      required: "Mobile number is required", // Custom validation message
+                      pattern: {
+                        value: /^[+]?[0-9]{10,15}$/, // Pattern for validating mobile number (10 to 15 digits)
+                        message: "Please enter a valid mobile number", // Custom validation message
+                      },
+                    })}
+                  />
+                  {/* Error Message */}
+                  {errors.mobileNumber && (
+                    <p className="text-red-500 text-sm mt-2">
+                      {errors.mobileNumber.message}
+                    </p>
+                  )}
+
                   <input
                     className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
                     type="password"
-                    required
                     placeholder="Password"
-                    {...register("password")}
+                    {...register("password", {
+                      required: "Password is required",
+                    })}
                   />
+                  {errors.password && (
+                    <p className="text-red-500 text-sm mt-2">
+                      {errors.password.message}
+                    </p>
+                  )}
                   <button
                     type="submit"
                     disabled={loading}

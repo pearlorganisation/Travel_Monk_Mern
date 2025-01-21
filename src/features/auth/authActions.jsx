@@ -6,7 +6,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const registerUser = createAsyncThunk(
   "auth/register",
-  async ({ name, email, password }, { rejectWithValue }) => {
+  async (info, { rejectWithValue }) => {
     try {
       const config = {
         headers: {
@@ -15,7 +15,7 @@ export const registerUser = createAsyncThunk(
       };
       const { data } = await axiosInstance.post(
         "/api/v1/auth/signup",
-        { name, email, password },
+        info,
         config
       );
 
@@ -65,17 +65,17 @@ export const userLogin = createAsyncThunk(
   }
 );
 
-
 /**-----------------------------------------Action for sending logout request to backedn-----------------------------------------*/
 export const userLogout = createAsyncThunk(
-  "user/logout", async (_, { rejectWithValue }) => {
+  "user/logout",
+  async (_, { rejectWithValue }) => {
     try {
       const config = {
         headers: {
-          "Content-Type": "application/json"
-        }
-      }
-      const { data } = await axiosInstance.post(`/api/v1/auth/logout`,config)
+          "Content-Type": "application/json",
+        },
+      };
+      const { data } = await axiosInstance.post(`/api/v1/auth/logout`, config);
     } catch (error) {
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);
@@ -84,4 +84,4 @@ export const userLogout = createAsyncThunk(
       }
     }
   }
-)
+);

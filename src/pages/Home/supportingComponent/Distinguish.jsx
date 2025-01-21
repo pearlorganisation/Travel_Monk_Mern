@@ -18,6 +18,7 @@ const Distinguish = ({ hotels }) => {
                 pagination={{
                   clickable: true,
                 }}
+                watchOverflow={true}
                 breakpoints={{
                   640: {
                     slidesPerView: 2,
@@ -32,7 +33,13 @@ const Distinguish = ({ hotels }) => {
                     spaceBetween: 50,
                   },
                 }}
-                modules={[Pagination]}
+                navigation={
+                  {
+                    prevEl:".swiper-button-prev",
+                    nextEl:".swiper-button-next"
+                  }
+                }
+                modules={[Pagination,Navigation]}
                 className="mySwiper"
               >
                 {Array.isArray(hotels) &&
@@ -75,6 +82,10 @@ const Distinguish = ({ hotels }) => {
                     </SwiperSlide>
                   ))}
               </Swiper>
+              <div className="swiper-button-prev absolute  lg:!-left-[80px] bg-[#007E8F] !text-[#ffff] !px-8 !py-8 !rounded-full !h-6 !w-6 !mt-4 top-1/2 transform -translate-y-1/2 z-10 !text-xs !font-semibold scale-50 flex items-center justify-center"></div>
+
+{/* Swiper Next Button */}
+      {/* <button className="swiper-button-next absolute lg:!-right-[80px] bg-[#007E8F] !text-[#ffff] !px-8 !py-8 !rounded-full !h-6 !w-6 !mt-4 top-1/2 transform -translate-y-1/2 z-10 !text-xs !font-semibold scale-50 flex items-center justify-center"></button>
             </div>
             <div className="text-right mt-4 py-10">
               <a href="#" className="text-blue-500 hover:underline">
@@ -118,7 +129,10 @@ const Distinguish = ({ hotels }) => {
             {Array.isArray(hotels) &&
               hotels.map((hotel) => (
                 <SwiperSlide key={hotel?._id}>
-                  <Link to={`/hotel-details/${hotel?._id}`} state={hotel}>
+                  <Link
+                    to={`/hotel-details/${hotel?._id}`}
+                    state={{ hotel: hotel }}
+                  >
                     {/* <div className="max-w-xs mx-auto relative rounded-lg overflow-hidden shadow-lg">
                           <img
                             className="w-full h-56 object-cover"

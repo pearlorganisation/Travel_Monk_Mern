@@ -54,7 +54,7 @@ const IndianPackages = () => {
             </h2>
           </div>
           <div className="px-10 py-4">
-            <BestPackages />
+            <BestPackages data={destState?.bestSellerPackages} />
           </div>
         </div>
       </div>
