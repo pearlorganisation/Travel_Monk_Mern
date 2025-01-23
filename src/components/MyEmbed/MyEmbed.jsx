@@ -26,13 +26,14 @@ let wayPoints2 =[]
   console.log('----------the cordinates are', coordinates)
   wayPoints2.push(coordinates)
  }
-console.log('=============the waypoints are',  wayPoints2)
+// console.log('=============the waypoints are',  wayPoints2)
 
-console.log('-------------the destination data is', destination2)
+// console.log('-------------the destination data is', destination2)
   // Coordinates for origin, destination, and waypoints
   const origin =  origin2 //"34.1526,77.5770"; // Leh
   const destination =destination2   //"34.1526,77.5770"; // Leh
   const waypoints = wayPoints2 
+  console.log("the origin and destination is", origin, destination)
   // [
   //   "34.2431,77.5750", // Khardung La
   //   "34.6621,77.4573", // Nubra Valley
@@ -45,11 +46,16 @@ console.log('-------------the destination data is', destination2)
   console.log('----------waypointsStr', waypointsStr)
 
   // Generate map URL
+  // const mapURL = `https://www.google.com/maps/embed/v1/directions?key=${apiKey}&origin=${encodeURIComponent(
+  //   origin
+  // )}&destination=${encodeURIComponent(
+  //   destination
+  // )}&mode=driving`;
   const mapURL = `https://www.google.com/maps/embed/v1/directions?key=${apiKey}&origin=${encodeURIComponent(
     origin
-  )}&destination=${encodeURIComponent(
-    destination
-  )}&waypoints=${encodeURIComponent(waypointsStr)}&mode=driving`;
+  )}&destination=${encodeURIComponent(destination)}&mode=driving`;
+
+  
 
   return (
     <div style={{ width: "100%", height: "500px" }}>
