@@ -2,9 +2,9 @@ import React from "react";
 import { IoLogoOctocat } from "react-icons/io5";
 const Reviews = () => {
   return (
-    <div className="bg-white    ">
+    <div className="bg-white mt-0">
       <div
-        className="border flex justify-center gap-10 h-full w-full"
+        className="border flex justify-center gap-10 h-full w-full pt-1 pb-1"
         style={{
           boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;",
         }}

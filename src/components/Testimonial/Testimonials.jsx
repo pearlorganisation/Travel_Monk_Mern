@@ -73,7 +73,7 @@ const Testimonials = () => {
         <SwiperSlide>Slide 9</SwiperSlide>
       </Swiper> */}
 
-      <div className=" p-10">
+      <div className=" px-10">
         <ul className="grid items-center gap-6 md:grid-cols-2 ">
           {testimonials.map((item, idx) => (
             <li key={idx} className="bg-white rounded-xl border shadow-md">
