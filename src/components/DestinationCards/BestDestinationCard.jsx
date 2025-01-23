@@ -48,7 +48,7 @@ const TripCard = ({ trip }) => {
 export const BestPackages = ({ data }) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      {data.map((trip, index) => (
+      {data?.map((trip, index) => (
         <TripCard key={index} trip={trip} />
       ))}
     </div>
