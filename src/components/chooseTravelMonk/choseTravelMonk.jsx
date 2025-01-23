@@ -1,79 +1,80 @@
-import React from 'react'
-import Accordion from '@mui/material/Accordion';
-import AccordionActions from '@mui/material/AccordionActions';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import Typography from '@mui/material/Typography';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
+import React from 'react';
+import { Accordion, AccordionTab } from 'primereact/accordion';
 import Button from '@mui/material/Button';
+
 function ChoseTravelMonkSec() {
   return (
-    <div className='bg-gray-100'>
-       
-        <h1 className='text-black font-bold mx-auto text-center py-10 text-3xl'>Why Choose Travel Monk?</h1>
-        <div className='flex flex-row max-w-6xl items-center justify-center mx-auto'>
-        <div className='px-4 py-10'>
-            <img src="src\assets\images\Gradient.png" alt=""  className='w-[500px]'/>
+    <div className="bg-gray-100">
+      <h1 className="text-black font-bold mx-auto text-center py-10 text-3xl">
+        Why Choose Travel Monk?
+      </h1>
+      <div className="flex flex-row max-w-6xl items-center justify-center mx-auto">
+        {/* Image Section */}
+        <div className="px-4 py-10">
+          <img
+            src="src/assets/images/Gradient.png"
+            alt="Travel Monk"
+            className="w-[500px] h-[400px] object-cover"
+          />
         </div>
-          <div className='w-[600px]'>
-      <Accordion > 
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1-content"
-          id="panel1-header"
-        >
-          <Typography component="span">Expertise and Experience</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-        With years of experience in the travel industry, we have the knowledge and expertise to craft the perfect itinerary tailored to your needs.
-        </AccordionDetails>
-      </Accordion>
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel2-content"
-          id="panel2-header"
-        >
-          <Typography component="span">Safety and Reliability</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-          malesuada lacus ex, sit amet blandit leo lobortis eget.
-        </AccordionDetails>
-      </Accordion>
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel2-content"
-          id="panel2-header"
-        >
-          <Typography component="span">Unique and Authentic Experiences</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-          malesuada lacus ex, sit amet blandit leo lobortis eget.
-        </AccordionDetails>
-      </Accordion>
-      <Accordion defaultExpanded>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel3-content"
-          id="panel3-header"
-        >
-          <Typography component="span">Comprehensive Travel Packages</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-          malesuada lacus ex, sit amet blandit leo lobortis eget.
-        </AccordionDetails>
-       
-      </Accordion>
-    </div>
+
+        {/* Accordion Section */}
+        <div className="w-[600px] h-[400px]">
+          <div className="card h-full">
+            {/* Fixed height for the accordion with scrollable content */}
+            <Accordion
+              className="h-full overflow-y-auto"
+              activeIndex={0}
+            >
+              <AccordionTab header="Expertise and Experience">
+                <p className="m-0">
+                  With years of experience in the travel industry, we have the
+                  knowledge and expertise to craft the perfect itinerary
+                  tailored to your needs.
+                </p>
+              </AccordionTab>
+              <AccordionTab header="Safety and Reliability">
+                <p className="m-0">
+                  Sed ut perspiciatis unde omnis iste natus error sit
+                  voluptatem accusantium doloremque laudantium, totam rem
+                  aperiam, eaque ipsa quae ab illo inventore veritatis et quasi
+                  architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam
+                  voluptatem quia voluptas sit aspernatur aut odit aut fugit,
+                  sed quia consequuntur magni dolores eos qui ratione voluptatem
+                  sequi nesciunt. Consectetur, adipisci velit, sed quia non
+                  numquam eius modi.
+                </p>
+              </AccordionTab>
+              <AccordionTab header="Unique and Authentic Experiences">
+                <p className="m-0">
+                  At vero eos et accusamus et iusto odio dignissimos ducimus qui
+                  blanditiis praesentium voluptatum deleniti atque corrupti quos
+                  dolores et quas molestias excepturi sint occaecati cupiditate
+                  non provident, similique sunt in culpa qui officia deserunt
+                  mollitia animi, id est laborum et dolorum fuga. Et harum
+                  quidem rerum facilis est et expedita distinctio. Nam libero
+                  tempore, cum soluta nobis est eligendi optio cumque nihil
+                  impedit quo minus.
+                </p>
+              </AccordionTab>
+              <AccordionTab header="Comprehensive Travel Packages">
+                <p className="m-0">
+                  At vero eos et accusamus et iusto odio dignissimos ducimus qui
+                  blanditiis praesentium voluptatum deleniti atque corrupti quos
+                  dolores et quas molestias excepturi sint occaecati cupiditate
+                  non provident, similique sunt in culpa qui officia deserunt
+                  mollitia animi, id est laborum et dolorum fuga. Et harum
+                  quidem rerum facilis est et expedita distinctio. Nam libero
+                  tempore, cum soluta nobis est eligendi optio cumque nihil
+                  impedit quo minus.
+                </p>
+              </AccordionTab>
+            </Accordion>
+          </div>
         </div>
-    
+      </div>
     </div>
-  )
+  );
 }
 
-export default ChoseTravelMonkSec
+export default ChoseTravelMonkSec;

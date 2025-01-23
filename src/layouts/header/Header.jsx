@@ -14,6 +14,7 @@ export default function Header() {
     { title: "Indian Packages", path: "/indian_packages" },
     { title: "About Us", path: "/about_us" },
     { title: "Contact Us", path: "/contact" },
+    {title:"Privacy Policy", path:"/privacy-policy"}
   ];
 
   // const isLoggedIn = localStorage.getItem("isLoggedIn");
