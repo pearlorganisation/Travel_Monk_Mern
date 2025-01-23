@@ -21,6 +21,7 @@ import GoogleMapsEmbed from "../../components/MyEmbed/MyEmbed";
 import { getBestHotels } from "../../features/hotel/hotelActions";
 import ChoseTravelMonkSec from "../../components/chooseTravelMonk/choseTravelMonk";
 import Testimonials from "./testimonials/testimonals";
+import AnimatedImageTabs from "../../components/AnimatedTabs/AnimatedTabs";
 
 const Home = () => {
   const navigate = useNavigate();

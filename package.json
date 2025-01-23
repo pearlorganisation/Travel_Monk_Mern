@@ -21,8 +21,9 @@
     "@react-pdf/renderer": "^4.1.6",
     "@reduxjs/toolkit": "^2.2.7",
     "axios": "^1.7.7",
+    "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
-    "framer-motion": "^11.14.4",
+    "framer-motion": "^11.18.2",
     "gsap": "^3.12.5",
     "html-react-parser": "^5.1.18",
     "js-cookie": "^3.0.5",
@@ -46,7 +47,8 @@
     "react-toastify": "^10.0.6",
     "redux-persist": "^6.0.0",
     "slick-carousel": "^1.8.1",
-    "swiper": "^11.1.4"
+    "swiper": "^11.1.4",
+    "tailwind-merge": "^2.6.0"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",
