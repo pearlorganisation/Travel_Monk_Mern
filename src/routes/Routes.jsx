@@ -33,7 +33,7 @@ import SingleHotelDetails from "../pages/Hotel/SingleHotelDetails";
 import PrivacyPolicy from "../pages/PrivacyPolicy/PrivacyPolicy";
 import CancleationPolicy from "../pages/cancellationPolicy/cancellationPolicy";
 import TermCondition from "../pages/Term&Condition/Term&Condition";
-
+import Disclaimer from "../pages/Disclaimer/Disclaimer";
 
 const Routes = createBrowserRouter([
   {
@@ -143,29 +143,33 @@ const Routes = createBrowserRouter([
         element: <ChangePassword />,
       },
       {
-        path:"prebuilt-package-enquiry",
-        element:<PrebuiltEnquiryForm />
+        path: "prebuilt-package-enquiry",
+        element: <PrebuiltEnquiryForm />,
       },
       {
-        path:"full-customize-package-enquiry",
-        element:<FullCustomizeEnquiryForm />
+        path: "full-customize-package-enquiry",
+        element: <FullCustomizeEnquiryForm />,
       },
       {
-        path:"/hotel-details/:id",
-        element:<SingleHotelDetails />
-      } ,
-      {
-        path:'/privacy-policy',
-        element:<PrivacyPolicy/>
-      }
-      ,{
-        path:'/cancleation-policy',
-        element:<CancleationPolicy/>
-      },{
-        path:'/term-condition',
-        element:<TermCondition/>
+        path: "/hotel-details/:id",
+        element: <SingleHotelDetails />,
       },
-     
+      {
+        path: "/privacy-policy",
+        element: <PrivacyPolicy />,
+      },
+      {
+        path: "/cancleation-policy",
+        element: <CancleationPolicy />,
+      },
+      {
+        path: "/term-condition",
+        element: <TermCondition />,
+      },
+      {
+        path: "/disclaimer",
+        element: <Disclaimer />,
+      },
     ],
   },
 ]);
