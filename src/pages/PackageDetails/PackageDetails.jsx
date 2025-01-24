@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { resetContactForm } from "../../features/contact/contactSlice";
 import axios from "axios";
 import { baseURL } from "../../services/axiosInterceptor";
+import WhatsAppLogo from "../../components/Whatsapp/WhatsLogo";
 
 const PackageDetails = () => {
   const dispatch = useDispatch();
@@ -49,6 +50,17 @@ const PackageDetails = () => {
   }
   return (
     <div className="">
+      <div
+        className="flex items-center absolute justify-end px-20 mb-6"
+        style={{
+          position: "fixed",
+          bottom: "20px",
+          right: "20px",
+          zIndex: 1000, // Ensures it appears above other elements
+        }}
+      >
+        <WhatsAppLogo />
+      </div>
       <img
         src={`
           ${baseURL}/${data?.banner?.path}
@@ -136,23 +148,23 @@ const PackageDetails = () => {
           <h1 className="text-4xl font-semibold">Customize </h1>
 
           <Link to={`/customize/${data?._id}`}>
-            <button className="w-[100%] px-6 py-4 rounded-full bg-[#2DA5F3] text-white mt-4">
+            <button className="w-[100%] px-6 py-4 rounded-lg bg-[#007E8F] hover:bg-[#439CA8] text-white mt-4">
               {" "}
               Customize{" "}
             </button>
           </Link>
 
           <h3 className="mt-2 text-gray-400 text-sm">Starting from</h3>
-          <h1 className="text-5xl text-[#2DA5F3] mt-0 flex justify-start items-baseline">
+          <h1 className="text-5xl text-[#007E8F] mt-0 flex justify-start items-baseline">
             ₹ {data?.startingPrice || 42000}/-{" "}
-            <span className="text-xl text-[#2DA5F3] ml-3 font-bold">
+            <span className="text-xl text-[#007E8F] ml-3 font-bold">
               {" "}
               per person
             </span>
           </h1>
           <button
             onClick={handleBookNow}
-            className="w-[100%] px-6 py-4 rounded-full bg-[#2DA5F3] text-white mt-4"
+            className="w-[100%] px-6 py-4 rounded-lg bg-[#007E8F] hover:bg-[#439CA8] text-white mt-4"
           >
             {" "}
             BOOK NOW{" "}
@@ -304,7 +316,7 @@ const PackageDetails = () => {
                 {" "}
                 <button
                   type="submit"
-                  className="px-6 py-3 bg-yellow-400 w-[80%]  rounded-full"
+                  className="px-6 py-3 rounded-lg bg-[#007E8F] text-white w-[80%]"
                 >
                   {" "}
                   Submit{" "}

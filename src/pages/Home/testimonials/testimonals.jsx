@@ -105,39 +105,50 @@ const Testimonials = () => {
           modules={[Pagination, Navigation]}
           className="mySwiper"
         >
-          {testimonials.map((testimonial) => (
-            <SwiperSlide key={testimonial.id}>
-              <div className="bg-white min-h-64 shadow-lg rounded-lg p-6 border border-gray-200 hover:shadow-xl transition-shadow duration-300 overflow-hidden">
-                <div className="flex items-start gap-4">
-                  {/* Image */}
-                  <div className="flex-shrink-0">
-                    <img
+          {Array.isArray(testimonials) &&
+            testimonials.map((testimonial) => (
+              <SwiperSlide key={testimonial.id}>
+                <div className="bg-white min-h-64 shadow-lg rounded-lg p-6 border border-gray-200 hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+                  <div className="flex items-start gap-4">
+                    {/* Image */}
+                    <div className="">
+                      {/* <img
                       src={testimonial.image}
                       alt={testimonial.name}
                       className="w-20 h-20 rounded-full border-2"
-                    />
-                  </div>
-                  {/* Text Content */}
-                  <div className="flex-1">
-                    <h3 className="font-bold text-lg text-gray-800">
-                      {testimonial.name}
-                    </h3>
-                    <p className="text-gray-700 mt-2 lg:text-base md:text-sm text-xs line-clamp-4">
-                      {testimonial.text}
-                    </p>
-                    <a
-                      href="https://www.google.com/search?client=safari&rls=en&q=travel+monk+adventures&ie=UTF-8&oe=UTF-8&dlnr=1&sei=4mdNZ9CLMbWH4-EPyYGJ8Ac#dlnr=1&topic=mid:/g/11cmh5569r"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-600 font-medium hover:underline mt-4 block"
-                    >
-                      Read more
-                    </a>
+                    /> */}
+
+                      <div className="w-20 h-20 bg-gray-200 rounded-full">
+                        <h1 className="text-center pt-6 capitalize ">
+                          {" "}
+                          {testimonial?.name.charAt(0)}{" "}
+                          {testimonial?.name.charAt(
+                            testimonial?.name.indexOf(" ") + 1
+                          )}
+                        </h1>
+                      </div>
+                    </div>
+                    {/* Text Content */}
+                    <div className="flex-1">
+                      <h3 className="font-bold text-lg text-gray-800">
+                        {testimonial.name}
+                      </h3>
+                      <p className="text-gray-700 mt-2 lg:text-base md:text-sm text-xs line-clamp-4">
+                        {testimonial.text}
+                      </p>
+                      <a
+                        href="https://www.google.com/search?client=safari&rls=en&q=travel+monk+adventures&ie=UTF-8&oe=UTF-8&dlnr=1&sei=4mdNZ9CLMbWH4-EPyYGJ8Ac#dlnr=1&topic=mid:/g/11cmh5569r"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 font-medium hover:underline mt-4 block"
+                      >
+                        Read more
+                      </a>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </SwiperSlide>
-          ))}
+              </SwiperSlide>
+            ))}
         </Swiper>
 
         {/* Swiper Previous Button */}

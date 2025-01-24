@@ -8,6 +8,7 @@ import { getDestinationVehicle } from "../../features/DestinationVehicle/destina
 import moment from "moment/moment";
 import { getHotelsByDestination } from "../../features/hotel/hotelActions";
 import CustomDropdownIndicator from "../../components/CustomDropdownIcon/CustomDropdownIcon";
+import WhatsAppLogo from "../../components/Whatsapp/WhatsLogo";
 
 const CustomizeTrip = () => {
   const dispatch = useDispatch();
@@ -41,7 +42,7 @@ const CustomizeTrip = () => {
   const { destinationHotels } = useSelector((state) => state.hotels);
 
   useEffect(() => {
-    dispatch(getHotelsByDestination({id:singleDestination?.data?._id}));
+    dispatch(getHotelsByDestination({ id: singleDestination?.data?._id }));
   }, []);
 
   const handleSelect = (vehicleName, vehiclePrice, vehicleId, vehicleImage) => {
@@ -187,6 +188,17 @@ const CustomizeTrip = () => {
   };
   return (
     <div className="bg-gray-200 relative">
+      <div
+        className="flex items-center absolute justify-end px-20 mb-6"
+        style={{
+          position: "fixed",
+          bottom: "20px",
+          right: "20px",
+          zIndex: 1000, // Ensures it appears above other elements
+        }}
+      >
+        <WhatsAppLogo />
+      </div>
       <div className="px-24 pt-2">
         <h1 className="text-[#1f1f1f] font-bold text-4xl leading-[48px]">
           {singlePackage?.data?.name}
