@@ -330,8 +330,18 @@ const FullyCustomizeTrip = () => {
     );
 
     const coordinates = selectedLocation?.coordinates;
-    mapData[index].latitude = coordinates?.coordinates[0] ?? 0.0
-    mapData[index].longitude = coordinates?.coordinates[1] ?? 0.0 
+    mapData[index].latitude = coordinates?.coordinates[0] 
+    mapData[index].longitude = coordinates?.coordinates[1] 
+    // let newPoints = []
+    // let splittedPoints = event.target.value.split(",")
+    
+    //  for(let key in newPoints){
+    //   key = parseInt(newPoints[key])
+    //  }
+    // newPoints.push(splittedPoints)
+    // console.log("the new points are", newPoints)
+    // mapData[index].latitude = newPoints[0] ?? 0.0
+    // mapData[index].longitude = coordinates?.coordinates[1] ?? 0.0 
     console.log('------------------Coordinates:', coordinates);
     console.log('---------------locationdata is', locationData)
    };
