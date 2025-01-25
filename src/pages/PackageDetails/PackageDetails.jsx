@@ -38,6 +38,7 @@ const PackageDetails = () => {
         startingPrice: data?.startingPrice,
         packagename: data?.name,
         id: id,
+        packageData:data
       },
     }); // passing data as state
   };

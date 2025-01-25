@@ -16,7 +16,8 @@ const ConfirmPackage = () => {
   const { userInfo } = useSelector((state) => state.user);
   // console.log("the user info is", userInfo)
   // extracting the price and  packagename and id of the package.
-  const { startingPrice, packagename, dayData, id } = location.state || {}; // id is the packageId
+  const { startingPrice, packagename, packageData, id } = location.state || {}; // id is the packageId
+  console.log("the package data is", packageData)
 
   const [numPeople, setNumPeople] = useState(1);
   const [loading, setLoading] = useState(false);
