@@ -29,7 +29,7 @@ const Home = () => {
   // if (localStorage.getItem("packageDetails")) {
   //   navigate("/full-customize-package-enquiry");
   // }
-
+const { isUserLoggedIn } = useSelector((state)=> state.auth)
   const dispatch = useDispatch();
 
   const { popular } = useSelector((state) => state.destination);
@@ -42,9 +42,11 @@ const Home = () => {
 
   console.log(bestHotels, "Best Hotels");
 
-  // useEffect(() => {
-  //   dispatch(getAuthUserDetails());
-  // }, []);
+  useEffect(() => {
+    if(isUserLoggedIn){
+    dispatch(getAuthUserDetails())
+  };
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(getPopularDestination());
