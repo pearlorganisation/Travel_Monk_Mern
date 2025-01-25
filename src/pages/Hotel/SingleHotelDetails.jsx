@@ -105,7 +105,7 @@ const SingleHotelDetails = () => {
                 <div className="text-3xl font-bold text-blue-600 mb-2">
                   ₹{estimatedPrice}
                   <span className="text-sm font-normal text-gray-600">
-                  /night for Triple Sharing
+                  /night for Double Sharing
                   </span>
                 </div>
             {finalValue === 0 ? 
