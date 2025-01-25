@@ -124,6 +124,23 @@ const styles = StyleSheet.create({
         fontStyle: 'italic',
         color: '#888',
     },
+    terms: {
+        marginTop: 30,
+        padding: 15,
+        border: '1px solid #ddd',
+        borderRadius: 5,
+        backgroundColor: '#f0f8ff',
+    },
+    termsHeader: {
+        fontSize: 16,
+        marginBottom: 10,
+        fontWeight: 'bold',
+        color: '#003366',
+    },
+    termsText: {
+        fontSize: 12,
+        color: '#003366',
+    },
 });
 
 const PrebuiltEnquiriesPdf = ({ data }) => (
@@ -170,6 +187,16 @@ const PrebuiltEnquiriesPdf = ({ data }) => (
                     </View>
                 ))}
             </View>
+              <View style={styles.terms}>
+                    <Text style={styles.termsHeader}>Payment Terms and Conditions</Text>
+                    <Text style={styles.termsText}>- Pay only ₹5000 upfront for booking the package.</Text>
+                    <Text style={styles.termsText}>
+                        - Pay the next 40% of the package price within 48 hours after our executive connects with you.
+                    </Text>
+                    <Text style={styles.termsText}>
+                        - The remaining balance must be cleared as per the agreed payment schedule.
+                    </Text>
+                </View>
         </Page>
     </Document>
 );
