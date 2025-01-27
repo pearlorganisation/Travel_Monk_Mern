@@ -134,10 +134,6 @@ const Routes = createBrowserRouter([
         path: "contact",
         element: <ContactUs />,
       },
-      // {
-      //   path: "contact",
-      //   element: <ContactUs />,
-      // },
       {
         path: "change-password",
         element: <ChangePassword />,
