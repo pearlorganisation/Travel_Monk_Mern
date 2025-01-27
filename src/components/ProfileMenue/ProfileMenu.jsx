@@ -3,8 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logout } from "../../features/auth/authSlice";
 import { userLogout } from "../../features/auth/authActions";
-import Cookies from "js-cookie";
-import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
+import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 const ProfileMenu = () => {
   const [showDropdown, setShowDropdown] = useState(false);
 
