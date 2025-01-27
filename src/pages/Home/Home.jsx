@@ -45,9 +45,7 @@ const { isUserLoggedIn } = useSelector((state)=> state.auth)
   useEffect(() => {
     if(isUserLoggedIn){
     dispatch(getAuthUserDetails())
-  }else{
-    navigate("/login")
-  }
+  } 
   }, [dispatch]);
 
   useEffect(() => {
