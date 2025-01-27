@@ -37,7 +37,7 @@ const SingleHotelDetails = () => {
   /**-------------to calculate the estimated value of the hotel according to the hotel travellers-------------*/
   let Estimated_Hotel_Value = (hotelTravellers, estimatedPrice) => {
     let travellersCount = parseInt(hotelTravellers);
-    let cost = estimatedPrice * Math.ceil(travellersCount / 3);
+    let cost = estimatedPrice * Math.ceil(travellersCount / 2);
     return cost;
   };
   let finalValue = Estimated_Hotel_Value(hotelTravellers, estimatedPrice);
@@ -102,33 +102,28 @@ const SingleHotelDetails = () => {
 
         {/* Right Column - Price and Map */}
         <div className="lg:col-span-1">
-          <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-            <h2 className="text-2xl font-semibold mb-4">Price Details</h2>
-            <div className="text-3xl font-bold text-blue-600 mb-2">
-              ₹{estimatedPrice}
-              <span className="text-sm font-normal text-gray-600">
-                /night for Double Sharing
-              </span>
-            </div>
-            {finalValue === 0 ? (
-              <form className="mb-4">
-                <label
-                  htmlFor="passenger"
-                  className="block text-sm font-medium text-gray-700 mb-2"
-                >
-                  Number of Passengers
-                </label>
-                <input
-                  id="passenger"
-                  type="number"
-                  defaultValue={1}
-                  {...register("passenger", { required: "Value is required" })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                />
-                <label
-                  htmlFor="startDate"
-                  className="block text-sm font-medium text-gray-700 mb-2"
-                >
+       
+                <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+                <h2 className="text-2xl font-semibold mb-4">Price Details</h2>
+                <div className="text-3xl font-bold text-blue-600 mb-2">
+                  ₹{estimatedPrice}
+                  <span className="text-sm font-normal text-gray-600">
+                  /night for Double Sharing
+                  </span>
+                </div>
+            {finalValue === 0 ? 
+            <form className="mb-4">
+              <label htmlFor="passenger" className="block text-sm font-medium text-gray-700 mb-2">
+                Number of Passengers
+              </label>
+              <input
+                id="passenger"
+                type="number"
+                defaultValue={1}
+                {...register("passenger", { required: "Value is required" })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+                <label htmlFor="startDate" className="block text-sm font-medium text-gray-700 mb-2">
                   Enter Start Date
                 </label>
                 <input
@@ -150,12 +145,13 @@ const SingleHotelDetails = () => {
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </form>
-            ) : (
+             : (
               <></>
             )}
             <div className="text-xl font-semibold text-gray-800 mb-4">
               Estimated Cost: ₹
               {finalValue == 0 ? ultimateFinalValue : finalValue}
+              <span> for {finalPassenger} people</span>
             </div>
 
             <button

@@ -9,7 +9,9 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import { Provider } from "react-redux";
 import { store, persistor } from "./features/store.jsx";
 import { PersistGate } from "redux-persist/integration/react";
+import { injectStore } from "./services/axiosInterceptor.js";
 
+injectStore(store)
 ReactDOM.createRoot(document.getElementById("root")).render(
   <>
     <Provider store={store}>

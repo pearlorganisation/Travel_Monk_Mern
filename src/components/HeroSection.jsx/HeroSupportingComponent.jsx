@@ -250,7 +250,7 @@ const [isHotelSearching, setIsHotelSearching] = useState(false)
 const [hotelStartDate, setHotelStartDate] = useState(null);
 const [HotelEndDate, setHotelEndDate] = useState(null);
 const [hotelTravellers, setHotelTravellers] = useState("");
-
+console.log(" start end dates are", hotelStartDate, HotelEndDate)
 //handle input change for hotels//
   const handleInputChangeHotel = (e) => {
     const value = e.target.value;
@@ -569,33 +569,49 @@ console.log('----------------- the actionsresult value is', actionResult)
 
                     <div className="flex flex-col ">
                       <label className="block mb-2 text-sm font-medium text-gray-700">
-                        Start Date
+                        Check In
                       </label>
-                      <DatePicker
+                      {/* <DatePicker
                         required
                         selectsStart
                         selected={hotelStartDate}
                         onChange={(date) => setHotelStartDate(date)}
-                        dateFormat="yyyy-MM-dd"
+                        dateFormat="MM-dd-yyyy"
                         className="w-full px-3 py-2 border border-black/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#007E8F] focus:border-transparent"
                         placeholderText="Select Start Date"
-                      />
+                      /> */}
+                    <input
+                      type="date"
+                      id="checkIn"
+                      {...register("checkIn")}
+                      onChange={(e)=> setHotelStartDate(e.target.value)}
+                      required
+                      className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
                     </div>
                     <div className="flex flex-col">
                       <label className="block mb-2 text-sm font-medium text-gray-700">
-                        End Date
+                        Check Out
                       </label>
-                      <DatePicker
+                      {/* <DatePicker
                         required
                         selectsEnd
                         selected={HotelEndDate}
                         onChange={(date) => setHotelEndDate(date)}
                         minDate={startDate}
                         // maxDate={maxDate}
-                        dateFormat="yyyy-MM-dd"
+                        dateFormat="MM-dd-yyyy"
                         className="w-full px-3 py-2 border border-black/50  rounded-lg focus:outline-none focus:ring-2 focus:ring-[#007E8F] focus:border-transparent"
                         placeholderText="Select End Date"
-                      />
+                      /> */}
+                    <input
+                      type="date"
+                      id="checkOut"
+                      {...register("checkOut")}
+                      onChange={(e)=> setHotelEndDate(e.target.value)}
+                      required
+                      className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
                     </div>
                   </div>
 
