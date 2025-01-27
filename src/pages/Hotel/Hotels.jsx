@@ -39,24 +39,31 @@ const Hotels = () => {
     const { destinationHotels, paginate } = useSelector((state)=> state.hotels);
     const [selectedRange, setSelectedRange] = useState([])
     const [searchQuery, setSearchQuery] = useState("")   
-    const { handleSubmit , register, watch, formState:{errors}} = useForm()
+    let { hotelStartDate, HotelEndDate, hotelTravellers } = location.state ?? {}
+    const { handleSubmit , register, watch, formState:{errors}} = useForm({
+        defaultValues:{
+            checkIn: hotelStartDate,
+            checkOut: HotelEndDate,
+            travellers: hotelTravellers
+        }
+    })
+
     const [newDestinationId,setNewDestinationId] = useState(id)
-    console.log('-------------the new destination id', newDestinationId)
+    // console.log('-------------the new destination id', newDestinationId)
     const [currentPage, setCurrentPage] = useState(1)
 
-    let { hotelStartDate, HotelEndDate, hotelTravellers } = location.state ?? {}
+   
      
     /** min and max price filter */
-    const maximamPrice = watch("maxPrice")
-    const minimamPrice = watch("minPrice")
     
-    console.log("the minimam and maximam price is", minimamPrice, maximamPrice)
+    
+    // console.log("the minimam and maximam price is", minimamPrice, maximamPrice)
 
 
 
     /**Pagination Logic */
     const totalPages = Math.ceil(paginate?.total / paginate?.limit)
-    console.log('------------total pages', totalPages)
+    // console.log('------------total pages', totalPages)
 
     const handleChangePage = (page) => {
         if (page > 0 && page <= totalPages) {
@@ -70,12 +77,16 @@ const Hotels = () => {
     const hotelPageCheckInDate = watch("checkIn")
     const hotelPageCheckOutDate = watch("checkOut")
     const hotelPageTravellerCount = watch("travellers")
-    console.log("hotel page selected date and passengers", hotelPageCheckInDate, hotelPageCheckOutDate, hotelPageTravellerCount)
-    if(hotelPageCheckInDate || hotelPageCheckOutDate || hotelPageTravellerCount){
-        hotelStartDate = hotelPageCheckInDate ?? hotelStartDate
-        HotelEndDate = hotelPageCheckOutDate ?? HotelEndDate
-        hotelTravellers = parseInt(hotelPageTravellerCount) ?? parseInt(hotelTravellers)
-    }
+    // console.log("hotel page selected date and passengers", hotelPageCheckInDate, hotelPageCheckOutDate, hotelPageTravellerCount)
+    // if(hotelPageCheckInDate || hotelPageCheckOutDate || hotelPageTravellerCount){
+    //     hotelStartDate = hotelPageCheckInDate ?? hotelStartDate
+    //     HotelEndDate = hotelPageCheckOutDate ?? HotelEndDate
+    //     hotelTravellers = parseInt(hotelPageTravellerCount) ?? parseInt(hotelTravellers)
+    // }
+    hotelStartDate = hotelPageCheckInDate
+    HotelEndDate = hotelPageCheckOutDate
+    hotelTravellers = hotelPageTravellerCount
+
 
     console.log("the states from hero is ", hotelStartDate, HotelEndDate, hotelTravellers)
     useEffect(()=>{
@@ -120,8 +131,8 @@ const Hotels = () => {
 
     /*-------------------------for submitting the form to get new hotels based on the new location------------------------- */
     
-    console.log('----------the current location is', location) 
-    console.log('------------the entered value is', watch("hotelDestination"))
+    // console.log('----------the current location is', location) 
+    // console.log('------------the entered value is', watch("hotelDestination"))
     const submitForm = async(data)=>{
         const { hotelDestination } = data;
        try {

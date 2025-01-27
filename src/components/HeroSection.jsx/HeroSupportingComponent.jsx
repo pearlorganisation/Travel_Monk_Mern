@@ -576,7 +576,7 @@ console.log('----------------- the actionsresult value is', actionResult)
                         selectsStart
                         selected={hotelStartDate}
                         onChange={(date) => setHotelStartDate(date)}
-                        dateFormat="yyyy-MM-dd"
+                        dateFormat="MM-dd-yyyy"
                         className="w-full px-3 py-2 border border-black/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#007E8F] focus:border-transparent"
                         placeholderText="Select Start Date"
                       />
@@ -592,7 +592,7 @@ console.log('----------------- the actionsresult value is', actionResult)
                         onChange={(date) => setHotelEndDate(date)}
                         minDate={startDate}
                         // maxDate={maxDate}
-                        dateFormat="yyyy-MM-dd"
+                        dateFormat="MM-dd-yyyy"
                         className="w-full px-3 py-2 border border-black/50  rounded-lg focus:outline-none focus:ring-2 focus:ring-[#007E8F] focus:border-transparent"
                         placeholderText="Select End Date"
                       />
