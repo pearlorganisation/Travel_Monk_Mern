@@ -14,11 +14,11 @@ const SingleHotelDetails = () => {
     setIsOpen(!isOpen);
   };
 
-  const { watch ,register, getValues } = useForm({
-    defaultValues:{
-      passenger:0
-    }
-  })
+  const { watch, register, getValues } = useForm({
+    defaultValues: {
+      passenger: 0,
+    },
+  });
   const state = location.state ?? {};
   console.log("------------location state data", state);
   const { hotel, hotelStartDate, HotelEndDate, hotelTravellers } = state;
@@ -44,11 +44,14 @@ const SingleHotelDetails = () => {
   finalValue = !isNaN(finalValue) ? finalValue : 0;
 
   /** calculating ultimate final value */
-  let passenger = watch("passenger")
-  let ultimateFinalValue = finalValue == 0 ? Estimated_Hotel_Value(passenger, estimatedPrice) : finalValue
-  
-  let startDate = watch("startDate")
-  let endDate = watch("endDate")
+  let passenger = watch("passenger");
+  let ultimateFinalValue =
+    finalValue == 0
+      ? Estimated_Hotel_Value(passenger, estimatedPrice)
+      : finalValue;
+
+  let startDate = watch("startDate");
+  let endDate = watch("endDate");
 
   // console.log("start and end date", startDate, endDate)
   let finalStartDate = hotelStartDate ?? startDate;
@@ -99,61 +102,71 @@ const SingleHotelDetails = () => {
 
         {/* Right Column - Price and Map */}
         <div className="lg:col-span-1">
-       
-                <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-                <h2 className="text-2xl font-semibold mb-4">Price Details</h2>
-                <div className="text-3xl font-bold text-blue-600 mb-2">
-                  ₹{estimatedPrice}
-                  <span className="text-sm font-normal text-gray-600">
-                  /night for Triple Sharing
-                  </span>
-                </div>
-            {finalValue === 0 ? 
-            <form className="mb-4">
-              <label htmlFor="passenger" className="block text-sm font-medium text-gray-700 mb-2">
-                Number of Passengers
-              </label>
-              <input
-                id="passenger"
-                type="number"
-                defaultValue={1}
-                {...register("passenger", { required: "Value is required" })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              />
-                <label htmlFor="startDate" className="block text-sm font-medium text-gray-700 mb-2">
+          <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <h2 className="text-2xl font-semibold mb-4">Price Details</h2>
+            <div className="text-3xl font-bold text-blue-600 mb-2">
+              ₹{estimatedPrice}
+              <span className="text-sm font-normal text-gray-600">
+                /night for Double Sharing
+              </span>
+            </div>
+            {finalValue === 0 ? (
+              <form className="mb-4">
+                <label
+                  htmlFor="passenger"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Number of Passengers
+                </label>
+                <input
+                  id="passenger"
+                  type="number"
+                  defaultValue={1}
+                  {...register("passenger", { required: "Value is required" })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                />
+                <label
+                  htmlFor="startDate"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Enter Start Date
                 </label>
                 <input
-                id="startDate"
-                type="date"
-                {...register("startDate",{required:"Value is required"})} 
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              />
-                <label htmlFor="endDate" className="block text-sm font-medium text-gray-700 mb-2">
+                  id="startDate"
+                  type="date"
+                  {...register("startDate", { required: "Value is required" })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                />
+                <label
+                  htmlFor="endDate"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Enter End Date
                 </label>
-              <input
-              id="endDate"
-              type="date"
-              {...register("endDate",{required:"Value is required"})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-               />
-            </form>  : <></>
-             }
+                <input
+                  id="endDate"
+                  type="date"
+                  {...register("endDate", { required: "Value is required" })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                />
+              </form>
+            ) : (
+              <></>
+            )}
             <div className="text-xl font-semibold text-gray-800 mb-4">
-              Estimated Cost: ₹{finalValue == 0 ? ultimateFinalValue : finalValue}
-            </div> 
-                
-                 
-                <button
-                  onClick={() => handleOpen()}
-                  className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition duration-200"
-                >
-                  Book Through Our Travel Advisor
-                </button>
-                </div>
+              Estimated Cost: ₹
+              {finalValue == 0 ? ultimateFinalValue : finalValue}
+            </div>
 
-                {/* Map Section */}
+            <button
+              onClick={() => handleOpen()}
+              className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition duration-200"
+            >
+              Book Through Our Travel Advisor
+            </button>
+          </div>
+
+          {/* Map Section */}
           <div className="bg-white rounded-lg shadow-lg p-6">
             <h2 className="text-2xl font-semibold mb-4">Location</h2>
             <div
@@ -184,7 +197,14 @@ const SingleHotelDetails = () => {
         </div>
       </div>
       {isOpen && (
-        <HotelContactForm data={location.state} startDate={finalStartDate} endDate={finalEndDate} travellers={finalPassenger} estimatedPrice={ultimateFinalValue} setFormOpen={setIsOpen} />
+        <HotelContactForm
+          data={location.state}
+          startDate={finalStartDate}
+          endDate={finalEndDate}
+          travellers={finalPassenger}
+          estimatedPrice={ultimateFinalValue}
+          setFormOpen={setIsOpen}
+        />
       )}
     </div>
   );

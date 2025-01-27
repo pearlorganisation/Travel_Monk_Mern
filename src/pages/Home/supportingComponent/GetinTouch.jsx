@@ -5,7 +5,12 @@ import { submitContact } from "../../../features/contact/contactAction";
 import { baseURL } from "../../../services/axiosInterceptor";
 
 const GetinTouch = () => {
-  const { register, handleSubmit, reset } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
   const dispatch = useDispatch();
   const page = `${baseURL}${window.location.pathname}`;
   console.log("the page url is", page);
@@ -79,11 +84,21 @@ const GetinTouch = () => {
                   ></textarea>
                 </div>
                 <div className="flex items-center mt-4">
-                  <input type="checkbox" id="terms" className="mr-2" />
+                  <input
+                    type="checkbox"
+                    id="terms"
+                    {...register("terms", { required: true })}
+                    className="mr-2"
+                  />
                   <label htmlFor="terms" className="text-gray-700">
                     I agree to the terms and conditions
                   </label>
                 </div>
+                {errors.terms && (
+                  <p className="text-red-500 text-sm mt-1">
+                    You must agree to the terms and conditions
+                  </p>
+                )}
                 <button
                   type="submit"
                   className="w-full mt-4 p-2 bg-white border border-gray-400 rounded-lg text-gray-700  hover:bg-gray-100 transition-colors duration-200"
