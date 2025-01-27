@@ -62,7 +62,7 @@ const { isUserLoggedIn } = useSelector((state)=> state.auth)
   );
 
   return (
-    <div className="">
+    <div className="relative">
       <div
         style={{
           backgroundImage: `url('/HeroImg.jpg')`,
@@ -77,7 +77,15 @@ const { isUserLoggedIn } = useSelector((state)=> state.auth)
       <PopularDestination data={indianData ? indianData : []} />
       <PopularItineraries data={internationalData ? internationalData : []} />
 
-      <div className="flex items-center justify-end px-20 mb-6">
+      <div
+        className="flex items-center absolute justify-end px-20 mb-6"
+        style={{
+          position: "fixed",
+          bottom: "20px",
+          right: "20px",
+          zIndex: 1000, // Ensures it appears above other elements
+        }}
+      >
         <WhatsAppLogo />
       </div>
 

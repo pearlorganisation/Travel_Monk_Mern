@@ -16,6 +16,7 @@ import CustomDropdownIndicator from "../../components/CustomDropdownIcon/CustomD
 import { DestinationLocation } from "../../features/Location/locationAction";
 import GoogleMapsEmbed from "../../components/MyEmbed/MyEmbed";
 import { baseURL } from "../../services/axiosInterceptor";
+import WhatsAppLogo from "../../components/Whatsapp/WhatsLogo";
 
 const tripData = [
   {
@@ -172,7 +173,7 @@ const FullyCustomizeTrip = () => {
   const { destinationVehicles } = useSelector(
     (state) => state.destination_vehicle
   );
-  const { destinationLocations } = useSelector((state)=>state.locations) // holds locations based on the destinations
+  const { destinationLocations } = useSelector((state) => state.locations); // holds locations based on the destinations
 
   const { isUserLoggedIn } = useSelector((state) => state.auth);
 
@@ -185,18 +186,15 @@ const FullyCustomizeTrip = () => {
   const [selectedVehicleImage, setSelectedVehicleImage] = useState("");
 
   const { startDate, endDate, destination } = location.state ?? {};
- 
 
   /** calculating the days difference */
   const calculateDaysBetweenDates = (startDate, endDate) => {
-    
     const start = new Date(startDate);
     const end = new Date(endDate);
 
-  
     const timeDifference = end - start;
     const daysDifference = timeDifference / (1000 * 60 * 60 * 24);
-   
+
     return daysDifference;
   };
 
@@ -221,10 +219,8 @@ const FullyCustomizeTrip = () => {
 
   const datesRange = getDatesInRange(startDate, endDate); // getting the range of the date
   const datesObjects = datesRange.map((date) => ({ date }));
- 
 
   /**----------------------------States--------------------------------- */
-   
 
   /** states for claculating the selected hotels price */
   const [hotelPrices, setHotelPrices] = useState([]); // Array to store prices for each day
@@ -248,21 +244,18 @@ const FullyCustomizeTrip = () => {
     setSelectedVehicleImage(vehicleImage);
   };
 
-   
   /** data prepared for the options to use in the react-select */
   let activitiesOption = activities?.map((activity) => ({
     label: activity?.name,
     value: activity?._id,
   }));
 
- 
-
   useEffect(() => {
     dispatch(getAllActivitiesByDestination(id));
-    dispatch(getHotelsByDestination({id:id}));
+    dispatch(getHotelsByDestination({ id: id }));
     dispatch(getSingleDestination(id));
     dispatch(getDestinationVehicle(id));
-    dispatch(DestinationLocation(id));  
+    dispatch(DestinationLocation(id));
   }, []);
 
   const [dayData, setDayData] = useState(
@@ -291,37 +284,41 @@ const FullyCustomizeTrip = () => {
 
   /**---------------------map data-------------------------*/
   const [mapData, setMapData] = useState(
-    Array.from({length: myDays},()=>({
-      latitude:"",
-      longitude:""
+    Array.from({ length: myDays }, () => ({
+      latitude: "",
+      longitude: "",
     })) || []
-  ) 
+  );
 
-  useEffect(()=>{
-    if(myDays){
+  useEffect(() => {
+    if (myDays) {
       setMapData(
-        Array.from({length: myDays},()=>({
-          latitude:"",
-          longitude:""
+        Array.from({ length: myDays }, () => ({
+          latitude: "",
+          longitude: "",
         })) || []
-      )
+      );
     }
-  },[myDays])
- 
- console.log('---------------------mapData', mapData)
-  
+  }, [myDays]);
 
-  const handleLocationChange = (index, event, selectedDate,destinationData) => {
+  console.log("---------------------mapData", mapData);
+
+  const handleLocationChange = (
+    index,
+    event,
+    selectedDate,
+    destinationData
+  ) => {
     const newDayData = [...dayData];
     /** find the selected location using the id */
- 
+
     newDayData[index].selectedLocation = event.target.value;
     newDayData[index].date = selectedDate;
     newDayData[index].day = index + 1;
     setDayData(newDayData);
 
     /**----------------this is where we will prepare our map Data---------------------*/
-    const locationData = destinationData.find((dest) => 
+    const locationData = destinationData.find((dest) =>
       dest.location.some((loc) => loc.name === event.target.value)
     );
 
@@ -398,10 +395,13 @@ const FullyCustomizeTrip = () => {
 
   /**------------------Handle for Enquiry-------------------------*/
   const handleEnquiry = () => {
-    const invalidEntry = dayData.find(day =>
-      !day.selectedLocation ||  
-      !day.selectedHotel || Object.keys(day.selectedHotel).length === 0 || 
-      !Array.isArray(day.selectedActivities) || day.selectedActivities.length === 0  
+    const invalidEntry = dayData.find(
+      (day) =>
+        !day.selectedLocation ||
+        !day.selectedHotel ||
+        Object.keys(day.selectedHotel).length === 0 ||
+        !Array.isArray(day.selectedActivities) ||
+        day.selectedActivities.length === 0
     );
 
     if (invalidEntry) {
@@ -435,9 +435,20 @@ const FullyCustomizeTrip = () => {
         endDate,
       },
     });
-  } 
+  };
   return (
     <div className="bg-gray-200 relative">
+      <div
+        className="flex items-center absolute justify-end px-20 mb-6"
+        style={{
+          position: "fixed",
+          bottom: "20px",
+          right: "20px",
+          zIndex: 1000, // Ensures it appears above other elements
+        }}
+      >
+        <WhatsAppLogo />
+      </div>
       <div className="px-24 mt-4">
         <h1 className="text-[#1f1f1f] font-bold text-4xl leading-[48px]">
           {singleDestination?.data?.name}
@@ -600,12 +611,14 @@ const FullyCustomizeTrip = () => {
                         </option>
                       ))} */}
 
-                      {destinationLocations?.[index]?.location?.map((loc, index)=>(
-                        <option key={index} value={loc.name}>
-                         {" "}
-                         {loc.name}
-                        </option>
-                      ))}
+                      {destinationLocations?.[index]?.location?.map(
+                        (loc, index) => (
+                          <option key={index} value={loc.name}>
+                            {" "}
+                            {loc.name}
+                          </option>
+                        )
+                      )}
                     </select>
                   </div>
 
@@ -743,7 +756,7 @@ const FullyCustomizeTrip = () => {
           </button>
         </div>
       </div>
-      <GoogleMapsEmbed  data={mapData}/>
+      <GoogleMapsEmbed data={mapData} />
     </div>
   );
 };

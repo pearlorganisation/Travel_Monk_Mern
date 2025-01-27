@@ -9,19 +9,20 @@ import { useForm } from "react-hook-form";
 import { resetContactForm } from "../../features/contact/contactSlice";
 import axios from "axios";
 import { baseURL } from "../../services/axiosInterceptor";
-import DropIcon from "../../assets/logos/location.png"
-import ClockIcon from "../../assets/logos/clock.png"
-import RightMark  from "../../assets/logos/icons8-checkmark-50.png"
-import CrossIcon from "../../assets/logos/icons8-cross-50.png"
+import DropIcon from "../../assets/logos/location.png";
+import ClockIcon from "../../assets/logos/clock.png";
+import RightMark from "../../assets/logos/icons8-checkmark-50.png";
+import CrossIcon from "../../assets/logos/icons8-cross-50.png";
+import WhatsAppLogo from "../../components/Whatsapp/WhatsLogo";
 
 const PackageDetails = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation()
+  const location = useLocation();
   const { id } = useParams();
 
-  const page = location.pathname
-  console.log("the page is ", page)
+  const page = location.pathname;
+  console.log("the page is ", page);
   useEffect(() => {
     getPackage();
   }, []);
@@ -38,7 +39,7 @@ const PackageDetails = () => {
         startingPrice: data?.startingPrice,
         packagename: data?.name,
         id: id,
-        packageData:data
+        packageData: data,
       },
     }); // passing data as state
   };
@@ -48,7 +49,7 @@ const PackageDetails = () => {
   const { register, handleSubmit } = useForm();
 
   const submitForm = async (info) => {
-    const formData = {...info, page:page}
+    const formData = { ...info, page: page };
     dispatch(submitContact(formData));
   };
 
@@ -57,6 +58,17 @@ const PackageDetails = () => {
   }
   return (
     <div className="">
+      <div
+        className="flex items-center absolute justify-end px-20 mb-6"
+        style={{
+          position: "fixed",
+          bottom: "20px",
+          right: "20px",
+          zIndex: 1000, // Ensures it appears above other elements
+        }}
+      >
+        <WhatsAppLogo />
+      </div>
       <img
         src={`
           ${baseURL}/${data?.banner?.path}
@@ -109,10 +121,7 @@ const PackageDetails = () => {
             <div className="px-6 mt-4">
               {data?.inclusions.map((inclusion, index) => (
                 <div className="mt-2 flex flex-row gap-4" key={index}>
-                  <img
-                    src={RightMark}
-                    className="w-5 h-5"
-                  />
+                  <img src={RightMark} className="w-5 h-5" />
                   <h3>{inclusion}</h3>
                 </div>
               ))}
@@ -129,20 +138,26 @@ const PackageDetails = () => {
             <div className="px-6 mt-4">
               {data?.exclusions.map((exclusion, index) => (
                 <div className="mt-2 flex flex-row gap-4" key={index}>
-                  <img
-                    src={CrossIcon}
-                    className="w-5 h-5"
-                  />
+                  <img src={CrossIcon} className="w-5 h-5" />
                   <h3>{exclusion}</h3>
                 </div>
               ))}
             </div>
             <div className="flex flex-col gap-4 px-4 mt-8">
-              <h1 className="flex items-start text-2xl font-semibold text-gray-800">Payment Term's and Conditions</h1>
+              <h1 className="flex items-start text-2xl font-semibold text-gray-800">
+                Payment Term's and Conditions
+              </h1>
               <ul className="list-inside list-decimal text-gray-700">
-                <li className="ml-4 text-sm leading-relaxed">Pay only 5000 upfront for booking the package.</li>
-                <li className="ml-4 text-sm leading-relaxed">Pay next 40% of the package price in next 48 hours after our executive gets connected with you.</li>
-                <li className="ml-4 text-sm leading-relaxed">Temporary point</li>
+                <li className="ml-4 text-sm leading-relaxed">
+                  Pay only 5000 upfront for booking the package.
+                </li>
+                <li className="ml-4 text-sm leading-relaxed">
+                  Pay next 40% of the package price in next 48 hours after our
+                  executive gets connected with you.
+                </li>
+                <li className="ml-4 text-sm leading-relaxed">
+                  Temporary point
+                </li>
               </ul>
             </div>
           </div>
@@ -152,23 +167,23 @@ const PackageDetails = () => {
           <h1 className="text-4xl font-semibold">Customize </h1>
 
           <Link to={`/customize/${data?._id}`}>
-            <button className="w-[100%] px-6 py-4 rounded-full bg-[#2DA5F3] text-white mt-4">
+            <button className="w-[100%] px-6 py-4 rounded-lg bg-[#007E8F] hover:bg-[#439CA8] text-white mt-4">
               {" "}
               Customize{" "}
             </button>
           </Link>
 
           <h3 className="mt-2 text-gray-400 text-sm">Starting from</h3>
-          <h1 className="text-5xl text-[#2DA5F3] mt-0 flex justify-start items-baseline">
+          <h1 className="text-5xl text-[#007E8F] mt-0 flex justify-start items-baseline">
             ₹ {data?.startingPrice || 42000}/-{" "}
-            <span className="text-xl text-[#2DA5F3] ml-3 font-bold">
+            <span className="text-xl text-[#007E8F] ml-3 font-bold">
               {" "}
               per person
             </span>
           </h1>
           <button
             onClick={handleBookNow}
-            className="w-[100%] px-6 py-4 rounded-full bg-[#2DA5F3] text-white mt-4"
+            className="w-[100%] px-6 py-4 rounded-lg bg-[#007E8F] hover:bg-[#439CA8] text-white mt-4"
           >
             {" "}
             BOOK NOW{" "}
@@ -320,7 +335,7 @@ const PackageDetails = () => {
                 {" "}
                 <button
                   type="submit"
-                  className="px-6 py-3 bg-yellow-400 w-[80%]  rounded-full"
+                  className="px-6 py-3 rounded-lg bg-[#007E8F] text-white w-[80%]"
                 >
                   {" "}
                   Submit{" "}
