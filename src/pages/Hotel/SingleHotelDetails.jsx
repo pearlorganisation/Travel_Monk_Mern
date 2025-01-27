@@ -37,7 +37,7 @@ const SingleHotelDetails = () => {
   /**-------------to calculate the estimated value of the hotel according to the hotel travellers-------------*/
   let Estimated_Hotel_Value = (hotelTravellers, estimatedPrice) => {
     let travellersCount = parseInt(hotelTravellers);
-    let cost = estimatedPrice * Math.ceil(travellersCount / 3);
+    let cost = estimatedPrice * Math.ceil(travellersCount / 2);
     return cost;
   };
   let finalValue = Estimated_Hotel_Value(hotelTravellers, estimatedPrice);
@@ -151,6 +151,7 @@ const SingleHotelDetails = () => {
             <div className="text-xl font-semibold text-gray-800 mb-4">
               Estimated Cost: ₹
               {finalValue == 0 ? ultimateFinalValue : finalValue}
+              <span> for {finalPassenger} people</span>
             </div>
 
             <button
