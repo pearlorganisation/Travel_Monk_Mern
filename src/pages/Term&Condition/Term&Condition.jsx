@@ -11,7 +11,7 @@ function TermCondition() {
    }}
  >
    <div className="text-white w-full h-80 justify-start items-center flex">
-     <h1 className="text-5xl text-white font-semibold mx-auto">Term & Condition</h1>
+     <h1 className="text-5xl text-white font-semibold mx-auto">Terms & Condition</h1>
    </div>
  </div>
  <div className="px-2 py-10 bg-white">

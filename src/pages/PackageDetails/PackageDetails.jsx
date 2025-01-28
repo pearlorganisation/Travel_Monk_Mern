@@ -105,7 +105,7 @@ const PackageDetails = () => {
                 src="https://png.pngtree.com/png-vector/20190508/ourmid/pngtree-click-vector-icon-png-image_1027903.jpg"
                 className="w-10 h-10"
               />
-              <h1 className="text-2xl font-bold"> itinerary </h1>
+              <h1 className="text-2xl font-bold"> Itinerary </h1>
             </div>
 
             <HelpFAQ data={data?.itinerary} />
