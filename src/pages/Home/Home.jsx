@@ -29,7 +29,7 @@ const Home = () => {
   // if (localStorage.getItem("packageDetails")) {
   //   navigate("/full-customize-package-enquiry");
   // }
-const { isUserLoggedIn } = useSelector((state)=> state.auth)
+   const { isUserLoggedIn } = useSelector((state)=> state.auth)
   const dispatch = useDispatch();
 
   const { popular } = useSelector((state) => state.destination);

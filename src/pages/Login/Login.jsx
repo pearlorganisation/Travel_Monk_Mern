@@ -7,7 +7,7 @@ import { userLogin } from "../../features/auth/authActions";
 import ErrorMessage from "../../components/Error/Error";
 
 const Login = () => {
-  const { loading, error, userInfo } = useSelector((state) => state.auth);
+  const { loading, error, isUserLoggedIn, userInfo } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
   const {
@@ -22,7 +22,7 @@ const Login = () => {
     dispatch(userLogin(data));
   };
 
-  const { isUserLoggedIn } = useSelector((state) => state.auth);
+  
   if (isUserLoggedIn) {
     navigate("/");
   }
