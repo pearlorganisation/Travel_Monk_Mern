@@ -31,9 +31,9 @@ export default function Header() {
   const { isUserLoggedIn } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-  const handleLogout = () => {
-    dispatch(logout());
-  };
+  // const handleLogout = () => {
+  //   dispatch(logout());
+  // };
 
   const [isTransparent, setIsTransparent] = useState(false);
 
