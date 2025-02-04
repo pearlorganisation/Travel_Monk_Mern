@@ -176,9 +176,9 @@ const ConfirmPackage = () => {
         <div className="flex flex-col gap-4 px-4 mt-8">
           <h1 className="flex items-start text-2xl font-semibold text-gray-800">Payment Term's and Conditions</h1>
           <ul className="list-inside list-decimal text-gray-700">
-            <li className="ml-4 text-sm leading-relaxed">Pay only 5000 upfront for booking the package.</li>
-            <li className="ml-4 text-sm leading-relaxed">Pay next 40% of the package price in next 48 hours after our executive gets connected with you.</li>
-            <li className="ml-4 text-sm leading-relaxed">Temporary point</li>
+            <li className="ml-4 text-sm leading-relaxed"> 5,000/- for booking tour.</li>
+            <li className="ml-4 text-sm leading-relaxed"> ⁠40% amount in 24-48 hours of booking for confirming tour, enabling us to make necessary bookings to avoid cancellations.</li>
+            <li className="ml-4 text-sm leading-relaxed">Balance Payment on first day of check in into hotel.</li>
           </ul>
         </div>
       </div>

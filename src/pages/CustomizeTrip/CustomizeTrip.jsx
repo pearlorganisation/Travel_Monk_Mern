@@ -9,6 +9,7 @@ import moment from "moment/moment";
 import { getHotelsByDestination } from "../../features/hotel/hotelActions";
 import CustomDropdownIndicator from "../../components/CustomDropdownIcon/CustomDropdownIcon";
 import WhatsAppLogo from "../../components/Whatsapp/WhatsLogo";
+import { baseURL } from "../../services/axiosInterceptor";
 
 const CustomizeTrip = () => {
   const dispatch = useDispatch();
@@ -246,7 +247,7 @@ const CustomizeTrip = () => {
                       vehicle?.vehicleName,
                       vehicle?.pricePerDay,
                       vehicle?._id,
-                      vehicle?.images[0]?.secure_url
+                      `${baseURL}/${vehicle?.image?.path}`
                     );
                     closeModal(); // Close the modal after selection
                   }}
@@ -260,7 +261,7 @@ const CustomizeTrip = () => {
                   </p> */}
 
                   <img
-                    src={vehicle?.images[0]?.secure_url}
+                    src={`${baseURL}/${vehicle?.image?.path}`}
                     className="w-28 h-20 mt-8"
                   />
                 </div>
@@ -311,11 +312,11 @@ const CustomizeTrip = () => {
                 <div className="flex flex-col gap-1 min-w-20">
                   <h1 className="font-bold text-base">{iti.location}</h1>
 
-                  <h1>
+                  {/* <h1>
                     {moment(singlePackage?.data?.startDate)
                       .add(index, "days")
                       .format("DD MMM")}
-                  </h1>
+                  </h1> */}
                 </div>
 
                 <div className="w-6 h-6 bg-red-500 rounded-full">
@@ -373,41 +374,42 @@ const CustomizeTrip = () => {
             );
           })}
         </div>
-        {/** select vehicle section */}
-
-        <div> Google map</div>
       </div>
       {/** section containing the total price of all the hotels in the destination */}
-      <div className="pl-20 bg-emerald-300">
-        <div className="m-4">
-          <h1 className="">
+      
+
+      <div className="pl-40 ">
+        <div className="m-4 flex justify-center items-center">
+          {/* <h1 className="text-center">
             Estimated Total cost of trip can be around this figure for
             proceeding ahead fill this contact form and one of our executive
-            will reach out to you.{Total_Estimated_Price}{" "}
-          </h1>
-          <button onClick={handleEnquiry}>Fill the Enquiry Form</button>
-        </div>
-      </div>
-
-      <div className="fixed bottom-0 bg-white w-full">
-        <div className="flex flex-row justify-between p-3">
-          <div className="flex flex-col">
-            <h1 className="">
-              32732 <span>(6 day trip and activities)</span>
-            </h1>
-
-            <h1>New Delhi toNainital to Jim Corbett to Mussorie to Delhi</h1>
-          </div>
-
+            will reach out to you. {Total_Estimated_Price}{" "}
+          </h1> */}
+          {/* Updated Button */}
           <button
-            onClick={handleBookNow}
-            className="text-white rounded-sm bg-[#2DA5F3] px-6 py-2"
+            onClick={handleEnquiry}
+            className="w-full bg-blue-500 text-white py-3 px-6 rounded-md 
+            flex items-center justify-center gap-2 hover:bg-blue-600 
+            transition-all duration-200 mt-4"
           >
-            {" "}
-            Continue
+            <span>Move Forward</span>
+            {/* Right Arrow Icon */}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                clipRule="evenodd"
+              />
+            </svg>
           </button>
         </div>
       </div>
+ 
     </div>
   );
 };
