@@ -55,7 +55,7 @@ function AnimatedImageTabs() {
     <div className="px-20 py-10">
       <div className=" w-full  h-full">
         <TabsProvider
-          defaultValue="improve"
+          defaultValue="1"
           className="md:grid md:grid-cols-12 items-center justify-center"
         >
           <TabImageContainer className="md:col-span-7">
