@@ -241,7 +241,7 @@ const FullyCustomizeTrip = () => {
     setSelectedVehicleId(vehicleId);
     setSelectedVehicleName(vehicleName);
     setSelectedVehiclePrice(vehiclePrice);
-    setSelectedVehicleImage(vehicleImage);
+    setSelectedVehicleImage(`${baseURL}/${vehicleImage}`);
   };
 
   /** data prepared for the options to use in the react-select */
@@ -540,7 +540,7 @@ const FullyCustomizeTrip = () => {
                   Your Selected Vehicle
                 </h3>
                 <p className="text-lg">Name: {selectedVehicleName}</p>
-                <p className="text-lg">Price: {selectedVehiclePrice}</p>
+                {/* <p className="text-lg">Price: {selectedVehiclePrice}</p> */}
               </div>
 
               <img src={selectedVehicleImage} className="w-20 h-20" />
@@ -698,31 +698,32 @@ const FullyCustomizeTrip = () => {
           </div>
 
           <div className="w-full bg-cyan-300">
-            {isUserLoggedIn && (
-              <p>Your Estimated price of Trip is: {Total_Estimated_Price}</p>
-            )}
-            <button onClick={handleEnquiry}>
-              To move forward submit this form
+            
+            <button onClick={handleEnquiry}
+              className="w-full bg-blue-500 text-white py-3 px-6 rounded-md 
+            flex items-center justify-center gap-2 hover:bg-blue-600 
+            transition-all duration-200 mt-4" >
+              <span> {isUserLoggedIn && (
+                <p>Your Estimated price of Trip is: {Total_Estimated_Price}</p>
+              )}</span>
+              {/* Right Arrow Icon */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                  clipRule="evenodd"
+                />
+              </svg>
             </button>
           </div>
         </div>
       </div>
-      <div className="fixed bottom-0 bg-white w-full">
-        <div className="flex flex-row justify-between p-3">
-          <div className="flex flex-col">
-            <h1 className="">
-              32732 <span>(6 day trip and activities)</span>
-            </h1>
-
-            <h1>New Delhi toNainital to Jim Corbett to Mussorie to Delhi</h1>
-          </div>
-
-          <button className="text-white rounded-sm bg-[#2DA5F3] px-6 py-2">
-            {" "}
-            Continue
-          </button>
-        </div>
-      </div>
+       
       <GoogleMapsEmbed data={mapData} />
     </div>
   );
