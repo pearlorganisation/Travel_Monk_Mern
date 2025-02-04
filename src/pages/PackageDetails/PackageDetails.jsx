@@ -149,14 +149,13 @@ const PackageDetails = () => {
               </h1>
               <ul className="list-inside list-decimal text-gray-700">
                 <li className="ml-4 text-sm leading-relaxed">
-                  Pay only 5000 upfront for booking the package.
+                  5,000/- for booking tour.
                 </li>
                 <li className="ml-4 text-sm leading-relaxed">
-                  Pay next 40% of the package price in next 48 hours after our
-                  executive gets connected with you.
+                   40% amount in 24-48 hours of booking for confirming tour, enabling us to make necessary bookings to avoid cancellations.
                 </li>
                 <li className="ml-4 text-sm leading-relaxed">
-                  Temporary point
+                   ⁠Balance Payment on first day of check in into hotel.
                 </li>
               </ul>
             </div>
