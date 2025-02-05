@@ -5,8 +5,8 @@ import AnimatedImageTabs from "../AnimatedTabs/AnimatedTabs";
 
 function ChoseTravelMonkSec() {
   return (
-    <div className="bg-white">
-      <h1 className="text-black font-bold mx-auto text-center text-3xl">
+    <div className="bg-white mt-4">
+      <h1 className="text-black font-bold mx-auto text-center text-3xl pt-4">
         Why Choose Travel Monk?
       </h1>
 
