@@ -60,9 +60,9 @@ const CustomizeTrip = () => {
     dispatch(getDestinationVehicle(singleDestination?.data?._id));
   }, []);
 
-  useEffect(() => {
-    dispatch(getDestinationVehicle(singleDestination?.data?._id));
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getDestinationVehicle(singleDestination?.data?._id));
+  // }, []);
 
   useEffect(() => {
     if (singlePackage?.data)
@@ -130,7 +130,7 @@ const CustomizeTrip = () => {
     newDayData[index].selectedLocation = currentLocation;
     newDayData[index].selectedHotel = {
       name: selectedHotel.name,
-      hotelId: selectedHotel._id,
+      hotel: selectedHotel._id,
     };
     setDayData(newDayData);
 
