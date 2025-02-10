@@ -60,10 +60,12 @@ const HowitWorks = () => {
             </div>
           </div>
         </div>
+      <div className="mt-24">
 
-        <button className="mt-24 py-2 px-20 bg-[#007E8F] text-[#f5f5f5] rounded-lg  focus:outline-none  mb-10">
+      </div>
+        {/* <button className="mt-24 py-2 px-20 bg-[#007E8F] text-[#f5f5f5] rounded-lg  focus:outline-none  mb-10">
           Customise your Trip
-        </button>
+        </button> */}
       </div>
     </div>
   );
