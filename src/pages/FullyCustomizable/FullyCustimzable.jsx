@@ -330,7 +330,7 @@ const FullyCustomizeTrip = () => {
         <div className="flex flex-row">
           {/* Left Section */}
           <div className="w-1/2 h-52">
-            <div className="border border-blue-200 relative">
+            <div className="border bg-white rounded-md relative">
               {/* Top dotted border */}
               {/* <div className="absolute -top-[1px] left-0 right-0 border-t border-dashed border-blue-400" /> */}
 
@@ -384,13 +384,13 @@ const FullyCustomizeTrip = () => {
           </div>
 
           {/* Right Section */}
-          <div className="w-1/2">
+          <div className="w-1/2 pt-1">
             {selectedVehicleName && (
-              <div className="ml-2 bg-white">
-                <div className="flex flex-row gap-6">
+              <div className="ml-2 rounded-md w-full bg-white">
+                <div className="flex w-full flex-row gap-6">
                   <img
                     src={selectedVehicleImage}
-                    className="w-full h-52 object-cover"
+                    className="w-full h-52 object-contain"
                     alt={selectedVehicleName}
                   />
                 </div>
@@ -442,6 +442,7 @@ const FullyCustomizeTrip = () => {
             </div>
           )}
         </div>
+        
       </div>
 {/* 
       {isModalOpen && (
