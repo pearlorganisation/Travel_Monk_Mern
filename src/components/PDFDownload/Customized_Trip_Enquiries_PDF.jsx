@@ -107,7 +107,7 @@ const FullyCustomizedEnquiriesPdf = ({ data }) => (
             </View>
               <View style={styles.terms}>
                             <Text style={styles.termsHeader}>Payment Terms and Conditions</Text>
-                            <Text style={styles.termsText}>- Pay only ₹5000 upfront for booking the package.</Text>
+                            <Text style={styles.termsText}>- Pay only 5000 upfront for booking the package.</Text>
                             <Text style={styles.termsText}>
                                 - Pay the next 40% of the package price within 48 hours after our executive connects with you.
                             </Text>
