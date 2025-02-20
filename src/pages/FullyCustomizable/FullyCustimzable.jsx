@@ -459,18 +459,18 @@ const FullyCustomizeTrip = () => {
         Note: You can only select a maximum of 3 activities for each day.
       </div>
 
-      <div className="grid -grid-cols-1 md:grid-cols-[800px_auto]">
-        <div className="bg-gray-50 min-h-screen p-6">
-          <div className="max-w-6xl mx-auto space-y-4">
+    
+        <div className="bg-white min-h-screen p-6">
+          <div className="mx-auto space-y-4">
             {dayData?.map((day, index) => (
               <div
                 key={index}
                 className="bg-white shadow-md rounded-lg border border-gray-200"
               >
 
-                <div className="flex flex-row">
-                  <div>
-                    <div className="flex items-center bg-gray-100 p-4 space-x-4">
+                <div className="grid grid-cols-1 md:grid-cols-[80%_auto]">
+                  <div className="w-full">
+                    <div className="flex items-center bg-gray-100 p-4 space-x-4 w-full">
                       {/* Menu Icon */}
 
                       {/* Day Number */}
@@ -582,11 +582,11 @@ const FullyCustomizeTrip = () => {
                     </div>
                   </div>
                   {/** DIV FOR SHOWING THE HOTEL */}
-                  <div className="">
+                  <div className="w-full p-4">
                     {Array.isArray(selectedHotelImages) && selectedHotelImages[index]?.selected_Hotel?.image?.path ? (
                       <img
                         src={`${baseURL}/${selectedHotelImages[index]?.selected_Hotel?.image?.path}`}
-                        className="w-40 object-fill h-40"
+                        className="w-full object-fill max-h-48 min-h-48 rounded-lg"
                         alt="selected hotel"
                       />
                     ) : (
@@ -614,43 +614,40 @@ const FullyCustomizeTrip = () => {
                   {" "}
                   Airport Drop
                 </div>
+                
                 <div className="flex items-center justify-center"></div>
               </div>
             </div>
 
-            
-          </div>
-        </div>
 
-        <div className="p-10 ">
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwufSqNRmU6hFCdwoe2QHPDmp10eZczikTHQ&s" className="h-full rounded-md"/>
-        </div>
-      </div>
+            <div className="w-full bg-cyan-300">
 
-      <div className="w-full bg-cyan-300">
-
-        <button onClick={handleEnquiry}
-          className="w-full bg-blue-500 text-white py-3 px-6 rounded-md 
+              <button onClick={handleEnquiry}
+                className="w-full bg-blue-500 text-white py-3 px-6 rounded-md 
             flex items-center justify-center gap-2 hover:bg-blue-600 
             transition-all duration-200 mt-4" >
-          <span> {isUserLoggedIn && (
-            <p>Your Estimated price of Trip is: {Total_Estimated_Price}</p>
-          )}</span>
-          {/* Right Arrow Icon */}
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </button>
-      </div>
+                <span> {isUserLoggedIn && (
+                  <p>Your Estimated price of Trip is: {Total_Estimated_Price}</p>
+                )}</span>
+                {/* Right Arrow Icon */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      
+ 
        
       <GoogleMapsEmbed data={mapData} />
     </div>
