@@ -28,6 +28,7 @@ const CustomizeTrip = () => {
   /*---------------- getting the vehicles available for that destination-----------------------------------------------*/
   const [selectedVehicleName, setSelectedVehicle] = useState("");
   const [selectedVehiclePrice, setSelectedVehiclePrice] = useState("");
+  const [selectedVehicle, setVehicle] = useState([])
 
   const [selectedVehicleImage, setSelectedVehicleImage] = useState("");
 
@@ -46,11 +47,13 @@ const CustomizeTrip = () => {
     dispatch(getHotelsByDestination({ id: singleDestination?.data?._id }));
   }, []);
 
-  const handleSelect = (vehicleName, vehiclePrice, vehicleId, vehicleImage) => {
+  const handleSelect = (vehicleName, vehiclePrice, vehicleId, vehicleImage,vehicle) => {
     setSelectedVehicle(vehicleName);
     setSelectedVehiclePrice(vehiclePrice);
     setSelectedVehicleId(vehicleId); // storing selected vehicle id
     setSelectedVehicleImage(vehicleImage);
+    setVehicle(vehicle)
+
   };
   useEffect(() => {
     dispatch(getSinglePackage(id));
@@ -162,6 +165,21 @@ console.log("the selected hotel images are", selectedHotelImages)
 
   /**--------------------Handle Enquiry to send to the page for submitting the form-------------------------------------------------*/
   const handleEnquiry = () => {
+    const invalidEntry = dayData.find(
+      (day) =>
+        !day.selectedLocation ||
+        !day.selectedHotel ||
+        Object.keys(day.selectedHotel).length === 0 ||
+        !Array.isArray(day.selectedActivities) ||
+        day.selectedActivities.length === 0
+    );
+
+    if (invalidEntry) {
+      alert(
+        "Please ensure all days have a location, hotel, and activities selected."
+      );
+      return;
+    }
     navigate("/prebuilt-package-enquiry", {
       state: {
         Estimate_Price: Total_Estimated_Price,
@@ -182,23 +200,7 @@ console.log("the selected hotel images are", selectedHotelImages)
   console.log(
     "--------------------selected vehicle price",
     selectedVehiclePrice
-  );
-
-  // console.log("--------------------selected vehicle name", selectedVehicle);
-
-  // const [selectedActivity, setSelectedActivity] = useState("Choose Activity");
-  // const [selectedHotel, setSelectedHotel] = useState("Choose Hotel");
-
-  console.log(dayData, "day data");
-  const handleBookNow = () => {
-    navigate("/confirm-package", {
-      state: {
-        dayData: dayData,
-        startingPrice: singlePackage?.data?.startingPrice,
-        vehicleName: selectedVehicleName,
-      },
-    });
-  };
+  ); 
   return (
     <div className="bg-gray-200 relative">
       <div
@@ -214,34 +216,81 @@ console.log("the selected hotel images are", selectedHotelImages)
       </div>
       <div className="px-24 pt-2">
         <h1 className="text-[#1f1f1f] font-bold text-4xl leading-[48px]">
-          {singlePackage?.data?.name}
+          <span>Customize your Trip to - </span>{singlePackage?.data?.name}
         </h1>
 
         <h3 className="mt-3 font-normal text-base text-[#1f1f1f]">
           Start planning our trip with Travel Monk's Trip Planner. You can
           further optimize it by selectings hotels and activities
         </h3>
+       {/** select a vehicle */}
+        <div className="flex flex-row mt-2">
+          {/* Left Section */}
+          <div className="w-1/2 h-52">
+            <div className="border bg-white rounded-md relative">
+              <div className="h-52 px-3 pt-2">
+                <div className="mb-4">
+                  <h2 className="text-sm">
+                    <span className="font-medium">Step 1 |</span> Select vehicle available at this location.
+                  </h2>
 
-        <button className="mt-4 bg-white px-6 py-1 border border-[#1f1f1f] rounded-sm lg:min-w-72 flex flex-row items-center justify-center gap-2">
-          <svg
-            width="13"
-            height="12"
-            viewBox="0 0 13 12"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M12.3334 5.16669H7.33341V0.166687H5.66675V5.16669H0.666748V6.83335H5.66675V11.8334H7.33341V6.83335H12.3334V5.16669Z"
-              fill="#1F1F1F"
-            />
-          </svg>
-          <button
-            onClick={openModal}
-            className="px-4 py-2  text-black font-bold rounded hover:bg-blue-600 hover:text-white"
-          >
-            Add a Vehicle (Compulsory)
-          </button>
-        </button>
+                  <button className="mt-4 bg-white px-6 py-1 border border-[#1f1f1f] rounded-sm lg:min-w-72 flex flex-row items-center justify-center gap-2">
+                    <svg
+                      width="13"
+                      height="12"
+                      viewBox="0 0 13 12"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M12.3334 5.16669H7.33341V0.166687H5.66675V5.16669H0.666748V6.83335H5.66675V11.8334H7.33341V6.83335H12.3334V5.16669Z"
+                        fill="#1F1F1F"
+                      />
+                    </svg>
+                    <button
+                      onClick={openModal}
+                      className="text-black text-sm"
+                    >
+                      Add a Vehicle ( Compulsory )
+                    </button>
+                  </button>
+                </div>
+
+                {selectedVehicleName && (
+                  <div className="mt-4 text-sm">
+                    <p className="mb-2">
+                      You have selected vehicle: <span className="text-blue-600">{selectedVehicleName}</span>
+                    </p>
+
+                    <div>
+                      <p className="font-medium mb-1">Vehicle Details:</p>
+                      <p className="leading-relaxed">
+                        Vehicle Capacity: {selectedVehicle?.passengerCapacity}
+                      </p>
+                      <p className="leading-relaxed">
+                        Luggage Capacity: {selectedVehicle?.luggageCapacity}
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+          {/* Right Section */}
+          <div className="w-1/2 h-52">
+            {selectedVehicleName && (
+              <div className="ml-2 rounded-md w-full bg-white">
+                <div className="flex w-full flex-row gap-6">
+                  <img
+                    src={selectedVehicleImage}
+                    className="w-full h-52 object-contain"
+                    alt={selectedVehicleName}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
 
       {isModalOpen && (
@@ -259,7 +308,8 @@ console.log("the selected hotel images are", selectedHotelImages)
                       vehicle?.vehicleName,
                       vehicle?.pricePerDay,
                       vehicle?._id,
-                      `${baseURL}/${vehicle?.image?.path}`
+                      `${baseURL}/${vehicle?.image?.path}`,
+                      vehicle
                     );
                     closeModal(); // Close the modal after selection
                   }}
@@ -291,25 +341,14 @@ console.log("the selected hotel images are", selectedHotelImages)
         </div>
       )}
 
+{/** this is where showing the selected vehicle */}
       <div className="grid grid-cols-1 mt-4">
-        <div className="p-4">
-          {selectedVehicleName && (
-            <div className="mt-6 p-4 bg-orange-300 rounded-lg shadow-md">
-              <div className="flex flex-row gap-6">
-                <div className="flex flex-col gap-3">
-                  <h3 className="text-xl font-semibold text-blue-700">
-                    Your Selected Vehicle
-                  </h3>
-                  <p className="text-lg">Name: {selectedVehicleName}</p>
-                  <p className="text-lg">Price: {selectedVehiclePrice}</p>
-                </div>
-
-                <img src={selectedVehicleImage} className="w-20 h-20" />
-              </div>
-            </div>
-          )}
-        </div>
         <div className="">
+          <div className="text-gray-700 text-sm p-4 flex justify-center items-center rounded-md">
+            <div className="mb-2">
+              <span className="font-medium">Step 2 |</span> Select Your day to day schedule
+            </div>
+          </div>
           {singlePackage?.data?.itinerary?.map((iti, index) => {
             console.log(iti, "iti");
             const dataForSelect = iti?.activities.map((el) => {
@@ -321,6 +360,7 @@ console.log("the selected hotel images are", selectedHotelImages)
 
             return (
               <div className="flex flex-row gap-2 items-center justify-start px-4 mt-2">
+                
                 <div className="flex flex-col gap-1 min-w-20">
                   <h1 className="font-bold text-base">{iti.location}</h1>
 
