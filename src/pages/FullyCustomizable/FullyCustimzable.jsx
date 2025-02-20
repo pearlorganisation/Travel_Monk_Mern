@@ -101,7 +101,7 @@ const FullyCustomizeTrip = () => {
     setSelectedVehicleImage(`${baseURL}/${vehicleImage}`);
     setVehicle(vehicle)
   };
-  console.log("the selected vehicle is", selectedVehicle)
+  // console.log("the selected vehicle is", selectedVehicle)
 
   /** data prepared for the options to use in the react-select */
   let activitiesOption = activities?.map((activity) => ({
@@ -202,16 +202,27 @@ const FullyCustomizeTrip = () => {
     // console.log('---------------locationdata is', locationData)
    };
 
- 
+
+   const [selectedHotelImages, setSelectedHotelImages]= useState([])
+   console.log("the selected images are", selectedHotelImages)
   /** to selecte hotels and calculate their price */
   const handleHotelChange = (index, event, hotels) => {
+    console.log("the indexes are", index)
     const selectedHotelId = event.target.value;
     const selected_Hotel = hotels.find(
       (hotel) => hotel._id === selectedHotelId
     ); // this will find the selected hotel by id
 
+  //  console.log("the selected hotel is",selected_Hotel)
+
     setSelectedHotelName(selected_Hotel.name);
 
+    ; // storing the previously selected hotels images as well as new images
+    const newHotelData = [...selectedHotelImages]
+    newHotelData[index] = {
+      selected_Hotel
+    }
+    setSelectedHotelImages(newHotelData)
     const newDayData = [...dayData];
 
     /** setting the hotel of current index */
@@ -444,198 +455,147 @@ const FullyCustomizeTrip = () => {
         </div>
         
       </div>
-{/* 
-      {isModalOpen && (
-        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-1/2">
-            <h2 className="text-xl font-bold mb-4">Select a Vehicle</h2>
-
-       
-            <div className=" flex flex-row gap-6">
-              {destinationVehicles?.map((vehicle) => (
-                <div
-                  key={vehicle?._id}
-                  onClick={() => {
-                    handleSelectVehicle(
-                      vehicle?.vehicleName,
-                      vehicle?.pricePerDay,
-                      vehicle?._id,
-                      vehicle?.image?.path
-                    );
-                    closeModal(); // Close the modal after selection
-                  }}
-                  className="p-4 border rounded-lg shadow-md cursor-pointer bg-purple-300 h-56"
-                >
-                  <p className="text-lg font-semibold">
-                    Vehicle: {vehicle?.vehicleName}
-                  </p>
-               
-
-                  <img
-                    src={`${baseURL}/${vehicle?.image?.path}`}
-                    className="w-28 h-20 mt-8"
-                  />
-                </div>
-              ))}
-            </div>
-
-       
-            <button
-              onClick={closeModal}
-              className="mt-4 px-4 py-2 bg-red-500 text-white font-bold rounded hover:bg-red-600"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )} */}
-
-      {/* <div className="p-4">
-        {selectedVehicleName && (
-          <div className="mt-6 p-4 bg-orange-300 rounded-lg shadow-md">
-            <div className="flex flex-row gap-6">
-              <div className="flex flex-col gap-3">
-                <h3 className="text-xl font-semibold text-blue-700">
-                  Your Selected Vehicle
-                </h3>
-                <p className="text-lg">Name: {selectedVehicleName}</p>
-               </div>
-
-              <img src={selectedVehicleImage} className="w-20 h-20" />
-            </div>
-          </div>
-        )}
-      </div>
-        */}
       <div className="flex justify-center items-center text-center fold-semibold text-4xl">
         Note: You can only select a maximum of 3 activities for each day.
       </div>
 
-      <div className="bg-gray-50 min-h-screen p-6">
+      <div className="bg-pink-500 min-h-screen p-6">
         <div className="max-w-6xl mx-auto space-y-4">
           {dayData?.map((day, index) => (
             <div
               key={index}
               className="bg-white shadow-md rounded-lg border border-gray-200"
             >
-              <div className="flex items-center bg-gray-100 p-4 space-x-4">
-                {/* Menu Icon */}
 
-                {/* Day Number */}
-                <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
-                  <span className="text-white text-sm font-bold">
-                    {index + 1}
-                  </span>
-                </div>
+              <div className="flex flex-row">
+                <div>
+                  <div className="flex items-center bg-gray-100 p-4 space-x-4">
+                    {/* Menu Icon */}
 
-                {/* Content Container */}
-                <div className="flex flex-row gap-8 justify-start">
-                  {/* Close Icon */}
-                  <div className="flex items-center justify-center"></div>
+                    {/* Day Number */}
+                    <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
+                      <span className="text-white text-sm font-bold">
+                        {index + 1}
+                      </span>
+                    </div>
 
-                  {/* Date */}
-                  <div className="flex flex-col justify-center items-center">
-                    <h2 className="text-sm font-medium text-gray-600 pt-1">
-                      {new Date(datesObjects[index]?.date).toDateString()}
-                    </h2>
-                  </div>
+                    {/* Content Container */}
+                    <div className="flex flex-row gap-8 justify-start">
+                      {/* Close Icon */}
+                      <div className="flex items-center justify-center"></div>
 
-                  {/* Location Selector */}
-                  <div className="flex flex-col">
-                    <label className="text-xs font-semibold text-gray-700 mb-1">
-                      Select Location
-                    </label>
-                    <select
-                      value={dayData[index]?.selectedLocation}
-                      onChange={(event) =>
-                        handleLocationChange(
-                          index,
-                          event,
-                          new Date(datesObjects[index]?.date).toISOString(),
-                          destinationLocations
-                        )
-                      }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm 
+                      {/* Date */}
+                      <div className="flex flex-col justify-center items-center">
+                        <h2 className="text-sm font-medium text-gray-600 pt-1">
+                          {new Date(datesObjects[index]?.date).toDateString()}
+                        </h2>
+                      </div>
+
+                      {/* Location Selector */}
+                      <div className="flex flex-col">
+                        <label className="text-xs font-semibold text-gray-700 mb-1">
+                          Select Location
+                        </label>
+                        <select
+                          value={dayData[index]?.selectedLocation}
+                          onChange={(event) =>
+                            handleLocationChange(
+                              index,
+                              event,
+                              new Date(datesObjects[index]?.date).toISOString(),
+                              destinationLocations
+                            )
+                          }
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm 
                       focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
                       transition-all duration-200"
-                    >
-                      <option key="choose">Choose Location</option>
-                      {/* {singleDestination?.data?.locations?.[
-                        index
-                      ]?.location?.map((loc, index) => (
-                        <option key={index} value={loc}>
-                          {" "}
-                          {loc}
-                        </option>
-                      ))} */}
+                        >
+                          <option key="choose">Choose Location</option>
 
-                      {destinationLocations?.[index]?.location?.map(
-                        (loc, index) => (
-                          <option key={index} value={loc.name}>
-                            {" "}
-                            {loc.name}
-                          </option>
-                        )
-                      )}
-                    </select>
-                  </div>
+                          {destinationLocations?.[index]?.location?.map(
+                            (loc, index) => (
+                              <option key={index} value={loc.name}>
+                                {" "}
+                                {loc.name}
+                              </option>
+                            )
+                          )}
+                        </select>
+                      </div>
 
-                  {/* Hotel Selector */}
-                  <div className="flex flex-col">
-                    <label className="text-xs font-semibold text-gray-700 mb-1">
-                      Select Hotel
-                    </label>
-                    <select
-                      // value={dayData[index]?.selectedHotel?.hotelId}
-                      value={dayData[index]?.selectedHotel[0]}
-                      onChange={(event) =>
-                        handleHotelChange(index, event, destinationHotels)
-                      }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm 
+                      {/* Hotel Selector */}
+                      <div className="flex flex-col">
+                        <label className="text-xs font-semibold text-gray-700 mb-1">
+                          Select Hotel
+                        </label>
+                        <select
+                          // value={dayData[index]?.selectedHotel?.hotelId}
+                          value={dayData[index]?.selectedHotel[0]}
+                          onChange={(event) =>
+                            handleHotelChange(index, event, destinationHotels)
+                          }
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm 
                       focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
                       transition-all duration-200"
-                    >
-                      <option key="choose">Choose Hotel</option>
-                      {Array.isArray(destinationHotels) &&
-                        destinationHotels?.map((hotel) => (
-                          <option key={hotel._id} value={hotel._id}>
-                            {hotel.name}
-                          </option>
-                        ))}
-                    </select>
+                        >
+                          <option key="choose">Choose Hotel</option>
+                          {Array.isArray(destinationHotels) &&
+                            destinationHotels?.map((hotel) => (
+                              <option key={hotel._id} value={hotel._id}>
+                                {hotel.name}
+                              </option>
+                            ))}
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Activities Selector */}
+                  <div className="p-4 bg-gray-50 border-t border-gray-200">
+                    <div className="flex flex-col">
+                      <label className="text-xs font-semibold text-gray-700 mb-1">
+                        Select Activities
+                      </label>
+                      <Select
+                        placeholder="Choose Activities"
+                        isMulti
+                        components={{ DropdownIndicator: CustomDropdownIndicator }}
+                        value={dayData[index]?.selectedActivities || []}
+                        onChange={(selectedOptions) =>
+                          handleActivityChange(selectedOptions, index)
+                        }
+                        options={activitiesOption}
+                        closeMenuOnSelect={false}
+                        className="text-sm"
+                        styles={{
+                          control: (base) => ({
+                            ...base,
+                            borderColor: "#D1D5DB",
+                            "&:hover": {
+                              borderColor: "#3B82F6",
+                            },
+                          }),
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-
-              {/* Activities Selector */}
-              <div className="p-4 bg-gray-50 border-t border-gray-200">
-                <div className="flex flex-col">
-                  <label className="text-xs font-semibold text-gray-700 mb-1">
-                    Select Activities
-                  </label>
-                  <Select
-                    placeholder="Choose Activities"
-                    isMulti
-                    components={{ DropdownIndicator: CustomDropdownIndicator }}
-                    value={dayData[index]?.selectedActivities || []}
-                    onChange={(selectedOptions) =>
-                      handleActivityChange(selectedOptions, index)
-                    }
-                    options={activitiesOption}
-                    closeMenuOnSelect={false}
-                    className="text-sm"
-                    styles={{
-                      control: (base) => ({
-                        ...base,
-                        borderColor: "#D1D5DB",
-                        "&:hover": {
-                          borderColor: "#3B82F6",
-                        },
-                      }),
-                    }}
-                  />
+                {/** DIV FOR SHOWING THE HOTEL */}
+                <div className="">
+                   {Array.isArray(selectedHotelImages) && selectedHotelImages[index]?.selected_Hotel?.image?.path ? (
+                    <img
+                      src={`${baseURL}/${selectedHotelImages[index]?.selected_Hotel?.image?.path}`}
+                      className="w-40 object-fill h-40"
+                      alt="selected hotel"
+                    />
+                  ) : (
+                    <p className="mt-8 text-gray-500">Select a Hotel</p>
+                  )}
                 </div>
+
               </div>
+           
+            
             </div>
           ))}
 
