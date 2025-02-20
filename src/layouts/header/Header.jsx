@@ -142,10 +142,10 @@ export default function Header() {
               return (
                 <li
                   key={idx}
-                  className="text-white text-xs
+                  className="text-white text-xs md:text-[13px] lg:text-base xl:text-lg
                   hover:text-[#007E8F] border-b-transparent  duration-150"
                 >
-                  <Link to={item.path} className="">
+                  <Link to={item.path} className="ml-1 mr-1">
                     {item.title}
                   </Link>
                 </li>
