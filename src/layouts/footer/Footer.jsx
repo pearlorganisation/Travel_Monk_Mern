@@ -27,7 +27,7 @@ const Footer = () => {
               <p>
                 <CiLocationOn size={28} />
               </p>
-              <p>Delhi Industrial Area. Pincode, 110015. Taluk, New Delhi</p>
+              <p>Chandigarh, Punjab</p>
             </div>
             <div className="flex  gap-2">
               <p>

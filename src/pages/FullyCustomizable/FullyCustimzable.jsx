@@ -259,7 +259,7 @@ const FullyCustomizeTrip = () => {
   };
   /** The Total price after selecting hotels and vehicle */
   let Total_Estimated_Price = totalHotelPrices + selectedVehiclePrice;
-
+console.log("the first selected vehicle price is", Total_Estimated_Price)
   // console.log("selected hotel and vehicle prices", Total_Estimated_Price);
   // console.log(dayData, "day data");
 
@@ -620,14 +620,14 @@ const FullyCustomizeTrip = () => {
             </div>
 
 
-            <div className="w-full bg-cyan-300">
+            <div className="w-full">
 
               <button onClick={handleEnquiry}
-                className="w-full bg-blue-500 text-white py-3 px-6 rounded-md 
-            flex items-center justify-center gap-2 hover:bg-blue-600 
-            transition-all duration-200 mt-4" >
-                <span> {isUserLoggedIn && (
-                  <p>Your Estimated price of Trip is: {Total_Estimated_Price}</p>
+                  className="w-full bg-blue-500 text-white py-3 px-6 rounded-lg 
+                  flex items-center justify-center gap-2 hover:bg-blue-600 
+                  transition-all duration-200 mt-4">
+                  <span> {isUserLoggedIn && (
+                  <p>Your Estimated price of Trip is: {Total_Estimated_Price-selectedVehiclePrice}</p>
                 )}</span>
                 {/* Right Arrow Icon */}
                 <svg
