@@ -459,187 +459,197 @@ const FullyCustomizeTrip = () => {
         Note: You can only select a maximum of 3 activities for each day.
       </div>
 
-      <div className="bg-pink-500 min-h-screen p-6">
-        <div className="max-w-6xl mx-auto space-y-4">
-          {dayData?.map((day, index) => (
-            <div
-              key={index}
-              className="bg-white shadow-md rounded-lg border border-gray-200"
-            >
-
-              <div className="flex flex-row">
-                <div>
-                  <div className="flex items-center bg-gray-100 p-4 space-x-4">
-                    {/* Menu Icon */}
-
-                    {/* Day Number */}
-                    <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
-                      <span className="text-white text-sm font-bold">
-                        {index + 1}
-                      </span>
-                    </div>
-
-                    {/* Content Container */}
-                    <div className="flex flex-row gap-8 justify-start">
-                      {/* Close Icon */}
-                      <div className="flex items-center justify-center"></div>
-
-                      {/* Date */}
-                      <div className="flex flex-col justify-center items-center">
-                        <h2 className="text-sm font-medium text-gray-600 pt-1">
-                          {new Date(datesObjects[index]?.date).toDateString()}
-                        </h2>
-                      </div>
-
-                      {/* Location Selector */}
-                      <div className="flex flex-col">
-                        <label className="text-xs font-semibold text-gray-700 mb-1">
-                          Select Location
-                        </label>
-                        <select
-                          value={dayData[index]?.selectedLocation}
-                          onChange={(event) =>
-                            handleLocationChange(
-                              index,
-                              event,
-                              new Date(datesObjects[index]?.date).toISOString(),
-                              destinationLocations
-                            )
-                          }
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm 
-                      focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
-                      transition-all duration-200"
-                        >
-                          <option key="choose">Choose Location</option>
-
-                          {destinationLocations?.[index]?.location?.map(
-                            (loc, index) => (
-                              <option key={index} value={loc.name}>
-                                {" "}
-                                {loc.name}
-                              </option>
-                            )
-                          )}
-                        </select>
-                      </div>
-
-                      {/* Hotel Selector */}
-                      <div className="flex flex-col">
-                        <label className="text-xs font-semibold text-gray-700 mb-1">
-                          Select Hotel
-                        </label>
-                        <select
-                          // value={dayData[index]?.selectedHotel?.hotelId}
-                          value={dayData[index]?.selectedHotel[0]}
-                          onChange={(event) =>
-                            handleHotelChange(index, event, destinationHotels)
-                          }
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm 
-                      focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
-                      transition-all duration-200"
-                        >
-                          <option key="choose">Choose Hotel</option>
-                          {Array.isArray(destinationHotels) &&
-                            destinationHotels?.map((hotel) => (
-                              <option key={hotel._id} value={hotel._id}>
-                                {hotel.name}
-                              </option>
-                            ))}
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Activities Selector */}
-                  <div className="p-4 bg-gray-50 border-t border-gray-200">
-                    <div className="flex flex-col">
-                      <label className="text-xs font-semibold text-gray-700 mb-1">
-                        Select Activities
-                      </label>
-                      <Select
-                        placeholder="Choose Activities"
-                        isMulti
-                        components={{ DropdownIndicator: CustomDropdownIndicator }}
-                        value={dayData[index]?.selectedActivities || []}
-                        onChange={(selectedOptions) =>
-                          handleActivityChange(selectedOptions, index)
-                        }
-                        options={activitiesOption}
-                        closeMenuOnSelect={false}
-                        className="text-sm"
-                        styles={{
-                          control: (base) => ({
-                            ...base,
-                            borderColor: "#D1D5DB",
-                            "&:hover": {
-                              borderColor: "#3B82F6",
-                            },
-                          }),
-                        }}
-                      />
-                    </div>
-                  </div>
-                </div>
-                {/** DIV FOR SHOWING THE HOTEL */}
-                <div className="">
-                   {Array.isArray(selectedHotelImages) && selectedHotelImages[index]?.selected_Hotel?.image?.path ? (
-                    <img
-                      src={`${baseURL}/${selectedHotelImages[index]?.selected_Hotel?.image?.path}`}
-                      className="w-40 object-fill h-40"
-                      alt="selected hotel"
-                    />
-                  ) : (
-                    <p className="mt-8 text-gray-500">Select a Hotel</p>
-                  )}
-                </div>
-
-              </div>
-           
-            
-            </div>
-          ))}
-
-          <div className="bg-white shadow-md rounded-lg border border-gray-200">
-            <div className="flex flex-row justify-between items-center bg-gray-100 p-4 space-x-4">
-              <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
-                <span className="text-white text-sm font-bold">
-                  {myDays + 1}
-                </span>
-              </div>
-
-              <div className="flex items-center justify-center">
-                {" "}
-                Airport Drop
-              </div>
-              <div className="flex items-center justify-center"></div>
-            </div>
-          </div>
-
-          <div className="w-full bg-cyan-300">
-            
-            <button onClick={handleEnquiry}
-              className="w-full bg-blue-500 text-white py-3 px-6 rounded-md 
-            flex items-center justify-center gap-2 hover:bg-blue-600 
-            transition-all duration-200 mt-4" >
-              <span> {isUserLoggedIn && (
-                <p>Your Estimated price of Trip is: {Total_Estimated_Price}</p>
-              )}</span>
-              {/* Right Arrow Icon */}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                viewBox="0 0 20 20"
-                fill="currentColor"
+      <div className="grid -grid-cols-1 md:grid-cols-[800px_auto]">
+        <div className="bg-gray-50 min-h-screen p-6">
+          <div className="max-w-6xl mx-auto space-y-4">
+            {dayData?.map((day, index) => (
+              <div
+                key={index}
+                className="bg-white shadow-md rounded-lg border border-gray-200"
               >
-                <path
-                  fillRule="evenodd"
-                  d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </button>
+
+                <div className="flex flex-row">
+                  <div>
+                    <div className="flex items-center bg-gray-100 p-4 space-x-4">
+                      {/* Menu Icon */}
+
+                      {/* Day Number */}
+                      <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
+                        <span className="text-white text-sm font-bold">
+                          {index + 1}
+                        </span>
+                      </div>
+
+                      {/* Content Container */}
+                      <div className="flex flex-row gap-8 justify-start">
+                        {/* Close Icon */}
+                        <div className="flex items-center justify-center"></div>
+
+                        {/* Date */}
+                        <div className="flex flex-col justify-center items-center">
+                          <h2 className="text-sm font-medium text-gray-600 pt-1">
+                            {new Date(datesObjects[index]?.date).toDateString()}
+                          </h2>
+                        </div>
+
+                        {/* Location Selector */}
+                        <div className="flex flex-col">
+                          <label className="text-xs font-semibold text-gray-700 mb-1">
+                            Select Location
+                          </label>
+                          <select
+                            value={dayData[index]?.selectedLocation}
+                            onChange={(event) =>
+                              handleLocationChange(
+                                index,
+                                event,
+                                new Date(datesObjects[index]?.date).toISOString(),
+                                destinationLocations
+                              )
+                            }
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm 
+                      focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                      transition-all duration-200"
+                          >
+                            <option key="choose">Choose Location</option>
+
+                            {destinationLocations?.[index]?.location?.map(
+                              (loc, index) => (
+                                <option key={index} value={loc.name}>
+                                  {" "}
+                                  {loc.name}
+                                </option>
+                              )
+                            )}
+                          </select>
+                        </div>
+
+                        {/* Hotel Selector */}
+                        <div className="flex flex-col">
+                          <label className="text-xs font-semibold text-gray-700 mb-1">
+                            Select Hotel
+                          </label>
+                          <select
+                            // value={dayData[index]?.selectedHotel?.hotelId}
+                            value={dayData[index]?.selectedHotel[0]}
+                            onChange={(event) =>
+                              handleHotelChange(index, event, destinationHotels)
+                            }
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm 
+                      focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                      transition-all duration-200"
+                          >
+                            <option key="choose">Choose Hotel</option>
+                            {Array.isArray(destinationHotels) &&
+                              destinationHotels?.map((hotel) => (
+                                <option key={hotel._id} value={hotel._id}>
+                                  {hotel.name}
+                                </option>
+                              ))}
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Activities Selector */}
+                    <div className="p-4 bg-gray-50 border-t border-gray-200">
+                      <div className="flex flex-col">
+                        <label className="text-xs font-semibold text-gray-700 mb-1">
+                          Select Activities
+                        </label>
+                        <Select
+                          placeholder="Choose Activities"
+                          isMulti
+                          components={{ DropdownIndicator: CustomDropdownIndicator }}
+                          value={dayData[index]?.selectedActivities || []}
+                          onChange={(selectedOptions) =>
+                            handleActivityChange(selectedOptions, index)
+                          }
+                          options={activitiesOption}
+                          closeMenuOnSelect={false}
+                          className="text-sm"
+                          styles={{
+                            control: (base) => ({
+                              ...base,
+                              borderColor: "#D1D5DB",
+                              "&:hover": {
+                                borderColor: "#3B82F6",
+                              },
+                            }),
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  {/** DIV FOR SHOWING THE HOTEL */}
+                  <div className="">
+                    {Array.isArray(selectedHotelImages) && selectedHotelImages[index]?.selected_Hotel?.image?.path ? (
+                      <img
+                        src={`${baseURL}/${selectedHotelImages[index]?.selected_Hotel?.image?.path}`}
+                        className="w-40 object-fill h-40"
+                        alt="selected hotel"
+                      />
+                    ) : (
+                      <p className="mt-8 text-gray-500">Select a Hotel</p>
+                    )}
+                  </div>
+
+                </div>
+
+
+              </div>
+            ))}
+
+            
+
+            <div className="bg-white shadow-md rounded-lg border border-gray-200">
+              <div className="flex flex-row justify-between items-center bg-gray-100 p-4 space-x-4">
+                <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
+                  <span className="text-white text-sm font-bold">
+                    {myDays + 1}
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-center">
+                  {" "}
+                  Airport Drop
+                </div>
+                <div className="flex items-center justify-center"></div>
+              </div>
+            </div>
+
+            
           </div>
         </div>
+
+        <div className="p-10 ">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwufSqNRmU6hFCdwoe2QHPDmp10eZczikTHQ&s" className="h-full rounded-md"/>
+        </div>
+      </div>
+
+      <div className="w-full bg-cyan-300">
+
+        <button onClick={handleEnquiry}
+          className="w-full bg-blue-500 text-white py-3 px-6 rounded-md 
+            flex items-center justify-center gap-2 hover:bg-blue-600 
+            transition-all duration-200 mt-4" >
+          <span> {isUserLoggedIn && (
+            <p>Your Estimated price of Trip is: {Total_Estimated_Price}</p>
+          )}</span>
+          {/* Right Arrow Icon */}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
+              d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </button>
       </div>
        
       <GoogleMapsEmbed data={mapData} />
