@@ -53,10 +53,8 @@ const IndianDestinations = () => {
                       }{" "}
                       Tour Packages{" "}
                     </h1>
-
                     <TripSection data={packagesByDestination?.data} />
 
-                    <h1> Available Packages </h1>
                   </div>
                 )}
             </div>

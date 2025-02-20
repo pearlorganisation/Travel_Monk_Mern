@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { baseURL } from "../../services/axiosInterceptor";
 
 function CardCarousel({ data }) {
+  console.log("the data length is", data.length)
   let sliderRef = useRef(null);
   const next = () => {
     sliderRef.slickNext();
@@ -16,9 +17,9 @@ function CardCarousel({ data }) {
   };
 
   const settings = {
-    infinite: true,
+    infinite: false,
     speed: 500,
-    slidesToShow: 4,
+    slidesToShow:3,
     slidesToScroll: 1,
   };
 
@@ -40,7 +41,7 @@ function CardCarousel({ data }) {
         {...settings}
       >
         {data?.map((cardData, i) => (
-          <div key={i} className="h-96  w-40 p-2  overflow-hidden   flex ">
+          <div key={i} className="h-96 w-40 p-2 overflow-hidden flex ">
             <Link to={`/packages/${cardData?._id}`}>
               <div className=" h-full relative z-0 w-full">
                 <img
