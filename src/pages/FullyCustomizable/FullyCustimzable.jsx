@@ -307,7 +307,7 @@ console.log("the first selected vehicle price is", Total_Estimated_Price)
     });
   };
   return (
-    <div className="bg-gray-200 relative">
+    <div className="bg-gray-100 relative">
       <div
         className="flex items-center absolute justify-end px-20 mb-6"
         style={{
@@ -319,7 +319,7 @@ console.log("the first selected vehicle price is", Total_Estimated_Price)
       >
         <WhatsAppLogo />
       </div>
-      <div className="px-24 mt-4">
+      <div className="p-6 mt-4 mb-3">
         <h1 className="text-[#1f1f1f] font-bold text-4xl leading-[48px]">
            Customize your Trip
          </h1>
@@ -342,10 +342,7 @@ console.log("the first selected vehicle price is", Total_Estimated_Price)
           {/* Left Section */}
           <div className="w-1/2 h-52">
             <div className="border bg-white rounded-md relative">
-              {/* Top dotted border */}
-              {/* <div className="absolute -top-[1px] left-0 right-0 border-t border-dashed border-blue-400" /> */}
-
-              <div className="p-4">
+              <div className="h-52 px-3 pt-2">
                 <div className="mb-4">
                   <h2 className="text-sm">
                     <span className="font-medium">Step 1 |</span> Select vehicle available at this location.
@@ -395,7 +392,7 @@ console.log("the first selected vehicle price is", Total_Estimated_Price)
           </div>
 
           {/* Right Section */}
-          <div className="w-1/2 pt-1">
+          <div className="w-1/2 h-52">
             {selectedVehicleName && (
               <div className="ml-2 rounded-md w-full bg-white">
                 <div className="flex w-full flex-row gap-6">
@@ -455,12 +452,19 @@ console.log("the first selected vehicle price is", Total_Estimated_Price)
         </div>
         
       </div>
-      <div className="flex justify-center items-center text-center fold-semibold text-4xl">
-        Note: You can only select a maximum of 3 activities for each day.
-      </div>
+     
 
     
         <div className="bg-white min-h-screen p-6">
+        <div className="text-gray-700 text-sm p-4 rounded-md">
+          <div className="mb-2">
+            <span className="font-medium">Step 2 |</span> Select Your day to day schedule
+          </div>
+          <div className="bg-blue-100 p-3 rounded">
+            <span className="font-medium">Please note - </span>
+            You can only select a maximum of 3 activities for each day.
+          </div>
+        </div>
           <div className="mx-auto space-y-4">
             {dayData?.map((day, index) => (
               <div
