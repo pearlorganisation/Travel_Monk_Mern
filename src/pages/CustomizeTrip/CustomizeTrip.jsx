@@ -117,10 +117,22 @@ const CustomizeTrip = () => {
     }
   }, [singlePackage?.data]);
   const [totalHotelPrices, setTotalHotelPrice] = useState(0);
+
+  const [selectedHotelImages, setSelectedHotelImages] = useState([])
+console.log("the selected hotel images are", selectedHotelImages)
   const handleHotelChange = (index, event, hotels, currentLocation) => {
     console.log("---------------location", currentLocation);
     const selectedHotelId = event.target.value;
     const selectedHotel = hotels.find((hotel) => hotel._id === selectedHotelId);
+
+
+    /** for storing the images */
+    const newHotelData = [...selectedHotelImages]
+    newHotelData[index] = {
+      selectedHotel
+    }
+    setSelectedHotelImages(newHotelData)
+ 
 
     /**  data for sending in the newDayData for selected hotel */
 
@@ -323,7 +335,7 @@ const CustomizeTrip = () => {
                   <h1 className="text-white px-2">{index + 1}</h1>
                 </div>
 
-                <div className="bg-blue-400 border border-gray-200 rounded-md p-2 ml-8 flex flex-row w-full">
+                <div className="bg-white border border-gray-200 rounded-md p-2 ml-8 flex flex-row w-full">
                   <div className="grid grid-cols-1 w-[100%]">
                     <div className="flex flex-row items-start gap-2">
                       <div className="flex flex-col gap-3 w-[20%] items-start mx-4">
@@ -351,7 +363,7 @@ const CustomizeTrip = () => {
                         </select>
                       </div>
 
-                      <div className="flex flex-col gap-3 ">
+                      <div className="flex flex-col gap-3 w-[50%] ">
                         <h1> Select Activity </h1>
 
                         <Select
@@ -366,6 +378,18 @@ const CustomizeTrip = () => {
                           }
                           options={dataForSelect}
                         />
+                      </div>
+                      {/** DIV FOR SHOWING THE HOTEL */}
+                      <div className="w-[30%] p-4 ">
+                        {Array.isArray(selectedHotelImages) && selectedHotelImages[index]?.selectedHotel?.image?.path ? (
+                          <img
+                            src={`${baseURL}/${selectedHotelImages[index]?.selectedHotel?.image?.path}`}
+                            className="w-full object-fill max-h-48 min-h-48 rounded-lg"
+                            alt="selected hotel"
+                          />
+                        ) : (
+                          <p className="mt-8 text-gray-500">Select a Hotel</p>
+                        )}
                       </div>
                     </div>
                   </div>
