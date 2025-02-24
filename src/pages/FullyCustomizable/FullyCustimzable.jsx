@@ -340,42 +340,47 @@ console.log("the first selected vehicle price is", Total_Estimated_Price)
      
       <div className="flex flex-col lg:flex-row gap-4 w-full p-4">
   {/* Left Section */}
-  <div className="w-full lg:w-1/2">
-    <div className="border bg-white rounded-md relative p-4">
-      <h2 className="text-sm mb-4">
-        <span className="font-medium">Step 1 |</span> Select a vehicle available at this location.
-      </h2>
+          <div className="w-full h-56 lg:w-1/2">
+            <div className="border bg-white rounded-md relative p-4 h-full">
+              <h2 className="text-sm mb-4">
+                <span className="font-medium">Step 1 |</span> Select a vehicle available at this location.
+              </h2>
 
-      <button
-        onClick={openModal}
-        className="mt-2 bg-white px-6 py-2 border border-gray-800 rounded-md flex items-center justify-center gap-2 w-full md:w-auto"
-      >
-        <svg width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12.3334 5.16669H7.33341V0.166687H5.66675V5.16669H0.666748V6.83335H5.66675V11.8334H7.33341V6.83335H12.3334V5.16669Z" fill="#1F1F1F"/>
-        </svg>
-        <span className="text-black text-sm">Add a Vehicle (Compulsory)</span>
-      </button>
+              <button
+                onClick={openModal}
+                className="mt-2 bg-white px-6 py-2 border border-gray-800 rounded-md flex items-center justify-center gap-2 w-full md:w-auto"
+              >
+                <svg width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12.3334 5.16669H7.33341V0.166687H5.66675V5.16669H0.666748V6.83335H5.66675V11.8334H7.33341V6.83335H12.3334V5.16669Z" fill="#1F1F1F" />
+                </svg>
+                <span className="text-black text-sm">Add a Vehicle (Compulsory)</span>
+              </button>
 
-      {selectedVehicleName && (
-        <div className="mt-4 min text-sm">
-          <p className="mb-2">
-            You have selected: <span className="text-blue-600 font-medium">{selectedVehicleName}</span>
-          </p>
-          <p className="leading-relaxed">Vehicle Capacity: {selectedVehicle?.passengerCapacity}</p>
-          <p className="leading-relaxed">Luggage Capacity: {selectedVehicle?.luggageCapacity}</p>
-        </div>
-      )}
-    </div>
-  </div>
+              {selectedVehicleName && (
+                <div className="mt-4 text-sm">
+                  <p className="mb-2">
+                    You have selected: <span className="text-blue-600 font-medium">{selectedVehicleName}</span>
+                  </p>
+                  <p className="leading-relaxed">Vehicle Capacity: {selectedVehicle?.passengerCapacity}</p>
+                  <p className="leading-relaxed">Luggage Capacity: {selectedVehicle?.luggageCapacity}</p>
+                </div>
+              )}
+            </div>
+          </div>
 
-  {/* Right Section */}
-  <div className="w-full lg:w-1/2">
-    {selectedVehicleName && (
-      <div className="rounded-md bg-white p-2 shadow-md">
-        <img src={selectedVehicleImage} className="w-full h-52 object-contain" alt={selectedVehicleName} />
-      </div>
-    )}
-  </div>
+          {/* Right Section */}
+          <div className="w-full h-56  rounded-lg lg:w-1/2">
+            {selectedVehicleName && (
+              <div className="rounded-2xl p-2 shadow-md h-full flex items-center justify-center overflow-hidden">
+                <img
+                  src={selectedVehicleImage}
+                  className="w-[400px] h-52 object-fit rounded-2xl"
+                  alt={selectedVehicleName}
+                />
+              </div>
+            )}
+          </div>
+
 
   {/* Modal */}
   {isModalOpen && (
@@ -402,7 +407,7 @@ console.log("the first selected vehicle price is", Total_Estimated_Price)
               <p className="text-lg font-semibold">{vehicle?.vehicleName}</p>
               <img
                 src={`${baseURL}/${vehicle?.image?.path}`}
-                className="w-28 h-20 mt-4 object-contain"
+                className="w-full h-36 rounded-lg mb-2 mt-3"
                 alt={vehicle?.vehicleName}
               />
             </div>

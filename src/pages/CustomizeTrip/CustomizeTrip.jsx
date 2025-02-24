@@ -227,7 +227,7 @@ console.log("the selected hotel images are", selectedHotelImages)
         <div className="flex flex-row mt-2">
           {/* Left Section */}
           <div className="w-1/2 h-52">
-            <div className="border bg-white rounded-md relative">
+            <div className="border bg-white rounded-md p-2 relative">
               <div className="h-52 px-3 pt-2">
                 <div className="mb-4">
                   <h2 className="text-sm">
@@ -279,11 +279,11 @@ console.log("the selected hotel images are", selectedHotelImages)
           {/* Right Section */}
           <div className="w-1/2 h-52">
             {selectedVehicleName && (
-              <div className="ml-2 rounded-md w-full bg-white">
-                <div className="flex w-full flex-row gap-6">
+              <div className="ml-2 rounded-md w-full  bg-white">
+                <div className="rounded-2xl p-2 shadow-md h-full flex items-center justify-center overflow-hidden">
                   <img
                     src={selectedVehicleImage}
-                    className="w-full h-52 object-contain"
+                    className="w-[400px] h-52 object-fit rounded-2xl"
                     alt={selectedVehicleName}
                   />
                 </div>
@@ -313,7 +313,7 @@ console.log("the selected hotel images are", selectedHotelImages)
                     );
                     closeModal(); // Close the modal after selection
                   }}
-                  className="p-4 border rounded-lg shadow-md cursor-pointer bg-purple-300 h-56"
+                  className="p-4 border rounded-lg shadow-md cursor-pointer bg-[#F0F5FF] h-56"
                 >
                   <p className="text-lg font-semibold">
                     Vehicle: {vehicle?.vehicleName}
@@ -324,7 +324,7 @@ console.log("the selected hotel images are", selectedHotelImages)
 
                   <img
                     src={`${baseURL}/${vehicle?.image?.path}`}
-                    className="w-28 h-20 mt-8"
+                    className="w-full h-36 rounded-lg mb-2 mt-3"
                   />
                 </div>
               ))}

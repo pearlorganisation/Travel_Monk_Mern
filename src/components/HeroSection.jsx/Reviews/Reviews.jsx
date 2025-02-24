@@ -4,7 +4,7 @@ const Reviews = () => {
   return (
     <div className="bg-white mt-0">
       <div
-        className="border flex justify-center gap-10 h-full w-full pt-1 pb-1"
+        className=" flex justify-center gap-10 h-full my-3 w-full pt-1 pb-1"
         style={{
           boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;",
         }}
