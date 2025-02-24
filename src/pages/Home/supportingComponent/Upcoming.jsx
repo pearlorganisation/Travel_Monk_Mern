@@ -36,7 +36,7 @@ const Upcoming = () => {
 
         if (res?.data?.data) {
           setPackagesData(res?.data?.data);
-        } else {
+        } else if(res.success == false) {
           setPackagesData(null);
           toast.error("No packages found for this month.");
         }
