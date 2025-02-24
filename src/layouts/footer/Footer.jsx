@@ -154,9 +154,15 @@ const Footer = () => {
         <div className="flex items-center justify-center">
           <h1 className="mt-12 px-10 text-sm">
             {" "}
-            ©{new Date().getFullYear()}All rights reserved.{" "}
-            <a href="https://thetravelmonk.com/">The Travel Monk</a> Powered By
-            a <a href="https://pearlorganisation.com/">Pearl Organisation</a>
+            ©{new Date().getFullYear()} All Rights Reserved.{" "}
+            <a href="https://thetravelmonk.com/">The Travel Monk</a> Powered By{" "}
+            <a
+              href="https://pearlorganisation.com/"
+              rel="noreferrer"
+              target="_blank"
+            >
+              Pearl Organisation
+            </a>
           </h1>
         </div>
       </footer>
