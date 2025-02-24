@@ -52,7 +52,7 @@ const tabs = [
 ];
 function AnimatedImageTabs() {
   return (
-    <div className="px-20 py-10">
+    <div className="px-20 py-10 bg-[#F0F5FF]">
       <div className=" w-full  h-full">
         <TabsProvider
           defaultValue="1"
