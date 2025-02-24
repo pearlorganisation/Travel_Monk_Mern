@@ -150,6 +150,13 @@ const Footer = () => {
             </div>
           </div>
         </div>
+
+        <div className="flex items-center justify-center">
+          <h1 className="mt-12 px-10 text-sm">
+            {" "}
+            ©{new Date().getFullYear()} Pearl Organisation. All rights reserved.
+          </h1>
+        </div>
       </footer>
     </div>
   );
