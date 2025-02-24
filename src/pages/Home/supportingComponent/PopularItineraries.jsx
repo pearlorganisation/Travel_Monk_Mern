@@ -399,7 +399,7 @@ const PopularItineraries = ({ data }) => {
                     >
                       <div className=" bg-opacity-50 h-full max-w-full flex items-center rounded-lg">
                         <div className="text-left text-white p-8">
-                          <h3 className="text-3xl font-bold mb-2 text-white fixed top-4">
+                          <h3 className="text-lg md:text-xl font-bold line-clamp-2 fixed top-4">
                             {destination?.name}
                           </h3>
                           {/* <p className="mb-4">

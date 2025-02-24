@@ -338,118 +338,88 @@ console.log("the first selected vehicle price is", Total_Estimated_Price)
 
         {/** select vehicle div */}
      
-        <div className="flex flex-row">
-          {/* Left Section */}
-          <div className="w-1/2 h-52">
-            <div className="border bg-white rounded-md relative">
-              <div className="h-52 px-3 pt-2">
-                <div className="mb-4">
-                  <h2 className="text-sm">
-                    <span className="font-medium">Step 1 |</span> Select vehicle available at this location.
-                  </h2>
+      <div className="flex flex-col lg:flex-row gap-4 w-full p-4">
+  {/* Left Section */}
+  <div className="w-full lg:w-1/2">
+    <div className="border bg-white rounded-md relative p-4">
+      <h2 className="text-sm mb-4">
+        <span className="font-medium">Step 1 |</span> Select a vehicle available at this location.
+      </h2>
 
-                  <button className="mt-4 bg-white px-6 py-1 border border-[#1f1f1f] rounded-sm lg:min-w-72 flex flex-row items-center justify-center gap-2">
-                    <svg
-                      width="13"
-                      height="12"
-                      viewBox="0 0 13 12"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M12.3334 5.16669H7.33341V0.166687H5.66675V5.16669H0.666748V6.83335H5.66675V11.8334H7.33341V6.83335H12.3334V5.16669Z"
-                        fill="#1F1F1F"
-                      />
-                    </svg>
-                    <button
-                      onClick={openModal}
-                      className="text-black text-sm"
-                    >
-                      Add a Vehicle ( Compulsory )
-                    </button>
-                  </button>
-                </div>
+      <button
+        onClick={openModal}
+        className="mt-2 bg-white px-6 py-2 border border-gray-800 rounded-md flex items-center justify-center gap-2 w-full md:w-auto"
+      >
+        <svg width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12.3334 5.16669H7.33341V0.166687H5.66675V5.16669H0.666748V6.83335H5.66675V11.8334H7.33341V6.83335H12.3334V5.16669Z" fill="#1F1F1F"/>
+        </svg>
+        <span className="text-black text-sm">Add a Vehicle (Compulsory)</span>
+      </button>
 
-                {selectedVehicleName && (
-                  <div className="mt-4 text-sm">
-                    <p className="mb-2">
-                      You have selected vehicle: <span className="text-blue-600">{selectedVehicleName}</span>
-                    </p>
-
-                    <div>
-                      <p className="font-medium mb-1">Vehicle Details:</p>
-                      <p className="leading-relaxed">
-                        Vehicle Capacity: {selectedVehicle?.passengerCapacity}
-                      </p>
-                      <p className="leading-relaxed">
-                        Luggage Capacity: {selectedVehicle?.luggageCapacity}
-                      </p>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Right Section */}
-          <div className="w-1/2 h-52">
-            {selectedVehicleName && (
-              <div className="ml-2 rounded-md w-full bg-white">
-                <div className="flex w-full flex-row gap-6">
-                  <img
-                    src={selectedVehicleImage}
-                    className="w-full h-52 object-contain"
-                    alt={selectedVehicleName}
-                  />
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Modal */}
-          {isModalOpen && (
-            <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
-              <div className="bg-white p-6 rounded-lg shadow-lg w-1/2">
-                <h2 className="text-xl font-bold mb-4">Select a Vehicle</h2>
-
-                <div className="flex flex-row gap-6">
-                  {destinationVehicles?.map((vehicle) => (
-                    <div
-                      key={vehicle?._id}
-                      onClick={() => {
-                        handleSelectVehicle(
-                          vehicle?.vehicleName,
-                          vehicle?.pricePerDay,
-                          vehicle?._id,
-                          vehicle?.image?.path,
-                          vehicle
-                        );
-                        closeModal();
-                      }}
-                      className="p-4 border rounded-lg shadow-md cursor-pointer bg-purple-300 h-56"
-                    >
-                      <p className="text-lg font-semibold">
-                        Vehicle: {vehicle?.vehicleName}
-                      </p>
-                      <img
-                        src={`${baseURL}/${vehicle?.image?.path}`}
-                        className="w-28 h-20 mt-8"
-                        alt={vehicle?.vehicleName}
-                      />
-                    </div>
-                  ))}
-                </div>
-
-                <button
-                  onClick={closeModal}
-                  className="mt-4 px-4 py-2 bg-red-500 text-white font-bold rounded hover:bg-red-600"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          )}
+      {selectedVehicleName && (
+        <div className="mt-4 min text-sm">
+          <p className="mb-2">
+            You have selected: <span className="text-blue-600 font-medium">{selectedVehicleName}</span>
+          </p>
+          <p className="leading-relaxed">Vehicle Capacity: {selectedVehicle?.passengerCapacity}</p>
+          <p className="leading-relaxed">Luggage Capacity: {selectedVehicle?.luggageCapacity}</p>
         </div>
+      )}
+    </div>
+  </div>
+
+  {/* Right Section */}
+  <div className="w-full lg:w-1/2">
+    {selectedVehicleName && (
+      <div className="rounded-md bg-white p-2 shadow-md">
+        <img src={selectedVehicleImage} className="w-full h-52 object-contain" alt={selectedVehicleName} />
+      </div>
+    )}
+  </div>
+
+  {/* Modal */}
+  {isModalOpen && (
+    <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-11/12 md:w-3/4 lg:w-1/2">
+        <h2 className="text-xl font-bold mb-4">Select a Vehicle</h2>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {destinationVehicles?.map((vehicle) => (
+            <div
+              key={vehicle?._id}
+              onClick={() => {
+                handleSelectVehicle(
+                  vehicle?.vehicleName,
+                  vehicle?.pricePerDay,
+                  vehicle?._id,
+                  vehicle?.image?.path,
+                  vehicle
+                );
+                closeModal();
+              }}
+              className="p-4 border rounded-lg shadow-md cursor-pointer bg-[#F0F5FF] text-center h-56 flex flex-col items-center justify-center"
+            >
+              <p className="text-lg font-semibold">{vehicle?.vehicleName}</p>
+              <img
+                src={`${baseURL}/${vehicle?.image?.path}`}
+                className="w-28 h-20 mt-4 object-contain"
+                alt={vehicle?.vehicleName}
+              />
+            </div>
+          ))}
+        </div>
+
+        <button
+          onClick={closeModal}
+          className="mt-4 px-4 py-2 bg-red-500 text-white font-bold rounded hover:bg-red-600 w-full sm:w-auto"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  )}
+</div>
+
         
       </div>
      
