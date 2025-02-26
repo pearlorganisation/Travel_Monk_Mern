@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getPartners } from "../../features/partners/partnersActions";
 import BusCruiseContactForm from "./BusCruiseContactForm";
+import { baseURL } from "../../services/axiosInterceptor";
 
 export default function CruiseContactForm() {
   const contactMethods = [
@@ -92,7 +93,7 @@ export default function CruiseContactForm() {
                 <div key={item._id} className="">
                   {item?.partnerType?.partnerTypeName === "Cruise" && (
                     <img
-                      src={item?.partnerLogo?.secure_url}
+                      src={`${baseURL}/${item?.partnerLogo?.path}`}
                       alt={item?.name}
                       className="w-20 h-20 rounded-lg"
                     />
