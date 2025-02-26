@@ -14,7 +14,8 @@ import ClockIcon from "../../assets/logos/clock.png";
 import RightMark from "../../assets/logos/icons8-checkmark-50.png";
 import CrossIcon from "../../assets/logos/icons8-cross-50.png";
 import WhatsAppLogo from "../../components/Whatsapp/WhatsLogo";
-
+import LocationIcon from "/icons/locationicon.svg"
+import ClockIcon2 from "/icons/durationtimeicon.svg"
 const PackageDetails = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -79,8 +80,8 @@ const PackageDetails = () => {
         <div>
           <h1 className="text-4xl font-semibold">{data?.name}</h1>
           <div className="flex flex-row gap-12 p-6">
-            <div className="flex flex-row gap-4">
-              <img src={DropIcon} width={38} height={38} />
+            <div className="flex flex-row items-center gap-2">
+              <img src={LocationIcon} width={48} height={48}  />
               <div className="flex flex-col ">
                 <h1>Pickup and Drop</h1>
                 <h1>
@@ -89,8 +90,8 @@ const PackageDetails = () => {
               </div>
             </div>
 
-            <div className="flex flex-row gap-4">
-              <img src={ClockIcon} width={38} height={38} />
+            <div className="flex flex-row items-center gap-4">
+              <img src={ClockIcon2} width={48} height={48} />
               <div className="flex flex-col ">
                 <h1>Duration</h1>
                 <h1>

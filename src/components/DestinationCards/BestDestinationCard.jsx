@@ -6,11 +6,14 @@ import {
   faCalendarAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { baseURL } from "../../services/axiosInterceptor";
+import { Link } from "react-router-dom";
 
 const TripCard = ({ trip }) => {
+  console.log("the trip is", trip)
   return (
-    <a
-      href={trip.link}
+
+    <Link
+      to={`/packages/${trip._id}`}
       className="block shadow-md rounded-lg overflow-hidden relative group bg-cover bg-center h-96"
       style={{ backgroundImage: `url(${baseURL}/${trip?.image?.path})` }}
     >
@@ -41,7 +44,7 @@ const TripCard = ({ trip }) => {
           <span>{trip.dates}</span>
         </div> */}
       </div>
-    </a>
+    </Link>
   );
 };
 
