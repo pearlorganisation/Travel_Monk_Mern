@@ -340,8 +340,8 @@ console.log("the first selected vehicle price is", Total_Estimated_Price)
      
       <div className="flex flex-col lg:flex-row gap-4 w-full p-4">
   {/* Left Section */}
-          <div className="w-full h-56 lg:w-1/2">
-            <div className="border bg-white rounded-md relative p-4 h-full">
+          <div className="w-full rounded-2xl h-56 lg:w-1/2">
+            <div className="border bg-white   rounded-2xl relative p-4 h-full">
               <h2 className="text-sm mb-4">
                 <span className="font-medium">Step 1 |</span> Select a vehicle available at this location.
               </h2>
@@ -371,7 +371,7 @@ console.log("the first selected vehicle price is", Total_Estimated_Price)
           {/* Right Section */}
           <div className="w-full h-56  rounded-lg lg:w-1/2">
             {selectedVehicleName && (
-              <div className="rounded-2xl p-2 shadow-md h-full flex items-center justify-center overflow-hidden">
+              <div className="rounded-2xl p-2 shadow-md h-full flex items-center bg-white justify-center overflow-hidden">
                 <img
                   src={selectedVehicleImage}
                   className="w-[400px] h-52 object-fit rounded-2xl"

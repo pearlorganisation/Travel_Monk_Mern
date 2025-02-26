@@ -32,7 +32,7 @@ const IndianPackages = () => {
         </div>
       </div>
       <div className="flex justify-center items-center h-full ">
-        <div className="bg-slate-200 my-6">
+        <div className=" my-6">
           <h1 className="text-3xl font-bold">About Indian Tours</h1>
         </div>
       </div>
