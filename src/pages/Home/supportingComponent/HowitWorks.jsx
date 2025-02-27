@@ -5,6 +5,11 @@ import {
   FaClipboardList,
   FaSuitcase,
 } from "react-icons/fa";
+import Group1Icon from "/images/group39.png"
+import Group2Icon from "/images/group40.png"
+import Group3Icon from "/images/group41.png"
+import Group4Icon from "/images/group42.png"
+import LineIcon from "/images/line18.png"
 
 const HowitWorks = () => {
   return (
@@ -15,7 +20,7 @@ const HowitWorks = () => {
           {/* Item 1 */}
           <div className="flex flex-col items-center">
             <div className="flex flex-col items-center   w-40 h-40 ">
-              <img src="src\assets\images\Group 39.png" alt="" />
+              <img src={Group1Icon} alt="" />
               <p className="font-medium text-center text-sm text-black">
                 Choose <br /> destinations <br />
                 and dates
@@ -23,36 +28,36 @@ const HowitWorks = () => {
             </div>
           </div>
           <div className="flex items-center">
-            <img src="src\assets\images\Line 18.png" alt="" className="w-20" />
+            <img src={LineIcon} alt="" className="w-20" />
           </div>
           {/* Item 2 */}
           <div className="flex flex-col items-center">
             <div className="flex flex-col items-center  w-40 h-40 ">
-              <img src="src\assets\images\Group 40.png" alt="" />
+              <img src={Group2Icon} alt="" />
               <p className="font-medium text-center text-sm text-black">
                 Select Cruise, hotels, bus experiences
               </p>
             </div>
           </div>
           <div className="flex items-center">
-            <img src="src\assets\images\Line 18.png" alt="" className="w-20" />
+            <img src={LineIcon} alt="" className="w-20" />
           </div>
           {/* Item 3 */}
           <div className="flex flex-col items-center">
             <div className="flex flex-col items-center  w-40 h-40 ">
-              <img src="src\assets\images\Group 41.png" alt="" />
+              <img src={Group3Icon} alt="" />
               <p className="font-medium text-center text-sm text-black">
                 Book and get a Trip Organizer for your convenience
               </p>
             </div>
           </div>
           <div className="flex items-center">
-            <img src="src\assets\images\Line 18.png" alt="" className="w-20" />
+            <img src={LineIcon} alt="" className="w-20" />
           </div>
           {/* Item 4 */}
           <div className="flex flex-col items-center">
             <div className="flex flex-col items-center  w-40 h-40   ">
-              <img src="src\assets\images\Group 42.png" alt="" />
+              <img src={Group4Icon} alt="" />
               <p className="font-medium text-center text-sm text-[#121212] leading-snug w-40">
                 Use the crowdsourced database and travel expertise system for
                 refinement.

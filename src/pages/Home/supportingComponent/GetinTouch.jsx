@@ -119,7 +119,7 @@ const GetinTouch = () => {
           </button>
         </div> */}
         </div>
-        <h1 className="text-black font-bold mx-auto text-center py-12 text-3xl ">
+        {/* <h1 className="text-black font-bold mx-auto text-center py-12 text-3xl ">
           {" "}
           Where are you going to take your next selfie?
         </h1>
@@ -127,7 +127,7 @@ const GetinTouch = () => {
           <button className=" py-2 px-20 bg-[#007E8F] text-[#f5f5f5] rounded-lg  focus:outline-none  mb-10 mx-auto">
             Customise your Trip
           </button>
-        </div>
+        </div> */}
       </div>
     </>
   );
