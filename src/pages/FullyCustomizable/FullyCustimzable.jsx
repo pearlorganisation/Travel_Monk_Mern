@@ -146,7 +146,7 @@ const FullyCustomizeTrip = () => {
       }));
 
       setDayData(newDayData); // Update state with prefilled data
-      console.log("Prefilled dayData from fullyCustomizedLocalStoredData:", newDayData);
+      // console.log("Prefilled dayData from fullyCustomizedLocalStoredData:", newDayData);
     } else {
       // If no stored itinerary, create a new blank structure based on myDays
       setDayData(
