@@ -171,7 +171,8 @@ console.log("the selected hotel images are", selectedHotelImages)
         !day.selectedHotel ||
         Object.keys(day.selectedHotel).length === 0 ||
         !Array.isArray(day.selectedActivities) ||
-        day.selectedActivities.length === 0
+        day.selectedActivities.length === 0 ||
+        selectedVehicleName.length === 0
     );
 
     if (invalidEntry) {
