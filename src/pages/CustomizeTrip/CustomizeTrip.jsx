@@ -224,73 +224,7 @@ console.log("the selected hotel images are", selectedHotelImages)
           further optimize it by selectings hotels and activities
         </h3>
        {/** select a vehicle */}
-        <div className="flex flex-row mt-2">
-          {/* Left Section */}
-          <div className="w-1/2 h-52">
-            <div className="border bg-white rounded-md p-2 relative">
-              <div className="h-52 px-3 pt-2">
-                <div className="mb-4">
-                  <h2 className="text-sm">
-                    <span className="font-medium">Step 1 |</span> Select vehicle available at this location.
-                  </h2>
-
-                  <button className="mt-4 bg-white px-6 py-1 border border-[#1f1f1f] rounded-sm lg:min-w-72 flex flex-row items-center justify-center gap-2">
-                    <svg
-                      width="13"
-                      height="12"
-                      viewBox="0 0 13 12"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M12.3334 5.16669H7.33341V0.166687H5.66675V5.16669H0.666748V6.83335H5.66675V11.8334H7.33341V6.83335H12.3334V5.16669Z"
-                        fill="#1F1F1F"
-                      />
-                    </svg>
-                    <button
-                      onClick={openModal}
-                      className="text-black text-sm"
-                    >
-                      Add a Vehicle ( Compulsory )
-                    </button>
-                  </button>
-                </div>
-
-                {selectedVehicleName && (
-                  <div className="mt-4 text-sm">
-                    <p className="mb-2">
-                      You have selected vehicle: <span className="text-blue-600">{selectedVehicleName}</span>
-                    </p>
-
-                    <div>
-                      <p className="font-medium mb-1">Vehicle Details:</p>
-                      <p className="leading-relaxed">
-                        Vehicle Capacity: {selectedVehicle?.passengerCapacity}
-                      </p>
-                      <p className="leading-relaxed">
-                        Luggage Capacity: {selectedVehicle?.luggageCapacity}
-                      </p>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-          {/* Right Section */}
-          <div className="w-1/2 h-52">
-            {selectedVehicleName && (
-              <div className="ml-2 rounded-md w-full  bg-white">
-                <div className="rounded-2xl p-2 shadow-md h-full flex items-center justify-center overflow-hidden">
-                  <img
-                    src={selectedVehicleImage}
-                    className="w-[400px] h-52 object-fit rounded-2xl"
-                    alt={selectedVehicleName}
-                  />
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
+       
       </div>
 
       {isModalOpen && (
@@ -346,7 +280,7 @@ console.log("the selected hotel images are", selectedHotelImages)
         <div className="">
           <div className="text-gray-700 text-sm p-4 flex justify-center items-center rounded-md">
             <div className="mb-2">
-              <span className="font-medium">Step 2 |</span> Select Your day to day schedule
+              <span className="font-medium">Step 1 |</span> Select Your day to day schedule
             </div>
           </div>
           {singlePackage?.data?.itinerary?.map((iti, index) => {
@@ -443,13 +377,76 @@ console.log("the selected hotel images are", selectedHotelImages)
       
 
       <div className="pl-40 ">
-        <div className="m-4 flex justify-center items-center">
-          {/* <h1 className="text-center">
-            Estimated Total cost of trip can be around this figure for
-            proceeding ahead fill this contact form and one of our executive
-            will reach out to you. {Total_Estimated_Price}{" "}
-          </h1> */}
+        <div className=" flex flex-col ">
+        
           {/* Updated Button */}
+          <div className="flex flex-row">
+            {/* Left Section */}
+            <div className="w-1/2 h-52 m-3">
+              <div className="border bg-white rounded-md p-2 relative">
+                <div className="h-52 px-3 pt-2">
+                  <div className="mb-4">
+                    <h2 className="text-sm">
+                      <span className="font-medium">Step 2 |</span> Select vehicle available at this location.
+                    </h2>
+
+                    <button className="mt-4 bg-white px-6 py-1 border border-[#1f1f1f] rounded-sm lg:min-w-72 flex flex-row items-center justify-center gap-2">
+                      <svg
+                        width="13"
+                        height="12"
+                        viewBox="0 0 13 12"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M12.3334 5.16669H7.33341V0.166687H5.66675V5.16669H0.666748V6.83335H5.66675V11.8334H7.33341V6.83335H12.3334V5.16669Z"
+                          fill="#1F1F1F"
+                        />
+                      </svg>
+                      <button
+                        onClick={openModal}
+                        className="text-black text-sm"
+                      >
+                        Add a Vehicle ( Compulsory )
+                      </button>
+                    </button>
+                  </div>
+
+                  {selectedVehicleName && (
+                    <div className="mt-4 text-sm">
+                      <p className="mb-2">
+                        You have selected vehicle: <span className="text-blue-600">{selectedVehicleName}</span>
+                      </p>
+
+                      <div>
+                        <p className="font-medium mb-1">Vehicle Details:</p>
+                        <p className="leading-relaxed">
+                          Vehicle Capacity: {selectedVehicle?.passengerCapacity}
+                        </p>
+                        <p className="leading-relaxed">
+                          Luggage Capacity: {selectedVehicle?.luggageCapacity}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+            {/* Right Section */}
+            <div className="w-1/2 h-52 m-3">
+              {selectedVehicleName && (
+                <div className="ml-2 rounded-md w-full  bg-white">
+                  <div className="rounded-2xl p-2 shadow-md h-full flex items-center justify-center overflow-hidden">
+                    <img
+                      src={selectedVehicleImage}
+                      className="w-[400px] h-52 object-fit rounded-2xl"
+                      alt={selectedVehicleName}
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
           <button
             onClick={handleEnquiry}
             className="w-full bg-blue-500 text-white py-3 px-6 rounded-md 
