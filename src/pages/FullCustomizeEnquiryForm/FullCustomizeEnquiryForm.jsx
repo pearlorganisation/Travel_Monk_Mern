@@ -15,9 +15,9 @@ const FullCustomizeEnquiryForm = () => {
   const { userInfo } = useSelector((state) => state.user); // getting the userInfo
   /** to get the current page url */
   const fullURL = location.pathname;
-  console.log(`The full URL is: ${fullURL}`);
+  // console.log(`The full URL is: ${fullURL}`);
 
-  console.log(userInfo, "my user info");
+  // console.log(userInfo, "my user info");
 
   useEffect(() => {
     if (!isUserLoggedIn) navigate("/login");
@@ -42,7 +42,7 @@ const FullCustomizeEnquiryForm = () => {
   } = location.state ?? {};
   /** DATA FOR DOWNLOADING THE PDF */ 
   const pdfData = location.state.itinerary;
-console.log('===========pdf data is', pdfData)
+// console.log('===========pdf data is', pdfData)
 
   const newItinery = [...itinerary];
   
@@ -58,15 +58,15 @@ console.log('===========pdf data is', pdfData)
 
     return container
   })
-  console.log(
-    "----------------------------estimated iti is",
+  // console.log(
+  //   "----------------------------estimated iti is",
 
-    newItinery
-  );
+  //   newItinery
+  // );
 
-  console.log('---------------------the userdata is', userData)
+  // console.log('---------------------the userdata is', userData)
 
-  console.log("----------------------the duration", duration);
+  // console.log("----------------------the duration", duration);
   const submitForm = (data) => {
     const formData = {
       ...data,
@@ -79,7 +79,9 @@ console.log('===========pdf data is', pdfData)
       startDate: startDate.toISOString(),
       endDate: endDate.toISOString(),
     };
-    dispatch(sendFullyCustomizePackageEnquiry(formData));
+    dispatch(sendFullyCustomizePackageEnquiry(formData)).then(
+      localStorage.removeItem("packageDetails")
+    );
   };
 
   return (

@@ -32,7 +32,7 @@ const FullyCustomizeTrip = () => {
   const { destinationLocations } = useSelector((state) => state.locations); // holds locations based on the destinations
 
   const { isUserLoggedIn } = useSelector((state) => state.auth);
-
+ 
   // console.log(isUserLoggedIn, "fully customize auth state");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -88,6 +88,7 @@ const FullyCustomizeTrip = () => {
   const [selectedVehiclePrice, setSelectedVehiclePrice] = useState("");
   const [selectedVehicle, setVehicle] = useState([])
   const [selectedHotelName, setSelectedHotelName] = useState("");
+  const [fullyCustomizedLocalStoredData, setFullyCustomizedLocalStoredData] = useState(null);
   const handleSelectVehicle = (
     vehicleName,
     vehiclePrice,
@@ -115,7 +116,12 @@ const FullyCustomizeTrip = () => {
     dispatch(getSingleDestination(id));
     dispatch(getDestinationVehicle(id));
     dispatch(DestinationLocation(id));
+    const storedData = JSON.parse(localStorage?.getItem('packageDetails'));
+    setFullyCustomizedLocalStoredData(storedData)
+
   }, []);
+  {/** this is used for showing the stored value if the user goes ahead and decides to comeback to this page */ }
+ 
 
   const [dayData, setDayData] = useState(
     Array.from({ length: myDays }, () => ({
@@ -126,21 +132,36 @@ const FullyCustomizeTrip = () => {
       date: "",
     })) || []
   );
-
   useEffect(() => {
-    if (myDays) {
+    if (fullyCustomizedLocalStoredData?.itinerary) {
+      // Ensure the itinerary is mapped correctly
+      const newDayData = fullyCustomizedLocalStoredData.itinerary.map((el) => ({
+        selectedLocation: el.selectedLocation || "",
+        selectedHotel: el.selectedHotel
+          ? { name: el.selectedHotel.name, hotelId: el.selectedHotel.hotelId }
+          : {},
+        selectedActivities: el.selectedActivities ?? [],
+        day: el.day || "",
+        date: el.date || "",
+      }));
+
+      setDayData(newDayData); // Update state with prefilled data
+      console.log("Prefilled dayData from fullyCustomizedLocalStoredData:", newDayData);
+    } else {
+      // If no stored itinerary, create a new blank structure based on myDays
       setDayData(
-        Array.from({ length: myDays }, () => ({
+        Array.from({ length: myDays || 0 }, () => ({
           selectedLocation: "",
           selectedHotel: {},
           selectedActivities: [],
           day: "",
           date: "",
-        })) || []
+        }))
       );
     }
-  }, [myDays]);
+  }, [myDays, fullyCustomizedLocalStoredData]); // Ensure dependencies are correct
 
+  console.log("Current dayData state:", dayData);
   /**---------------------map data-------------------------*/
   const [mapData, setMapData] = useState(
     Array.from({ length: myDays }, () => ({
@@ -204,10 +225,10 @@ const FullyCustomizeTrip = () => {
 
 
    const [selectedHotelImages, setSelectedHotelImages]= useState([])
-   console.log("the selected images are", selectedHotelImages)
+  //  console.log("the selected images are", selectedHotelImages)
   /** to selecte hotels and calculate their price */
   const handleHotelChange = (index, event, hotels) => {
-    console.log("the indexes are", index)
+    // console.log("the indexes are", index)
     const selectedHotelId = event.target.value;
     const selected_Hotel = hotels.find(
       (hotel) => hotel._id === selectedHotelId
@@ -259,7 +280,7 @@ const FullyCustomizeTrip = () => {
   };
   /** The Total price after selecting hotels and vehicle */
   let Total_Estimated_Price = totalHotelPrices + selectedVehiclePrice;
-console.log("the first selected vehicle price is", Total_Estimated_Price)
+// console.log("the first selected vehicle price is", Total_Estimated_Price)
   // console.log("selected hotel and vehicle prices", Total_Estimated_Price);
   // console.log(dayData, "day data");
 
@@ -271,7 +292,8 @@ console.log("the first selected vehicle price is", Total_Estimated_Price)
         !day.selectedHotel ||
         Object.keys(day.selectedHotel).length === 0 ||
         !Array.isArray(day.selectedActivities) ||
-        day.selectedActivities.length === 0
+        day.selectedActivities.length === 0 ||
+        selectedVehicleName.length ===0
     );
 
     if (invalidEntry) {
@@ -306,6 +328,8 @@ console.log("the first selected vehicle price is", Total_Estimated_Price)
       },
     });
   };
+
+ 
   return (
     <div className="bg-gray-100 relative">
       <div
