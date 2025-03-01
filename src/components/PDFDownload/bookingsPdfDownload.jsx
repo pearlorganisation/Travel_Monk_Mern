@@ -70,9 +70,9 @@ const BookingsPdf = ({ data }) => {
                     Payment Status: {data?.paymentStatus}
                 </Text>
                 <Text style={styles.text}>Number of Travellers: {data?.numberOfTravellers}</Text>
-                <Text style={styles.text}>Total Price: ₹{data?.totalPrice.toFixed(2)}</Text>
-                <Text style={styles.text}>Advance Payment: ₹{data?.advancePayment}</Text>
-                <Text style={styles.text}>Remaining Payment: ₹{data?.remainingPayment}</Text>
+                <Text style={styles.text}>Total Price: {data?.totalPrice.toFixed(2)}</Text>
+                <Text style={styles.text}>Advance Payment: {data?.advancePayment}</Text>
+                <Text style={styles.text}>Remaining Payment:{data?.remainingPayment}</Text>
                 <Text style={styles.text}>Advanced Payed At: {new Date(data?.createdAt).toLocaleString()}</Text>
             </View>
 

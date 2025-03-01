@@ -72,7 +72,7 @@ const FullyCustomizedEnquiriesPdf = ({ data }) => (
                     Duration: {data.duration.days} days, {data.duration.nights} nights
                 </Text>
                 <Text style={styles.text}>
-                    Estimated Price: ₹{data.estimatedPrice.toLocaleString()}
+                    Estimated Price: {data.estimatedPrice.toLocaleString()}
                 </Text>
                 <Text style={styles.text}>
                     Travel Dates: {new Date(data.startDate).toLocaleDateString()} -{' '}

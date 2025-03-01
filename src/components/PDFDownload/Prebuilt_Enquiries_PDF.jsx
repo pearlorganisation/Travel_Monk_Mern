@@ -156,7 +156,7 @@ const PrebuiltEnquiriesPdf = ({ data }) => (
                 <Text style={styles.text}>Vehicle: {data.selectedVehicle.name}</Text>
                 <Text style={styles.text}>Number of Travellers: {data.numberOfTravellers}</Text>
                 <Text style={styles.text}>
-                    Estimated Price: ₹{data.estimatedPrice.toLocaleString()}
+                    Estimated Price: {data.estimatedPrice.toLocaleString()}
                 </Text>
                 <Text style={styles.text}>Message: {data.message}</Text>
                 <Text style={styles.text}>

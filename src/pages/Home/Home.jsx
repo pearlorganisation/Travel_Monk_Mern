@@ -42,6 +42,9 @@ const Home = () => {
 
   console.log(bestHotels, "Best Hotels");
 
+  useEffect(()=>{
+    localStorage.removeItem("packageDetails")
+  },[])
   useEffect(() => {
     if(isUserLoggedIn){
     dispatch(getAuthUserDetails())

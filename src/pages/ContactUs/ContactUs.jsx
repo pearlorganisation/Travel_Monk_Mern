@@ -69,7 +69,7 @@ const ContactUs = () => {
           />
         </svg>
       ),
-      contact: "Dehradun, Uttarakhand.",
+      contact: "Chandigarh, Punjab",
     },
   ];
   return (
