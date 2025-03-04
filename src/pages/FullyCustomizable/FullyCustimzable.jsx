@@ -103,7 +103,13 @@ const FullyCustomizeTrip = () => {
     setVehicle(vehicle)
   };
   // console.log("the selected vehicle is", selectedVehicle)
-
+  useEffect(()=>{
+    setSelectedVehicleId(fullyCustomizedLocalStoredData?.vehicle?._id ?? null);
+    setSelectedVehicleName(fullyCustomizedLocalStoredData?.vehicle?.vehicleName ?? "");
+    setSelectedVehiclePrice(fullyCustomizedLocalStoredData?.vehicle?.pricePerDay ?? "");
+    setSelectedVehicleImage(`${baseURL}/${fullyCustomizedLocalStoredData?.vehicle?.image?.path}`);
+    setVehicle(fullyCustomizedLocalStoredData?.vehicle)
+  },[fullyCustomizedLocalStoredData])
   /** data prepared for the options to use in the react-select */
   let activitiesOption = activities?.map((activity) => ({
     label: activity?.name,
@@ -132,6 +138,8 @@ const FullyCustomizeTrip = () => {
       date: "",
     })) || []
   );
+
+  console.log("the stored data in local storage is", fullyCustomizedLocalStoredData)
   useEffect(() => {
     if (fullyCustomizedLocalStoredData?.itinerary) {
       // Ensure the itinerary is mapped correctly
@@ -146,7 +154,6 @@ const FullyCustomizeTrip = () => {
       }));
 
       setDayData(newDayData); // Update state with prefilled data
-      // console.log("Prefilled dayData from fullyCustomizedLocalStoredData:", newDayData);
     } else {
       // If no stored itinerary, create a new blank structure based on myDays
       setDayData(
@@ -225,17 +232,14 @@ const FullyCustomizeTrip = () => {
 
 
    const [selectedHotelImages, setSelectedHotelImages]= useState([])
-  //  console.log("the selected images are", selectedHotelImages)
-  /** to selecte hotels and calculate their price */
+   /** to selecte hotels and calculate their price */
   const handleHotelChange = (index, event, hotels) => {
-    // console.log("the indexes are", index)
-    const selectedHotelId = event.target.value;
+     const selectedHotelId = event.target.value;
     const selected_Hotel = hotels.find(
       (hotel) => hotel._id === selectedHotelId
     ); // this will find the selected hotel by id
 
-  //  console.log("the selected hotel is",selected_Hotel)
-
+ 
     setSelectedHotelName(selected_Hotel.name);
 
     ; // storing the previously selected hotels images as well as new images
@@ -263,8 +267,7 @@ const FullyCustomizeTrip = () => {
       updatedHotelPrices.reduce((total, price) => total + price, 0)
     );
   };
-  // console.log(totalHotelPrices, "-----------------------------------");
-
+ 
   const handleActivityChange = (selectedOptions, dayIndex) => {
     if (selectedOptions && selectedOptions.length > 3) {
       return;
@@ -280,9 +283,6 @@ const FullyCustomizeTrip = () => {
   };
   /** The Total price after selecting hotels and vehicle */
   let Total_Estimated_Price = totalHotelPrices + selectedVehiclePrice;
-// console.log("the first selected vehicle price is", Total_Estimated_Price)
-  // console.log("selected hotel and vehicle prices", Total_Estimated_Price);
-  // console.log(dayData, "day data");
 
   /**------------------Handle for Enquiry-------------------------*/
   const handleEnquiry = () => {
@@ -310,6 +310,7 @@ const FullyCustomizeTrip = () => {
         itinerary: dayData,
         destinationId: id,
         vehicleId: selectedVehicleId,
+        vehicle:selectedVehicle,
         duration: { days, nights },
         startDate,
         endDate,
@@ -359,15 +360,7 @@ const FullyCustomizeTrip = () => {
           <h1> <span className="font-bold">Duration :</span>{myDays} days</h1>
         </div> 
         <hr className="border-t border-gray-300 w-full my-4" />
-
-        {/** select vehicle div */}
-      
-
-        
       </div>
-     
-
-    
         <div className="bg-white min-h-screen p-6">
         <div className="text-gray-700 text-sm p-4 rounded-md">
           <div className="mb-2">
@@ -554,7 +547,7 @@ const FullyCustomizeTrip = () => {
                   <span className="text-black text-sm">Add a Vehicle (Compulsory)</span>
                 </button>
 
-                {selectedVehicleName && (
+                {selectedVehicleImage && (
                   <div className="mt-4 text-sm">
                     <p className="mb-2">
                       You have selected: <span className="text-blue-600 font-medium">{selectedVehicleName}</span>
@@ -651,7 +644,10 @@ const FullyCustomizeTrip = () => {
       
  
        
-      <GoogleMapsEmbed data={mapData} />
+      {/* { mapData.length >0 ? <GoogleMapsEmbed data={mapData} />:
+        <div className="flex justify-center items-center">
+           <p>Failed to load the map.</p>
+        </div>} */}
     </div>
   );
 };
