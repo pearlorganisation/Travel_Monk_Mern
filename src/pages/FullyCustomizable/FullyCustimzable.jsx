@@ -102,7 +102,7 @@ const FullyCustomizeTrip = () => {
     setSelectedVehicleImage(`${baseURL}/${vehicleImage}`);
     setVehicle(vehicle)
   };
-  // console.log("the selected vehicle is", selectedVehicle)
+ 
   useEffect(()=>{
     setSelectedVehicleId(fullyCustomizedLocalStoredData?.vehicle?._id ?? null);
     setSelectedVehicleName(fullyCustomizedLocalStoredData?.vehicle?.vehicleName ?? "");
@@ -110,6 +110,8 @@ const FullyCustomizeTrip = () => {
     setSelectedVehicleImage(`${baseURL}/${fullyCustomizedLocalStoredData?.vehicle?.image?.path}`);
     setVehicle(fullyCustomizedLocalStoredData?.vehicle)
   },[fullyCustomizedLocalStoredData])
+
+  
   /** data prepared for the options to use in the react-select */
   let activitiesOption = activities?.map((activity) => ({
     label: activity?.name,
