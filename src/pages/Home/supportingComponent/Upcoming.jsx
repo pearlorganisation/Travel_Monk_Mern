@@ -138,9 +138,11 @@ const Upcoming = () => {
                   </SwiperSlide>
                 ))}
               </Swiper>
+              {/* Swiper Prev Button */}
+              <div className="swiper-button-prev absolute lg:!-left-[50px] bg-[#007E8F] !text-[#ffff] !px-8 !py-8 !rounded-full !h-6 !w-6 !mt-4 top-1/2 transform -translate-y-1/2 z-10 !text-xs !font-semibold scale-50 flex items-center justify-center"></div>
 
-              {/* <button className="swiper-button-prev hidden md:flex absolute !-left-4 lg:!-left-8 bg-[#007E8F] !text-white !p-6 !rounded-full !h-8 !w-8 top-1/2 -translate-y-1/2 z-10 !text-xs hover:bg-[#006674] transition-colors scale-75"></button>
-              <button className="swiper-button-next hidden md:flex absolute !-right-4 lg:!-right-8 bg-[#007E8F] !text-white !p-6 !rounded-full !h-8 !w-8 top-1/2 -translate-y-1/2 z-10 !text-xs hover:bg-[#006674] transition-colors scale-75"></button> */}
+              {/* Swiper Next Button */}
+              <button className="swiper-button-next absolute  lg:!-right-[50px] bg-[#007E8F] !text-[#ffff] !px-8 !py-8 !rounded-full !h-6 !w-6 !mt-4 top-1/2 transform -translate-y-1/2 z-10 !text-xs !font-semibold scale-50 flex items-center justify-center"></button>
             </div>
           </div>
         )}
