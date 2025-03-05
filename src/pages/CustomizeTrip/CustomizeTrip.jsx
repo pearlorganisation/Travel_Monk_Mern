@@ -74,7 +74,7 @@ const CustomizeTrip = () => {
 
   // console.log("Trip Package ka data", singlePackage);
 
-  console.log(userState, "my user state");
+  // console.log(userState, "my user state");
 
   // all the hotel data and activity data is stored in dayaData
   const [dayData, setDayData] = useState(
@@ -112,7 +112,8 @@ const CustomizeTrip = () => {
       );
     }
   }, [singlePackage?.data]);
-
+  let noOfDays = singlePackage?.data?.itinerary?.length
+  // console.log("the no of days are", noOfDays) 
   const [hotelPrices, setHotelPrices] = useState([]); // Array to store prices for each day
   useEffect(() => {
     if (singlePackage?.data?.itinerary) {
@@ -122,9 +123,9 @@ const CustomizeTrip = () => {
   const [totalHotelPrices, setTotalHotelPrice] = useState(0);
 
   const [selectedHotelImages, setSelectedHotelImages] = useState([])
-console.log("the selected hotel images are", selectedHotelImages)
+// console.log("the selected hotel images are", selectedHotelImages)
   const handleHotelChange = (index, event, hotels, currentLocation) => {
-    console.log("---------------location", currentLocation);
+    // console.log("---------------location", currentLocation);
     const selectedHotelId = event.target.value;
     const selectedHotel = hotels.find((hotel) => hotel._id === selectedHotelId);
 
@@ -161,8 +162,8 @@ console.log("the selected hotel images are", selectedHotelImages)
   };
 
   /**---------------------the final estimated price will be----------------------------*/
-  let Total_Estimated_Price = totalHotelPrices + selectedVehiclePrice;
-
+  let Total_Estimated_Price = totalHotelPrices + selectedVehiclePrice ? parseInt(selectedVehiclePrice*noOfDays) : 0;
+console.log("the selected vehicle price is",selectedVehiclePrice*noOfDays)
   /**--------------------Handle Enquiry to send to the page for submitting the form-------------------------------------------------*/
   const handleEnquiry = () => {
     const invalidEntry = dayData.find(
@@ -197,11 +198,11 @@ console.log("the selected hotel images are", selectedHotelImages)
     }); // to send all the required prebuilt package data
   };
 
-  console.log("-----------hotelprice new calculated", hotelPrices);
-  console.log(
-    "--------------------selected vehicle price",
-    selectedVehiclePrice
-  ); 
+  // console.log("-----------hotelprice new calculated", hotelPrices);
+  // console.log(
+  //   "--------------------selected vehicle price",
+  //   selectedVehiclePrice
+  // ); 
   return (
     <div className="bg-gray-200 relative">
       <div
