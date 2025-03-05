@@ -141,7 +141,7 @@ const FullyCustomizeTrip = () => {
     })) || []
   );
 
-  console.log("the stored data in local storage is", fullyCustomizedLocalStoredData)
+  // console.log("the stored data in local storage is"fullyCustomizedLocalStoredData)
   useEffect(() => {
     if (fullyCustomizedLocalStoredData?.itinerary) {
       // Ensure the itinerary is mapped correctly
@@ -170,7 +170,7 @@ const FullyCustomizeTrip = () => {
     }
   }, [myDays, fullyCustomizedLocalStoredData]); // Ensure dependencies are correct
 
-  console.log("Current dayData state:", dayData);
+  // console.log("Current dayData state:", dayData);
   /**---------------------map data-------------------------*/
   const [mapData, setMapData] = useState(
     Array.from({ length: myDays }, () => ({
@@ -646,10 +646,10 @@ const FullyCustomizeTrip = () => {
       
  
        
-      {/* { mapData.length >0 ? <GoogleMapsEmbed data={mapData} />:
+       { mapData.length >0 ? <GoogleMapsEmbed data={mapData} />:
         <div className="flex justify-center items-center">
            <p>Failed to load the map.</p>
-        </div>} */}
+        </div>} 
     </div>
   );
 };
