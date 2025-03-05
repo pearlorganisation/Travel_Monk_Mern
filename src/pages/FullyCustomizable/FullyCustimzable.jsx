@@ -55,6 +55,7 @@ const FullyCustomizeTrip = () => {
   };
 
   const myDays = calculateDaysBetweenDates(startDate, endDate);
+  
   const days = parseInt(myDays);
   const nights = parseInt(myDays - 1);
 
@@ -98,7 +99,7 @@ const FullyCustomizeTrip = () => {
   ) => {
     setSelectedVehicleId(vehicleId);
     setSelectedVehicleName(vehicleName);
-    setSelectedVehiclePrice(vehiclePrice);
+    setSelectedVehiclePrice(vehiclePrice*myDays);
     setSelectedVehicleImage(`${baseURL}/${vehicleImage}`);
     setVehicle(vehicle)
   };

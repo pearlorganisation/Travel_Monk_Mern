@@ -452,7 +452,7 @@ console.log("the selected hotel images are", selectedHotelImages)
             onClick={handleEnquiry}
             className="w-full bg-blue-500 text-white py-3 px-6 rounded-md 
             flex items-center justify-center gap-2 hover:bg-blue-600 
-            transition-all duration-200 mt-4"
+            transition-all duration-200 mt-4 mx-2 mb-2"
           >
             <span>Move Forward</span>
             {/* Right Arrow Icon */}
