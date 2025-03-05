@@ -16,17 +16,17 @@ const ProfilePage = () => {
   const [showFullyCustomizedEnquiries, setShowFullyCustomizedEnquiries] = useState(false)
   const [showPrebuiltEnquiries, setShowPrebuiltEnquiries] = useState(false);
   const dispatch = useDispatch();
-  const { userInfo } = useSelector((state) => state.user);
-  const { fullyCustomizedEnquiries } = useSelector((state) => state.fullyCustomizePackage)
-  const { prebuiltEnquiries } = useSelector((state) => state.prebuiltPackage)
-  const { userBookings } = useSelector((state) => state.previousBookings);
+  const { userInfo } = useSelector((state) => state?.user);
+  const { fullyCustomizedEnquiries } = useSelector((state) => state?.fullyCustomizePackage)
+  const { prebuiltEnquiries } = useSelector((state) => state?.prebuiltPackage)
+  const { userBookings } = useSelector((state) => state?.previousBookings);
  
   let imageName = []
   let lastProfileName
   if(userInfo){
    imageName.push(userInfo?.name ?? "No Name Available")
     console.log("the image name", imageName)
-    let newImageName = imageName[0].split(' ')
+    let newImageName = imageName[0]?.split(' ')
     console.log(newImageName)
     lastProfileName = newImageName[0][0] + newImageName[1][0];
   }
@@ -95,7 +95,7 @@ const ProfilePage = () => {
                 {Array.isArray(userBookings?.data) &&
                   userBookings?.data?.map((booking) => (
                     <div
-                      key={booking.bookingId}
+                      key={booking?.bookingId}
                       className="bg-gray-50 p-4 rounded-lg shadow-md border border-gray-200"
                     >
                       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
@@ -116,34 +116,35 @@ const ProfilePage = () => {
                             <div>
                               <p className="text-gray-700 mt-2">
                                 Total Price: Rs.{" "}
-                                <span className="font-bold text-xl">{booking.totalPrice}</span>
+                                <span className="font-bold text-xl">{booking?.totalPrice}</span>
                               </p>
                               <p className="text-gray-500 text-sm">
-                                Date: {moment(booking.createdAt).format("DD MMM YYYY")}
+                                Date: {moment(booking?.createdAt).format("DD MMM YYYY")}
                               </p>
                             </div>
                             <p
-                              className={`mt-2 sm:mt-0 font-medium ${booking.bookingStatus === "Completed"
+                              className={`mt-2 sm:mt-0 font-medium ${booking?.bookingStatus === "Completed"
                                   ? "text-green-600"
-                                  : booking.bookingStatus === "Upcoming"
+                                  : booking?.bookingStatus === "Upcoming"
                                     ? "text-yellow-600"
                                     : "text-red-600"
                                 }`}
                             >
-                              Status: {booking.bookingStatus}
+                              Status: {booking?.bookingStatus}
                             </p>
                           </div>
 
                           <div className="mt-4 grid grid-cols-2 gap-2 text-sm text-gray-600">
-                            <p>Payment Status: {booking.paymentStatus}</p>
-                            <p>Travellers: {booking.numberOfTravellers}</p>
-                            <p>Razorpay Order ID: {booking.razorpay_order_id}</p>
+                            <p>Payment Status: {booking?.paymentStatus}</p>
+                            <p>Travellers: {booking?.numberOfTravellers}</p>
+                            <p>Razorpay Order ID: {booking?.razorpay_order_id}</p>
                           </div>
                         </div>
                       </div>
                     </div>
                   ))}
               </div>
+              
             )}
           </div>
 
@@ -159,9 +160,9 @@ const ProfilePage = () => {
             {showFullyCustomizedEnquiries && (
               <div className="mt-6 space-y-4">
                 {Array.isArray(fullyCustomizedEnquiries) &&
-                  fullyCustomizedEnquiries.map((enquiry) => (
+                  fullyCustomizedEnquiries?.map((enquiry) => (
                     <div
-                      key={enquiry._id}
+                      key={enquiry?._id}
                       className="bg-gray-50 p-4 rounded-lg shadow-md border border-gray-200"
                     >
                       <div className="flex justify-end mb-4">
@@ -213,7 +214,7 @@ const ProfilePage = () => {
             {showPrebuiltEnquiries && (
               <div className="mt-6">
                 {Array.isArray(prebuiltEnquiries) &&
-                  prebuiltEnquiries.map((enquiry) => (
+                  prebuiltEnquiries?.map((enquiry) => (
                     <div
                       key={enquiry._id}
                       className="bg-white p-4 rounded-md shadow-sm mt-3 border border-gray-200"
@@ -265,18 +266,18 @@ const ProfilePage = () => {
                       <div className="mt-4">
                         <p className="font-semibold text-gray-800">Itinerary:</p>
                         {enquiry?.itinerary?.map((day, index) => (
-                          <div key={day._id} className="mt-2 pl-4 border-l-2 border-gray-200">
+                          <div key={day?._id} className="mt-2 pl-4 border-l-2 border-gray-200">
                             <p className="font-medium text-gray-700">
                               Day {day?.day}: {day?.location}
                             </p>
                             <p className="text-gray-600">
                               Hotel: {day?.selectedHotel?.name}
                             </p>
-                            {day.selectedActivities?.length > 0 && (
+                            {day?.selectedActivities?.length > 0 && (
                               <div className="mt-1">
                                 <p className="text-gray-600">Activities:</p>
                                 {day?.selectedActivities?.map((activity) => (
-                                  <p key={activity._id} className="text-gray-600 text-sm pl-2">
+                                  <p key={activity?._id} className="text-gray-600 text-sm pl-2">
                                     • {activity?.label}
                                   </p>
                                 ))}
