@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form'
 import { searchDestination } from '../../features/destination/destinationActions'
 import moment from 'moment/moment'
 import Pagination from '../../components/Pagination/Pagination'
+import { toast } from 'react-toastify'
 const priceRanges =[
     {
         id:1,
@@ -52,14 +53,7 @@ const Hotels = () => {
     // console.log('-------------the new destination id', newDestinationId)
     const [currentPage, setCurrentPage] = useState(1)
 
-   
-     
-    /** min and max price filter */
     
-    
-    // console.log("the minimam and maximam price is", minimamPrice, maximamPrice)
-
-
 
     /**Pagination Logic */
     const totalPages = Math.ceil(paginate?.total / paginate?.limit)
@@ -77,12 +71,7 @@ const Hotels = () => {
     const hotelPageCheckInDate = watch("checkIn")
     const hotelPageCheckOutDate = watch("checkOut")
     const hotelPageTravellerCount = watch("travellers")
-    // console.log("hotel page selected date and passengers", hotelPageCheckInDate, hotelPageCheckOutDate, hotelPageTravellerCount)
-    // if(hotelPageCheckInDate || hotelPageCheckOutDate || hotelPageTravellerCount){
-    //     hotelStartDate = hotelPageCheckInDate ?? hotelStartDate
-    //     HotelEndDate = hotelPageCheckOutDate ?? HotelEndDate
-    //     hotelTravellers = parseInt(hotelPageTravellerCount) ?? parseInt(hotelTravellers)
-    // }
+     
     hotelStartDate = hotelPageCheckInDate
     HotelEndDate = hotelPageCheckOutDate
     hotelTravellers = hotelPageTravellerCount
@@ -127,12 +116,6 @@ const Hotels = () => {
     const handleSearchQuery =(e)=>{
         setSearchQuery(e.target.value)
     }
-    // console.log("search query is",searchQuery)
-
-    /*-------------------------for submitting the form to get new hotels based on the new location------------------------- */
-    
-    // console.log('----------the current location is', location) 
-    // console.log('------------the entered value is', watch("hotelDestination"))
     const submitForm = async(data)=>{
         const { hotelDestination } = data;
        try {
@@ -142,8 +125,11 @@ const Hotels = () => {
         if(actionResult?.data?.length > 0){
            setNewDestinationId(actionResult.data[0]._id)
             
-         }else{
+         }else if(actionResult?.success == false){
+            toast.error("No Such destination Available")
             console.log("No results found for the selected destination.");
+        }else{
+            return ;
         }
        } catch (error) {
            console.error("Failed to fetch destination data:", error);
@@ -248,7 +234,7 @@ const Hotels = () => {
                <div className="w-4/5 bg-white p-4 rounded-lg">
                    <h1 className="text-2xl font-bold mb-4">Hotels</h1>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {destinationHotels.length > 0 ? destinationHotels?.map((hotel) => (
+                      {Array.isArray(destinationHotels) ? destinationHotels?.map((hotel) => (
                           <div key={hotel._id} className="bg-gray-50 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
                               {/* Hotel Image */}
                               <div className="relative h-48 w-full">
