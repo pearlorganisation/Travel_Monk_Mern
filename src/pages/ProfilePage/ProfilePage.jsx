@@ -21,15 +21,25 @@ const ProfilePage = () => {
   const { prebuiltEnquiries } = useSelector((state) => state?.prebuiltPackage)
   const { userBookings } = useSelector((state) => state?.previousBookings);
  
-  let imageName = []
-  let lastProfileName
-  if(userInfo){
-   imageName.push(userInfo?.name ?? "No Name Available")
-    console.log("the image name", imageName)
-    let newImageName = imageName[0]?.split(' ')
-    console.log(newImageName)
-    lastProfileName = newImageName[0][0] + newImageName[1][0];
+  let imageName = [];
+  let lastProfileName = "";
+
+  if (userInfo?.name) {
+    imageName.push(userInfo.name);
+    console.log("The image name:", imageName);
+
+    let newImageName = imageName[0].split(" ");
+    console.log(newImageName);
+
+    // Extract initials safely
+    let firstInitial = newImageName[0]?.[0] || "";
+    let secondInitial = newImageName[1]?.[0] || "";
+
+    lastProfileName = firstInitial + secondInitial;
   }
+
+  console.log("Last Profile Name:", lastProfileName);
+
    
   console.log("last profile name is", lastProfileName)
   useEffect(() => {

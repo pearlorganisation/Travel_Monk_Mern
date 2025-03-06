@@ -123,7 +123,7 @@ const Routes = createBrowserRouter([
         element: <InternationalPackages />,
       },
       {
-        path: "profile",
+        path: "/profile",
         element: <ProfilePage />,
       },
       {
