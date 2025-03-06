@@ -5,7 +5,7 @@ const partnersState = {
   isLoading: false,
   isError: false,
   isSuccess: false,
-  partners: [],
+  partners: {},
   message: "",
 };
 

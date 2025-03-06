@@ -10,11 +10,10 @@ export const getPartners = createAsyncThunk(
           "Content-Type": "application/json",
         },
       };
-      const response = await axiosInstance.get(`/api/v1/partners`, config);
-
-      if (response.data) {
-        return response.data;
-      }
+      const  { data } = await axiosInstance.get(`/api/v1/partners`, config);
+      console.log("the data is", data)
+      return data.data
+     
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }

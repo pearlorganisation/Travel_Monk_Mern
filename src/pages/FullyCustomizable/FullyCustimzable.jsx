@@ -76,7 +76,8 @@ const FullyCustomizeTrip = () => {
 
   const datesRange = getDatesInRange(startDate, endDate); // getting the range of the date
   const datesObjects = datesRange.map((date) => ({ date }));
-
+const len = datesObjects.length
+console.log("the dates length is, ", len)
   /**----------------------------States--------------------------------- */
 
   /** states for claculating the selected hotels price */
@@ -522,6 +523,7 @@ const FullyCustomizeTrip = () => {
                     {myDays + 1}
                   </span>
                 </div>
+                {new Date(datesObjects[len-1]?.date).toDateString()}
 
                 <div className="flex items-center justify-center">
                   {" "}

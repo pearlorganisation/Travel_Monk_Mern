@@ -68,7 +68,7 @@ export default function CruiseContactForm() {
           />
         </svg>
       ),
-      contact: "Dehradun, Uttarakhand.",
+      contact: "Chandigarh, Punjab.",
     },
   ];
 
@@ -88,8 +88,8 @@ export default function CruiseContactForm() {
           </h3>
 
           <div className="flex flex-row gap-12">
-            {Array.isArray(partners?.data) &&
-              partners?.data?.map((item) => (
+            {Array.isArray(partners) &&
+              partners?.map((item) => (
                 <div key={item._id} className="">
                   {item?.partnerType?.partnerTypeName === "Cruise" && (
                     <img

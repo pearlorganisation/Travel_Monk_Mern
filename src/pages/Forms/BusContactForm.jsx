@@ -5,7 +5,7 @@ import BusCruiseContactForm from "./BusCruiseContactForm";
 import { baseURL } from "../../services/axiosInterceptor";
 
 export default function BusContactForm() {
-  const { data } = useSelector((state) => state.partners.partners);
+  const { partners } = useSelector((state) => state.partners);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getPartners());
@@ -74,7 +74,7 @@ export default function BusContactForm() {
           />
         </svg>
       ),
-      contact: "Dehradun, Uttarakhand.",
+      contact: "Chandigarh, Punjab.",
     },
   ];
 
@@ -88,7 +88,7 @@ export default function BusContactForm() {
           </h3>
 
           <div className="flex flex-row gap-12">
-            {data?.map((item) => (
+            {Array.isArray(partners) && partners?.map((item) => (
               <div key={item?._id} className="">
                 {item?.partnerType?.partnerTypeName === "Bus" && (
                   <img
