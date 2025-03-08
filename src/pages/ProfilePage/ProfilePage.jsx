@@ -23,11 +23,9 @@ const ProfilePage = () => {
  
   let imageName = [];
   let lastProfileName = "";
-
   if (userInfo?.name) {
     imageName.push(userInfo.name);
-    console.log("The image name:", imageName);
-
+ 
     let newImageName = imageName[0].split(" ");
     console.log(newImageName);
 
@@ -38,10 +36,7 @@ const ProfilePage = () => {
     lastProfileName = firstInitial + secondInitial;
   }
 
-  console.log("Last Profile Name:", lastProfileName);
-
-   
-  console.log("last profile name is", lastProfileName)
+ 
   useEffect(() => {
     dispatch(getAuthUserDetails());
   }, []);
@@ -52,7 +47,7 @@ const ProfilePage = () => {
     dispatch(getMyFullyCustomizedEnquiries())
   }, []);
 
-  
+  console.log("the prebuilt enquiries data is", prebuiltEnquiries)
   return (
     <div className="bg-gray-50 min-h-screen py-6 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto bg-white shadow-xl rounded-2xl overflow-hidden">
@@ -186,7 +181,7 @@ const ProfilePage = () => {
                               Enquiry ID: {enquiry?._id ?? "Not Found"}
                             </p>
                             <p className="text-gray-600 mt-2">
-                              Vehicle: {enquiry?.selectedVehicle?.name ?? "No Vehicle Selected"}
+                              Vehicle: {enquiry?.selectedVehicle?.vehicleName ?? "No Vehicle Selected"}
                             </p>
                             <p className="text-gray-500 text-sm">
                               Date: {moment(enquiry?.createdAt).format("DD MMM YYYY")}
@@ -278,7 +273,7 @@ const ProfilePage = () => {
                         {enquiry?.itinerary?.map((day, index) => (
                           <div key={day?._id} className="mt-2 pl-4 border-l-2 border-gray-200">
                             <p className="font-medium text-gray-700">
-                              Day {day?.day}: {day?.location}
+                              Day {day?.day}: {day?.location}  ({day?.date}) yyyy/mm/dd
                             </p>
                             <p className="text-gray-600">
                               Hotel: {day?.selectedHotel?.name}

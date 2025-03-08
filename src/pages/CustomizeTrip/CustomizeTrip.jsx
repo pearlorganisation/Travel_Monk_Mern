@@ -298,16 +298,10 @@ console.log("the selected vehicle price is",selectedVehiclePrice*noOfDays)
             });
 
             return (
-              <div className="flex flex-row gap-2 items-center justify-start px-4 mt-2">
+              <div className="flex flex-row gap-2 items-center justify-start mt-2">
                 
-                <div className="flex flex-col gap-1 min-w-20">
+                <div className="flex flex-col gap-1 min-w-14">
                   <h1 className="font-bold text-base">{iti.location}</h1>
-
-                  {/* <h1>
-                    {moment(singlePackage?.data?.startDate)
-                      .add(index, "days")
-                      .format("DD MMM")}
-                  </h1> */}
                 </div>
 
                 <div className="w-6 h-6 bg-red-500 rounded-full">

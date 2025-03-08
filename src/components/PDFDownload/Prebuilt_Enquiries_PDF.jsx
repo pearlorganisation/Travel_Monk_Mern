@@ -170,7 +170,7 @@ const PrebuiltEnquiriesPdf = ({ data }) => (
                 {data.itinerary.map((day, index) => (
                     <View key={index} style={[styles.section, { borderWidth: 0 }]}>
                         <Text style={styles.subHeader}>
-                            Day {day.day}: {day.location}
+                            Day {day.day}: {day.location} ({day?.date}) yyyy/mm/dd
                         </Text>
                         <Text style={styles.text}>Hotel: {day.selectedHotel.name}</Text>
                         <Text style={styles.text}>
@@ -186,6 +186,8 @@ const PrebuiltEnquiriesPdf = ({ data }) => (
                         ))}
                     </View>
                 ))}
+                <Text style={styles.header}>Last Day: Airport Drop</Text>
+
             </View>
               <View style={styles.terms}>
                     <Text style={styles.termsHeader}>Payment Terms and Conditions</Text>

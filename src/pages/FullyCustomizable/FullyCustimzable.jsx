@@ -513,9 +513,6 @@ console.log("the dates length is, ", len)
 
               </div>
             ))}
-
-            
-
             <div className="bg-white shadow-md rounded-lg border border-gray-200">
               <div className="flex flex-row justify-between items-center bg-gray-100 p-4 space-x-4">
                 <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
