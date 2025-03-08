@@ -166,7 +166,7 @@ const PackageDetails = () => {
         <div className="">
           <h1 className="text-4xl font-semibold">Customize </h1>
 
-          <Link to={`/customize/${data?._id}`}>
+          <Link to={`/customize/${data?._id}`} state={{inclusion:data?.inclusions, exclusion:data?.exclusions}}>
             <button className="w-[100%] px-6 py-4 rounded-lg bg-[#007E8F] hover:bg-[#439CA8] text-white mt-4">
               {" "}
               Customize{" "}

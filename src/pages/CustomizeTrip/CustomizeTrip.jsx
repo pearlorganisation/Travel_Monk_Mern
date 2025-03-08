@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getSinglePackage } from "../../features/package/packageActions";
 import Select from "react-select";
@@ -15,7 +15,10 @@ const CustomizeTrip = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams(); // id of the package
+  const location = useLocation()
+  const {inclusion, exclusion} = location.state || {}
 
+  console.log("the inclusion and exclusion array are", inclusion, exclusion)
   /** to get the current page url */
   const fullURL = window.location.href;
   // console.log(`The full URL is: ${fullURL}`);
@@ -191,6 +194,8 @@ console.log("the selected vehicle price is",selectedVehiclePrice*noOfDays)
           name: selectedVehicleName,
           vehicle: selectedVehicleId,
         },
+        inclusions:inclusion,
+        exclusions: exclusion,
         // vehicleId: selectedVehicleId,
         // vehicleName: selectedVehicle,
         enquiryLocation: fullURL,
