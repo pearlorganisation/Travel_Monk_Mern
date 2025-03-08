@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getSinglePackage } from "../../features/package/packageActions";
 import Select from "react-select";
@@ -15,7 +15,10 @@ const CustomizeTrip = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams(); // id of the package
+  const location = useLocation()
+  const {inclusion, exclusion} = location.state || {}
 
+  console.log("the inclusion and exclusion array are", inclusion, exclusion)
   /** to get the current page url */
   const fullURL = window.location.href;
   // console.log(`The full URL is: ${fullURL}`);
@@ -191,6 +194,8 @@ console.log("the selected vehicle price is",selectedVehiclePrice*noOfDays)
           name: selectedVehicleName,
           vehicle: selectedVehicleId,
         },
+        inclusions:inclusion,
+        exclusions: exclusion,
         // vehicleId: selectedVehicleId,
         // vehicleName: selectedVehicle,
         enquiryLocation: fullURL,
@@ -203,6 +208,9 @@ console.log("the selected vehicle price is",selectedVehiclePrice*noOfDays)
   //   "--------------------selected vehicle price",
   //   selectedVehiclePrice
   // ); 
+
+  const lenOfItinerary = singlePackage?.data?.itinerary?.length;
+  console.log("the legth is", lenOfItinerary)
   return (
     <div className="bg-gray-200 relative">
       <div
@@ -285,7 +293,7 @@ console.log("the selected vehicle price is",selectedVehiclePrice*noOfDays)
               <span className="font-medium">Step 1 |</span> Select Your day to day schedule
             </div>
           </div>
-          {singlePackage?.data?.itinerary?.map((iti, index) => {
+          {singlePackage?.data?.itinerary.map((iti, index) => {
             console.log(iti, "iti");
             const dataForSelect = iti?.activities.map((el) => {
               return {
@@ -295,16 +303,10 @@ console.log("the selected vehicle price is",selectedVehiclePrice*noOfDays)
             });
 
             return (
-              <div className="flex flex-row gap-2 items-center justify-start px-4 mt-2">
+              <div className="flex flex-row gap-2 items-center justify-start mt-2">
                 
-                <div className="flex flex-col gap-1 min-w-20">
+                <div className="flex flex-col gap-1 min-w-14">
                   <h1 className="font-bold text-base">{iti.location}</h1>
-
-                  {/* <h1>
-                    {moment(singlePackage?.data?.startDate)
-                      .add(index, "days")
-                      .format("DD MMM")}
-                  </h1> */}
                 </div>
 
                 <div className="w-6 h-6 bg-red-500 rounded-full">
@@ -373,6 +375,19 @@ console.log("the selected vehicle price is",selectedVehiclePrice*noOfDays)
               </div>
             );
           })}
+          <div className="bg-white shadow-md rounded-lg border border-gray-200 mx-4 sm:mx-10 mt-2">
+            <div className="flex flex-col justify-center items-center bg-gray-100 p-4 sm:space-x-4">
+              <div className="h-8 flex items-center justify-center">
+                <span className="text-black text-sm sm:text-base font-bold">
+                  Last Day {lenOfItinerary + 1}
+                </span>
+              </div>
+
+              <div className="flex items-center justify-center mt-1 sm:mt-0">
+                <span className="text-lg sm:text-xl">Airport Drop</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       {/** section containing the total price of all the hotels in the destination */}

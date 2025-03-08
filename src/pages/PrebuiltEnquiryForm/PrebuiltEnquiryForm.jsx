@@ -14,11 +14,11 @@ const PrebuiltEnquiryForm = () => {
   const { userInfo } = useSelector((state) => state.user); // getting the userInfo
 
   /** extarcting the data  */
-  const { Estimate_Price, packageDetails, itinerary, selectedVehicle } =
+  const { Estimate_Price, packageDetails, itinerary, selectedVehicle, inclusions, exclusions } =
     location.state || {};
   
   const pdfData = itinerary;
-  console.log("the pdf data is", pdfData)
+  console.log("the inclusin and exclusion are ", inclusions, exclusions)
   const {
     register,
     handleSubmit,
@@ -45,6 +45,8 @@ const PrebuiltEnquiryForm = () => {
       package: packageDetails,
       selectedVehicle: selectedVehicle,
       itinerary: itinerary,
+      inclusions:inclusions,
+      exclusions:exclusions
     };
 
     dispatch(sendPrebuiltPackageEnquiry(formData));
