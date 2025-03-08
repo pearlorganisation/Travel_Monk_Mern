@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 import DestinationCard from "../../components/DestinationCards/DestinationCard";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllDestinations } from "../../features/trips/tripActions";
 
 const InternationalPackages = () => {
   const destState = useSelector((state) => state.trip.destinations);
-
+  console.log("destState", destState);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAllDestinations("International"));
@@ -37,9 +38,28 @@ const InternationalPackages = () => {
         <h1 className="text-4xl font-bold text-blue-500 w-full justify-center items-center flex">
           Destinations
         </h1>
-        <div className="p-4">
-          <DestinationCard data={destState?.data} />
-        </div>
+
+        {destState?.data.length > 0 ? (
+          <div className="p-4">
+            <DestinationCard data={destState?.data} />
+          </div>
+        ) : (
+          /* Improved No Destinations Found */
+          <div className="flex flex-col justify-center items-center mt-10 mb-20">
+            <h1 className="text-3xl font-bold text-gray-700 mt-4">
+              No Packages Found
+            </h1>
+            <p className="text-gray-500 mt-2">
+              We couldn’t find any packages at the moment. Check back later or
+              explore other trips.
+            </p>
+            <Link to="/indian_packages">
+              <button className="mt-4 px-6 py-2 bg-[#007E8F] text-white rounded-md hover:bg-[#006673]">
+                Explore Indian Packages
+              </button>
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );

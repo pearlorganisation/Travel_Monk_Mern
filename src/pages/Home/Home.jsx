@@ -29,7 +29,7 @@ const Home = () => {
   // if (localStorage.getItem("packageDetails")) {
   //   navigate("/full-customize-package-enquiry");
   // }
-   const { isUserLoggedIn } = useSelector((state)=> state.auth)
+  const { isUserLoggedIn } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const { popular } = useSelector((state) => state.destination);
@@ -42,13 +42,13 @@ const Home = () => {
 
   console.log(bestHotels, "Best Hotels");
 
-  useEffect(()=>{
-    localStorage.removeItem("packageDetails")
-  },[])
   useEffect(() => {
-    if(isUserLoggedIn){
-    dispatch(getAuthUserDetails())
-  } 
+    localStorage.removeItem("packageDetails");
+  }, []);
+  useEffect(() => {
+    if (isUserLoggedIn) {
+      dispatch(getAuthUserDetails());
+    }
   }, [dispatch]);
 
   useEffect(() => {
@@ -63,7 +63,7 @@ const Home = () => {
   const internationalData = popular?.data?.filter(
     (data) => data.type == "International"
   );
-
+  console.log("internationalData: ", internationalData);
   return (
     <div className="relative">
       <div
@@ -78,7 +78,9 @@ const Home = () => {
       <Reviews />
       <HowitWorks />
       <PopularDestination data={indianData ? indianData : []} />
-      <PopularItineraries data={internationalData ? internationalData : []} />
+      {internationalData?.length > 0 && (
+        <PopularItineraries data={internationalData ? internationalData : []} />
+      )}
 
       <div
         className="flex items-center absolute justify-end px-20 mb-6"
