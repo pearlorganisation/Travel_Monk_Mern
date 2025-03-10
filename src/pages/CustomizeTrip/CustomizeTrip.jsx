@@ -25,7 +25,7 @@ const CustomizeTrip = () => {
 
   const { singleDestination } = useSelector((state) => state.trip);
   const { singlePackage } = useSelector((state) => state.packages);
-
+  console.log("the single package", singlePackage)
   const userState = useSelector((state) => state.user);
 
   /*---------------- getting the vehicles available for that destination-----------------------------------------------*/
@@ -81,7 +81,7 @@ const CustomizeTrip = () => {
 
   // all the hotel data and activity data is stored in dayaData
   const [dayData, setDayData] = useState(
-    singlePackage?.data?.itinerary?.map((iti) => ({
+    singlePackage?.data?.itinerary ?.slice(0, -1).map((iti) => ({
       selectedHotel: {},
       selectedActivities: [],
       selectedLocation: "",
@@ -105,7 +105,7 @@ const CustomizeTrip = () => {
     // Reset dayData if the itinerary changes
     if (singlePackage?.data?.itinerary) {
       setDayData(
-        singlePackage.data.itinerary.map(() => ({
+        singlePackage.data.itinerary?.slice(0, -1).map(() => ({
           selectedHotel: {},
           selectedActivities: [],
           selectedLocation: "",
@@ -166,8 +166,7 @@ const CustomizeTrip = () => {
 
   /**---------------------the final estimated price will be----------------------------*/
   let Total_Estimated_Price = totalHotelPrices + selectedVehiclePrice ? parseInt(selectedVehiclePrice*noOfDays) : 0;
-console.log("the selected vehicle price is",selectedVehiclePrice*noOfDays)
-  /**--------------------Handle Enquiry to send to the page for submitting the form-------------------------------------------------*/
+   /**--------------------Handle Enquiry to send to the page for submitting the form-------------------------------------------------*/
   const handleEnquiry = () => {
     const invalidEntry = dayData.find(
       (day) =>
@@ -210,8 +209,7 @@ console.log("the selected vehicle price is",selectedVehiclePrice*noOfDays)
   // ); 
 
   const lenOfItinerary = singlePackage?.data?.itinerary?.length;
-  console.log("the legth is", lenOfItinerary)
-  return (
+   return (
     <div className="bg-gray-200 relative">
       <div
         className="flex items-center absolute justify-end px-20 mb-6"
@@ -293,7 +291,7 @@ console.log("the selected vehicle price is",selectedVehiclePrice*noOfDays)
               <span className="font-medium">Step 1 |</span> Select Your day to day schedule
             </div>
           </div>
-          {singlePackage?.data?.itinerary.map((iti, index) => {
+          {singlePackage?.data?.itinerary?.slice(0,-1).map((iti, index) => {
             console.log(iti, "iti");
             const dataForSelect = iti?.activities.map((el) => {
               return {
@@ -379,7 +377,7 @@ console.log("the selected vehicle price is",selectedVehiclePrice*noOfDays)
             <div className="flex flex-col justify-center items-center bg-gray-100 p-4 sm:space-x-4">
               <div className="h-8 flex items-center justify-center">
                 <span className="text-black text-sm sm:text-base font-bold">
-                  Last Day {lenOfItinerary + 1}
+                  Last Day {lenOfItinerary}
                 </span>
               </div>
 
@@ -390,9 +388,6 @@ console.log("the selected vehicle price is",selectedVehiclePrice*noOfDays)
           </div>
         </div>
       </div>
-      {/** section containing the total price of all the hotels in the destination */}
-      
-
       <div className="pl-40 ">
         <div className=" flex flex-col ">
         
