@@ -1,30 +1,20 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { hotelsService } from "./hotelActions";
-
-export const getAllHotels = createAsyncThunk("hotels/get", async (thunkAPI) => {
-  try {
-    return await hotelsService.getHotels();
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error);
-  }
-});
-export const getSingleHotel = createAsyncThunk(
-  "singleHotel/get",
-  async (id, thunkAPI) => {
-    try {
-      return await hotelsService.getSingleHotel(id);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
+import { createSlice } from "@reduxjs/toolkit";
+import {
+  getAllHotels,
+  getBestHotels,
+  getHotelsByDestination,
+  getSingleHotel,
+} from "./hotelActions";
 
 const hotelState = {
   isLoading: false,
   isError: false,
   isSuccess: false,
   hotels: [],
+  bestHotels: [],
   singleHotel: {},
+  destinationHotels: {},
+  paginate: {},
   message: "",
 };
 
@@ -50,6 +40,22 @@ export const hotelsSlice = createSlice({
         state.message = action.error;
       })
 
+      .addCase(getBestHotels.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getBestHotels.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.bestHotels = action.payload;
+      })
+      .addCase(getBestHotels.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
+      })
+
       .addCase(getSingleHotel.pending, (state) => {
         state.isLoading = true;
       })
@@ -64,6 +70,23 @@ export const hotelsSlice = createSlice({
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
+      })
+      .addCase(getHotelsByDestination.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getHotelsByDestination.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = false;
+        state.isError = true;
+        state.destinationHotels = {};
+        state.message = action.error;
+      })
+      .addCase(getHotelsByDestination.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.destinationHotels = action.payload.data;
+        state.paginate = action.payload.pagination;
       });
   },
 });

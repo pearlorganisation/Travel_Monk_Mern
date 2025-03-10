@@ -4,8 +4,10 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import IconWithName from "./IconWithName";
 import { Link } from "react-router-dom";
+import { baseURL } from "../../services/axiosInterceptor";
 
 function CardCarousel({ data }) {
+  console.log("the data length is", data.length)
   let sliderRef = useRef(null);
   const next = () => {
     sliderRef.slickNext();
@@ -15,11 +17,21 @@ function CardCarousel({ data }) {
   };
 
   const settings = {
-    infinite: true,
+    infinite: false,
     speed: 500,
-    slidesToShow: 4,
+    slidesToShow:3,
     slidesToScroll: 1,
   };
+
+  const parseDate = (dateString) => {
+    const date = new Date(dateString);
+    const options = { day: "2-digit", month: "long" };
+    const formattedDate = date.toLocaleDateString("en-GB", options);
+    return formattedDate;
+  };
+
+  // Options for formatting
+
   return (
     <div className="">
       <Slider
@@ -28,45 +40,45 @@ function CardCarousel({ data }) {
         }}
         {...settings}
       >
-        {data?.packages?.map((cardData, i) => (
-          <div key={i} className="h-96  w-40 p-2    flex ">
+        {data?.map((cardData, i) => (
+          <div key={i} className="h-96 w-40 p-2 overflow-hidden flex ">
             <Link to={`/packages/${cardData?._id}`}>
               <div className=" h-full relative z-0 w-full">
                 <img
                   className="absolute inset-0  rounded-lg z-0 w-full h-full object-cover"
-                  src={cardData.image}
+                  src={`${baseURL}/${cardData?.image?.path}`}
                   alt="img"
                 />
 
                 <div className=" h-full p-4 rounded-lg  w-full bg-black bg-opacity-50  relative z-20">
-                  <div className="h-[70%]">
+                  <div className="h-[60%]">
                     <div className="w-full flex justify-end">
                       <div className="bg-yellow-400 font-semibold w-fit px-2 flex items-center gap-2 rounded-full">
-                        {cardData.price}{" "}
-                        <span className="text-sm">onwards</span>
+                        Estimated Price {cardData?.startingPrice}{" "}
                       </div>
                     </div>
                   </div>
 
-                  <div className="h-[30%] flex-1 text-sm text-white">
-                    <div className="mb-4">{cardData.name}</div>
-                    <div className="flex my-2 justify-between">
+                  <div className="h-[40%] flex-1 flex-col text-sm text-white">
+                    <div className="mb-4">{cardData?.name}</div>
+                    <div className="flex flex-col my-2 justify-between gap-2">
                       <IconWithName
-                        iconName="ri-time-fill"
-                        label={`${cardData.duration.days}D/${cardData.duration.nights}N`}
+                        iconName="https://wanderon.in/assets/images/new-location.svg"
+                        label={`${cardData?.duration?.days}D/${cardData?.duration?.nights}N`}
                       />
-                      <IconWithName
-                        iconName="ri-calendar-2-line"
-                        label={cardData?.date}
-                      />
+                      {/* <IconWithName
+                        iconName="https://wanderon.in/assets/images/new-calender.svg"
+                        label={`${parseDate(
+                          cardData?.startDate
+                        )} to ${parseDate(cardData?.endDate)}`}
+                      /> */}
                     </div>
 
                     <div className="flex  justify-between">
                       <IconWithName
-                        iconName="ri-map-pin-2-fill"
-                        label={cardData?.location}
+                        iconName="https://wanderon.in/assets/images/new-location.svg"
+                        label={`${cardData?.pickDropPoint?.pickup} - ${cardData?.pickDropPoint?.drop}`}
                       />
-                      <h1>{cardData?._id}</h1>
                     </div>
                   </div>
                 </div>

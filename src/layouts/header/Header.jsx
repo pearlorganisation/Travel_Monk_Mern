@@ -1,36 +1,63 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { logout } from "../../features/auth/authSlice";
+import ProfileMenu from "../../components/ProfileMenue/ProfileMenu";
 
 export default function Header() {
   const [state, setState] = useState(false);
-  const [isLogin, setIsLogin] = useState(false);
+  // const [isLogin, setIsLogin] = useState(false);
 
   const navigation = [
     { title: "Home", path: "/" },
+    { title: "International Packages", path: "/international_packages" },
+    { title: "Indian Packages", path: "/indian_packages" },
     { title: "About Us", path: "/about_us" },
-    { title: "Contact Us", path: "/contact_us" },
-    { title: "Product", path: "/product" },
+    { title: "Contact Us", path: "/contact" },
   ];
 
   // const isLoggedIn = localStorage.getItem("isLoggedIn");
 
+  // useEffect(() => {
+  //   const checkAuth = () => {
+  //     setIsLogin(localStorage.getItem("isLoggedIn"));
+  //     setState();
+  //   };
+
+  //   checkAuth();
+  // }, [localStorage.getItem("isLoggedIn")]);
+
+  // to check for is userlogged in
+  const { isUserLoggedIn } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  // const handleLogout = () => {
+  //   dispatch(logout());
+  // };
+
+  const [isTransparent, setIsTransparent] = useState(false);
+
   useEffect(() => {
-    const checkAuth = () => {
-      setIsLogin(localStorage.getItem("isLoggedIn"));
-      setState();
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        setIsTransparent(true);
+      } else {
+        setIsTransparent(false);
+      }
     };
 
-    checkAuth();
-  }, [localStorage.getItem("isLoggedIn")]);
-
-  const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn");
-    setIsLogin(false);
-  };
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
-    <nav className="bg-black  w-full border-b md:border-0 md:static  z-50">
+    <nav
+      className={`${
+        isTransparent ? "transparent" : "black"
+      } bg-black w-full border-b md:border-0 md:static z-50`}
+    >
       <div className="items-center px-4 max-w-screen-xl mx-auto md:flex md:px-8">
         <div className="flex items-center justify-between py-3 md:py-5 md:block">
           <Link to="/">
@@ -113,8 +140,14 @@ export default function Header() {
           >
             {navigation.map((item, idx) => {
               return (
-                <li key={idx} className="text-white hover:text-primary">
-                  <a href={item.path}>{item.title}</a>
+                <li
+                  key={idx}
+                  className="text-white text-xs md:text-[13px] lg:text-base xl:text-lg
+                  hover:text-[#007E8F] border-b-transparent  duration-150"
+                >
+                  <Link to={item.path} className="ml-1 mr-1">
+                    {item.title}
+                  </Link>
                 </li>
               );
             })}
@@ -122,7 +155,7 @@ export default function Header() {
         </div>
 
         <div className="flex flex-row justify-between">
-          <div className="hidden md:inline-block mr-20">
+          {/* <div className="hidden md:inline-block mr-20">
             <form className="">
               <div className="relative">
                 <input
@@ -132,7 +165,7 @@ export default function Header() {
                     backgroundColor:
                       "linear-gradient(90deg, rgba(255,255,255,0.1) 10%, rgba(255,255,255,1) 40%)",
                   }}
-                  className="block lg:min-w-72 p-1 text-sm border border-[#DDE2E4] text-gray-900 bg-gradient-to-b from-gray-950 to-gray-600  rounded-md "
+                  className="block lg:min-w-72 p-1 text-sm border border-[#DDE2E4] text-gray-900 bg-transparent rounded-md "
                   placeholder=""
                   required
                 />
@@ -160,35 +193,30 @@ export default function Header() {
                 </button>
               </div>
             </form>
-          </div>
+          </div> */}
 
           <div className="hidden md:inline-block " data-aos="fade-left">
             <div className="flex flex-row gap-6 items-center justify-center">
-              {!isLogin ? (
-                <div>
+              {!isUserLoggedIn ? (
+                <div className="flex flex-row gap-6 items-center justify-center">
                   <Link
                     to="/login"
                     data-aos="zoom-out"
                     data-aos-delay="800"
-                    className="text-white"
+                    className="hover:text-[#007E8F]  text-white border-b-transparent  duration-150 mr-2"
                   >
                     Login
                   </Link>
+
                   <Link
                     to="/signup"
-                    className="py-1 px-2 text-white bg-[#007E8F]   rounded-full"
+                    className=" border-b-2 rounded-full bg-[#007E8F] hover:bg-[#439CA8] px-4 py-2 text-white border-b-transparent hover:border-b-[#007E8F] duration-150"
                   >
                     Sign Up
                   </Link>
                 </div>
               ) : (
-                <button
-                  className="text-white px-6 py-2 border-2 border-[#2DA5F3] rounded-md"
-                  onClick={handleLogout}
-                >
-                  {" "}
-                  Logout{" "}
-                </button>
+                <ProfileMenu />
               )}
             </div>
           </div>

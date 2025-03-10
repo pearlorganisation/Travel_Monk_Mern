@@ -1,27 +1,91 @@
-import axios from "axios";
+import { axiosInstance } from "../../services/axiosInterceptor";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 
-const backendURL = "https://travel-monk-backend.onrender.com";
-const localURL = "http://localhost:5000";
+export const getAllHotels = createAsyncThunk("hotels/get", async (thunkAPI) => {
+  try {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const response = await axiosInstance.get(`/api/v1/hotels`, config);
 
-const getHotels = async () => {
-  const response = await axios.get(`http://localhost:5000/api/v1/hotels`);
-
-  if (response.data) {
-    console.log("Hotels", response.data);
-    return response.data;
+    if (response.data) {
+      return response.data;
+    }
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error);
   }
-};
+});
 
-const getSingleHotel = async (id) => {
-  const response = await axios.get(`http://localhost:5000/api/v1/hotels/${id}`);
+export const getBestHotels = createAsyncThunk(
+  "best-hotels/get",
+  async (thunkAPI) => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const response = await axiosInstance.get(
+        `/api/v1/hotels?isBest=true`,
+        config
+      );
 
-  if (response.data) {
-    console.log("Single Hotel Data", response.data);
-    return response.data;
+      if (response.data) {
+        return response.data;
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
   }
-};
+);
 
-export const hotelsService = {
-  getHotels,
-  getSingleHotel,
-};
+export const getSingleHotel = createAsyncThunk(
+  "singleHotel/get",
+  async (id, thunkAPI) => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const response = await axiosInstance.get(`/api/v1/hotels/${id}`, config);
+
+      if (response.data) {
+        return response.data;
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+/**-----------------------to get hotels based on destination------------------------ */
+
+export const getHotelsByDestination = createAsyncThunk(
+  "hotels/by-destination",
+  async ({ id, priceRange, search, page }, thunkAPI) => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const { data } = await axiosInstance.get(
+        `/api/v1/destinations/${id}/hotels`,
+        {
+          params: {
+            priceRange,
+            search,
+            page,
+          },
+          config,
+        }
+      );
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);

@@ -1,29 +1,38 @@
-import axios from "axios";
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { axiosInstance } from "../../services/axiosInterceptor";
 
-const backendURL = "https://travel-monk-backend.onrender.com";
-const localURL = "http://localhost:5000";
-
-const getCruizes = async () => {
-  const response = await axios.get(`http://localhost:5000/api/v1/cruizes`);
-
-  if (response.data) {
-    console.log("Cruizes", response.data);
-    return response.data;
+export const getAllCruizes = createAsyncThunk(
+  "cruizes/get",
+  async (thunkAPI) => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const response = await axiosInstance.get(`/api/v1/cruises`, config);
+      console.log(response.data, "result nayan search");
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
   }
-};
+);
 
-const getSingleCruize = async (id) => {
-  const response = await axios.get(
-    `http://localhost:5000/api/v1/cruizes/${id}`
-  );
-
-  if (response.data) {
-    console.log("Single Cruize Data", response.data);
-    return response.data;
+export const getSingleCruize = createAsyncThunk(
+  "singleCruize/get",
+  async (id, thunkAPI) => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const response = await axiosInstance.get(`/api/v1/cruises/${id}`, config);
+      console.log(response.data, "result nayan search");
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
   }
-};
-
-export const cruizesService = {
-  getCruizes,
-  getSingleCruize,
-};
+);

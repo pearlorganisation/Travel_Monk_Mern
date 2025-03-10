@@ -1,43 +1,31 @@
 import React, { useEffect, useState } from "react";
 import HelpFAQ from "./HelpFAQ";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
-import { getSinglePackage } from "../../features/package/packageSlice";
-
-const inclusions = [
-  " Entire travel from Leh to Leh by tempo traveler (For Tempo option)",
-  " Bike rent for 5 Days - Day 2 till Day 6 (For Biking option)",
-  "Fuel for the bike",
-  " Stay for 6 nights – 3 nights in a hotel at Leh, 2 night in a Hotel at Nubra Valley, 1 night in camps at Pangong Tso on triple sharing",
-  "A total of 12 meals – 1 meal Day 1 (D) + 2 meals Day 2 (B + D) + 2 meals Day 3 (B+D) + 2 meals Day 4 (B+D) + 2 meals Day 5 (B+D) + 2 meals Day 6 (B+D) + 1 meal Day 7 (B)",
-  "Mechanical Backup",
-  "All inner line permits for the trip",
-  "Team Captain throughout the trip",
-  "Riding Gears – Helmet, Riding Gloves ( only for riders), Elbow Guards, Knee Pads (Though it is recommended you carry your own helmet for comfort)",
-
-  "Driver Night Charges, Toll Tax, Parking Charges, etc.",
-  "An Oxygen Cylinder and Medical Kit in the car in case of emergency",
-  "Airport pick or drop. ( Private taxi won't be provided, taxis will be available on pre-decided slots time as per the Flights timings of combined group).",
-];
-
-const exclusions = [
-  "GST (5%) is applicable extra.",
-  "Any kind of food or beverage that is not included in the package like alcoholic drinks, mineral water, meals/refreshments/lunches on the highway.",
-  "Any personal expenses like a tip to the drivers, entry to monuments/monasteries, camera/video camera charges, camel safari, river rafting, laundry, telephone bills, tips, etc",
-  "Any cost arising due to natural calamities like landslides, roadblocks etc. (to be borne directly by the customer on the spot)",
-  "Anything not mentioned in the inclusions.",
-];
-
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { getSinglePackage } from "../../features/package/packageActions";
+import { toast } from "react-toastify";
+import { submitContact } from "../../features/contact/contactAction";
+import { useForm } from "react-hook-form";
+import { resetContactForm } from "../../features/contact/contactSlice";
+import axios from "axios";
+import { baseURL } from "../../services/axiosInterceptor";
+import DropIcon from "../../assets/logos/location.png";
+import ClockIcon from "../../assets/logos/clock.png";
+import RightMark from "../../assets/logos/icons8-checkmark-50.png";
+import CrossIcon from "../../assets/logos/icons8-cross-50.png";
+import WhatsAppLogo from "../../components/Whatsapp/WhatsLogo";
+import LocationIcon from "/icons/locationicon.svg"
+import ClockIcon2 from "/icons/durationtimeicon.svg"
 const PackageDetails = () => {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
+  const location = useLocation();
   const { id } = useParams();
 
-  const [mypackage, setmyPackage] = useState({});
-
+  const page = location.pathname;
+  console.log("the page is ", page);
   useEffect(() => {
     getPackage();
-    setmyPackage(getPackage());
   }, []);
 
   const getPackage = () => {
@@ -46,21 +34,54 @@ const PackageDetails = () => {
 
   const { data } = useSelector((state) => state.packages.singlePackage);
 
+  const handleBookNow = () => {
+    navigate("/confirm-package", {
+      state: {
+        startingPrice: data?.startingPrice,
+        packagename: data?.name,
+        id: id,
+        packageData: data,
+      },
+    }); // passing data as state
+  };
+
+  /*-------------------------------------------------Handle for submitting the contact us form----------------------------------------------- */
+  const { loading, success, error } = useSelector((state) => state.contact);
+  const { register, handleSubmit } = useForm();
+
+  const submitForm = async (info) => {
+    const formData = { ...info, page: page };
+    dispatch(submitContact(formData));
+  };
+
+  if (success) {
+    dispatch(resetContactForm());
+  }
   return (
     <div className="">
+      <div
+        className="flex items-center absolute justify-end px-20 mb-6"
+        style={{
+          position: "fixed",
+          bottom: "20px",
+          right: "20px",
+          zIndex: 1000, // Ensures it appears above other elements
+        }}
+      >
+        <WhatsAppLogo />
+      </div>
       <img
-        src={
-          data?.banner?.secure_url ||
-          "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=1421&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        }
+        src={`
+          ${baseURL}/${data?.banner?.path}
+          `}
         className="w-full h-96"
       />
       <div className="grid grid-cols-1 lg:grid-cols-[65%_auto] gap-6 px-20 py-6">
         <div>
           <h1 className="text-4xl font-semibold">{data?.name}</h1>
           <div className="flex flex-row gap-12 p-6">
-            <div className="flex flex-row gap-4">
-              <img src="https://wanderon.in/assets/images/new-location.svg" />
+            <div className="flex flex-row items-center gap-2">
+              <img src={LocationIcon} width={48} height={48}  />
               <div className="flex flex-col ">
                 <h1>Pickup and Drop</h1>
                 <h1>
@@ -69,8 +90,8 @@ const PackageDetails = () => {
               </div>
             </div>
 
-            <div className="flex flex-row gap-4">
-              <img src="https://wanderon.in/assets/images/new-clock.svg" />
+            <div className="flex flex-row items-center gap-4">
+              <img src={ClockIcon2} width={48} height={48} />
               <div className="flex flex-col ">
                 <h1>Duration</h1>
                 <h1>
@@ -85,7 +106,7 @@ const PackageDetails = () => {
                 src="https://png.pngtree.com/png-vector/20190508/ourmid/pngtree-click-vector-icon-png-image_1027903.jpg"
                 className="w-10 h-10"
               />
-              <h1 className="text-2xl font-bold"> Itinary </h1>
+              <h1 className="text-2xl font-bold"> Itinerary </h1>
             </div>
 
             <HelpFAQ data={data?.itinerary} />
@@ -101,10 +122,7 @@ const PackageDetails = () => {
             <div className="px-6 mt-4">
               {data?.inclusions.map((inclusion, index) => (
                 <div className="mt-2 flex flex-row gap-4" key={index}>
-                  <img
-                    src="https://wanderon.in/assets/svg/check-mark.png"
-                    className="w-5 h-5"
-                  />
+                  <img src={RightMark} className="w-5 h-5" />
                   <h3>{inclusion}</h3>
                 </div>
               ))}
@@ -121,13 +139,26 @@ const PackageDetails = () => {
             <div className="px-6 mt-4">
               {data?.exclusions.map((exclusion, index) => (
                 <div className="mt-2 flex flex-row gap-4" key={index}>
-                  <img
-                    src="https://wanderon.in/assets/svg/exclude.png"
-                    className="w-5 h-5"
-                  />
+                  <img src={CrossIcon} className="w-5 h-5" />
                   <h3>{exclusion}</h3>
                 </div>
               ))}
+            </div>
+            <div className="flex flex-col gap-4 px-4 mt-8">
+              <h1 className="flex items-start text-2xl font-semibold text-gray-800">
+                Payment Term's and Conditions
+              </h1>
+              <ul className="list-inside list-decimal text-gray-700">
+                <li className="ml-4 text-sm leading-relaxed">
+                  5,000/- for booking tour.
+                </li>
+                <li className="ml-4 text-sm leading-relaxed">
+                   40% amount in 24-48 hours of booking for confirming tour, enabling us to make necessary bookings to avoid cancellations.
+                </li>
+                <li className="ml-4 text-sm leading-relaxed">
+                   ⁠Balance Payment on first day of check in into hotel.
+                </li>
+              </ul>
             </div>
           </div>
         </div>
@@ -135,28 +166,31 @@ const PackageDetails = () => {
         <div className="">
           <h1 className="text-4xl font-semibold">Customize </h1>
 
-          <Link to={"/customize"} data={data}>
-            <button className="w-[100%] px-6 py-4 rounded-full bg-[#2DA5F3] text-white mt-4">
+          <Link to={`/customize/${data?._id}`} state={{inclusion:data?.inclusions, exclusion:data?.exclusions}}>
+            <button className="w-[100%] px-6 py-4 rounded-lg bg-[#007E8F] hover:bg-[#439CA8] text-white mt-4">
               {" "}
               Customize{" "}
             </button>
           </Link>
 
           <h3 className="mt-2 text-gray-400 text-sm">Starting from</h3>
-          <h1 className="text-5xl text-[#2DA5F3] mt-0 flex justify-start items-baseline">
+          <h1 className="text-5xl text-[#007E8F] mt-0 flex justify-start items-baseline">
             ₹ {data?.startingPrice || 42000}/-{" "}
-            <span className="text-xl text-[#2DA5F3] ml-3 font-bold">
+            <span className="text-xl text-[#007E8F] ml-3 font-bold">
               {" "}
               per person
             </span>
           </h1>
-          <button className="w-[100%] px-6 py-4 rounded-full bg-[#2DA5F3] text-white mt-4">
+          <button
+            onClick={handleBookNow}
+            className="w-[100%] px-6 py-4 rounded-lg bg-[#007E8F] hover:bg-[#439CA8] text-white mt-4"
+          >
             {" "}
             BOOK NOW{" "}
           </button>
 
           <div className="border-2 border-[#2DA5F3] rounded-md mt-8 px-4">
-            <form className="mt-12">
+            <form className="mt-12" onSubmit={handleSubmit(submitForm)}>
               <h1 className="text-[#2DA5F3] font-semibold">
                 Travel Monk Calling ?{" "}
               </h1>
@@ -164,10 +198,12 @@ const PackageDetails = () => {
 
               <div class="relative my-6">
                 <input
-                  id="id-l11"
+                  id="name"
                   type="text"
-                  name="id-l11"
+                  name="name"
+                  {...register("name")}
                   placeholder="e.g. John Smith"
+                  required
                   class="relative w-full h-12 px-4 pl-12 placeholder-transparent transition-all border rounded outline-none focus-visible:outline-none peer border-slate-200 text-slate-500 autofill:bg-white invalid:border-pink-500 invalid:text-pink-500 focus:border-[#2DA5F3] focus:outline-none invalid:focus:border-pink-500 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400"
                 />
                 <label
@@ -199,9 +235,11 @@ const PackageDetails = () => {
 
               <div class="relative my-6">
                 <input
-                  id="id-l11"
+                  id="phoneNumber"
                   type="text"
-                  name="id-l11"
+                  name="phoneNumber"
+                  {...register("phoneNumber")}
+                  required
                   placeholder="e.g. John Smith"
                   class="relative w-full h-12 px-4 pl-12 placeholder-transparent transition-all border rounded outline-none focus-visible:outline-none peer border-slate-200 text-slate-500 autofill:bg-white invalid:border-pink-500 invalid:text-pink-500 focus:border-[#2DA5F3] focus:outline-none invalid:focus:border-pink-500 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400"
                 />
@@ -235,11 +273,13 @@ const PackageDetails = () => {
 
               <div class="relative my-6">
                 <input
-                  id="id-l11"
-                  type="text"
-                  name="id-l11"
+                  id="email"
+                  type="email"
+                  name="email"
+                  {...register("email")}
                   placeholder="e.g. John Smith"
-                  className="relative w-full h-12 px-4 pl-12 placeholder-transparent transition-all border-2 rounded outline-none focus-visible:outline-none peer border-gray-200 text-slate-500 autofill:bg-white invalid:border-pink-500 invalid:text-pink-500 focus:border-[#2DA5F3] focus:outline-none invalid:focus:border-pink-500 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400"
+                  required
+                  class="relative w-full h-12 px-4 pl-12 placeholder-transparent transition-all border rounded outline-none focus-visible:outline-none peer border-slate-200 text-slate-500 autofill:bg-white invalid:border-pink-500 invalid:text-pink-500 focus:border-[#2DA5F3] focus:outline-none invalid:focus:border-pink-500 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400"
                 />
                 <label
                   for="id-l11"
@@ -276,10 +316,27 @@ const PackageDetails = () => {
                   </g>
                 </svg>
               </div>
-
+              {/**  message */}
+              <div className="relative my-6">
+                <textarea
+                  id="message"
+                  name="message"
+                  placeholder="Enter your message"
+                  {...register("message", { required: true })} // Add validation if needed
+                  rows="4"
+                  className="relative w-full px-4 py-2 border rounded outline-none focus:border-[#2DA5F3] resize-none"
+                />
+                <label
+                  htmlFor="message"
+                  className="cursor-text absolute left-2 -top-2 z-[1] px-2 text-xs text-slate-400 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:left-4 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:left-2 peer-focus:text-xs peer-focus:text-[#2DA5F3]"
+                ></label>
+              </div>
               <div className="flex items-center justify-center mb-4">
                 {" "}
-                <button className="px-6 py-3 bg-yellow-400 w-[80%]  rounded-full">
+                <button
+                  type="submit"
+                  className="px-6 py-3 rounded-lg bg-[#007E8F] text-white w-[80%]"
+                >
                   {" "}
                   Submit{" "}
                 </button>

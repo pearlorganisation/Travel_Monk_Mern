@@ -1,26 +1,5 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { cruizesService } from "./cruizeActions";
-
-export const getAllCruizes = createAsyncThunk(
-  "cruizes/get",
-  async (thunkAPI) => {
-    try {
-      return await cruizesService.getCruizes();
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
-export const getSingleCruize = createAsyncThunk(
-  "singleCruize/get",
-  async (id, thunkAPI) => {
-    try {
-      return await cruizesService.getSingleCruize(id);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
+import { createSlice } from "@reduxjs/toolkit";
+import { getAllCruizes, getSingleCruize } from "./cruizeActions";
 
 const cruisesState = {
   isLoading: false,

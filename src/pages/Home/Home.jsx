@@ -10,39 +10,62 @@ import HotelDetails from "./supportingComponent/HotelDetails";
 import FindHotel from "./supportingComponent/FindHotel";
 import Reviews from "../../components/HeroSection.jsx/Reviews/Reviews";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getAllIndianDestinations,
-  getAllInternationalDestinations,
-} from "../../features/trips/tripsSlice";
+import { getAllDestinations } from "../../features/trips/tripActions";
+import { getAuthUserDetails } from "../../features/user/userActions";
+import { getPopularDestination } from "../../features/destination/destinationActions";
+import WhatsAppLogo from "../../components/Whatsapp/WhatsLogo";
+
+import { useNavigate } from "react-router-dom";
+import Roadmap from "../../components/TimelineComponent/TimelineComponent";
+import GoogleMapsEmbed from "../../components/MyEmbed/MyEmbed";
+import { getBestHotels } from "../../features/hotel/hotelActions";
+import ChoseTravelMonkSec from "../../components/chooseTravelMonk/choseTravelMonk";
+import Testimonials from "./testimonials/testimonals";
+import AnimatedImageTabs from "../../components/AnimatedTabs/AnimatedTabs";
 
 const Home = () => {
+  const navigate = useNavigate();
+
+  // if (localStorage.getItem("packageDetails")) {
+  //   navigate("/full-customize-package-enquiry");
+  // }
+  const { isUserLoggedIn } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-  const indiandestinationState = useSelector(
-    (state) => state.trip.indiandestination.data
-  );
-  const internationalDestinationState = useSelector(
-    (state) => state.trip.internationaldestination.data
-  );
+  const { popular } = useSelector((state) => state.destination);
+
+  const { bestHotels } = useSelector((state) => state.hotels);
+
+  const userState = useSelector((state) => state.user);
+
+  console.log(popular?.data, "popular destination names");
+
+  console.log(bestHotels, "Best Hotels");
 
   useEffect(() => {
-    getIndianDestinations();
-    getInternationalDestinations();
+    localStorage.removeItem("packageDetails");
+  }, []);
+  useEffect(() => {
+    if (isUserLoggedIn) {
+      dispatch(getAuthUserDetails());
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(getPopularDestination());
   }, []);
 
-  const getIndianDestinations = () => {
-    dispatch(getAllIndianDestinations());
-  };
+  useEffect(() => {
+    dispatch(getBestHotels());
+  }, []);
 
-  const getInternationalDestinations = () => {
-    dispatch(getAllInternationalDestinations());
-  };
-
-  // console.log("Indian DEstionations", indiandestinationState);
-  // console.log("International DEstionations", internationalDestinationState);
-
+  const indianData = popular?.data?.filter((data) => data.type == "Indian");
+  const internationalData = popular?.data?.filter(
+    (data) => data.type == "International"
+  );
+  console.log("internationalData: ", internationalData);
   return (
-    <div className="">
+    <div className="relative">
       <div
         style={{
           backgroundImage: `url('/HeroImg.jpg')`,
@@ -54,19 +77,31 @@ const Home = () => {
       </div>
       <Reviews />
       <HowitWorks />
-      <PopularDestination
-        data={indiandestinationState ? indiandestinationState : []}
-      />
-      <PopularItineraries
-        data={
-          internationalDestinationState ? internationalDestinationState : []
-        }
-      />
+      <PopularDestination data={indianData ? indianData : []} />
+      {internationalData?.length > 0 && (
+        <PopularItineraries data={internationalData ? internationalData : []} />
+      )}
+
+      <div
+        className="flex items-center absolute justify-end px-20 mb-6"
+        style={{
+          position: "fixed",
+          bottom: "20px",
+          right: "20px",
+          zIndex: 1000, // Ensures it appears above other elements
+        }}
+      >
+        <WhatsAppLogo />
+      </div>
+
       <Upcoming />
-      <Distinguish />
+      <Distinguish hotels={bestHotels?.data} />
+      <ChoseTravelMonkSec />
+      <Testimonials />
       <GetinTouch />
-      <HotelDetails />
-      <FindHotel />
+
+      {/* <HotelDetails />
+      <FindHotel /> */}
     </div>
   );
 };

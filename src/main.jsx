@@ -2,13 +2,24 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
-import { Provider } from "react-redux";
-import store from "./features/store.jsx";
+import { PrimeReactProvider, PrimeReactContext } from 'primereact/api';
 
+import "mapbox-gl/dist/mapbox-gl.css";
+
+import { Provider } from "react-redux";
+import { store, persistor } from "./features/store.jsx";
+import { PersistGate } from "redux-persist/integration/react";
+import { injectStore } from "./services/axiosInterceptor.js";
+
+injectStore(store)
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+  <>
     <Provider store={store}>
-      <App />
+      <PersistGate loading={null} persistor={persistor}>
+        <PrimeReactProvider>
+        <App />
+        </PrimeReactProvider>
+      </PersistGate>
     </Provider>
-  </React.StrictMode>
+  </>
 );

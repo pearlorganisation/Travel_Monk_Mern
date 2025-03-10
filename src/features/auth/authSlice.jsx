@@ -1,12 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registerUser, userLogin } from "./authActions";
+import { registerUser, userLogin, userLogout } from "./authActions";
+import { toast } from "react-toastify";
 
 const initialState = {
   loading: false,
   userInfo: null,
+  isUserLoggedIn: false,
   userToken: null,
   error: null,
   success: false,
+  userLoggedOut:{
+    loading:false,
+    error:false,
+    success: false
+  }
 };
 
 const authSlice = createSlice({
@@ -16,6 +23,7 @@ const authSlice = createSlice({
     logout: (state) => {
       localStorage.removeItem("isLoggedIn");
       state.loading = false;
+      state.isUserLoggedIn = false;
       state.userInfo = null;
       state.userToken = null;
       state.error = null;
@@ -48,7 +56,46 @@ const authSlice = createSlice({
           state.loading = false;
           state.userInfo = action.payload;
           state.userToken = action.payload.userToken;
-        });
+          state.isUserLoggedIn = true;
+        })
+        .addCase(userLogout.pending,(state)=>{
+          state.userLoggedOut = state.userLoggedOut ?? {};
+          state.userLoggedOut.loading = true;
+        })
+        .addCase(userLogout.fulfilled,(state,action)=>{
+          state.userLoggedOut = state.userLoggedOut ?? {};
+          state.userLoggedOut.error = false;
+          state.userLoggedOut.success = true;
+          state.userLoggedOut.loading = false;
+          toast.success("Successfully Logged Out",{
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            
+          })
+        })
+        .addCase(userLogout.rejected,(state,action)=>{
+          state.userLoggedOut = state.userLoggedOut ?? {};
+          state.userLoggedOut.loading = false;
+          state.userLoggedOut.error = true;
+          state.userLoggedOut.success = false;
+          toast.error(action.payload,{
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+             
+          })
+        })
   },
 });
 
