@@ -147,7 +147,7 @@ const PrebuiltEnquiriesPdf = ({ data }) => (
                 <Text style={styles.text}>Email: {data?.email}</Text>
                 <Text style={styles.text}>Mobile Number: {data?.mobileNumber}</Text>
                 <Text style={styles.text}>Package: {data?.package?.name}</Text>
-                <Text style={styles.text}>Vehicle: {data?.selectedVehicle?.vehicleName}</Text>
+                <Text style={styles.text}>Vehicle: {data?.selectedVehicle?.name}</Text>
                 <Text style={styles.text}>Number of Travellers: {data?.numberOfTravellers}</Text>
                 <Text style={styles.text}>Estimated Price: {data?.estimatedPrice.toLocaleString()}</Text>
                 <Text style={styles.text}>Message: {data?.message}</Text>
