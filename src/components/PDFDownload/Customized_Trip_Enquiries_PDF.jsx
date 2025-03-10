@@ -138,20 +138,20 @@ const FullyCustomizedEnquiriesPdf = ({ data }) => (
         <Page size="A4" style={styles.page}>
             <View style={styles.section}>
                 <Text style={styles.header}>Enquiry Details</Text>
-                <Text style={styles.text}>Name: {data.name}</Text>
-                <Text style={styles.text}>Email: {data.email}</Text>
-                <Text style={styles.text}>Mobile Number: {data.mobileNumber}</Text>
+                <Text style={styles.text}>Name: {data?.name}</Text>
+                <Text style={styles.text}>Email: {data?.email}</Text>
+                <Text style={styles.text}>Mobile Number: {data?.mobileNumber}</Text>
                 <Text style={styles.text}>
-                    Duration: {data.duration.days} days, {data.duration.nights} nights
+                    Duration: {data?.duration?.days} days, {data?.duration?.nights} nights
                 </Text>
                 <Text style={styles.text}>
-                    Estimated Price: {data.estimatedPrice.toLocaleString()}
+                    Estimated Price: {data?.estimatedPrice?.toLocaleString()}
                 </Text>
                 <Text style={styles.text}>
-                    Travel Dates: {new Date(data.startDate).toLocaleDateString()} -{' '}
-                    {new Date(data.endDate).toLocaleDateString()}
+                    Travel Dates: {new Date(data?.startDate).toLocaleDateString()} -{' '}
+                    {new Date(data?.endDate).toLocaleDateString()}
                 </Text>
-                <Text style={styles.text}>Message: {data.message}</Text>
+                <Text style={styles.text}>Message: {data?.message}</Text>
                 <Text style={styles.text}>
                     Vehicle: {data?.selectedVehicle?.vehicleName}
                 </Text>
@@ -161,38 +161,38 @@ const FullyCustomizedEnquiriesPdf = ({ data }) => (
             <View style={styles.section}>
                 <Text style={styles.header}>Itinerary</Text>
 
-                {data.itinerary.map((day, index) => (
+                {data?.itinerary?.map((day, index) => (
                     <View key={index} style={styles.itineraryContainer}>
                         {/* Day header with background */}
                         <View style={styles.dayHeader}>
                             <Text style={styles.dayTitle}>
-                                Day {day.day}: {day.selectedLocation}
+                                Day {day?.day}: {day?.selectedLocation}
                             </Text>
                             <Text style={styles.dayDate}>
-                                {new Date(day.date).toLocaleDateString()} mm/dd/yyyy
+                                {new Date(day?.date).toLocaleDateString()} mm/dd/yyyy
                             </Text>
                         </View>
 
                         {/* Hotel details */}
                         <View style={styles.detailsRow}>
                             <Text style={styles.detailLabel}>Accommodation:</Text>
-                            <Text style={styles.detailValue}>{day.selectedHotel.name}</Text>
+                            <Text style={styles.detailValue}>{day?.selectedHotel?.name}</Text>
                         </View>
 
                         <View style={styles.divider} />
 
                         {/* Activities section */}
                         <Text style={styles.activityHeader}>Activities:</Text>
-                        {day.selectedActivities.length === 0 ? (
+                        {day?.selectedActivities?.length === 0 ? (
                             <Text style={styles.activityItem}>No activities scheduled for this day</Text>
                         ) : (
-                            day.selectedActivities.map((activity, idx) => (
-                                <Text key={idx} style={styles.activityItem}>• {activity.label}</Text>
+                            day?.selectedActivities?.map((activity, idx) => (
+                                <Text key={idx} style={styles.activityItem}>• {activity?.label}</Text>
                             ))
                         )}
 
                         {/* Add divider between days except for the last one */}
-                        {index < data.itinerary.length - 1 && (
+                        {index < data?.itinerary?.length - 1 && (
                             <View style={[styles.divider, { marginTop: 10, marginBottom: 15 }]} />
                         )}
                     </View>
@@ -200,15 +200,15 @@ const FullyCustomizedEnquiriesPdf = ({ data }) => (
 
                 {/* Final day with special styling */}
                 <View style={styles.finalDayBox}>
-                    <Text style={styles.finalDayText}>Last Day: Airport Drop</Text>
+                    <Text style={styles?.finalDayText}>Last Day: Airport Drop</Text>
                 </View>
             </View>
 
             {/* Inclusions Section */}
             <View style={styles.section}>
                 <Text style={styles.header}>Inclusions</Text>
-                {data.inclusions.length > 0 ? (
-                    data.inclusions.map((item, index) => (
+                {data?.inclusions?.length > 0 ? (
+                    data?.inclusions?.map((item, index) => (
                         <Text key={index} style={styles.listItem}>• {item}</Text>
                     ))
                 ) : (
@@ -219,8 +219,8 @@ const FullyCustomizedEnquiriesPdf = ({ data }) => (
             {/* Exclusions Section */}
             <View style={styles.section}>
                 <Text style={styles.header}>Exclusions</Text>
-                {data.exclusions.length > 0 ? (
-                    data.exclusions.map((item, index) => (
+                {data?.exclusions?.length > 0 ? (
+                    data?.exclusions?.map((item, index) => (
                         <Text key={index} style={styles.listItem}>• {item}</Text>
                     ))
                 ) : (
@@ -231,7 +231,7 @@ const FullyCustomizedEnquiriesPdf = ({ data }) => (
             {/* Enquiry Date Section - keeping this separate as in original */}
             <View style={styles.section}>
                 <Text style={styles.text}>
-                    Enquiry Created At: {new Date(data.createdAt).toLocaleString()}
+                    Enquiry Created At: {new Date(data?.createdAt).toLocaleString()}
                 </Text>
             </View>
 
