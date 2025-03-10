@@ -10,7 +10,8 @@ export default function BusContactForm() {
   useEffect(() => {
     dispatch(getPartners());
   }, []);
-
+console.log("the partners are", partners)
+  console.log("the partners are", partners)
   const contactMethods = [
     {
       icon: (

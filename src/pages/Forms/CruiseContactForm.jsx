@@ -72,7 +72,7 @@ export default function CruiseContactForm() {
     },
   ];
 
-  const { partners } = useSelector((state) => state.partners);
+  const { partners } = useSelector((state) => state.partner);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getPartners());
