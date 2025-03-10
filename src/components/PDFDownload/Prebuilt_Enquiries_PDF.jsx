@@ -175,16 +175,16 @@ const PrebuiltEnquiriesPdf = ({ data }) => (
                         <View style={styles.divider} />
 
                         <Text style={styles.activityHeader}>Activities:</Text>
-                        {day.selectedActivities.length === 0 ? (
+                        {day?.selectedActivities?.length === 0 ? (
                             <Text style={styles.noActivitiesText}>No activities scheduled for this day</Text>
                         ) : (
-                            day.selectedActivities.map((activity, idx) => (
-                                <Text key={idx} style={styles.activityItem}>• {activity.label}</Text>
+                            day?.selectedActivities?.map((activity, idx) => (
+                                <Text key={idx} style={styles.activityItem}>• {activity?.label}</Text>
                             ))
                         )}
 
                         {/* Add divider between days except for the last one */}
-                        {index < data.itinerary.length - 1 && (
+                        {index < data?.itinerary?.length - 1 && (
                             <View style={[styles.divider, { marginTop: 10, marginBottom: 15 }]} />
                         )}
                     </View>
@@ -200,8 +200,8 @@ const PrebuiltEnquiriesPdf = ({ data }) => (
             <View style={styles.section}>
                 <Text style={styles.header}>Inclusions</Text>
                 <View style={styles.listContainer}>
-                    {data.inclusions.length > 0 ? (
-                        data.inclusions.map((item, index) => (
+                    {data?.inclusions?.length > 0 ? (
+                        data?.inclusions?.map((item, index) => (
                             <Text key={index} style={styles.listItem}>• {item}</Text>
                         ))
                     ) : (
@@ -214,8 +214,8 @@ const PrebuiltEnquiriesPdf = ({ data }) => (
             <View style={styles.section}>
                 <Text style={styles.header}>Exclusions</Text>
                 <View style={styles.listContainer}>
-                    {data.exclusions.length > 0 ? (
-                        data.exclusions.map((item, index) => (
+                    {data?.exclusions?.length > 0 ? (
+                        data?.exclusions?.map((item, index) => (
                             <Text key={index} style={styles.listItem}>• {item}</Text>
                         ))
                     ) : (
@@ -238,7 +238,7 @@ const PrebuiltEnquiriesPdf = ({ data }) => (
 const DownloadPrebuiltPdfButton = ({ data }) => (
     <PDFDownloadLink
         document={<PrebuiltEnquiriesPdf data={data} />}
-        fileName={`EnquiryDetails-${data.name}.pdf`}
+        fileName={`EnquiryDetails-${data?.name}.pdf`}
     >
         {({ loading }) => (loading ? 'Generating PDF...' : 'Download PDF')}
     </PDFDownloadLink>
