@@ -35,7 +35,7 @@ const combinedReducer = combineReducers({
   cruises: cruiseReducer,
   hotels: hotelsReducer,
   destination: destinationsReducer,
-  partners: partnersReducer,
+  partner: partnersReducer,
   contact: contactReducer,
   buscruize: buscruizeReducer,
   password: resetReducer,

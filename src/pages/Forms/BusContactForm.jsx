@@ -5,12 +5,13 @@ import BusCruiseContactForm from "./BusCruiseContactForm";
 import { baseURL } from "../../services/axiosInterceptor";
 
 export default function BusContactForm() {
-  const { partners } = useSelector((state) => state.partners);
+  const { partners } = useSelector((state) => state?.partner);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getPartners());
   }, []);
-
+console.log("the partners are", partners)
+  console.log("the partners are", partners)
   const contactMethods = [
     {
       icon: (
