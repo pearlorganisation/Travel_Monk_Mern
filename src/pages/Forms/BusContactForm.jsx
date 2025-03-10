@@ -5,7 +5,7 @@ import BusCruiseContactForm from "./BusCruiseContactForm";
 import { baseURL } from "../../services/axiosInterceptor";
 
 export default function BusContactForm() {
-  const { partners } = useSelector((state) => state.partner);
+  const { partners } = useSelector((state) => state?.partner);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getPartners());
