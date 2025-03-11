@@ -74,11 +74,6 @@ const CustomizeTrip = () => {
     if (singlePackage?.data)
       dispatch(getSingleDestination(singlePackage?.data?.packageDestination));
   }, [singlePackage]);
-
-  // console.log("Trip Package ka data", singlePackage);
-
-  // console.log(userState, "my user state");
-
   // all the hotel data and activity data is stored in dayaData
   const [dayData, setDayData] = useState(
     singlePackage?.data?.itinerary ?.slice(0, -1).map((iti) => ({
@@ -87,11 +82,10 @@ const CustomizeTrip = () => {
       selectedLocation: "",
       location: {},
       day: "",
-    })) || [] // Initialize based on itinerary length
+    })) || []  
   );
   /**--------------------Selected Activity-----------------------*/
   const handleActivityChange = (selectedOptions, dayIndex) => {
-    // Update the specific day's selectedActivity field
     setDayData((prevDayData) =>
       prevDayData.map((day, index) =>
         index === dayIndex
@@ -102,8 +96,7 @@ const CustomizeTrip = () => {
   };
 
   useEffect(() => {
-    // Reset dayData if the itinerary changes
-    if (singlePackage?.data?.itinerary) {
+     if (singlePackage?.data?.itinerary) {
       setDayData(
         singlePackage.data.itinerary?.slice(0, -1).map(() => ({
           selectedHotel: {},
@@ -116,8 +109,7 @@ const CustomizeTrip = () => {
     }
   }, [singlePackage?.data]);
   let noOfDays = singlePackage?.data?.itinerary?.length
-  // console.log("the no of days are", noOfDays) 
-  const [hotelPrices, setHotelPrices] = useState([]); // Array to store prices for each day
+   const [hotelPrices, setHotelPrices] = useState([]);  
   useEffect(() => {
     if (singlePackage?.data?.itinerary) {
       setHotelPrices(Array(singlePackage.data.itinerary.length).fill(0));
@@ -126,10 +118,8 @@ const CustomizeTrip = () => {
   const [totalHotelPrices, setTotalHotelPrice] = useState(0);
 
   const [selectedHotelImages, setSelectedHotelImages] = useState([])
-// console.log("the selected hotel images are", selectedHotelImages)
-  const handleHotelChange = (index, event, hotels, currentLocation) => {
-    // console.log("---------------location", currentLocation);
-    const selectedHotelId = event.target.value;
+   const handleHotelChange = (index, event, hotels, currentLocation) => {
+     const selectedHotelId = event.target.value;
     const selectedHotel = hotels.find((hotel) => hotel._id === selectedHotelId);
 
 
@@ -139,10 +129,6 @@ const CustomizeTrip = () => {
       selectedHotel
     }
     setSelectedHotelImages(newHotelData)
- 
-
-    /**  data for sending in the newDayData for selected hotel */
-
     const newDayData = [...dayData];
     newDayData[index].day = index + 1;
     newDayData[index].location = currentLocation;
@@ -199,15 +185,8 @@ const CustomizeTrip = () => {
         // vehicleName: selectedVehicle,
         enquiryLocation: fullURL,
       },
-    }); // to send all the required prebuilt package data
+    }); 
   };
-
-  // console.log("-----------hotelprice new calculated", hotelPrices);
-  // console.log(
-  //   "--------------------selected vehicle price",
-  //   selectedVehiclePrice
-  // ); 
-
   const lenOfItinerary = singlePackage?.data?.itinerary?.length;
    return (
     <div className="bg-gray-200 relative">
@@ -283,7 +262,7 @@ const CustomizeTrip = () => {
         </div>
       )}
 
-{/** this is where showing the selected vehicle */}
+ 
       <div className="grid grid-cols-1 mt-4">
         <div className="">
           <div className="text-gray-700 text-sm p-4 flex justify-center items-center rounded-md">
@@ -303,21 +282,21 @@ const CustomizeTrip = () => {
             return (
               <div className="flex flex-row gap-2 items-center justify-start mt-2">
                 
-                <div className="flex flex-col gap-1 min-w-14">
-                  <h1 className="font-bold text-base">{iti.location}</h1>
+                <div className="flex flex-col gap-1 w-28 ml-4">
+                  <h1 className="font-bold text-base text-wrap">{iti.location}</h1>
                 </div>
 
                 <div className="w-6 h-6 bg-red-500 rounded-full">
                   <h1 className="text-white px-2">{index + 1}</h1>
                 </div>
 
-                <div className="bg-white border border-gray-200 rounded-md p-2 ml-8 flex flex-row w-full">
+                <div className="bg-white border border-gray-200 rounded-md p-2 mx-8 flex flex-row w-full">
                   <div className="grid grid-cols-1 w-[100%]">
                     <div className="flex flex-row items-start gap-2">
                       <div className="flex flex-col gap-3 w-[20%] items-start mx-4">
                         <h1> Select Hotel </h1>
                         <select
-                          value={dayData[index].selectedHotel[0]}
+                          value={dayData[index]?.selectedHotel?.[0]}
                           onChange={(event) =>
                             handleHotelChange(
                               index,
@@ -388,6 +367,8 @@ const CustomizeTrip = () => {
           </div>
         </div>
       </div>
+
+      {/** vehicle selecting div */}
       <div className="pl-40 ">
         <div className=" flex flex-col ">
         

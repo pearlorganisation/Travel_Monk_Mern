@@ -20,7 +20,8 @@ const ProfilePage = () => {
   const { fullyCustomizedEnquiries } = useSelector((state) => state?.fullyCustomizePackage)
   const { prebuiltEnquiries } = useSelector((state) => state?.prebuiltPackage)
   const { userBookings } = useSelector((state) => state?.previousBookings);
- console.log("the fully customized are", fullyCustomizedEnquiries)
+ 
+   
   let imageName = [];
   let lastProfileName = "";
   if (userInfo?.name) {
@@ -184,7 +185,7 @@ const ProfilePage = () => {
                               Vehicle: {enquiry?.selectedVehicle?.vehicleName ?? "No Vehicle Selected"}
                             </p>
                             <p className="text-gray-500 text-sm">
-                              Date: {moment(enquiry?.createdAt).format("DD MMM YYYY")}
+                              Enquiry Date: {moment(enquiry?.createdAt).format("DD MMM YYYY")}
                             </p>
                           </div>
                         </div>

@@ -138,7 +138,13 @@ const styles = StyleSheet.create({
     },
 });
 
-const PrebuiltEnquiriesPdf = ({ data }) => (
+const PrebuiltEnquiriesPdf = ({ data }) => {  
+    
+    const len = data?.itinerary.length -1;
+    const dateIs = data.itinerary?.[len]?.date
+    const nextDateIs = moment(dateIs,"YYYY/MM/DD").add(1,"days").format("MM/DD/YYYY")
+    console.log("the nextDate is", nextDateIs)
+    return (
     <Document>
         <Page size="A4" style={styles.page}>
             {/* General Enquiry Details */}
@@ -152,7 +158,7 @@ const PrebuiltEnquiriesPdf = ({ data }) => (
                 <Text style={styles.text}>Number of Travellers: {data?.numberOfTravellers}</Text>
                 <Text style={styles.text}>Estimated Price: {data?.estimatedPrice.toLocaleString()}</Text>
                 <Text style={styles.text}>Message: {data?.message}</Text>
-                <Text style={styles.text}>Enquiry Created At: {new Date(data?.createdAt).toLocaleString()}</Text>
+                <Text style={styles.text}>Enquiry Created At: {moment(data?.createdAt,"YYYY/MM/DD").format("MM/DD/YYYY")}</Text>
             </View>
 
             {/* Improved Itinerary Details */}
@@ -193,7 +199,7 @@ const PrebuiltEnquiriesPdf = ({ data }) => (
 
                 {/* Final day with special styling */}
                 <View style={styles.finalDayBox}>
-                    <Text style={styles.finalDayText}>Last Day: Airport Drop</Text>
+                    <Text style={styles.finalDayText}>Last Day: Airport Drop {nextDateIs}</Text>
                 </View>
             </View>
 
@@ -234,7 +240,7 @@ const PrebuiltEnquiriesPdf = ({ data }) => (
             </View>
         </Page>
     </Document>
-);
+);}
 
 const DownloadPrebuiltPdfButton = ({ data }) => (
     <PDFDownloadLink

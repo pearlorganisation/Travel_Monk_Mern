@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import moment from 'moment';
 import { Document, Page, Text, View, StyleSheet, PDFDownloadLink } from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({
@@ -133,7 +134,11 @@ const styles = StyleSheet.create({
     },
 });
 
-const FullyCustomizedEnquiriesPdf = ({ data }) => (
+ 
+const FullyCustomizedEnquiriesPdf = ({ data }) => {
+    
+    const nextDate = moment(data?.endDate, "YYYY/MM/DD").format("MM/DD/YYYY");
+    return (
     <Document>
         <Page size="A4" style={styles.page}>
             <View style={styles.section}>
@@ -148,8 +153,8 @@ const FullyCustomizedEnquiriesPdf = ({ data }) => (
                     Estimated Price: {data?.estimatedPrice?.toLocaleString()}
                 </Text>
                 <Text style={styles.text}>
-                    Travel Dates: {new Date(data?.startDate).toLocaleDateString()} -{' '}
-                    {new Date(data?.endDate).toLocaleDateString()}
+                    Travel Dates: {moment(data?.startDate, "YYYY/MM/DD").format("MM/DD/YYYY")} -{' '}
+                    {moment(data?.endDate,"YYYY/MM/DD").format("MM/DD/YYYY")}
                 </Text>
                 <Text style={styles.text}>Message: {data?.message}</Text>
                 <Text style={styles.text}>
@@ -169,7 +174,7 @@ const FullyCustomizedEnquiriesPdf = ({ data }) => (
                                 Day {day?.day}: {day?.selectedLocation}
                             </Text>
                             <Text style={styles.dayDate}>
-                                {new Date(day?.date).toLocaleDateString()} mm/dd/yyyy
+                                {moment(day?.date,"YYYY/MM/DD").format("MM/DD/YYYY")} mm/dd/yyyy
                             </Text>
                         </View>
 
@@ -201,7 +206,7 @@ const FullyCustomizedEnquiriesPdf = ({ data }) => (
 
                 {/* Final day with special styling */}
                 <View style={styles.finalDayBox}>
-                    <Text style={styles?.finalDayText}>Last Day: Airport Drop</Text>
+                    <Text style={styles?.finalDayText}>Last Day: Airport Drop {nextDate}</Text>
                 </View>
             </View>
 
@@ -250,6 +255,7 @@ const FullyCustomizedEnquiriesPdf = ({ data }) => (
         </Page>
     </Document>
 );
+}
 
 const DownloadPdfButton = ({ data }) => (
     <PDFDownloadLink
