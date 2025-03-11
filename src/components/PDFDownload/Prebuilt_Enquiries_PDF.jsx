@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment'
 import { Document, Page, Text, View, StyleSheet, PDFDownloadLink } from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({
@@ -163,7 +164,7 @@ const PrebuiltEnquiriesPdf = ({ data }) => (
                         {/* Day header with background */}
                         <View style={styles.dayHeader}>
                             <Text style={styles.dayTitle}>Day {day?.day}: {day?.location}</Text>
-                            <Text style={styles.dayDate}>{day?.date || 'Date not specified'} yyyy/mm/dd</Text>
+                            <Text style={styles.dayDate}>{day?.date ? moment(day.date, "YYYY-MM-DD").format("MM/DD/YYYY"): "Date not specified"} mm/dd/yyyy</Text>
                         </View>
 
                         {/* Details in structured rows */}

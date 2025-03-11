@@ -190,7 +190,8 @@ const FullyCustomizedEnquiriesPdf = ({ data }) => (
                                 <Text key={idx} style={styles.activityItem}>• {activity?.label}</Text>
                             ))
                         )}
-
+                        <Text style={styles.activityHeader}>Description:</Text>
+                        <Text key={index} style={styles.activityItem}>{day?.description}</Text>
                         {/* Add divider between days except for the last one */}
                         {index < data?.itinerary?.length - 1 && (
                             <View style={[styles.divider, { marginTop: 10, marginBottom: 15 }]} />

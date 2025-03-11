@@ -20,7 +20,7 @@ const ProfilePage = () => {
   const { fullyCustomizedEnquiries } = useSelector((state) => state?.fullyCustomizePackage)
   const { prebuiltEnquiries } = useSelector((state) => state?.prebuiltPackage)
   const { userBookings } = useSelector((state) => state?.previousBookings);
- 
+ console.log("the fully customized are", fullyCustomizedEnquiries)
   let imageName = [];
   let lastProfileName = "";
   if (userInfo?.name) {
@@ -47,7 +47,7 @@ const ProfilePage = () => {
     dispatch(getMyFullyCustomizedEnquiries())
   }, []);
 
-  console.log("the prebuilt enquiries data is", prebuiltEnquiries)
+  // console.log("the prebuilt enquiries data is", prebuiltEnquiries)
   return (
     <div className="bg-gray-50 min-h-screen py-6 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto bg-white shadow-xl rounded-2xl overflow-hidden">
