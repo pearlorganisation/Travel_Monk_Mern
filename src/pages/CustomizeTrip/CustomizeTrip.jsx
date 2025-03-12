@@ -46,10 +46,7 @@ const CustomizeTrip = () => {
 
   const { destinationHotels } = useSelector((state) => state.hotels);
 
-  useEffect(() => {
-    dispatch(getHotelsByDestination({ id: singleDestination?.data?._id }));
-  }, [singleDestination?.data?._id, dispatch]);
-
+ 
   const handleSelect = (vehicleName, vehiclePrice, vehicleId, vehicleImage,vehicle) => {
     setSelectedVehicle(vehicleName);
     setSelectedVehiclePrice(vehiclePrice);
@@ -60,20 +57,26 @@ const CustomizeTrip = () => {
   };
   useEffect(() => {
     dispatch(getSinglePackage(id));
-  }, []);
+  }, [id, dispatch]);   
 
   useEffect(() => {
-    dispatch(getDestinationVehicle(singleDestination?.data?._id));
-  }, [singleDestination?.data?._id, dispatch]);
-
-  // useEffect(() => {
-  //   dispatch(getDestinationVehicle(singleDestination?.data?._id));
-  // }, []);
+    if (singlePackage?.data?.packageDestination) {  
+      dispatch(getSingleDestination(singlePackage.data.packageDestination));
+    }
+  }, [singlePackage?.data?.packageDestination, dispatch]);   
 
   useEffect(() => {
-    if (singlePackage?.data)
-      dispatch(getSingleDestination(singlePackage?.data?.packageDestination));
-  }, [singlePackage]);
+    if (singleDestination?.data?._id) {  
+      dispatch(getDestinationVehicle(singleDestination.data._id));
+    }
+  }, [singleDestination?.data?._id, dispatch]);   
+
+  useEffect(() => {
+    if (singleDestination?.data?._id) {  
+      dispatch(getHotelsByDestination({ id: singleDestination.data._id }));
+    }
+  }, [singleDestination?.data?._id, dispatch]);  
+
   // all the hotel data and activity data is stored in dayaData
   const [dayData, setDayData] = useState(
     singlePackage?.data?.itinerary ?.slice(0, -1).map((iti) => ({
