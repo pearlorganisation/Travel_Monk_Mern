@@ -59,7 +59,7 @@ const Distinguish = ({ hotels }) => {
                       >
                         <div className=" bg-opacity-50 h-full max-w-full flex items-center rounded-lg">
                           <div className="text-left text-white p-8">
-                            <h3 className="text-lg md:text-xl font-bold line-clamp-2 fixed top-4">
+                            <h3 className="text-lg md:text-xl font-bold text-wrap fixed top-4">
                               {hotel?.name}
                             </h3>
                             <button className="bg-[#007E8F] text-white py-2 px-4 rounded justify-end fixed bottom-20">
