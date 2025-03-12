@@ -2,22 +2,28 @@
 import { useEffect, useRef, useState } from "react";
 import DrawSvg from "./DrawSvg";
 
-const RoadmapFully = ({ events }) => {
-  console.log(events, "Events");
+const RoadmapFully = ({ events, tripEndDateFinal }) => {
+  const tripEndDate = new Date(tripEndDateFinal);
+
+  const formattedDate = tripEndDate.toLocaleDateString("en-US", {
+    weekday: "short", // Mon
+    day: "2-digit",   // 17
+    month: "short",   // Mar
+    year: "numeric"   // 2025
+  });
+
+  console.log(`Airport Drop ${formattedDate}`);
   return (
     <section className="min-h-screen w-screen relative p-6">
       <h1 className="text-4xl capitalize flex justify-center items-center m-4 mx-auto border-b-2 border-black w-fit">
         Timeline
       </h1>
-
       <div className="w-4/5 min-h-max mx-auto flex justify-center items-center relative">
         <div className="flex justify-center items-center">
           <DrawSvg />
         </div>
-
         <ul className="list-none w-full h-full flex flex-col justify-center items-center bg-blue-200 px-6 py-10">
           <li className="w-full h-full flex">&nbsp;</li>
-
           {Array.isArray(events) &&
             events.map((iti, index) => (
               <TimelineItemFully
@@ -29,12 +35,18 @@ const RoadmapFully = ({ events }) => {
               />
             ))}
 
-          <li className="w-full h-full flex odd:justify-start even:justify-end invisible">
+           <li className="w-full h-full flex odd:justify-start even:justify-end invisible">
             <div className="w-2/5 h-14"></div>
           </li>
         </ul>
       </div>
-    </section>
+      <div className="flex justify-center items-center"> 
+        <span className="text-2xl">
+          Airport Drop {formattedDate}
+        </span>
+ 
+      </div>
+     </section>
   );
 };
 

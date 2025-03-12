@@ -15,9 +15,7 @@ const FullCustomizeEnquiryForm = () => {
   const { userInfo } = useSelector((state) => state.user); // getting the userInfo
   /** to get the current page url */
   const fullURL = location.pathname;
-  // console.log(`The full URL is: ${fullURL}`);
-
-  // console.log(userInfo, "my user info");
+ 
 
   useEffect(() => {
     if (!isUserLoggedIn) navigate("/login");
@@ -58,15 +56,7 @@ const FullCustomizeEnquiryForm = () => {
 
     return container
   })
-  // console.log(
-  //   "----------------------------estimated iti is",
-
-  //   newItinery
-  // );
-
-  // console.log('---------------------the userdata is', userData)
-
-  // console.log("----------------------the duration", duration);
+  
   const submitForm = (data) => {
     const formData = {
       ...data,
@@ -89,20 +79,11 @@ const FullCustomizeEnquiryForm = () => {
       {isUserLoggedIn ? (
         <>
           <div className="w-full grid grid-cols-1  bg-white rounded-2xl shadow-2xl overflow-hidden">
-            {/**temporary download section */}
-            {/* <div className="flex justify-end">
-              
-              <FullyCustomizePdfDownload data={pdfData} />
-            </div> */}
             <div
               id="info"
               className="bg-[#007E8F] text-white  flex flex-col justify-center items-start py-6"
             >
               <div className="space-y-4 px-6">
-                {/* <div className="text-5xl font-extrabold text-white/90">
-                  {packageDetails.name}
-                </div> */}
-                 
                 <h2 className="text-3xl font-bold">Estimated Package Price</h2>
                 <div className="text-5xl font-extrabold text-white/90">
                   ₹ {Estimated_Price}
@@ -122,7 +103,7 @@ const FullCustomizeEnquiryForm = () => {
                 </h1>
               </div>
 
-              <RoadmapFully events={location.state.itinerary} />
+              <RoadmapFully events={location.state.itinerary} tripEndDateFinal={endDate} />
             </div>
 
             {/* Form Section */}

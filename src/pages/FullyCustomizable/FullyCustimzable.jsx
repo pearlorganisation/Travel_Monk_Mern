@@ -41,8 +41,11 @@ const FullyCustomizeTrip = () => {
 
   const [selectedVehicleImage, setSelectedVehicleImage] = useState("");
 
-  const { startDate, endDate, destination } = location.state ?? {};
+  const { startDate, endDate, destination, travellers } = location.state ?? {};
 
+  // console.log("the date is", travellers)
+  const noOfRoomsRequired = Math.ceil(travellers/2)
+console.log("the no of rooms required is", noOfRoomsRequired)
   /** calculating the days difference */
   const calculateDaysBetweenDates = (startDate, endDate) => {
     const start = new Date(startDate);
@@ -77,7 +80,7 @@ const FullyCustomizeTrip = () => {
   const datesRange = getDatesInRange(startDate, endDate); // getting the range of the date
   const datesObjects = datesRange.map((date) => ({ date }));
 const len = datesObjects.length
-console.log("the dates length is, ", len)
+ 
   /**----------------------------States--------------------------------- */
 
   /** states for claculating the selected hotels price */
@@ -100,7 +103,7 @@ console.log("the dates length is, ", len)
   ) => {
     setSelectedVehicleId(vehicleId);
     setSelectedVehicleName(vehicleName);
-    setSelectedVehiclePrice(vehiclePrice*myDays);
+    setSelectedVehiclePrice(vehiclePrice*(myDays+1));
     setSelectedVehicleImage(`${baseURL}/${vehicleImage}`);
     setVehicle(vehicle)
   };
@@ -216,22 +219,9 @@ console.log("the dates length is, ", len)
     const selectedLocation = locationData?.location.find(
       (loc) => loc.name === event.target.value
     );
-
     const coordinates = selectedLocation?.coordinates;
     mapData[index].latitude = coordinates?.coordinates[0] 
     mapData[index].longitude = coordinates?.coordinates[1] 
-    // let newPoints = []
-    // let splittedPoints = event.target.value.split(",")
-    
-    //  for(let key in newPoints){
-    //   key = parseInt(newPoints[key])
-    //  }
-    // newPoints.push(splittedPoints)
-    // console.log("the new points are", newPoints)
-    // mapData[index].latitude = newPoints[0] ?? 0.0
-    // mapData[index].longitude = coordinates?.coordinates[1] ?? 0.0 
-    // console.log('------------------Coordinates:', coordinates);
-    // console.log('---------------locationdata is', locationData)
    };
 
 
@@ -241,11 +231,8 @@ console.log("the dates length is, ", len)
      const selectedHotelId = event.target.value;
     const selected_Hotel = hotels.find(
       (hotel) => hotel._id === selectedHotelId
-    ); // this will find the selected hotel by id
-
- 
+    ); // this will find the selected hotel by id 
     setSelectedHotelName(selected_Hotel.name);
-
     ; // storing the previously selected hotels images as well as new images
     const newHotelData = [...selectedHotelImages]
     newHotelData[index] = {
@@ -253,7 +240,6 @@ console.log("the dates length is, ", len)
     }
     setSelectedHotelImages(newHotelData)
     const newDayData = [...dayData];
-
     /** setting the hotel of current index */
     // newDayData[index].selectedHotel = event.target.value;
 
@@ -285,9 +271,11 @@ console.log("the dates length is, ", len)
       )
     );
   };
+  let finalHotelPriceForNoOfRooms = totalHotelPrices* noOfRoomsRequired
+  console.log("the final hotel price is", finalHotelPriceForNoOfRooms);
   /** The Total price after selecting hotels and vehicle */
   let Total_Estimated_Price = totalHotelPrices + selectedVehiclePrice;
-
+console.log("the estimated price is", Total_Estimated_Price)
   /**------------------Handle for Enquiry-------------------------*/
   const handleEnquiry = () => {
     const invalidEntry = dayData.find(
