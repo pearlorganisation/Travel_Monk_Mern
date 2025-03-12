@@ -64,7 +64,7 @@ const CustomizeTrip = () => {
 
   useEffect(() => {
     dispatch(getDestinationVehicle(singleDestination?.data?._id));
-  }, [singleDestination?.data?._id]);
+  }, [singleDestination?.data?._id, dispatch]);
 
   // useEffect(() => {
   //   dispatch(getDestinationVehicle(singleDestination?.data?._id));
