@@ -216,54 +216,51 @@ const CustomizeTrip = () => {
        {/** select a vehicle */}
        
       </div>
+       {isModalOpen && (
+         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50 p-4">
+           <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-3xl md:max-w-4xl lg:max-w-5xl max-h-[90vh] overflow-y-auto">
+             <h2 className="text-xl font-bold mb-4 text-center">Select a Vehicle</h2>
 
-      {isModalOpen && (
-        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-1/2">
-            <h2 className="text-xl font-bold mb-4">Select a Vehicle</h2>
+             {/* Vehicle List */}
+             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+               {destinationVehicles?.map((vehicle) => (
+                 <div
+                   key={vehicle?._id}
+                   onClick={() => {
+                     handleSelect(
+                       vehicle?.vehicleName,
+                       vehicle?.pricePerDay,
+                       vehicle?._id,
+                       `${baseURL}/${vehicle?.image?.path}`,
+                       vehicle
+                     );
+                     closeModal();
+                   }}
+                   className="p-4 border rounded-lg shadow-md cursor-pointer bg-[#F0F5FF] hover:bg-[#E0E8FF] transition h-auto"
+                 >
+                   <p className="text-lg font-semibold text-center">{vehicle?.vehicleName}</p>
+                   <img
+                     src={`${baseURL}/${vehicle?.image?.path}`}
+                     className="w-full h-36 object-cover rounded-lg mt-2"
+                     alt={vehicle?.vehicleName}
+                   />
+                 </div>
+               ))}
+             </div>
 
-            {/* Vehicle List */}
-            <div className=" flex flex-row gap-6">
-              {destinationVehicles?.map((vehicle) => (
-                <div
-                  key={vehicle?._id}
-                  onClick={() => {
-                    handleSelect(
-                      vehicle?.vehicleName,
-                      vehicle?.pricePerDay,
-                      vehicle?._id,
-                      `${baseURL}/${vehicle?.image?.path}`,
-                      vehicle
-                    );
-                    closeModal(); // Close the modal after selection
-                  }}
-                  className="p-4 border rounded-lg shadow-md cursor-pointer bg-[#F0F5FF] h-56"
-                >
-                  <p className="text-lg font-semibold">
-                    Vehicle: {vehicle?.vehicleName}
-                  </p>
-                  {/* <p className="text-gray-600">
-                    Price: {vehicle?.pricePerDay} /- per day
-                  </p> */}
+             {/* Close button */}
+             <div className="flex justify-center mt-4">
+               <button
+                 onClick={closeModal}
+                 className="px-4 py-2 bg-red-500 text-white font-bold rounded hover:bg-red-600"
+               >
+                 Close
+               </button>
+             </div>
+           </div>
+         </div>
+       )}
 
-                  <img
-                    src={`${baseURL}/${vehicle?.image?.path}`}
-                    className="w-full h-36 rounded-lg mb-2 mt-3"
-                  />
-                </div>
-              ))}
-            </div>
-
-            {/* Close button */}
-            <button
-              onClick={closeModal}
-              className="mt-4 px-4 py-2 bg-red-500 text-white font-bold rounded hover:bg-red-600"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
 
  
       <div className="grid grid-cols-1 mt-4">
