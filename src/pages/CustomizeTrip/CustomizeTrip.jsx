@@ -48,7 +48,7 @@ const CustomizeTrip = () => {
 
   useEffect(() => {
     dispatch(getHotelsByDestination({ id: singleDestination?.data?._id }));
-  }, []);
+  }, [singleDestination?.data?._id, dispatch]);
 
   const handleSelect = (vehicleName, vehiclePrice, vehicleId, vehicleImage,vehicle) => {
     setSelectedVehicle(vehicleName);
@@ -64,7 +64,7 @@ const CustomizeTrip = () => {
 
   useEffect(() => {
     dispatch(getDestinationVehicle(singleDestination?.data?._id));
-  }, []);
+  }, [singleDestination?.data?._id]);
 
   // useEffect(() => {
   //   dispatch(getDestinationVehicle(singleDestination?.data?._id));
