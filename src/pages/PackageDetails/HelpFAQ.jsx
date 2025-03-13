@@ -79,15 +79,23 @@ const FaqsCard = (props) => {
 };
 
 const HelpFAQ = ({ data }) => {
+  const len  = data.length
+  console.log("data length is", len)
   return (
     <section className="py-14">
       <div className="max-w-screen-xl mx-auto px-4 gap-12 md:flex md:px-8">
         <div className="flex-1 mt-12 md:mt-0 bg-white p-2 rounded-lg">
           <ul className="space-y-4 divide-y">
-            {data?.map((item, idx) => (
+            {data?.slice(0,-1)?.map((item, idx) => (
               <FaqsCard idx={idx} faqsList={item} key={idx} />
             ))}
           </ul>
+          <div
+            className="px-6 py-2 flex justify-between border-2 border-gray-200 rounded-md"
+          >
+            <h1>Day {len} </h1>
+            <span>Airport Drop</span>
+          </div>
         </div>
       </div>
     </section>
