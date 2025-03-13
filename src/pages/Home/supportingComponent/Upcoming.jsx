@@ -32,15 +32,14 @@ const Upcoming = () => {
     if (month) {
       try {
         const res = await axiosInstance.get(`/api/v1/packages?paging=false&month=${month}`);
-        console.log("Response Data:", res.data);
+        // console.log("Response Data:", res.data);
+        console.log("the response is", res)
 
         if (res?.data?.data) {
           setPackagesData(res?.data?.data);
-        } else if(res.success == false) {
-          setPackagesData(null);
-          toast.error("No packages found for this month.");
-        }
+        } 
       } catch (error) {
+        setPackagesData(null)
         console.error("Error fetching data:", error);
         toast.error("Failed to fetch packages.");
       }
