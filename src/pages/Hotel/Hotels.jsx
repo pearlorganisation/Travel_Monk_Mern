@@ -136,9 +136,17 @@ const Hotels = () => {
 
        }
     }
-
-
-    
+    const inclusionHelper = (amenities) => {
+        let newArr = amenities.split(",");
+        console.log("the new arr is", newArr);
+        return (
+            <ul>
+                {newArr.map((item, index) => (
+                    <li key={index}>• {item}</li>
+                ))}
+            </ul>
+        );
+    }
     return (
       <div className="container mx-auto p-4">
         {/* Search Bar Section */}
@@ -268,14 +276,14 @@ const Hotels = () => {
 
                                   {/* Amenities */}
                                   <div className="mt-4">
-                                      <h3 className="font-medium mb-2">Amenities:</h3>
+                                      <h3 className="font-medium mb-2">Inclusion:</h3>
                                       <div className="flex flex-wrap gap-2">
-                                          {hotel?.amenities?.map((amenity, index) => (
+                                          {hotel?.inclusion?.map((amenity, index) => (
                                               <span
                                                   key={index}
                                                   className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full"
                                               >
-                                                  {amenity}
+                                                  {inclusionHelper(amenity)}
                                               </span>
                                           ))}
                                       </div>
