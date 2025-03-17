@@ -278,14 +278,14 @@ const Hotels = () => {
                                   <div className="mt-4">
                                       <h3 className="font-medium mb-2">Inclusion:</h3>
                                       <div className="flex flex-wrap gap-2">
-                                          {hotel?.inclusion?.map((amenity, index) => (
+                                          {hotel?.inclusion.length >0 ? hotel?.inclusion?.map((amenity, index) => (
                                               <span
                                                   key={index}
                                                   className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full"
                                               >
                                                   {inclusionHelper(amenity)}
                                               </span>
-                                          ))}
+                                          )):<><span>N/A</span></>}
                                       </div>
                                   </div>
                               </div>
