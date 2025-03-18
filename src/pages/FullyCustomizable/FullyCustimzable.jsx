@@ -271,10 +271,10 @@ const len = datesObjects.length
       )
     );
   };
-  let finalHotelPriceForNoOfRooms = totalHotelPrices* noOfRoomsRequired
+  let finalHotelPriceForNoOfRooms = totalHotelPrices* (noOfRoomsRequired ?? 1)  
   console.log("the final hotel price is", finalHotelPriceForNoOfRooms);
   /** The Total price after selecting hotels and vehicle */
-  let Total_Estimated_Price = totalHotelPrices + selectedVehiclePrice;
+  let Total_Estimated_Price = finalHotelPriceForNoOfRooms + selectedVehiclePrice;
 console.log("the estimated price is", Total_Estimated_Price)
   /**------------------Handle for Enquiry-------------------------*/
   const handleEnquiry = () => {
