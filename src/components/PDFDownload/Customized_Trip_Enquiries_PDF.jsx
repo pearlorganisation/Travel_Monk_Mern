@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import moment from 'moment';
 import { Document, Page, Text, View, StyleSheet, PDFDownloadLink } from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({
@@ -137,7 +136,12 @@ const styles = StyleSheet.create({
  
 const FullyCustomizedEnquiriesPdf = ({ data }) => {
     
-    const nextDate = moment(data?.endDate, "YYYY/MM/DD").format("MM/DD/YYYY");
+    const nextDate = new Date(data?.endDate).toLocaleDateString("en-US", {
+        month: "2-digit",
+        day: "2-digit",
+        year: "numeric",
+    });
+
     return (
     <Document>
         <Page size="A4" style={styles.page}>
@@ -152,10 +156,18 @@ const FullyCustomizedEnquiriesPdf = ({ data }) => {
                 <Text style={styles.text}>
                     Estimated Price: {data?.estimatedPrice?.toLocaleString()}
                 </Text>
-                <Text style={styles.text}>
-                    Travel Dates: {moment(data?.startDate, "YYYY/MM/DD").format("MM/DD/YYYY")} -{' '}
-                    {moment(data?.endDate,"YYYY/MM/DD").format("MM/DD/YYYY")}
-                </Text>
+                    <Text style={styles.text}>
+                        Travel Dates: {new Date(data?.startDate).toLocaleDateString("en-US", {
+                            month: "2-digit",
+                            day: "2-digit",
+                            year: "numeric",
+                        })} -{' '}
+                        {new Date(data?.endDate).toLocaleDateString("en-US", {
+                            month: "2-digit",
+                            day: "2-digit",
+                            year: "numeric",
+                        })}
+                    </Text>
                 <Text style={styles.text}>Message: {data?.message}</Text>
                 <Text style={styles.text}>
                     Vehicle: {data?.selectedVehicle?.vehicleName}
@@ -174,7 +186,11 @@ const FullyCustomizedEnquiriesPdf = ({ data }) => {
                                 Day {day?.day}: {day?.selectedLocation}
                             </Text>
                             <Text style={styles.dayDate}>
-                                {moment(day?.date,"YYYY/MM/DD").format("MM/DD/YYYY")} mm/dd/yyyy
+                                {new Date(day?.date).toLocaleDateString("en-US", {
+                                    month: "2-digit",
+                                    day: "2-digit",
+                                    year: "numeric",
+                                })} mm/dd/yyyy
                             </Text>
                         </View>
 
