@@ -45,7 +45,7 @@ const FullyCustomizeTrip = () => {
 
   // console.log("the date is", travellers)
   const noOfRoomsRequired = Math.ceil(travellers/2)
-console.log("the no of rooms required is", noOfRoomsRequired)
+// console.log("the no of rooms required is", noOfRoomsRequired)
   /** calculating the days difference */
   const calculateDaysBetweenDates = (startDate, endDate) => {
     const start = new Date(startDate);
@@ -79,6 +79,8 @@ console.log("the no of rooms required is", noOfRoomsRequired)
 
   const datesRange = getDatesInRange(startDate, endDate); // getting the range of the date
   const datesObjects = datesRange.map((date) => ({ date }));
+
+  console.log("the dates range is", datesRange)
 const len = datesObjects.length
  
   /**----------------------------States--------------------------------- */
@@ -272,11 +274,9 @@ const len = datesObjects.length
     );
   };
   let finalHotelPriceForNoOfRooms = totalHotelPrices* (noOfRoomsRequired ?? 1)  
-  console.log("the final hotel price is", finalHotelPriceForNoOfRooms);
-  /** The Total price after selecting hotels and vehicle */
+   /** The Total price after selecting hotels and vehicle */
   let Total_Estimated_Price = finalHotelPriceForNoOfRooms + selectedVehiclePrice;
-console.log("the estimated price is", Total_Estimated_Price)
-  /**------------------Handle for Enquiry-------------------------*/
+   /**------------------Handle for Enquiry-------------------------*/
   const handleEnquiry = () => {
     const invalidEntry = dayData.find(
       (day) =>
@@ -318,6 +318,7 @@ console.log("the estimated price is", Total_Estimated_Price)
         duration: { days, nights },
         startDate,
         endDate,
+        datesRange
       },
     });
   };

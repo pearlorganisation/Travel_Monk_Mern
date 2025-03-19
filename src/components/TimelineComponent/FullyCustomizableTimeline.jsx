@@ -1,10 +1,12 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useRef, useState } from "react";
 import DrawSvg from "./DrawSvg";
+import moment from "moment";
 
-const RoadmapFully = ({ events, tripEndDateFinal }) => {
+const RoadmapFully = ({ events, tripEndDateFinal , dateRange}) => {
   const tripEndDate = new Date(tripEndDateFinal);
 
+  console.log("the dates range in the timeline is", dateRange)
   const formattedDate = tripEndDate.toLocaleDateString("en-US", {
     weekday: "short", // Mon
     day: "2-digit",   // 17
@@ -12,8 +14,7 @@ const RoadmapFully = ({ events, tripEndDateFinal }) => {
     year: "numeric"   // 2025
   });
 
-  console.log(`Airport Drop ${formattedDate}`);
-  return (
+   return (
     <section className="min-h-screen w-screen relative p-6">
       <h1 className="text-4xl capitalize flex justify-center items-center m-4 mx-auto border-b-2 border-black w-fit">
         Timeline
@@ -32,6 +33,7 @@ const RoadmapFully = ({ events, tripEndDateFinal }) => {
                 hotel={iti?.selectedHotel}
                 location={iti.selectedLocation}
                 index={index}
+                 dayDate={dateRange[index]}
               />
             ))}
 
@@ -50,7 +52,7 @@ const RoadmapFully = ({ events, tripEndDateFinal }) => {
   );
 };
 
-const TimelineItemFully = ({ activities, hotel, day, location, index }) => {
+const TimelineItemFully = ({ activities, hotel, day, location, index , dayDate}) => {
   const [isVisible, setIsVisible] = useState(false);
   const itemRef = useRef(null);
 
@@ -99,6 +101,9 @@ const TimelineItemFully = ({ activities, hotel, day, location, index }) => {
           odd:rounded-[40px_0_40px_0] even:rounded-[0_40px_0_40px]"
         >
           <span className="block text-2xl capitalize text-black">{day}</span>
+          <span className="block text-2xl capitalize font-normal mt-2 text-red-500">
+            {moment(dayDate, "ddd MMM DD YYYY HH:mm:ss [GMT]ZZ").format("ddd, MMM DD, YYYY")}
+          </span>
           <span className="block text-2xl capitalize font-normal mt-2 text-green-500">
             Activities
           </span>
@@ -125,6 +130,8 @@ const TimelineItemFully = ({ activities, hotel, day, location, index }) => {
           <span className="block text-2xl capitalize font-normal mt-2 text-red-500">
             {location}
           </span>
+           
+
         </div>
       </div>
     </li>

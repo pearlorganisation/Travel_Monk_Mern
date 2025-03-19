@@ -37,10 +37,13 @@ const FullCustomizeEnquiryForm = () => {
     duration,
     startDate,
     endDate,
+    datesRange
   } = location.state ?? {};
+ 
+
   /** DATA FOR DOWNLOADING THE PDF */ 
   const pdfData = location.state.itinerary;
-// console.log('===========pdf data is', pdfData)
+ 
 
   const newItinery = [...itinerary];
   
@@ -103,7 +106,7 @@ const FullCustomizeEnquiryForm = () => {
                 </h1>
               </div>
 
-              <RoadmapFully events={location.state.itinerary} tripEndDateFinal={endDate} />
+              <RoadmapFully events={location.state.itinerary} dateRange ={datesRange} tripEndDateFinal={endDate} />
             </div>
 
             {/* Form Section */}
