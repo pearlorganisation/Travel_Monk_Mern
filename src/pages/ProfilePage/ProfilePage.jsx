@@ -13,10 +13,10 @@ import DownloadPrebuiltPdfButton from "../../components/PDFDownload/Prebuilt_Enq
 import Pagination from "../../components/Pagination/Pagination";
 
 const ProfilePage = () => {
+  const dispatch = useDispatch();
   const [showBookings, setShowBookings] = useState(false);
   const [showFullyCustomizedEnquiries, setShowFullyCustomizedEnquiries] = useState(false)
   const [showPrebuiltEnquiries, setShowPrebuiltEnquiries] = useState(false);
-  const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state?.user);
   const { fullyCustomizedEnquiries, paginateFully } = useSelector((state) => state?.fullyCustomizePackage)
   const { prebuiltEnquiries, paginatePrebuilt} = useSelector((state) => state?.prebuiltPackage)
@@ -67,20 +67,17 @@ const ProfilePage = () => {
 
     lastProfileName = firstInitial + secondInitial;
   }
-
-
-
  
   useEffect(() => {
     dispatch(getAuthUserDetails());
   }, []);
 
 useEffect(()=>{
-   dispatch(getMyFullyCustomizedEnquiries({page: pageFull,limit:2}))
+   dispatch(getMyFullyCustomizedEnquiries({page: pageFull,limit:3}))
 },[pageFull])
 
 useEffect(()=>{
-   dispatch(getMyPrebuiltEnquiry({page: currentPrebuiltPage, limit:2}))   
+   dispatch(getMyPrebuiltEnquiry({page: currentPrebuiltPage, limit:3}))   
 },[currentPrebuiltPage])
 
 useEffect(() => {
@@ -138,9 +135,9 @@ useEffect(() => {
             {showBookings && (
               <div className="mt-6 space-y-4">
                 {Array.isArray(userBookings) &&
-                  userBookings?.map((booking) => (
+                  userBookings?.map((booking, index) => (
                     <div
-                      key={booking?.bookingId}
+                      key={index}
                       className="bg-gray-50 p-4 rounded-lg shadow-md border border-gray-200"
                     >
                       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
@@ -206,15 +203,13 @@ useEffect(() => {
             {showFullyCustomizedEnquiries && (
               <div className="mt-6 space-y-4">
                 {Array.isArray(fullyCustomizedEnquiries) &&
-                  fullyCustomizedEnquiries?.map((enquiry) => (
+                  fullyCustomizedEnquiries?.map((enquiry, index) => (
                     <div
-                      key={enquiry?._id}
+                      key={index}
                       className="bg-gray-50 p-4 rounded-lg shadow-md border border-gray-200"
                     >
-                      <div className="flex justify-end mb-4">
-                        <DownloadPdfButton data={enquiry} />
-                      </div>
-
+                      <div className="flex w-full justify-end"><DownloadPdfButton data={enquiry} /></div>
+                         
                       <div className="space-y-4">
                         <div className="flex flex-col sm:flex-row justify-between">
                           <div>
@@ -261,9 +256,9 @@ useEffect(() => {
             {showPrebuiltEnquiries && (
               <div className="mt-6">
                 {Array.isArray(prebuiltEnquiries) &&
-                  prebuiltEnquiries?.map((enquiry) => (
+                  prebuiltEnquiries?.map((enquiry, index) => (
                     <div
-                      key={enquiry._id}
+                      key={index}
                       className="bg-white p-4 rounded-md shadow-sm mt-3 border border-gray-200"
                     >
                       <div className="flex justify-end">
