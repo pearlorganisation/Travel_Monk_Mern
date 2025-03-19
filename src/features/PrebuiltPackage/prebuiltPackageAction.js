@@ -25,7 +25,7 @@ export const sendPrebuiltPackageEnquiry = createAsyncThunk(
 
 /** to get the prebuilt package enquiry submitted by the user */
 export const getMyPrebuiltEnquiry = createAsyncThunk(
-    "get/prebuilt-enquiries",async(_,{rejectWithValue})=>{
+    "get/prebuilt-enquiries",async({page,limit},{rejectWithValue})=>{
         try {
             const config ={
                 headers:{
@@ -34,8 +34,8 @@ export const getMyPrebuiltEnquiry = createAsyncThunk(
             }
             const {
                 data
-            } = await axiosInstance.get(`/api/v1/customization-enquiries/pre-built/my-enquiries`, config)
-            return data.data
+            } = await axiosInstance.get(`/api/v1/customization-enquiries/pre-built/my-enquiries?page=${page}&limit=${limit}`, config)
+            return data
         } catch (error) {
             if (error.response && error.response.data.message) {
                 return rejectWithValue(error.response.data.message);

@@ -7,6 +7,7 @@ const prevBookingsState = {
   isSuccess: false,
   userBookings: null,
   message: "",
+  paginateBookings:{}
 };
 
 export const tripsSlice = createSlice({
@@ -22,12 +23,15 @@ export const tripsSlice = createSlice({
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.userBookings = action.payload;
+        state.userBookings = action.payload.data;
+        state.paginateBookings= action.payload.pagination
       })
       .addCase(getUserBookings.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
+        state.userBookings ={}
+        state.paginateBookings={}
         state.message = action.error;
       });
   },

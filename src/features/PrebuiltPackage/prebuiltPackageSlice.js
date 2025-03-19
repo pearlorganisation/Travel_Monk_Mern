@@ -7,7 +7,8 @@ const initialState= {
     isLoading: false,
     isSuccess: false,
     isError: false,
-    prebuiltEnquiries:{}
+    prebuiltEnquiries:{},
+    paginatePrebuilt:{}
 }
 
 const prebuiltEnquirySlice = createSlice({
@@ -42,13 +43,15 @@ const prebuiltEnquirySlice = createSlice({
             state.isError = true
             state.isSuccess = false
             state.isLoading = false
+            state.paginatePrebuilt ={}
             toast(action.payload,{position:"top-center"})
         })
         .addCase(getMyPrebuiltEnquiry.fulfilled,(state,action)=>{
             state.isSuccess = true
             state.isError = false
             state.isLoading = false
-            state.prebuiltEnquiries = action.payload
+            state.prebuiltEnquiries = action.payload.data
+            state.paginatePrebuilt = action.payload.pagination
             toast("Enquiries received")
         })
     }

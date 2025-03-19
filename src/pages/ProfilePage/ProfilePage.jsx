@@ -10,6 +10,7 @@ import { getMyFullyCustomizedEnquiries } from "../../features/FullyCustomizePack
 import Customize_trip_pdf from "../../components/PDFDownload/Customize_trip_pdf";
 import DownloadPdfButton from "../../components/PDFDownload/Customized_Trip_Enquiries_PDF";
 import DownloadPrebuiltPdfButton from "../../components/PDFDownload/Prebuilt_Enquiries_PDF";
+import Pagination from "../../components/Pagination/Pagination";
 
 const ProfilePage = () => {
   const [showBookings, setShowBookings] = useState(false);
@@ -17,11 +18,41 @@ const ProfilePage = () => {
   const [showPrebuiltEnquiries, setShowPrebuiltEnquiries] = useState(false);
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state?.user);
-  const { fullyCustomizedEnquiries } = useSelector((state) => state?.fullyCustomizePackage)
-  const { prebuiltEnquiries } = useSelector((state) => state?.prebuiltPackage)
-  const { userBookings } = useSelector((state) => state?.previousBookings);
- 
-   
+  const { fullyCustomizedEnquiries, paginateFully } = useSelector((state) => state?.fullyCustomizePackage)
+  const { prebuiltEnquiries, paginatePrebuilt} = useSelector((state) => state?.prebuiltPackage)
+  const { userBookings, paginateBookings } = useSelector((state) => state?.previousBookings);
+
+  /**-------------------- State for managing all the pagination--------------*/
+  const [pageFull, setPageFull] = useState(1) // for fully
+  const [currentPrebuiltPage, setCurrentPrebuiltPage] = useState(1) // for prebuilt
+  const [currentBookingPage, setCurrentBookingPage] = useState(1)
+
+  /** for booking */
+  const totalPagesBooking = Math.ceil(paginateBookings?.total / paginateBookings?.limit)
+
+  /** for fully enquiry */
+  const totalPagesFully = Math.ceil(paginateFully?.total / paginateFully?.limit)
+
+  /** for prebuilt enquiry */
+  const totalPagesPrebuilt = Math.ceil(paginatePrebuilt?.total/ paginatePrebuilt?.limit)
+
+  const handlePageBookingClick = (page)=>{
+    if(page >0 && page <= totalPagesBooking){
+      setCurrentBookingPage(page)
+    }
+  }
+
+  const handlePageClickFully = (page)=>{
+    if(page >0 && page <= totalPagesFully){
+      setPageFull(page)
+    }
+  }
+
+  const handlePageClickPrebuilt =(page)=>{
+    if (page > 0 && page <= totalPagesPrebuilt){
+      setCurrentPrebuiltPage(page)
+    }
+  }
   let imageName = [];
   let lastProfileName = "";
   if (userInfo?.name) {
@@ -37,16 +68,24 @@ const ProfilePage = () => {
     lastProfileName = firstInitial + secondInitial;
   }
 
+
+
  
   useEffect(() => {
     dispatch(getAuthUserDetails());
   }, []);
 
-  useEffect(() => {
-    dispatch(getUserBookings());
-    dispatch(getMyPrebuiltEnquiry())
-    dispatch(getMyFullyCustomizedEnquiries())
-  }, []);
+useEffect(()=>{
+   dispatch(getMyFullyCustomizedEnquiries({page: pageFull,limit:2}))
+},[pageFull])
+
+useEffect(()=>{
+   dispatch(getMyPrebuiltEnquiry({page: currentPrebuiltPage, limit:2}))   
+},[currentPrebuiltPage])
+
+useEffect(() => {
+    dispatch(getUserBookings({page:currentBookingPage, limit:4}));
+}, [currentBookingPage]);
 
   // console.log("the prebuilt enquiries data is", prebuiltEnquiries)
   return (
@@ -98,8 +137,8 @@ const ProfilePage = () => {
 
             {showBookings && (
               <div className="mt-6 space-y-4">
-                {Array.isArray(userBookings?.data) &&
-                  userBookings?.data?.map((booking) => (
+                {Array.isArray(userBookings) &&
+                  userBookings?.map((booking) => (
                     <div
                       key={booking?.bookingId}
                       className="bg-gray-50 p-4 rounded-lg shadow-md border border-gray-200"
@@ -152,6 +191,7 @@ const ProfilePage = () => {
               </div>
               
             )}
+            <Pagination paginate={paginateBookings} currentPage={currentBookingPage} totalPages={totalPagesBooking} handlePageClick={handlePageBookingClick} />
           </div>
 
           {/* Fully Customized Enquiries Section */}
@@ -206,6 +246,7 @@ const ProfilePage = () => {
                   ))}
               </div>
             )}
+            <Pagination paginate={paginateFully} currentPage={pageFull} totalPages={totalPagesFully} handlePageClick={handlePageClickFully} />
           </div>
 
           {/** prebuilt package enquiries */}
@@ -296,6 +337,7 @@ const ProfilePage = () => {
                   ))}
               </div>
             )}
+            <Pagination paginate={paginatePrebuilt} currentPage={currentPrebuiltPage} totalPages={totalPagesPrebuilt} handlePageClick={handlePageClickPrebuilt} />
           </div>
         </div>
       </div>

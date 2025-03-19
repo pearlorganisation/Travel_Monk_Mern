@@ -30,7 +30,7 @@ export const sendFullyCustomizePackageEnquiry = createAsyncThunk(
 
 /** to get previously submitted fully customised package enquiries */
 export const getMyFullyCustomizedEnquiries = createAsyncThunk(
-  "get/fullyCustomizedEnquiries", async(_, {rejectWithValue})=>{
+  "get/fullyCustomizedEnquiries", async({page, limit}, {rejectWithValue})=>{
     try {
       const config ={
         headers:{
@@ -39,8 +39,8 @@ export const getMyFullyCustomizedEnquiries = createAsyncThunk(
       }
       const {
         data
-      } = await axiosInstance.get(`/api/v1/customization-enquiries/fully-customize/my-enquiries`, config)
-      return data.data
+      } = await axiosInstance.get(`/api/v1/customization-enquiries/fully-customize/my-enquiries?page=${page}&limit=${limit}`, config)
+      return data
     } catch (error) {
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);

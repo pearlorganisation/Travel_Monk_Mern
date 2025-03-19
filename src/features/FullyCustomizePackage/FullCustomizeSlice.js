@@ -7,7 +7,8 @@ const initialState = {
     isLoading: false,
     isSuccess: false,
     isError:false,
-    fullyCustomizedEnquiries :{}
+    fullyCustomizedEnquiries :{},
+    paginateFully:{}
 }
 
 const FullyCustomizeSlice = createSlice({
@@ -41,13 +42,15 @@ const FullyCustomizeSlice = createSlice({
             state.isSuccess = false
             state.isError = true
             state.fullyCustomizedEnquiries = {}
+            state.paginateFully = {}
             toast.error(action.payload,{position:"top-center"})
         })
         .addCase(getMyFullyCustomizedEnquiries.fulfilled,(state,action)=>{
             state.isLoading = false
             state.isSuccess = true
             state.isError = false
-            state.fullyCustomizedEnquiries = action.payload
+            state.fullyCustomizedEnquiries = action.payload.data
+            state.paginateFully = action.payload.pagination
             toast.success("Full customised enquiries recieved",{position:"top-center"})
         })
     }
