@@ -122,8 +122,6 @@ useEffect(() => {
               </Link>
             </div>
           </div>
-
-           
         </div>
       </div>
       {/* Bookings Section */}
