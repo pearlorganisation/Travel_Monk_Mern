@@ -43,7 +43,7 @@ const ProfilePage = () => {
   }
 
   const handlePageClickFully = (page)=>{
-    if(page >0 && page <= totalPagesFully){
+    if(page >0 && page < totalPagesFully){
       setPageFull(page)
     }
   }
