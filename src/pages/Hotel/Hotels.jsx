@@ -65,8 +65,6 @@ const Hotels = () => {
         }
     }
 
-
-
     /** hotels page details */
     const hotelPageCheckInDate = watch("checkIn")
     const hotelPageCheckOutDate = watch("checkOut")
@@ -179,6 +177,7 @@ const Hotels = () => {
                                         type="date"
                                         id="checkOut"
                                         {...register("checkOut")}
+                                        min={hotelStartDate}
                                         className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
                                 </div>

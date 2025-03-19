@@ -26,7 +26,6 @@ const HeroSupportingComponent = ({ data }, ref) => {
   if (startDate) {
     maxDate = addDays(startDate, 10);
   }
-
   const dispatch = useDispatch();
   const { register, handleSubmit, watch, setValue, getValues } = useForm();
  
@@ -492,6 +491,7 @@ console.log('----------------- the actionsresult value is', actionResult)
                       {...register("checkOut")}
                       onChange={(e)=> setHotelEndDate(e.target.value)}
                       required
+                      min={hotelStartDate}
                       className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                     </div>
