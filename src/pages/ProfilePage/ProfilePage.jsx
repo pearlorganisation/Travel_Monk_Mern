@@ -208,7 +208,7 @@ useEffect(() => {
                       key={index}
                       className="bg-gray-50 p-4 rounded-lg shadow-md border border-gray-200"
                     >
-                      <div className="flex w-full justify-end"><DownloadPdfButton data={enquiry} /></div>
+                      <DownloadPdfButton data={enquiry} /> 
                          
                       <div className="space-y-4">
                         <div className="flex flex-col sm:flex-row justify-between">
