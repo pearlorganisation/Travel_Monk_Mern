@@ -32,7 +32,22 @@ const SingleHotelDetails = () => {
     googleMapsUrl,
     image,
     createdAt,
+    inclusion
   } = hotel;
+
+  let splittedInclusion = inclusion?.length >0 ? inclusion?.[0].split(",") : "" 
+  console.log("the splitted inclusion is", splittedInclusion)
+  const inclusionHelper = (splittedInclusion) => {
+    let newArr = splittedInclusion?.split(",");
+    console.log("the new arr is", newArr);
+    return (
+      <ul>
+        {newArr?.map((item, index) => (
+          <li key={index}>• {item}</li>
+        ))}
+      </ul>
+    );
+  }
 
   /**-------------to calculate the estimated value of the hotel according to the hotel travellers-------------*/
   let Estimated_Hotel_Value = (hotelTravellers, estimatedPrice) => {
@@ -96,6 +111,14 @@ const SingleHotelDetails = () => {
                   <span>{amenity}</span>
                 </div>
               ))}
+            </div>  
+            <h2 className="text-2xl font-semibold mb-4">Inclusion</h2>
+            <div className="flex flex-col gap-1">
+              {splittedInclusion?.length >0 ?  <>{splittedInclusion?.map((item, index)=>(
+                <ul>
+                    <li key={index}>• {item}</li>
+                </ul>
+              ))}</> :<><span>No Inclusion</span></>}
             </div>
           </div>
         </div>
