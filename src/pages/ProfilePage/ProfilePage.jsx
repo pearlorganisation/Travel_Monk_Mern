@@ -311,7 +311,7 @@ useEffect(() => {
                           Vehicle: {enquiry?.selectedVehicle?.vehicleName ?? "No Vehicle Selected"}
                         </p>
                         <p className="text-gray-500 text-sm">
-                          Enquiry Date: {moment(enquiry?.createdAt).format("DD MMM YYYY")}
+                          {/* Enquiry Date: {moment(enquiry?.createdAt).format("DD MMM YYYY")} */}
                         </p>
                       </div>
                     </div>

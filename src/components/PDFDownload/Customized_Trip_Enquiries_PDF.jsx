@@ -143,19 +143,20 @@ const FullyCustomizedEnquiriesPdf = ({ data }) => {
     });
 
     return (
-    <Document>
-        <Page size="A4" style={styles.page}>
-            <View style={styles.section}>
-                <Text style={styles.header}>Enquiry Details</Text>
-                <Text style={styles.text}>Name: {data?.name}</Text>
-                <Text style={styles.text}>Email: {data?.email}</Text>
-                <Text style={styles.text}>Mobile Number: {data?.mobileNumber}</Text>
-                <Text style={styles.text}>
-                    Duration: {data?.duration?.days} days, {data?.duration?.nights} nights
-                </Text>
-                <Text style={styles.text}>
-                    Estimated Price: {data?.estimatedPrice?.toLocaleString()}
-                </Text>
+    <> 
+        { data && <Document>
+            <Page size="A4" style={styles.page}>
+                <View style={styles.section}>
+                    <Text style={styles.header}>Enquiry Details</Text>
+                    <Text style={styles.text}>Name: {data?.name}</Text>
+                    <Text style={styles.text}>Email: {data?.email}</Text>
+                    <Text style={styles.text}>Mobile Number: {data?.mobileNumber}</Text>
+                    <Text style={styles.text}>
+                        Duration: {data?.duration?.days} days, {data?.duration?.nights} nights
+                    </Text>
+                    <Text style={styles.text}>
+                        Estimated Price: {data?.estimatedPrice?.toLocaleString()}
+                    </Text>
                     <Text style={styles.text}>
                         Travel Dates: {new Date(data?.startDate).toLocaleDateString("en-US", {
                             month: "2-digit",
@@ -168,108 +169,110 @@ const FullyCustomizedEnquiriesPdf = ({ data }) => {
                             year: "numeric",
                         })}
                     </Text>
-                <Text style={styles.text}>Message: {data?.message}</Text>
-                <Text style={styles.text}>
-                    Vehicle: {data?.selectedVehicle?.vehicleName}
-                </Text>
-            </View>
-
-            {/* Improved Itinerary Section */}
-            <View style={styles.section}>
-                <Text style={styles.header}>Itinerary</Text>
-
-                {data?.itinerary?.map((day, index) => (
-                    <View key={index} style={styles.itineraryContainer}>
-                        {/* Day header with background */}
-                        <View style={styles.dayHeader}>
-                            <Text style={styles.dayTitle}>
-                                Day {day?.day}: {day?.selectedLocation}
-                            </Text>
-                            <Text style={styles.dayDate}>
-                                {new Date(day?.date).toLocaleDateString("en-US", {
-                                    month: "2-digit",
-                                    day: "2-digit",
-                                    year: "numeric",
-                                })} mm/dd/yyyy
-                            </Text>
-                        </View>
-
-                        {/* Hotel details */}
-                        <View style={styles.detailsRow}>
-                            <Text style={styles.detailLabel}>Accommodation:</Text>
-                            <Text style={styles.detailValue}>{day?.selectedHotel?.name}</Text>
-                        </View>
-
-                        <View style={styles.divider} />
-
-                        {/* Activities section */}
-                        <Text style={styles.activityHeader}>Activities:</Text>
-                        {day?.selectedActivities?.length === 0 ? (
-                            <Text style={styles.activityItem}>No activities scheduled for this day</Text>
-                        ) : (
-                            day?.selectedActivities?.map((activity, idx) => (
-                                <Text key={idx} style={styles.activityItem}>• {activity?.label}</Text>
-                            ))
-                        )}
-                        <Text style={styles.activityHeader}>Description:</Text>
-                        <Text key={index} style={styles.activityItem}>{day?.description}</Text>
-                        {/* Add divider between days except for the last one */}
-                        {index < data?.itinerary?.length - 1 && (
-                            <View style={[styles.divider, { marginTop: 10, marginBottom: 15 }]} />
-                        )}
-                    </View>
-                ))}
-
-                {/* Final day with special styling */}
-                <View style={styles.finalDayBox}>
-                    <Text style={styles?.finalDayText}>Last Day: Airport Drop {nextDate}</Text>
+                    <Text style={styles.text}>Message: {data?.message}</Text>
+                    <Text style={styles.text}>
+                        Vehicle: {data?.selectedVehicle?.vehicleName}
+                    </Text>
                 </View>
-            </View>
 
-            {/* Inclusions Section */}
-            <View style={styles.section}>
-                <Text style={styles.header}>Inclusions</Text>
-                {data?.inclusions?.length > 0 ? (
-                    data?.inclusions?.map((item, index) => (
-                        <Text key={index} style={styles.listItem}>• {item}</Text>
-                    ))
-                ) : (
-                    <Text style={styles.text}>No inclusions specified.</Text>
-                )}
-            </View>
+                {/* Improved Itinerary Section */}
+                <View style={styles.section}>
+                    <Text style={styles.header}>Itinerary</Text>
 
-            {/* Exclusions Section */}
-            <View style={styles.section}>
-                <Text style={styles.header}>Exclusions</Text>
-                {data?.exclusions?.length > 0 ? (
-                    data?.exclusions?.map((item, index) => (
-                        <Text key={index} style={styles.listItem}>• {item}</Text>
-                    ))
-                ) : (
-                    <Text style={styles.text}>No exclusions specified.</Text>
-                )}
-            </View>
+                    {data?.itinerary?.map((day, index) => (
+                        <View key={index} style={styles.itineraryContainer}>
+                            {/* Day header with background */}
+                            <View style={styles.dayHeader}>
+                                <Text style={styles.dayTitle}>
+                                    Day {day?.day}: {day?.selectedLocation}
+                                </Text>
+                                <Text style={styles.dayDate}>
+                                    {new Date(day?.date).toLocaleDateString("en-US", {
+                                        month: "2-digit",
+                                        day: "2-digit",
+                                        year: "numeric",
+                                    })} mm/dd/yyyy
+                                </Text>
+                            </View>
 
-            {/* Enquiry Date Section - keeping this separate as in original */}
-            <View style={styles.section}>
-                <Text style={styles.text}>
-                    Enquiry Created At: {new Date(data?.createdAt).toLocaleString()}
-                </Text>
-            </View>
+                            {/* Hotel details */}
+                            <View style={styles.detailsRow}>
+                                <Text style={styles.detailLabel}>Accommodation:</Text>
+                                <Text style={styles.detailValue}>{day?.selectedHotel?.name}</Text>
+                            </View>
 
-            {/* Payment Terms and Conditions */}
-            <View style={styles.terms}>
-                <Text style={styles.termsHeader}>Payment Terms and Conditions</Text>
-                <Text style={styles.termsText}>• Pay only 5000 upfront for booking the package.</Text>
-                <Text style={styles.termsText}>
-                    • Pay the next 40% of the package price within 48 hours after our executive connects with you.
-                </Text>
-                <Text style={styles.termsText}>
-                    • The remaining balance must be cleared as per the agreed payment schedule.
-                </Text>
-            </View>
-        </Page>
-    </Document>
+                            <View style={styles.divider} />
+
+                            {/* Activities section */}
+                            <Text style={styles.activityHeader}>Activities:</Text>
+                            {day?.selectedActivities?.length === 0 ? (
+                                <Text style={styles.activityItem}>No activities scheduled for this day</Text>
+                            ) : (
+                                day?.selectedActivities?.map((activity, idx) => (
+                                    <Text key={idx} style={styles.activityItem}>• {activity?.label}</Text>
+                                ))
+                            )}
+                            <Text style={styles.activityHeader}>Description:</Text>
+                            <Text key={index} style={styles.activityItem}>{day?.description}</Text>
+                            {/* Add divider between days except for the last one */}
+                            {index < data?.itinerary?.length - 1 && (
+                                <View style={[styles.divider, { marginTop: 10, marginBottom: 15 }]} />
+                            )}
+                        </View>
+                    ))}
+
+                    {/* Final day with special styling */}
+                    <View style={styles.finalDayBox}>
+                        <Text style={styles?.finalDayText}>Last Day: Airport Drop {nextDate}</Text>
+                    </View>
+                </View>
+
+                {/* Inclusions Section */}
+                <View style={styles.section}>
+                    <Text style={styles.header}>Inclusions</Text>
+                    {data?.inclusions?.length > 0 ? (
+                        data?.inclusions?.map((item, index) => (
+                            <Text key={index} style={styles.listItem}>• {item}</Text>
+                        ))
+                    ) : (
+                        <Text style={styles.text}>No inclusions specified.</Text>
+                    )}
+                </View>
+
+                {/* Exclusions Section */}
+                <View style={styles.section}>
+                    <Text style={styles.header}>Exclusions</Text>
+                    {data?.exclusions?.length > 0 ? (
+                        data?.exclusions?.map((item, index) => (
+                            <Text key={index} style={styles.listItem}>• {item}</Text>
+                        ))
+                    ) : (
+                        <Text style={styles.text}>No exclusions specified.</Text>
+                    )}
+                </View>
+
+                {/* Enquiry Date Section - keeping this separate as in original */}
+                <View style={styles.section}>
+                    <Text style={styles.text}>
+                        Enquiry Created At: {new Date(data?.createdAt).toLocaleString()}
+                    </Text>
+                </View>
+
+                {/* Payment Terms and Conditions */}
+                <View style={styles.terms}>
+                    <Text style={styles.termsHeader}>Payment Terms and Conditions</Text>
+                    <Text style={styles.termsText}>• Pay only 5000 upfront for booking the package.</Text>
+                    <Text style={styles.termsText}>
+                        • Pay the next 40% of the package price within 48 hours after our executive connects with you.
+                    </Text>
+                    <Text style={styles.termsText}>
+                        • The remaining balance must be cleared as per the agreed payment schedule.
+                    </Text>
+                </View>
+            </Page>
+        </Document>
+    }
+        </>
 );
 }
 
