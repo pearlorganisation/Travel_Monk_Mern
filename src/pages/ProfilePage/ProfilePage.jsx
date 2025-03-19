@@ -190,60 +190,6 @@ useEffect(() => {
             )}
             <Pagination paginate={paginateBookings} currentPage={currentBookingPage} totalPages={totalPagesBooking} handlePageClick={handlePageBookingClick} />
           </div>
-
-          {/* Fully Customized Enquiries Section */}
-          <div className="mt-8 border-t border-gray-300 pt-6">
-            <button
-              className="w-full text-center sm:text-left text-indigo-600 hover:text-indigo-800 font-semibold"
-              onClick={() => setShowFullyCustomizedEnquiries(!showFullyCustomizedEnquiries)}
-            >
-              {showFullyCustomizedEnquiries ? "Hide Enquiries" : "View My Fully Customised Enquiries"}
-            </button>
-
-            {showFullyCustomizedEnquiries && (
-              <div className="mt-6 space-y-4">
-                {Array.isArray(fullyCustomizedEnquiries) &&
-                  fullyCustomizedEnquiries?.map((enquiry, index) => (
-                    <div
-                      key={index}
-                      className="bg-gray-50 p-4 rounded-lg shadow-md border border-gray-200"
-                    >
-                      <DownloadPdfButton data={enquiry} /> 
-                         
-                      <div className="space-y-4">
-                        <div className="flex flex-col sm:flex-row justify-between">
-                          <div>
-                            <p className="font-semibold text-gray-800">
-                              Enquiry ID: {enquiry?._id ?? "Not Found"}
-                            </p>
-                            <p className="text-gray-600 mt-2">
-                              Vehicle: {enquiry?.selectedVehicle?.vehicleName ?? "No Vehicle Selected"}
-                            </p>
-                            <p className="text-gray-500 text-sm">
-                              Enquiry Date: {moment(enquiry?.createdAt).format("DD MMM YYYY")}
-                            </p>
-                          </div>
-                        </div>
-
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-gray-600">
-                          <p>Name: {enquiry?.name}</p>
-                          <p>Email: {enquiry?.email}</p>
-                          <p>Mobile: {enquiry?.mobileNumber}</p>
-                          <p>Travellers: {enquiry?.numberOfTravellers}</p>
-                        </div>
-
-                        <div>
-                          <p className="text-gray-600 font-medium">Message:</p>
-                          <p className="text-gray-700">{enquiry?.message}</p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-              </div>
-            )}
-            <Pagination paginate={paginateFully} currentPage={pageFull} totalPages={totalPagesFully} handlePageClick={handlePageClickFully} />
-          </div>
-
           {/** prebuilt package enquiries */}
           <div className="mt-10 border-t border-gray-200 pt-6">
             <button
@@ -333,6 +279,59 @@ useEffect(() => {
               </div>
             )}
             <Pagination paginate={paginatePrebuilt} currentPage={currentPrebuiltPage} totalPages={totalPagesPrebuilt} handlePageClick={handlePageClickPrebuilt} />
+          </div>
+
+          {/* Fully Customized Enquiries Section */}
+          <div className="mt-8 border-t border-gray-300 pt-6">
+            <button
+              className="w-full text-center sm:text-left text-indigo-600 hover:text-indigo-800 font-semibold"
+              onClick={() => setShowFullyCustomizedEnquiries(!showFullyCustomizedEnquiries)}
+            >
+              {showFullyCustomizedEnquiries ? "Hide Enquiries" : "View My Fully Customised Enquiries"}
+            </button>
+
+            {showFullyCustomizedEnquiries && (
+              <div className="mt-6 space-y-4">
+                {Array.isArray(fullyCustomizedEnquiries) &&
+                  fullyCustomizedEnquiries?.map((enquiry, index) => (
+                    <div
+                      key={index}
+                      className="bg-gray-50 p-4 rounded-lg shadow-md border border-gray-200"
+                    >
+                      <DownloadPdfButton data={enquiry} />
+
+                      <div className="space-y-4">
+                        <div className="flex flex-col sm:flex-row justify-between">
+                          <div>
+                            <p className="font-semibold text-gray-800">
+                              Enquiry ID: {enquiry?._id ?? "Not Found"}
+                            </p>
+                            <p className="text-gray-600 mt-2">
+                              Vehicle: {enquiry?.selectedVehicle?.vehicleName ?? "No Vehicle Selected"}
+                            </p>
+                            <p className="text-gray-500 text-sm">
+                              Enquiry Date: {moment(enquiry?.createdAt).format("DD MMM YYYY")}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-gray-600">
+                          <p>Name: {enquiry?.name}</p>
+                          <p>Email: {enquiry?.email}</p>
+                          <p>Mobile: {enquiry?.mobileNumber}</p>
+                          <p>Travellers: {enquiry?.numberOfTravellers}</p>
+                        </div>
+
+                        <div>
+                          <p className="text-gray-600 font-medium">Message:</p>
+                          <p className="text-gray-700">{enquiry?.message}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            )}
+            <Pagination paginate={paginateFully} currentPage={pageFull} totalPages={totalPagesFully} handlePageClick={handlePageClickFully} />
           </div>
         </div>
       </div>
