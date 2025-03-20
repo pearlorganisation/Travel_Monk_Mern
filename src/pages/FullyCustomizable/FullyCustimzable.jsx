@@ -15,7 +15,7 @@ import moment from "moment";
 import CustomDropdownIndicator from "../../components/CustomDropdownIcon/CustomDropdownIcon";
 import { DestinationLocation } from "../../features/Location/locationAction";
 import GoogleMapsEmbed from "../../components/MyEmbed/MyEmbed";
-import { baseURL } from "../../services/axiosInterceptor";
+import { axiosInstance, baseURL } from "../../services/axiosInterceptor";
 import WhatsAppLogo from "../../components/Whatsapp/WhatsLogo";
 
  
@@ -32,7 +32,9 @@ const FullyCustomizeTrip = () => {
   const { destinationLocations } = useSelector((state) => state.locations); // holds locations based on the destinations
 
   const { isUserLoggedIn } = useSelector((state) => state.auth);
- 
+
+  const [searchLocation, setSearchLocation] = useState("")
+
   // console.log(isUserLoggedIn, "fully customize auth state");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -83,6 +85,8 @@ const FullyCustomizeTrip = () => {
   console.log("the dates range is", datesRange)
 const len = datesObjects.length
  
+
+
   /**----------------------------States--------------------------------- */
 
   /** states for claculating the selected hotels price */
@@ -125,16 +129,20 @@ const len = datesObjects.length
     value: activity?._id,
   }));
 
+
   useEffect(() => {
     dispatch(getAllActivitiesByDestination(id));
-    dispatch(getHotelsByDestination({ id: id }));
+    // dispatch(getHotelsByDestination({ id: id }));
     dispatch(getSingleDestination(id));
     dispatch(getDestinationVehicle(id));
     dispatch(DestinationLocation(id));
     const storedData = JSON.parse(localStorage?.getItem('packageDetails'));
     setFullyCustomizedLocalStoredData(storedData)
-
   }, []);
+
+  useEffect(()=>{
+    dispatch(getHotelsByDestination({ id: id, search:searchLocation, source:"website" }));
+  },[id, searchLocation])
   {/** this is used for showing the stored value if the user goes ahead and decides to comeback to this page */ }
  
 
@@ -199,7 +207,41 @@ const len = datesObjects.length
 
   // console.log("---------------------mapData", mapData);
 
-  const handleLocationChange = (
+  async function fetchHotels(id,search){
+
+    try{
+      alert("We called fetch hotels")
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const { data } = await axiosInstance.get(
+        `/api/v1/destinations/${id}/hotels`,
+        {
+          params: {
+            // priceRange,
+            search,
+            // page,
+            source:"website"
+          },
+          config,
+        }
+      );
+      return data?.data;
+
+    }catch(err)
+    {
+      console.log("Error Occured ",err);
+      alert("Error Occured",JSON.stringify(err))
+      return null;
+    }
+
+  }
+
+
+  const handleLocationChange = async (
     index,
     event,
     selectedDate,
@@ -209,6 +251,16 @@ const len = datesObjects.length
     /** find the selected location using the id */
 
     newDayData[index].selectedLocation = event.target.value;
+    // setSearchLocation(event.target.value)
+    if(event?.target?.value)
+    {
+      const hotelData = await fetchHotels(id, event?.target?.value);
+      alert("We here",JSON.stringify(hotelData))
+      if(hotelData)
+      {
+        newDayData[index].hotel_options = hotelData;
+      }
+    }
     newDayData[index].date = selectedDate;
     newDayData[index].day = index + 1;
     setDayData(newDayData);
@@ -226,7 +278,7 @@ const len = datesObjects.length
     mapData[index].longitude = coordinates?.coordinates[1] 
    };
 
-
+console.log("the search location is", searchLocation)
    const [selectedHotelImages, setSelectedHotelImages]= useState([])
    /** to selecte hotels and calculate their price */
   const handleHotelChange = (index, event, hotels) => {
@@ -443,14 +495,17 @@ const len = datesObjects.length
                       transition-all duration-200"
                           >
                             <option key="choose">Choose Hotel</option>
-                            {Array.isArray(destinationHotels) &&
-                              destinationHotels?.map((hotel) => (
+                            {Array.isArray(dayData[index]?.hotel_options) &&
+                              dayData[index].hotel_options?.map((hotel) => (
                                 <option key={hotel._id} value={hotel._id}>
                                   {hotel.name}
                                 </option>
                               ))}
                           </select>
                         </div>
+
+
+
                       </div>
                     </div>
 
