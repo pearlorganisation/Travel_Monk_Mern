@@ -210,7 +210,7 @@ const len = datesObjects.length
   async function fetchHotels(id,search){
 
     try{
-      alert("We called fetch hotels")
+     
 
       const config = {
         headers: {
@@ -234,7 +234,7 @@ const len = datesObjects.length
     }catch(err)
     {
       console.log("Error Occured ",err);
-      alert("Error Occured",JSON.stringify(err))
+      
       return null;
     }
 
@@ -255,7 +255,7 @@ const len = datesObjects.length
     if(event?.target?.value)
     {
       const hotelData = await fetchHotels(id, event?.target?.value);
-      alert("We here",JSON.stringify(hotelData))
+     
       if(hotelData)
       {
         newDayData[index].hotel_options = hotelData;
