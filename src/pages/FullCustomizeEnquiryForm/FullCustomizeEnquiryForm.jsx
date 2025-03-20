@@ -16,6 +16,7 @@ const FullCustomizeEnquiryForm = () => {
   /** to get the current page url */
   const fullURL = location.pathname;
  
+  const { isLoading, isSubmitted } = useSelector(state => state.fullyCustomizePackage)
 
   useEffect(() => {
     if (!isUserLoggedIn) navigate("/login");
@@ -73,6 +74,7 @@ const FullCustomizeEnquiryForm = () => {
       endDate: endDate.toISOString(),
     };
     dispatch(sendFullyCustomizePackageEnquiry(formData)).then(
+
       localStorage.removeItem("packageDetails")
     );
   };
@@ -233,7 +235,7 @@ const FullCustomizeEnquiryForm = () => {
                   type="submit"
                   className="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition duration-300 ease-in-out transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"
                 >
-                  Send Message
+                  {isLoading ? <span>Submitting</span>:<>Send Message</>}
                 </button>
               </form>
             </div>

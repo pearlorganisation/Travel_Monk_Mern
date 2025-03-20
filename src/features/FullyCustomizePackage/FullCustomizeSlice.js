@@ -7,6 +7,7 @@ const initialState = {
     isLoading: false,
     isSuccess: false,
     isError:false,
+    isSubmitted :false,
     fullyCustomizedEnquiries :{},
     paginateFully:{}
 }
@@ -19,17 +20,20 @@ const FullyCustomizeSlice = createSlice({
         builder
         .addCase(sendFullyCustomizePackageEnquiry.pending,(state)=>{
             state.isLoading = true
+            state.isSubmitted= false
         })
         .addCase(sendFullyCustomizePackageEnquiry.rejected,(state,action)=>{
             state.isLoading = false
             state.isSuccess = false
             state.isError= true
+            state.isSubmitted= false
             toast.error(action.payload,{position:"top-right"})
         })
         .addCase(sendFullyCustomizePackageEnquiry.fulfilled, (state,action)=>{
             state.isLoading = false
             state.isError = false
             state.isSuccess = true
+            state.isSubmitted= true
             toast.success("Enquiry is successfully submitted",{position:"top-right"})
         })
         .addCase(getMyFullyCustomizedEnquiries.pending,(state)=>{

@@ -157,6 +157,9 @@ const FullyCustomizedEnquiriesPdf = ({ data }) => {
                     <Text style={styles.text}>
                         Estimated Price: {data?.estimatedPrice?.toLocaleString()}
                     </Text>
+                        <Text style={styles.text}>
+                            Total No Of Travellers: {data?.numberOfTravellers}
+                        </Text>
                     <Text style={styles.text}>
                         Travel Dates: {new Date(data?.startDate).toLocaleDateString("en-US", {
                             month: "2-digit",

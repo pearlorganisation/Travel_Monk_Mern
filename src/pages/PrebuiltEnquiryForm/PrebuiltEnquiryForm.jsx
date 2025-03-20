@@ -12,7 +12,7 @@ const PrebuiltEnquiryForm = () => {
   const dispatch = useDispatch();
   const { isUserLoggedIn } = useSelector((state) => state.auth); // getting isUserLogged in
   const { userInfo } = useSelector((state) => state.user); // getting the userInfo
-
+  const { isLoading } = useSelector(state => state.prebuiltPackage)
   /** extarcting the data  */
   const { Estimate_Price, packageDetails, itinerary, selectedVehicle, inclusions, exclusions } =
     location.state || {};
@@ -214,7 +214,7 @@ const PrebuiltEnquiryForm = () => {
                   type="submit"
                   className="w-full bg-[#007E8F] text-white py-3 rounded-lg hover:bg-[#439ca8] transition duration-300 ease-in-out transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"
                 >
-                  Send Message
+                  {isLoading ? <span>Submitting</span> : <> Send Message</>} 
                 </button>
               </form>
             </div>
