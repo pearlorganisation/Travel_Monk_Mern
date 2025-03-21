@@ -57,22 +57,27 @@ const Distinguish = ({ hotels }) => {
                           backgroundImage: `linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${baseURL}/${hotel?.image?.path})`,
                         }}
                       >
-                        <div className=" bg-opacity-50 h-full max-w-full flex items-center rounded-lg">
-                          <div className="text-left text-white p-8">
-                            <h3 className="text-lg md:text-xl font-bold text-wrap overflow-hidden fixed top-4">
-                              {hotel?.name}
-                            </h3>
-                            <button className="bg-[#007E8F] text-white py-2 px-4 rounded justify-end fixed bottom-20">
-                              Explore
-                            </button>
+                        <div className="bg-opacity-50 h-full max-w-full flex items-center rounded-lg">
+                          <div className="text-left text-white p-8 flex flex-col justify-between h-full">
+                            {/* Container for Hotel Name (Top) */}
+                            <div className="mb-4"> {/* Add some margin-bottom for spacing */}
+                              <h3 className="text-lg md:text-xl font-bold overflow-hidden break-words whitespace-pre-wrap">
+                                {hotel?.name}
+                              </h3>
+                            </div>
 
-                            <h1 className="text-base font-semibold text-gray-200 mb-8 fixed bottom-1">
-                              {hotel?.city}
-                            </h1>
-
-                            <h1 className="text-xl font-bold text-white fixed bottom-[10px]">
-                              ₹ {hotel?.estimatedPrice}
-                            </h1>
+                            {/* Container for the Bottom Elements (Button, City, Price) */}
+                            <div className="w-full">
+                              <button className="bg-[#007E8F] text-white py-2 px-4 rounded">
+                                Explore
+                              </button>
+                              <div className="text-base font-semibold text-gray-200 mt-2">
+                                {hotel?.city}
+                              </div>
+                              <div className="text-xl font-bold text-white mt-1">
+                                ₹ {hotel?.estimatedPrice}
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
