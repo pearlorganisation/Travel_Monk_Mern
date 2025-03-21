@@ -12,7 +12,7 @@ export const getDestinationVehicle = createAsyncThunk(
             const {
                 data
             } = await axiosInstance.get(`/api/v1/destinations/${id}/vehicles`,config)
-            console.log('-------available vehicles', data)
+            // console.log('-------available vehicles', data)
             return data.data;
         } catch (error) {
               if (error.response && error.response.data.message) {

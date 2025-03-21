@@ -294,9 +294,6 @@ console.log("the search location is", searchLocation)
     }
     setSelectedHotelImages(newHotelData)
     const newDayData = [...dayData];
-    /** setting the hotel of current index */
-    // newDayData[index].selectedHotel = event.target.value;
-
     newDayData[index].selectedHotel = {
       name: selected_Hotel.name,
       hotelId: selected_Hotel._id,

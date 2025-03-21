@@ -40,7 +40,7 @@ export const getSingleDestination = createAsyncThunk(
       );
 
       if (data) {
-        console.log("Data", data);
+        // console.log("Data", data);
         return data;
       }
     } catch (error) {

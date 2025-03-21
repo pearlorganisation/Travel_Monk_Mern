@@ -9,7 +9,7 @@ import moment from "moment/moment";
 import { getHotelsByDestination } from "../../features/hotel/hotelActions";
 import CustomDropdownIndicator from "../../components/CustomDropdownIcon/CustomDropdownIcon";
 import WhatsAppLogo from "../../components/Whatsapp/WhatsLogo";
-import { baseURL } from "../../services/axiosInterceptor";
+import { axiosInstance, baseURL } from "../../services/axiosInterceptor";
 
 const CustomizeTrip = () => {
   const dispatch = useDispatch();
@@ -18,14 +18,14 @@ const CustomizeTrip = () => {
   const location = useLocation()
   const {inclusion, exclusion} = location.state || {}
 
-  console.log("the inclusion and exclusion array are", inclusion, exclusion)
+  // console.log("the inclusion and exclusion array are", inclusion, exclusion)
   /** to get the current page url */
   const fullURL = window.location.href;
   // console.log(`The full URL is: ${fullURL}`);
 
   const { singleDestination } = useSelector((state) => state.trip);
   const { singlePackage } = useSelector((state) => state.packages);
-  console.log("the single package", singlePackage)
+  // console.log("the single package", singlePackage)
   const userState = useSelector((state) => state.user);
 
   /*---------------- getting the vehicles available for that destination-----------------------------------------------*/
@@ -71,11 +71,11 @@ const CustomizeTrip = () => {
     }
   }, [singleDestination?.data?._id, dispatch]);   
 
-  useEffect(() => {
-    if (singleDestination?.data?._id) {  
-      dispatch(getHotelsByDestination({ id: singleDestination.data._id }));
-    }
-  }, [singleDestination?.data?._id, dispatch]);  
+  // useEffect(() => {
+  //   if (singleDestination?.data?._id) {  
+  //     dispatch(getHotelsByDestination({ id: singleDestination.data._id }));
+  //   }
+  // }, [singleDestination?.data?._id, dispatch]);  
 
   // all the hotel data and activity data is stored in dayaData
   const [dayData, setDayData] = useState(
@@ -111,6 +111,60 @@ const CustomizeTrip = () => {
       );
     }
   }, [singlePackage?.data]);
+
+  async function fetchHotels(id, search) {
+    try {
+      console.log("the search param is", search)
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+
+      const { data } = await axiosInstance.get(
+        `/api/v1/destinations/${id}/hotels`,
+        {
+          params: {
+            search,
+            source: "website",
+          },
+          config,
+        }
+      );
+      console.log("the data is", data);
+      return data?.data;
+    } catch (err) {
+      console.log("Error Occurred ", err);
+      return null;
+    }
+  }
+
+  useEffect(() => {
+    const fetchHotelOptions = async () => {
+      if (singlePackage?.data?.itinerary) {
+        const updatedDayData = await Promise.all(
+          singlePackage?.data?.itinerary?.slice(0,-1)?.map(async (itineraryItem) => {
+            const searchParameter = itineraryItem?.location;
+            console.log("the search in useefect", searchParameter)
+            const hotelOptions = await fetchHotels(singleDestination?.data?._id, searchParameter);
+            return {
+              selectedHotel: {},
+              selectedActivities: [],
+              selectedLocation: "",
+              location: {},
+              day: "",
+              hotel_options: hotelOptions || [],
+            };
+          })
+        );
+        setDayData(updatedDayData);
+      }
+    };
+
+    fetchHotelOptions();
+  }, [singlePackage?.data?.itinerary]); // ✅ Removed `dayData`
+
+
   let noOfDays = singlePackage?.data?.itinerary?.length
    const [hotelPrices, setHotelPrices] = useState([]);  
   useEffect(() => {
@@ -124,7 +178,7 @@ const CustomizeTrip = () => {
    const handleHotelChange = (index, event, hotels, currentLocation) => {
      const selectedHotelId = event.target.value;
     const selectedHotel = hotels.find((hotel) => hotel._id === selectedHotelId);
-
+    console.log("the id and hotel is", selectedHotelId, selectedHotel)
 
     /** for storing the images */
     const newHotelData = [...selectedHotelImages]
@@ -156,6 +210,7 @@ const CustomizeTrip = () => {
   /**---------------------the final estimated price will be----------------------------*/
   let Total_Estimated_Price = totalHotelPrices + selectedVehiclePrice ? parseInt(selectedVehiclePrice*noOfDays) : 0;
    /**--------------------Handle Enquiry to send to the page for submitting the form-------------------------------------------------*/
+  console.log("the day data is ", dayData)
   const handleEnquiry = () => {
     const invalidEntry = dayData.find(
       (day) =>
@@ -166,7 +221,7 @@ const CustomizeTrip = () => {
         day.selectedActivities.length === 0 ||
         selectedVehicleName.length === 0
     );
-
+ 
     if (invalidEntry) {
       alert(
         "Please ensure all days have a location, hotel, and activities selected."
@@ -271,7 +326,7 @@ const CustomizeTrip = () => {
             </div>
           </div>
           {singlePackage?.data?.itinerary?.slice(0,-1).map((iti, index) => {
-            console.log(iti, "iti");
+            // console.log(iti, "iti");
             const dataForSelect = iti?.activities.map((el) => {
               return {
                 label: el?.name || "Something is wrong in name",
@@ -301,15 +356,15 @@ const CustomizeTrip = () => {
                             handleHotelChange(
                               index,
                               event,
-                              destinationHotels,
+                              dayData[index].hotel_options,
                               iti.location
                             )
                           }
                           className="bg-blue-100 border-2 border-[#1f1f1f] rounded-md px-2 py-2 flex flex-row gap-2 w-[70%]"
                         >
                           <option key="choose"> Choose Hotel</option>
-                          {Array.isArray(destinationHotels) &&
-                            destinationHotels?.map((hotel) => (
+                          {Array.isArray(dayData[index].hotel_options) &&
+                            dayData[index].hotel_options?.map((hotel) => (
                               <option key={hotel._id} value={hotel._id}>
                                 {" "}
                                 {hotel.name}
