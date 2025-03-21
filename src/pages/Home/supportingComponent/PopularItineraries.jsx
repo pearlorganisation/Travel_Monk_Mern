@@ -26,8 +26,8 @@ const PopularItineraries = ({ data }) => {
               1024: { slidesPerView: 4, spaceBetween: 10 },
             }}
             navigation={{
-              prevEl: ".swiper-button-prev",
-              nextEl: ".swiper-button-next",
+              prevEl: ".swiper-button-prev1",
+              nextEl: ".swiper-button-next1",
             }}
             modules={[Pagination, Navigation]}
             className="mySwiper"
@@ -43,19 +43,17 @@ const PopularItineraries = ({ data }) => {
                           backgroundImage: `linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${baseURL}/${destination?.image?.path})`,
                         }}
                       >
-                        <div className="h-full flex flex-col justify-between p-6 text-white rounded-lg">
-                          <h3 className="text-lg md:text-xl font-bold line-clamp-2">
-                            {destination?.name}
-                          </h3>
+                        <div className="flex flex-col justify-between h-full p-6 text-white">
+                          <h3 className="text-xl font-bold">{destination?.name}</h3>
                           <div>
-                            <h1 className="text-sm font-semibold text-gray-200">
-                              Estimated Starting Price
-                            </h1>
-                            <h1 className="text-xl font-bold">₹ {destination?.startingPrice}</h1>
+                            <p className="text-sm">Estimated Starting Price</p>
+                            <h4 className="text-lg font-bold">
+                              ₹ {destination?.startingPrice}
+                            </h4>
+                            <button className="bg-[#007E8F] text-white py-2 px-4 rounded mt-4">
+                              Explore
+                            </button>
                           </div>
-                          <button className="bg-[#007E8F] text-white py-2 px-4 rounded">
-                            Explore
-                          </button>
                         </div>
                       </div>
                     </div>
@@ -66,10 +64,10 @@ const PopularItineraries = ({ data }) => {
 
           {/* Swiper Navigation Buttons */}
           {/* Swiper Prev Button */}
-          <div className="swiper-button-prev absolute lg:!-left-[50px] bg-[#007E8F] !text-[#ffff] !px-8 !py-8 !rounded-full !h-6 !w-6 !mt-4 top-1/2 transform -translate-y-1/2 z-10 !text-xs !font-semibold scale-50 flex items-center justify-center"></div>
+          <div className="swiper-button-prev1 absolute lg:!-left-[50px] bg-[#007E8F] !text-[#ffff] !px-8 !py-8 !rounded-full !h-6 !w-6 !mt-4 top-1/2 transform -translate-y-1/2 z-10 !text-xs !font-semibold scale-50 flex items-center justify-center"></div>
 
           {/* Swiper Next Button */}
-          <button className="swiper-button-next absolute  lg:!-right-[50px] bg-[#007E8F] !text-[#ffff] !px-8 !py-8 !rounded-full !h-6 !w-6 !mt-4 top-1/2 transform -translate-y-1/2 z-10 !text-xs !font-semibold scale-50 flex items-center justify-center"></button>
+          <button className="swiper-button-next1 absolute  lg:!-right-[50px] bg-[#007E8F] !text-[#ffff] !px-8 !py-8 !rounded-full !h-6 !w-6 !mt-4 top-1/2 transform -translate-y-1/2 z-10 !text-xs !font-semibold scale-50 flex items-center justify-center"></button>
         </div>
 
         {/* Explore All Link */}
