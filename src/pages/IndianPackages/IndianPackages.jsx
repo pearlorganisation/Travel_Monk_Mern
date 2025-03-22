@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import DestinationCard from "../../components/DestinationCards/DestinationCard";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllDestinations } from "../../features/trips/tripActions";
