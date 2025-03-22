@@ -127,6 +127,7 @@ const CustomizeTrip = () => {
           params: {
             search,
             source: "website",
+            limit:50
           },
           config,
         }
@@ -360,7 +361,7 @@ const CustomizeTrip = () => {
                               iti.location
                             )
                           }
-                          className="bg-blue-100 border-2 border-[#1f1f1f] rounded-md px-2 py-2 flex flex-row gap-2 w-[70%]"
+                          className="bg-blue-100 border-2 border-[#1f1f1f] rounded-md px-2 py-2 flex flex-row gap-2 w-[70%] overflow-y-auto max-h-[200px]"
                         >
                           <option key="choose"> Choose Hotel</option>
                           {Array.isArray(dayData[index].hotel_options) &&
