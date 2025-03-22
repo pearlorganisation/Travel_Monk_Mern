@@ -1,16 +1,26 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import DestinationCard from "../../components/DestinationCards/DestinationCard";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllDestinations } from "../../features/trips/tripActions";
+import Pagination from "../../components/Pagination/Pagination";
 
 const InternationalPackages = () => {
+  const dispatch = useDispatch();
   const destState = useSelector((state) => state.trip.destinations);
   console.log("destState", destState);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getAllDestinations("International"));
-  }, []);
+  const [currentPage, setCurrentPage] = useState(1)
+  const totalPages = Math.ceil(destState?.pagination?.total / destState?.pagination?.limit)
+  console.log("total pages are", totalPages)
+
+  const handlePage =(page)=>{
+    if(page >0 && page <= totalPages){
+      setCurrentPage(page)
+    }
+  }
+   useEffect(() => {
+    dispatch(getAllDestinations({destType:"International", page:currentPage, limit:5}));
+  }, [currentPage]);
 
   return (
     <div>
@@ -61,6 +71,7 @@ const InternationalPackages = () => {
           </div>
         )}
       </div>
+    <Pagination paginate={destState?.pagination} currentPage={currentPage} totalPages={totalPages} handlePageClick={handlePage}  />
     </div>
   );
 };

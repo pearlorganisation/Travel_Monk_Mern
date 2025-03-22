@@ -3,7 +3,7 @@ import { axiosInstance } from "../../services/axiosInterceptor";
 
 export const getAllDestinations = createAsyncThunk(
   "trip/Dest/get",
-  async (destType, thunkAPI) => {
+  async ({destType, page, limit}, thunkAPI) => {
     try {
       const config = {
         headers: {
@@ -11,7 +11,7 @@ export const getAllDestinations = createAsyncThunk(
         },
       };
       const { data } = await axiosInstance.get(
-        `/api/v1/destinations?type=${destType}`,
+        `/api/v1/destinations?type=${destType}&page=${page}&limit=${limit}`,
         config
       );
 
