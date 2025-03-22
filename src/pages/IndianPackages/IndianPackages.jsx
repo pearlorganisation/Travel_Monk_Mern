@@ -3,14 +3,23 @@ import DestinationCard from "../../components/DestinationCards/DestinationCard";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllDestinations } from "../../features/trips/tripActions";
 import { BestPackages } from "../../components/DestinationCards/BestDestinationCard";
+import Pagination from "../../components/Pagination/Pagination";
 
 const IndianPackages = () => {
   const destState = useSelector((state) => state.trip.destinations);
-
+    const [currentPage, setCurrentPage] = useState(1)
+    const totalPages = Math.ceil(destState?.pagination?.total / destState?.pagination?.limit)
+    console.log("total pages are", totalPages)
+  
+    const handlePage =(page)=>{
+      if(page >0 && page <= totalPages){
+        setCurrentPage(page)
+      }
+    }
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getAllDestinations("Indian"));
-  }, []);
+    dispatch(getAllDestinations({destType:"Indian", page:currentPage, limit:10}));
+  }, [currentPage]);
 
   console.log("Dest", destState);
 
@@ -58,6 +67,7 @@ const IndianPackages = () => {
           </div>
         </div>
       </div>
+      <Pagination totalPages={totalPages} paginate={destState?.pagination} currentPage={currentPage} handlePageClick={handlePage} />
     </div>
   );
 };
