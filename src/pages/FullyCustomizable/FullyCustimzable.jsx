@@ -205,8 +205,7 @@ const len = datesObjects.length
     }
   }, [myDays]);
 
-  // console.log("---------------------mapData", mapData);
-
+ 
   async function fetchHotels(id,search){
 
     try{
@@ -239,8 +238,6 @@ const len = datesObjects.length
     }
 
   }
-
-
   const handleLocationChange = async (
     index,
     event,
@@ -248,11 +245,8 @@ const len = datesObjects.length
     destinationData
   ) => {
     const newDayData = [...dayData];
-    /** find the selected location using the id */
-
     newDayData[index].selectedLocation = event.target.value;
-    // setSearchLocation(event.target.value)
-    if(event?.target?.value)
+     if(event?.target?.value)
     {
       const hotelData = await fetchHotels(id, event?.target?.value);
      
@@ -485,7 +479,7 @@ console.log("the search location is", searchLocation)
                             // value={dayData[index]?.selectedHotel?.hotelId}
                             value={dayData[index]?.selectedHotel[0]}
                             onChange={(event) =>
-                              handleHotelChange(index, event, destinationHotels)
+                              handleHotelChange(index, event, dayData[index].hotel_options)
                             }
                             className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm 
                       focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
@@ -548,10 +542,7 @@ console.log("the search location is", searchLocation)
                       <p className="mt-8 text-gray-500">Select a Hotel</p>
                     )}
                   </div>
-
                 </div>
-
-
               </div>
             ))}
             <div className="bg-white shadow-md rounded-lg border border-gray-200">
@@ -687,10 +678,10 @@ console.log("the search location is", searchLocation)
       
  
        
-       { mapData.length >0 ? <GoogleMapsEmbed data={mapData} />:
+       {/* mapData.length >0 ? <GoogleMapsEmbed data={mapData} />:
         <div className="flex justify-center items-center">
            <p>Failed to load the map.</p>
-        </div>} 
+        </div> */} 
     </div>
   );
 };
