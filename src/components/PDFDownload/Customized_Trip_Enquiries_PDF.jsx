@@ -152,7 +152,7 @@ const FullyCustomizedEnquiriesPdf = ({ data }) => {
                     <Text style={styles.text}>Email: {data?.email}</Text>
                     <Text style={styles.text}>Mobile Number: {data?.mobileNumber}</Text>
                     <Text style={styles.text}>
-                        Duration: {data?.duration?.days} days, {data?.duration?.nights} nights
+                        Duration: {data?.duration?.days +1} days, {data?.duration?.nights+1} nights
                     </Text>
                     <Text style={styles.text}>
                         Estimated Price: {data?.estimatedPrice?.toLocaleString()}
