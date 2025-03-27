@@ -90,9 +90,9 @@ const Hotels = () => {
             },
             {
             })
-            dispatch(getHotelsByDestination({ id: newDestinationId, priceRange: selectedRange, search: searchQuery, page: currentPage }))
+            dispatch(getHotelsByDestination({ id: newDestinationId,limit:12, priceRange: selectedRange, search: searchQuery, page: currentPage }))
         }if(searchQuery.length>=0){
-            dispatch(getHotelsByDestination({ id: newDestinationId, priceRange: selectedRange, search: searchQuery, page: currentPage }))
+            dispatch(getHotelsByDestination({ id: newDestinationId, limit:12 ,priceRange: selectedRange, search: searchQuery, page: currentPage }))
         }
  
     },[selectedRange, navigate, location, dispatch,searchQuery, newDestinationId, currentPage])
