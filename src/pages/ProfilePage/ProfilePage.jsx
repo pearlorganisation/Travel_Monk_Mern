@@ -43,7 +43,7 @@ const ProfilePage = () => {
   }
 
   const handlePageClickFully = (page)=>{
-    if(page >0 && page < totalPagesFully){
+    if(page >0 && page <= totalPagesFully){
       setPageFull(page)
     }
   }
@@ -293,7 +293,7 @@ useEffect(() => {
 
         {showFullyCustomizedEnquiries && (
           <div className="mt-6 space-y-4">
-            {Array.isArray(fullyCustomizedEnquiries) &&
+            { fullyCustomizedEnquiries?.length >0 &&
               fullyCustomizedEnquiries?.map((enquiry, index) => (
                 <div
                   key={index}

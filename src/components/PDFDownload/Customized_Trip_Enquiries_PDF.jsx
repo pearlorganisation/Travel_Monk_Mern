@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import { Document, Page, Text, View, StyleSheet, PDFDownloadLink } from '@react-pdf/renderer';
+ import { Document, Page, Text, View, StyleSheet, PDFDownloadLink } from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({
     page: {
