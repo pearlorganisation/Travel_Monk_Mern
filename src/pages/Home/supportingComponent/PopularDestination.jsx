@@ -88,7 +88,7 @@ const PopularDestination = ({ data }) => {
             Explore All →
           </Link>
         </div>
-      </div>
+       </div>
     </div>
   );
 };

@@ -25,10 +25,6 @@ import AnimatedImageTabs from "../../components/AnimatedTabs/AnimatedTabs";
 
 const Home = () => {
   const navigate = useNavigate();
-
-  // if (localStorage.getItem("packageDetails")) {
-  //   navigate("/full-customize-package-enquiry");
-  // }
   const { isUserLoggedIn } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
