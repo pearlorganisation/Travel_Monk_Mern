@@ -146,7 +146,7 @@ const CustomizeTrip = () => {
         const updatedDayData = await Promise.all(
           singlePackage?.data?.itinerary?.slice(0,-1)?.map(async (itineraryItem) => {
             const searchParameter = itineraryItem?.location;
-            console.log("the search in useefect", searchParameter)
+            // console.log("the search in useefect", searchParameter)
             const hotelOptions = await fetchHotels(singleDestination?.data?._id, searchParameter);
             return {
               selectedHotel: {},
@@ -179,7 +179,7 @@ const CustomizeTrip = () => {
    const handleHotelChange = (index, event, hotels, currentLocation) => {
      const selectedHotelId = event.target.value;
     const selectedHotel = hotels.find((hotel) => hotel._id === selectedHotelId);
-    console.log("the id and hotel is", selectedHotelId, selectedHotel)
+    // console.log("the id and hotel is", selectedHotelId, selectedHotel)
 
     /** for storing the images */
     const newHotelData = [...selectedHotelImages]
@@ -198,20 +198,23 @@ const CustomizeTrip = () => {
     setDayData(newDayData);
 
     const startingPrice = selectedHotel ? selectedHotel.estimatedPrice : 0;
-
+console.log("the starting price is", startingPrice)
     const updatedHotelPrices = [...hotelPrices];
     updatedHotelPrices[index] = startingPrice;
-
+ console.log("updated hotel price",updatedHotelPrices)
     setHotelPrices(updatedHotelPrices);
     setTotalHotelPrice(
       updatedHotelPrices.reduce((total, price) => total + price, 0)
     );
   };
 
+  console.log("the hotel prices in state is", hotelPrices)
+  console.log("total hotel prices are", totalHotelPrices)
   /**---------------------the final estimated price will be----------------------------*/
-  let Total_Estimated_Price = totalHotelPrices + selectedVehiclePrice ? parseInt(selectedVehiclePrice*noOfDays) : 0;
+  let Total_Estimated_Price = totalHotelPrices + (selectedVehiclePrice ? parseInt(selectedVehiclePrice*noOfDays) : 0);
+  console.log("the total estimated price", Total_Estimated_Price)
    /**--------------------Handle Enquiry to send to the page for submitting the form-------------------------------------------------*/
-  console.log("the day data is ", dayData)
+  // console.log("the day data is ", dayData)
   const handleEnquiry = () => {
     const invalidEntry = dayData.find(
       (day) =>

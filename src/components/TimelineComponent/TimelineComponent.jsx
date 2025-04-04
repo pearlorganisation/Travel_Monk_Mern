@@ -31,7 +31,14 @@ const Roadmap = ({ events }) => {
           <li className="w-full h-full flex odd:justify-start even:justify-end invisible">
             <div className="w-2/5 h-14"></div>
           </li>
+
         </ul>
+      </div>
+      <div className="flex justify-center items-center">
+        <span className="text-2xl">
+          Day {events?.length+1} Airport Drop
+        </span>
+
       </div>
     </section>
   );
