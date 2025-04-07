@@ -9,7 +9,7 @@ import { baseURL } from "../../services/axiosInterceptor";
 import { Link } from "react-router-dom";
 
 const TripCard = ({ trip }) => {
-  console.log("the trip is", trip)
+  // console.log("the trip is", trip)
   return (
 
     <Link

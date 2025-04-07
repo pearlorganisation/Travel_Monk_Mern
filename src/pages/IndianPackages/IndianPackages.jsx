@@ -4,24 +4,40 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllDestinations } from "../../features/trips/tripActions";
 import { BestPackages } from "../../components/DestinationCards/BestDestinationCard";
 import Pagination from "../../components/Pagination/Pagination";
+import { getBestSellerPackages } from "../../features/package/packageActions";
 
 const IndianPackages = () => {
-  const destState = useSelector((state) => state.trip.destinations);
+    const destState = useSelector((state) => state.trip.destinations);
+    const { bestSellersPackages, bestSellerPaginate } = useSelector((state)=> state.packages)
+    /** for the destinations */
     const [currentPage, setCurrentPage] = useState(1)
     const totalPages = Math.ceil(destState?.pagination?.total / destState?.pagination?.limit)
-    console.log("total pages are", totalPages)
+    // console.log("total pages are", totalPages)
   
     const handlePage =(page)=>{
       if(page >0 && page <= totalPages){
         setCurrentPage(page)
       }
     }
+    /** for best-seller packages */
+    const [bestCurrentPage, setBestCurrentPage] = useState(1)
+    const totalBestPages = Math.ceil(bestSellerPaginate?.total/bestSellerPaginate?.limit)
+
+    const handlePageClickBestSeller =(page)=>{
+      if(page >0 && page <= totalBestPages){
+        setBestCurrentPage(page)
+      }
+    }
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAllDestinations({destType:"Indian", page:currentPage, limit:10}));
-  }, [currentPage]);
+   }, [currentPage]);
 
-  console.log("Dest", destState);
+   useEffect(()=>{
+
+     dispatch(getBestSellerPackages({ type: "Indian", page: bestCurrentPage, limit: 10 }))
+   },[bestCurrentPage])
+  // console.log("Dest", destState);
 
   return (
     <div>
@@ -51,6 +67,7 @@ const IndianPackages = () => {
         </h1>
         <div className="p-4">
           <DestinationCard data={destState?.data} />
+          <Pagination totalPages={totalPages} paginate={destState?.pagination} currentPage={currentPage} handlePageClick={handlePage} />
         </div>
 
         <div className="mt-8">
@@ -63,11 +80,12 @@ const IndianPackages = () => {
             </h2>
           </div>
           <div className="px-10 py-4">
-            <BestPackages data={destState?.bestSellerPackages} />
+            <BestPackages data={bestSellersPackages} />
           </div>
         </div>
+        <Pagination totalPages={totalBestPages} paginate={bestSellerPaginate} currentPage={bestCurrentPage} handlePageClick={handlePageClickBestSeller} />
       </div>
-      <Pagination totalPages={totalPages} paginate={destState?.pagination} currentPage={currentPage} handlePageClick={handlePage} />
+       
     </div>
   );
 };

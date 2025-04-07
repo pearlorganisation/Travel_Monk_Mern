@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { getAllPackages, getSinglePackage } from "./packageActions";
+import { getAllPackages, getBestSellerPackages, getSinglePackage } from "./packageActions";
 
 const packagesState = {
   isLoading: false,
@@ -9,6 +9,8 @@ const packagesState = {
   packages: [],
   singlePackage: {},
   message: "",
+  bestSellersPackages:{},
+  bestSellerPaginate :{}
 };
 
 export const tripsSlice = createSlice({
@@ -47,7 +49,24 @@ export const tripsSlice = createSlice({
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
-      });
+      })
+      .addCase(getBestSellerPackages.pending,state=>{
+        state.isLoading= true
+      })
+      .addCase(getBestSellerPackages.rejected,state=>{
+        state.isLoading= false
+        state.isSuccess= false
+        state.isError= true
+        state.bestSellersPackages = {}
+        state.bestSellerPaginate={}
+      })
+      .addCase(getBestSellerPackages.fulfilled,(state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.isError = false
+        state.bestSellersPackages = action.payload.data
+        state.bestSellerPaginate= action.payload.pagination
+      })
   },
 });
 
