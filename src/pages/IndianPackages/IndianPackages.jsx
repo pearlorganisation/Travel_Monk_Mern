@@ -66,8 +66,12 @@ const IndianPackages = () => {
           Destinations
         </h1>
         <div className="p-4">
-          <DestinationCard data={destState?.data} />
-          <Pagination totalPages={totalPages} paginate={destState?.pagination} currentPage={currentPage} handlePageClick={handlePage} />
+          {Array.isArray(destState?.data)&& 
+          <div>
+              <DestinationCard data={destState?.data} />
+              <Pagination totalPages={totalPages} paginate={destState?.pagination} currentPage={currentPage} handlePageClick={handlePage} />
+          </div>
+          }
         </div>
 
         <div className="mt-8">
@@ -80,12 +84,15 @@ const IndianPackages = () => {
             </h2>
           </div>
           <div className="px-10 py-4">
-            <BestPackages data={bestSellersPackages} />
+            {Array.isArray(bestSellersPackages) && 
+            <div>
+                <BestPackages data={bestSellersPackages} />
+                <Pagination totalPages={totalBestPages} paginate={bestSellerPaginate} currentPage={bestCurrentPage} handlePageClick={handlePageClickBestSeller} />
+            </div>
+            }  
           </div>
         </div>
-        <Pagination totalPages={totalBestPages} paginate={bestSellerPaginate} currentPage={bestCurrentPage} handlePageClick={handlePageClickBestSeller} />
       </div>
-       
     </div>
   );
 };
