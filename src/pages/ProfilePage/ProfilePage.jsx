@@ -11,6 +11,9 @@ import Customize_trip_pdf from "../../components/PDFDownload/Customize_trip_pdf"
 import DownloadPdfButton from "../../components/PDFDownload/Customized_Trip_Enquiries_PDF";
 import DownloadPrebuiltPdfButton from "../../components/PDFDownload/Prebuilt_Enquiries_PDF";
 import Pagination from "../../components/Pagination/Pagination";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { axiosInstance } from "../../services/axiosInterceptor";
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
@@ -21,6 +24,8 @@ const ProfilePage = () => {
   const { fullyCustomizedEnquiries, paginateFully } = useSelector((state) => state?.fullyCustomizePackage)
   const { prebuiltEnquiries, paginatePrebuilt} = useSelector((state) => state?.prebuiltPackage)
   const { userBookings, paginateBookings } = useSelector((state) => state?.previousBookings);
+
+  const RAZORPAY_KEY_ID = import.meta.env.VITE_APP_RAZORPAY_KEY_ID;
 
   /**-------------------- State for managing all the pagination--------------*/
   const [pageFull, setPageFull] = useState(1) // for fully
@@ -83,6 +88,89 @@ useEffect(()=>{
 useEffect(() => {
     dispatch(getUserBookings({page:currentBookingPage, limit:4}));
 }, [currentBookingPage]);
+
+const [isLoading, setLoading] = useState(false)
+
+// api endpoints for booking routes
+  const prebuilt_endpoint = `/api/v1/bookings/pre-built-package-enquiry`
+  const prebuilt_verify_endpoint = `/api/v1/bookings/pre-built-package-enquiry/verify-payment`
+  const fully_Endpoint =`/api/v1/bookings/fully-customize-package-enquiry`
+  const fully_verify_endpoint = `/api/v1/bookings/fully-customize-package-enquiry/verify-payment`
+  /**  payment handle for the prebuilt package */
+  const handlePayment = async (id, createEndpoint, verifyEndpoint) => {
+      setLoading(true);
+      try {
+        // Step 1: Create order on the backend
+        const response = await axiosInstance.post(
+          `${createEndpoint}/${id}`,
+          {
+            advancedPayment: 5000,
+          }
+        );
+        console.log(`response:: ${JSON.stringify(response, null, 2)}`);
+
+        const { order } = response.data;
+
+        // Step 2: Set up Razorpay options
+        const options = {
+          key: RAZORPAY_KEY_ID,
+          amount: order.advancedPayment,
+          currency: "INR",
+          // name: packagename,
+          // description: `Payment for ${packagename}`,
+          order_id: order.id,
+          handler: async function (response) {
+            // Step 3: Verify payment on the backend
+            try {
+              // Step 3: Verify payment on the backend
+              const verifyPayment = await axiosInstance.post(verifyEndpoint,
+                response
+              );
+              if (verifyPayment?.data?.success === true) {
+                toast.success("🦄Payment Successfull");
+                setTimeout(() => {
+                  navigate("/");
+                }, 400);
+              }
+            } catch (error) {
+              console.log("ERR: ", error);
+              if (error.response && error.response.status === 404) {
+                // alert("Verification route not found. Please contact support.");
+                toast.error(
+                  "🦄Verification route not found. Please contact support"
+                );
+              } else {
+                // alert("Payment verification failed. Please try again.");
+                toast.error("🦄Payment verification failed. Please try again");
+              }
+              console.error("Error in payment verification:", error);
+            }
+          },
+          prefill: {
+            name: `manish`,
+            email: `manishgupta@pearlorganisation.com`,
+            contact: "9876543210",
+          },
+          theme: {
+            color: "#3399cc",
+          },
+          modal: {
+            ondismiss: function () {
+              alert("Payment cancelled");
+            },
+          },
+        };
+          
+        // Step 4: Open Razorpay checkout
+        const razorpay = new window.Razorpay(options);
+        razorpay.open();
+      } catch (error) {
+        console.error("Error in payment process:", error);
+        alert("Error occurred during payment. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    };
 
   // console.log("the prebuilt enquiries data is", prebuiltEnquiries)
   return (
@@ -208,9 +296,14 @@ useEffect(() => {
                   key={index}
                   className="bg-white p-4 rounded-md shadow-sm mt-3 border border-gray-200"
                 >
-                  <div className="flex justify-end">
-                    <DownloadPrebuiltPdfButton data={enquiry} />
+                  <div className="flex justify-between gap-6 ">
+                    <div ></div>
+                    <div className="flex place-items-end w-full flex-col gap-2">
+                      <div><DownloadPrebuiltPdfButton data={enquiry} /></div>
+                      <button className="bg-red-300 px-7 py-2 rounded-lg mt-4" onClick={() => handlePayment(enquiry?._id, prebuilt_endpoint, prebuilt_verify_endpoint)}> Book the Trip</button>
+                    </div>
                   </div>
+                   
                   <div className="flex justify-between">
                     <div>
                       <p className="font-semibold text-gray-800">
@@ -299,7 +392,14 @@ useEffect(() => {
                   key={index}
                   className="bg-gray-50 p-4 rounded-lg shadow-md border border-gray-200"
                 >
-                  {enquiry && <DownloadPdfButton data={enquiry} />}
+                 <div className="flex flex-row justify-between">
+                  <div></div>
+                    <div className="flex flex-col place-items-end">
+                      {enquiry && <DownloadPdfButton data={enquiry} />}
+                      <div className="mt-4"><button className="bg-red-300 px-7 py-2 rounded-lg" onClick={() => handlePayment(enquiry?._id, fully_Endpoint, fully_verify_endpoint)}>Book the trip</button></div>
+                    </div>
+                 </div>
+
 
                   <div className="space-y-4">
                     <div className="flex flex-col sm:flex-row justify-between">

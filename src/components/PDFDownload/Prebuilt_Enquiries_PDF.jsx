@@ -246,6 +246,13 @@ const DownloadPrebuiltPdfButton = ({ data }) => (
     <PDFDownloadLink
         document={<PrebuiltEnquiriesPdf data={data} />}
         fileName={`EnquiryDetails-${data?.name}.pdf`}
+        style={{
+            textDecoration: 'none',
+            color: '#fff',
+            backgroundColor: '#007BFF',
+            padding: '10px 20px',
+            borderRadius: '5px',
+        }}
     >
         {({ loading }) => (loading ? 'Generating PDF...' : 'Download PDF')}
     </PDFDownloadLink>

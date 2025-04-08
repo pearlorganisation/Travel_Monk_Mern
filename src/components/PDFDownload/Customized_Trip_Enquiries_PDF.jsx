@@ -282,6 +282,13 @@ const DownloadPdfButton = ({ data }) => (
     <PDFDownloadLink
         document={<FullyCustomizedEnquiriesPdf data={data} />}
         fileName="EnquiryDetails.pdf"
+        style={{
+            textDecoration: 'none',
+            color: '#fff',
+            backgroundColor: '#007BFF',
+            padding: '10px 20px',
+            borderRadius: '5px',
+        }}
     >
         {({ loading }) => (loading ? 'Generating PDF...' : 'Download PDF')}
     </PDFDownloadLink>
