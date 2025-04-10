@@ -4,19 +4,36 @@ import "swiper/css/pagination";
 import { Navigation, Pagination } from "swiper/modules";
 import { baseURL } from "../../../services/axiosInterceptor";
 import { Link } from "react-router-dom";
+import { useRef, useState } from "react";
+import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
 
 const Distinguish = ({ hotels }) => {
+    const swiperRef = useRef()
+    const [swiperInstance, setSwiperInstance] = useState(null);
+    const prevSlide = () => {
+      if (swiperInstance) {
+        swiperInstance.slidePrev();
+      }
+    };
+  
+    const nextSlide = () => {
+      if (swiperInstance) {
+        swiperInstance.slideNext();
+      }
+    };
   return (
     <>
       <div className="bg-[#f5f5f5] py-8">
-        <div className="container mx-auto max-w-6xl relative">
-          <h2 className="text-center text-2xl font-bold mb-6">
+        <div className="px-10 relative">
+          <h2 className="text-start text-2xl font-bold mb-6">
             Distinguished Stays
           </h2>
 
           {/* Swiper Section */}
-          <div className="relative">
+          <div className="px-16 relative">
           <Swiper
+              onSwiper={setSwiperInstance}
+              ref={swiperRef}
             slidesPerView={1}
             spaceBetween={20}
             pagination={{
@@ -37,10 +54,10 @@ const Distinguish = ({ hotels }) => {
               },
             }}
             navigation={{
-              prevEl: ".swiper-button-prev",
-              nextEl: ".swiper-button-next",
+              prevEl: ".swiper-button-prev2",
+              nextEl: ".swiper-button-next2",
             }}
-            modules={[Pagination, Navigation]}
+            modules={[ Navigation]}
             className="mySwiper"
           >
             {Array.isArray(hotels) &&
@@ -86,10 +103,19 @@ const Distinguish = ({ hotels }) => {
                 </SwiperSlide>
               ))}
           </Swiper>
-          <div className="swiper-button-prev absolute lg:!-left-[50px] bg-[#007E8F] !text-[#ffff] !px-8 !py-8 !rounded-full !h-6 !w-6 !mt-4 top-1/2 transform -translate-y-1/2 z-10 !text-xs !font-semibold scale-50 flex items-center justify-center"></div>
-
-          {/* Swiper Next Button */}
-          <button className="swiper-button-next absolute  lg:!-right-[50px] bg-[#007E8F] !text-[#ffff] !px-8 !py-8 !rounded-full !h-6 !w-6 !mt-4 top-1/2 transform -translate-y-1/2 z-10 !text-xs !font-semibold scale-50 flex items-center justify-center"></button>
+              <button
+                        className="absolute  left-0 top-1/2 transform -translate-y-1/2 z-10 bg-[#007E8F] text-white p-1 rounded-full"
+                        onClick={prevSlide}
+                      >
+                        <HiChevronLeft size={24} />
+                      </button>
+            
+                      <button
+                        className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-[#007E8F] text-white p-1 rounded-full"
+                        onClick={nextSlide}
+                      >
+                        <HiChevronRight size={24} />
+                      </button>
         </div>
         </div>
       </div>

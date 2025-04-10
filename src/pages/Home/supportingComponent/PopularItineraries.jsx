@@ -1,22 +1,39 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Navigation, Pagination } from "swiper/modules";
 import { Link } from "react-router-dom";
 import { baseURL } from "../../../services/axiosInterceptor";
+import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
 
 const PopularItineraries = ({ data }) => {
+  const swiperRef = useRef()
+    const [swiperInstance, setSwiperInstance] = useState(null);
+    const prevSlide = () => {
+      if (swiperInstance) {
+        swiperInstance.slidePrev();
+      }
+    };
+  
+    const nextSlide = () => {
+      if (swiperInstance) {
+        swiperInstance.slideNext();
+      }
+    };
+  
   return (
     <div className="bg-[#f5f5f5] overflow-hidden py-8">
-      <div className="container mx-auto max-w-6xl relative">
+      <div className="px-10 relative">
         <h2 className="text-start text-2xl font-bold mb-6">
           Most Popular International Destinations
         </h2>
 
         {/* Swiper Section */}
-        
+        <div className="px-16 relative">
           <Swiper
+            onSwiper={setSwiperInstance}
+            ref={swiperRef}
             slidesPerView={1}
             spaceBetween={20}
             pagination={{ clickable: true }}
@@ -25,11 +42,11 @@ const PopularItineraries = ({ data }) => {
               768: { slidesPerView: 3, spaceBetween: 30 },
               1024: { slidesPerView: 4, spaceBetween: 10 },
             }}
-            navigation={{
-              prevEl: ".swiper-button-prev1",
-              nextEl: ".swiper-button-next1",
-            }}
-            modules={[Pagination, Navigation]}
+            // navigation={{
+            //   prevEl: ".swiper-button-prev",
+            //   nextEl: ".swiper-button-next",
+            // }}
+            modules={[Navigation]}
             className="mySwiper"
           >
             {Array.isArray(data) &&
@@ -62,14 +79,20 @@ const PopularItineraries = ({ data }) => {
               ))}
           </Swiper>
 
-          {/* Swiper Navigation Buttons */}
-          {/* Swiper Prev Button */}
-        <div className="swiper-button-prev1 absolute lg:!-left-[50px] bg-[#007E8F] !text-[#ffff] !px-8 !py-8 !rounded-full !h-6 !w-6 !mt-4 top-1/2 transform -translate-y-1/2 z-10 !text-xs !font-semibold scale-50 flex items-center justify-center"></div>
-
-        {/* Swiper Next Button */}
-        <button className="swiper-button-next1 absolute  lg:!-right-[50px] bg-[#007E8F] !text-[#ffff] !px-8 !py-8 !rounded-full !h-6 !w-6 !mt-4 top-1/2 transform -translate-y-1/2 z-10 !text-xs !font-semibold scale-50 flex items-center justify-center"></button>
-       
-
+          <button
+                      className="absolute  left-0 top-1/2 transform -translate-y-1/2 z-10 bg-[#007E8F] text-white p-1 rounded-full"
+                      onClick={prevSlide}
+                    >
+                      <HiChevronLeft size={24} />
+                    </button>
+          
+                    <button
+                      className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-[#007E8F] text-white p-1 rounded-full"
+                      onClick={nextSlide}
+                    >
+                      <HiChevronRight size={24} />
+                    </button>
+        </div>
         {/* Explore All Link */}
         <div className="text-right mt-4">
           <Link to="/international_packages" className="text-blue-500 hover:underline">
