@@ -72,4 +72,20 @@ export const changePassword = createAsyncThunk("user/updatePassword", async({ cu
                     return rejectWithValue(error.message);
                 }
             }
-        })
+})
+
+export const getPackagesCreatedByAdmin = createAsyncThunk(
+    "get/custom-packages",async({page, limit},{rejectWithValue})=>{
+        try {
+            const config = {
+                headers:{
+                    "Content-Type":"application/json"
+                }
+            }
+            const { data } = await axiosInstance.get(`/api/v1/users/custom-packages?page=${page}&limit=${limit}`, config)
+            return data
+        } catch (error) {
+          return rejectWithValue(error)            
+        }
+    }
+)

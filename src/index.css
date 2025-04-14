@@ -16,3 +16,59 @@
 .horizontal-scroll-container {
   scroll-behavior: smooth;
 }
+
+/* Swiper Custom Navigation Buttons */
+.swiper-button-prev1,
+.swiper-button-next1 {
+  width: 10px;
+  height: 10px;
+  background-color: #007E8F;
+  color: white;
+  background-color: black;
+  /* border-radius: 9999px; */
+  /* full rounded */
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  /* top: 50%;
+  transform: translateY(-50%);
+  z-index: 10; */
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* .swiper-button-prev1:hover,
+.swiper-button-next1:hover {
+  background-color: #ace123;
+  transform: translateY(-50%) scale(1.1);
+} */
+
+/* Positioning for Prev and Next */
+.swiper-button-prev1 {
+  left: -20px;
+}
+
+.swiper-button-next1 {
+  right: -20px;
+}
+
+/* Responsive Adjustment for Small Screens */
+@media (max-width: 768px) {
+
+  .swiper-button-prev1,
+  .swiper-button-next1 {
+    width: 10px;
+    height: 10px;
+  }
+
+  .swiper-button-prev1 {
+    left: -20px;
+  }
+
+  .swiper-button-next1 {
+    right: -20px;
+  }
+}

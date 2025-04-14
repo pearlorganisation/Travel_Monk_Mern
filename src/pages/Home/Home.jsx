@@ -73,10 +73,11 @@ const Home = () => {
       </div>
       <Reviews />
       <HowitWorks />
-      <PopularDestination data={indianData ? indianData : []} />
-      {internationalData?.length > 0 && (
+      <div><PopularDestination data={indianData ? indianData : []} /></div>
+      <div> {internationalData?.length > 0 && (
         <PopularItineraries data={internationalData ? internationalData : []} />
-      )}
+      )}</div>
+      
 
       <div
         className="flex items-center absolute justify-end px-20 mb-6"
@@ -91,8 +92,9 @@ const Home = () => {
       </div>
 
       <Upcoming />
-      <Distinguish hotels={bestHotels?.data} />
-      <ChoseTravelMonkSec />
+      <div>      <Distinguish hotels={bestHotels?.data} />
+</div>
+       <ChoseTravelMonkSec />
       <Testimonials />
       <GetinTouch />
 

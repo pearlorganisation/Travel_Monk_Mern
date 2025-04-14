@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import {
     changePassword,
     getAuthUserDetails,
+    getPackagesCreatedByAdmin,
     resetPassword
   
 } from "./userActions";
@@ -22,7 +23,9 @@ const userState = {
         isLoading: false,
         isError: false,
         isSuccess: false,
-    },            
+    },
+    usersCustomPackages:{},
+    paginate:{}            
 };
 
 export const usersSlice = createSlice({
@@ -81,6 +84,23 @@ export const usersSlice = createSlice({
             state.isSuccess = true;
             state.isError = false;
             toast("Successfully changed the password")
+           })
+           .addCase(getPackagesCreatedByAdmin.pending,state=>{
+            state.isLoading = true
+           })
+           .addCase(getPackagesCreatedByAdmin.rejected,state=>{
+            state.isLoading = false
+            state.isSuccess= false
+            state.isError = true
+            state.usersCustomPackages ={}
+            state.paginate={}
+           })
+           .addCase(getPackagesCreatedByAdmin.fulfilled,(state,action)=>{
+            state.isLoading=false
+            state.isError=false
+            state.isSuccess=true
+            state.usersCustomPackages = action.payload.data
+            state.paginate= action.payload.pagination
            })
     },
 });

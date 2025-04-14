@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAuthUserDetails } from "../../features/user/userActions";
+import { getAuthUserDetails, getPackagesCreatedByAdmin } from "../../features/user/userActions";
 import { Link } from "react-router-dom";
 import { getUserBookings } from "../../features/previousBookings/previousBookingsActions";
 import moment from "moment";
@@ -19,8 +19,10 @@ const ProfilePage = () => {
   const dispatch = useDispatch();
   const [showBookings, setShowBookings] = useState(false);
   const [showFullyCustomizedEnquiries, setShowFullyCustomizedEnquiries] = useState(false)
+  const [showCustomPackagesCreatedByAdmin, setShowCustomPackagesCreatedByAdmin] = useState(false);
+
   const [showPrebuiltEnquiries, setShowPrebuiltEnquiries] = useState(false);
-  const { userInfo } = useSelector((state) => state?.user);
+  const { userInfo, usersCustomPackages, paginate } = useSelector((state) => state?.user);
   const { fullyCustomizedEnquiries, paginateFully } = useSelector((state) => state?.fullyCustomizePackage)
   const { prebuiltEnquiries, paginatePrebuilt} = useSelector((state) => state?.prebuiltPackage)
   const { userBookings, paginateBookings } = useSelector((state) => state?.previousBookings);
@@ -31,7 +33,9 @@ const ProfilePage = () => {
   const [pageFull, setPageFull] = useState(1) // for fully
   const [currentPrebuiltPage, setCurrentPrebuiltPage] = useState(1) // for prebuilt
   const [currentBookingPage, setCurrentBookingPage] = useState(1)
-
+  const [currentCustomPackagePage, setCurrentCustomPackagePage] = useState(1)
+  /** for custom packages */
+  const totalCustomPages = Math.ceil(paginate?.total/paginate?.limit)
   /** for booking */
   const totalPagesBooking = Math.ceil(paginateBookings?.total / paginateBookings?.limit)
 
@@ -40,6 +44,12 @@ const ProfilePage = () => {
 
   /** for prebuilt enquiry */
   const totalPagesPrebuilt = Math.ceil(paginatePrebuilt?.total/ paginatePrebuilt?.limit)
+
+const handlePageCustomPackageClick =(page)=>{
+  if(page >0 && page <= totalCustomPages){
+    setCurrentCustomPackagePage(page)
+  }
+}
 
   const handlePageBookingClick = (page)=>{
     if(page >0 && page <= totalPagesBooking){
@@ -58,6 +68,7 @@ const ProfilePage = () => {
       setCurrentPrebuiltPage(page)
     }
   }
+
   let imageName = [];
   let lastProfileName = "";
   if (userInfo?.name) {
@@ -89,6 +100,9 @@ useEffect(() => {
     dispatch(getUserBookings({page:currentBookingPage, limit:4}));
 }, [currentBookingPage]);
 
+useEffect(()=>{
+  dispatch(getPackagesCreatedByAdmin({page:currentCustomPackagePage, limit:1}))
+},[currentCustomPackagePage])
 const [isLoading, setLoading] = useState(false)
 
 // api endpoints for booking routes
@@ -434,6 +448,63 @@ const [isLoading, setLoading] = useState(false)
         )}
         <Pagination paginate={paginateFully} currentPage={pageFull} totalPages={totalPagesFully} handlePageClick={handlePageClickFully} />
       </div>
+
+
+      {/** custom packages created by the admin */}
+      <div className="mt-8 border-t border-gray-300 pt-6">
+        <button
+          className="w-full text-center sm:text-left text-indigo-600 hover:text-indigo-800 font-semibold"
+          onClick={() => setShowCustomPackagesCreatedByAdmin(!showCustomPackagesCreatedByAdmin)}
+        >
+          {showCustomPackagesCreatedByAdmin ? "Hide Enquiries" : "View My   Custom Packages"}
+        </button>
+
+          {showCustomPackagesCreatedByAdmin && (
+            <div className="mt-6 space-y-4">
+              {usersCustomPackages?.length > 0 &&
+                usersCustomPackages?.map((enquiry, index) => (
+                  <div
+                    key={index}
+                    className="bg-gray-50 p-4 rounded-lg shadow-md border border-gray-200"
+                  >
+                    <div className="flex flex-row justify-between">
+                      <div></div>
+                      <div className="flex flex-col place-items-end">
+                        {/* {enquiry && <DownloadPdfButton data={enquiry} />} */}
+                        {/* <div className="mt-4"><button className="bg-red-300 px-7 py-2 rounded-lg" onClick={() => handlePayment(enquiry?._id, fully_Endpoint, fully_verify_endpoint)}>Book the trip</button></div> */}
+                      </div>
+                    </div>
+
+
+                    <div className="space-y-4">
+                      <div className="flex flex-col sm:flex-row justify-between">
+                        <div>
+                          <p className="font-semibold text-gray-800">
+                            Enquiry ID: {enquiry?._id ?? "Not Found"}
+                          </p>
+                          <p className="text-gray-600 mt-2">
+                            Vehicle: {enquiry?.selectedVehicle?.vehicleName ?? "No Vehicle Selected"}
+                          </p>
+                          <p className="text-gray-500 text-sm">
+
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-gray-600">
+                        <p>Name: {enquiry?.user?.name}</p>
+                        <p>Email: {enquiry?.user?.email}</p>
+                        <p>Mobile: {enquiry?.user?.mobileNumber}</p>
+                        <p>Travellers: {enquiry?.numberOfTravellers}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          )}
+        <div>        <Pagination paginate={paginate} currentPage={currentCustomPackagePage} totalPages={totalCustomPages} handlePageClick={handlePageCustomPackageClick} />
+</div>
+       </div>
     </div>
 
   );
