@@ -8,6 +8,7 @@ import { searchDestination } from '../../features/destination/destinationActions
 import moment from 'moment/moment'
 import Pagination from '../../components/Pagination/Pagination'
 import { toast } from 'react-toastify'
+import { useDebounce } from '../../hooks/useDebounceHook'
 const priceRanges =[
     {
         id:1,
@@ -36,18 +37,19 @@ const Hotels = () => {
     const dispatch = useDispatch()
     const location = useLocation()
     const [ searchParams, setSearchParams] = useSearchParams({})
-     
+    let { hotelStartDate, HotelEndDate, hotelTravellers, locationName } = location.state ?? {}
+
     const { destinationHotels, paginate } = useSelector((state)=> state.hotels);
     const [selectedRange, setSelectedRange] = useState([])
-    const [searchQuery, setSearchQuery] = useState("")   
-    let { hotelStartDate, HotelEndDate, hotelTravellers } = location.state ?? {}
-    const { handleSubmit , register, watch, formState:{errors}} = useForm({
+    const [searchQuery, setSearchQuery] = useState(locationName)   
+     const { handleSubmit , register, watch, formState:{errors}} = useForm({
         defaultValues:{
             checkIn: hotelStartDate,
             checkOut: HotelEndDate,
             travellers: hotelTravellers
         }
     })
+    console.log("the recieved location name from frontend is", locationName)
 
     const [newDestinationId,setNewDestinationId] = useState(id)
     // console.log('-------------the new destination id', newDestinationId)
@@ -76,6 +78,7 @@ const Hotels = () => {
 
 
     console.log("the states from hero is ", hotelStartDate, HotelEndDate, hotelTravellers)
+    const debouncedSearchQuery = useDebounce(searchQuery, 500)
     useEffect(()=>{
         const searchParams = new URLSearchParams(location.search);
         const existingPriceRange = searchParams.getAll("priceRange")
@@ -90,12 +93,14 @@ const Hotels = () => {
             },
             {
             })
-            dispatch(getHotelsByDestination({ id: newDestinationId,limit:12, priceRange: selectedRange, search: searchQuery, page: currentPage }))
-        }if(searchQuery.length>=0){
-            dispatch(getHotelsByDestination({ id: newDestinationId, limit:12 ,priceRange: selectedRange, search: searchQuery, page: currentPage }))
+            dispatch(getHotelsByDestination({ id: newDestinationId,limit:12, priceRange: selectedRange, search: searchQuery , page: currentPage }))
+        }
+        if(searchQuery?.length>=0){
+            dispatch(getHotelsByDestination({ id: newDestinationId, limit: 12, priceRange: selectedRange, search: searchQuery, page: currentPage })
+        )
         }
  
-    },[selectedRange, navigate, location, dispatch,searchQuery, newDestinationId, currentPage])
+    },[selectedRange, navigate, location, dispatch,searchQuery, newDestinationId, currentPage, locationName]);
  
 
 
@@ -114,6 +119,17 @@ const Hotels = () => {
     const handleSearchQuery =(e)=>{
         setSearchQuery(e.target.value)
     }
+
+    // useEffect(()=>{
+    //   if(searchQuery ==""){
+    //     setSearchQuery(locationName)
+    //   }
+    // },[searchQuery])
+
+    if(searchQuery==""){
+        setSearchQuery(locationName)
+    };
+    console.log("initial search and after search query is", searchQuery)
     const submitForm = async(data)=>{
         const { hotelDestination } = data;
        try {
@@ -134,6 +150,7 @@ const Hotels = () => {
 
        }
     }
+
     const inclusionHelper = (amenities) => {
         let newArr = amenities.split(",");
         console.log("the new arr is", newArr);
@@ -208,8 +225,9 @@ const Hotels = () => {
                             
                                   <input
                                       type='text'
+                                    //   value={locationName}
                                       onChange={e=>handleSearchQuery(e)}
-                                       placeholder='Search by Locality or hotel name'
+                                      placeholder='Search by Locality or hotel name'
                                       className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                   />
                       
@@ -241,7 +259,8 @@ const Hotels = () => {
                <div className="w-4/5 bg-white p-4 rounded-lg">
                    <h1 className="text-2xl font-bold mb-4">Hotels</h1>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {Array.isArray(destinationHotels) ? destinationHotels?.map((hotel) => (
+                      {Array.isArray(destinationHotels) &&  destinationHotels?.length >0  ? 
+                      destinationHotels?.map((hotel) => (
                           <div key={hotel._id} className="bg-gray-50 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
                               {/* Hotel Image */}
                               <div className="relative h-48 w-full">
