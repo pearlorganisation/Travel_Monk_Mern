@@ -167,53 +167,50 @@ const Hotels = () => {
         {/* Search Bar Section */}
                     <form onSubmit={handleSubmit(submitForm)}>
                         <div className="w-full mb-6">
-                            <div className="flex flex-col md:flex-row gap-2 items-center">
-                                <div className='flex flex-col w-full'>
-                                    <label htmlFor="hotelDestination" className="text-gray-600 mb-1">Type Destination</label>
+                            <div className="flex flex-col md:flex-row md:items-end gap-4">
+                                <div className="flex flex-col w-full md:w-1/4">
+                                    <label htmlFor="search" className="text-gray-600 mb-1">Search</label>
                                     <input
-                                        id='hotelDestination'
-                                        type="text"
-                                        placeholder="Search hotels By Destination..."
-                                        {...register("hotelDestination")}
+                                        type='text'
+                                        id="search"
+                                        onChange={e => handleSearchQuery(e)}
+                                        placeholder='Search by Locality or hotel name'
                                         className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
                                 </div>
-                                
-                                <div className="flex flex-col w-full">
+
+                                <div className="flex flex-col w-full md:w-1/4">
                                     <label htmlFor="checkIn" className="text-gray-600 mb-1">Check In</label>
                                     <input
                                         type="date"
                                         id="checkIn"
                                         {...register("checkIn")}
-                                        className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
                                 </div>
-                                <div className="flex flex-col w-full">
+
+                                <div className="flex flex-col w-full md:w-1/4">
                                     <label htmlFor="checkOut" className="text-gray-600 mb-1">Check Out</label>
                                     <input
                                         type="date"
                                         id="checkOut"
                                         {...register("checkOut")}
                                         min={hotelStartDate}
-                                        className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
                                 </div>
-                        <div className="flex flex-col w-full">
-                            <label htmlFor="travellers" className="text-gray-600 mb-1">No Of Travellers</label>
-                            <input
-                                type="text"
-                                id="travellers"
-                                {...register("travellers")}
-                                className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            />
-                        </div>
-                                <button
-                                    type="submit"
-                                    className="px-6 py-2 mt-6 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-                                >
-                                    Search
-                                </button>
+
+                                <div className="flex flex-col w-full md:w-1/4">
+                                    <label htmlFor="travellers" className="text-gray-600 mb-1">No Of Travellers</label>
+                                    <input
+                                        type="text"
+                                        id="travellers"
+                                        {...register("travellers")}
+                                        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    />
+                                </div>
                             </div>
+
                         </div>
                     </form>
 
@@ -221,40 +218,37 @@ const Hotels = () => {
                    <div className="flex flex-col md:flex-row gap-4">
                        <div className="w-full md:w-1/5 bg-gray-50 p-4 rounded-lg">
                            <h2 className="text-lg font-semibold">Filters</h2>
-                           <div>
-                            
-                                  <input
-                                      type='text'
-                                    //   value={locationName}
-                                      onChange={e=>handleSearchQuery(e)}
-                                      placeholder='Search by Locality or hotel name'
-                                      className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                  />
-                      
-                            
-                           </div>
+                           {/* <div>
+                                <input
+                                    type='text'
+                                //   value={locationName}
+                                    onChange={e=>handleSearchQuery(e)}
+                                    placeholder='Search by Locality or hotel name'
+                                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />                            
+                           </div> */}
                            {/**------------------Filter by price range-------------------*/}
-                   <div className='mt-4'>
-                     <h1>Filter by Estimate Price</h1>
-                        <div>
-                            {priceRanges.map((range) => (
-                                <div key={range.id} className="flex items-center mb-2">
-                                    <input
-                                        type="checkbox"
-                                        value={range.range}
-                                        onChange={e=>handleSelectRange(e)}
-                                        id={`price-range-${range.id}`}
-                                        className="mr-2"
-                                    />
-                                    <label htmlFor={`price-range-${range.id}`}>
-                                        ₹{range.range[0]} - ₹{range.range[1]}
-                                    </label>
+                                <div className='mt-4'>
+                                    <h1>Filter by Estimate Price</h1>
+                                        <div>
+                                            {priceRanges.map((range) => (
+                                                <div key={range.id} className="flex items-center mb-2">
+                                                    <input
+                                                        type="checkbox"
+                                                        value={range.range}
+                                                        onChange={e=>handleSelectRange(e)}
+                                                        id={`price-range-${range.id}`}
+                                                        className="mr-2"
+                                                    />
+                                                    <label htmlFor={`price-range-${range.id}`}>
+                                                        ₹{range.range[0]} - ₹{range.range[1]}
+                                                    </label>
+                                                </div>
+                                            ))}
+                                        </div>
                                 </div>
-                            ))}
-                        </div>
-                   </div>
-                   
-              </div>
+                                
+                    </div>
 
                <div className="w-4/5 bg-white p-4 rounded-lg">
                    <h1 className="text-2xl font-bold mb-4">Hotels</h1>
@@ -321,7 +315,9 @@ const Hotels = () => {
                               </Link>
                            
                           </div>
-                      )):<h1>No Hotels found for this location...</h1>}
+                      )) : <h1 className='text-nowrap'>No Hotels found for <b>{searchQuery.toUpperCase(
+
+                      )}</b> location...</h1>}
                   </div>
               </div>
           </div>
