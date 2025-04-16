@@ -19,7 +19,7 @@ const InternationalPackages = () => {
     }
   }
    useEffect(() => {
-    dispatch(getAllDestinations({destType:"International", page:currentPage, limit:10}));
+    dispatch(getAllDestinations({destType:"International", page:currentPage, limit:12}));
   }, [currentPage]);
 
   return (

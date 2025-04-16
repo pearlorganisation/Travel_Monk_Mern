@@ -18,8 +18,8 @@ const TripCard = ({ trip }) => {
       style={{ backgroundImage: `url(${baseURL}/${trip?.image?.path})` }}
     >
       {/* Removed <img> tag */}
-      <div className="absolute top-4 right-4 bg-yellow-400 px-2 py-1 rounded text-white font-semibold">
-        {trip.startingPrice}
+      <div className="absolute top-4 right-4 bg-yellow-300 px-2 py-1 rounded text-white font-semibold">
+        ₹ {trip.startingPrice}
       </div>
       <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-50 px-3">
         <h3 className="text-base font-semibold mb-2 text-white">{trip.name}</h3>

@@ -30,12 +30,12 @@ const IndianPackages = () => {
     }
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getAllDestinations({destType:"Indian", page:currentPage, limit:10}));
+    dispatch(getAllDestinations({destType:"Indian", page:currentPage, limit:12}));
    }, [currentPage]);
 
    useEffect(()=>{
 
-     dispatch(getBestSellerPackages({ type: "Indian", page: bestCurrentPage, limit: 10 }))
+     dispatch(getBestSellerPackages({ type: "Indian", page: bestCurrentPage, limit:12}))
    },[bestCurrentPage])
   // console.log("Dest", destState);
 

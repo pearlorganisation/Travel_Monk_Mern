@@ -322,7 +322,6 @@ const Hotels = () => {
               </div>
           </div>
             <Pagination paginate={paginate} currentPage={currentPage} totalPages={totalPages} handlePageClick={handleChangePage} />
-
       </div>
   )
 }
