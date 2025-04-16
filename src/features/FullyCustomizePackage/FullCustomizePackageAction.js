@@ -6,6 +6,7 @@ export const sendFullyCustomizePackageEnquiry = createAsyncThunk(
   "send/full-cutomize-enquiry",
   async (formData, { rejectWithValue }) => {
     try {
+      console.log("the formdatain action is", formData)
       const config = {
         headers: {
           "Content-Type": "application/json",

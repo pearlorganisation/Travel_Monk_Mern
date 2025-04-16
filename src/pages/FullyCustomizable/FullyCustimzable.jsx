@@ -82,7 +82,7 @@ const FullyCustomizeTrip = () => {
   const datesRange = getDatesInRange(startDate, endDate); // getting the range of the date
   const datesObjects = datesRange.map((date) => ({ date }));
 
-  console.log("the dates range is", datesRange)
+  console.log("the dates object is", datesObjects)
 const len = datesObjects.length
  
 
@@ -238,6 +238,13 @@ const len = datesObjects.length
     }
 
   }
+
+/** date normalization */
+  const normalizeToUtcMidnight = (date) => {
+    const d = new Date(date); // your original date (e.g., from a date picker)
+    return new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())).toISOString();
+  };
+
   const handleLocationChange = async (
     index,
     event,
@@ -255,7 +262,8 @@ const len = datesObjects.length
         newDayData[index].hotel_options = hotelData;
       }
     }
-    newDayData[index].date = selectedDate;
+    console.log("the selected date is", selectedDate)
+    newDayData[index].date = normalizeToUtcMidnight(selectedDate)
     newDayData[index].day = index + 1;
     setDayData(newDayData);
 
@@ -272,7 +280,8 @@ const len = datesObjects.length
     mapData[index].longitude = coordinates?.coordinates[1] 
    };
 
-console.log("the search location is", searchLocation)
+   console.log("the day data is", dayData)
+// console.log("the search location is", searchLocation)
    const [selectedHotelImages, setSelectedHotelImages]= useState([])
    /** to selecte hotels and calculate their price */
   const handleHotelChange = (index, event, hotels) => {
@@ -449,7 +458,9 @@ console.log("the search location is", searchLocation)
                               handleLocationChange(
                                 index,
                                 event,
-                                new Date(datesObjects[index]?.date).toISOString(),
+                                // new Date(datesObjects[index]?.date).toISOString(),
+                                new Date(datesObjects[index]?.date),
+
                                 destinationLocations
                               )
                             }

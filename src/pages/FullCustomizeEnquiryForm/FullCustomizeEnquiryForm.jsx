@@ -6,7 +6,7 @@ import { sendFullyCustomizePackageEnquiry } from "../../features/FullyCustomizeP
 import RoadmapFully from "../../components/TimelineComponent/FullyCustomizableTimeline";
 import FullyCustomizePdfDownload from "../../components/PDFDownload/pdfDownload";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-const FullCustomizeEnquiryForm = () => {
+const   FullCustomizeEnquiryForm = () => {
   const location = useLocation();
   const dispatch = useDispatch();
 
@@ -41,7 +41,20 @@ const FullCustomizeEnquiryForm = () => {
     datesRange
   } = location.state ?? {};
  
+ 
 
+/** date normalization */
+  const normalizeToUtcMidnight = (date) => {
+    const d = new Date(date); // your original date (e.g., from a date picker)
+    return new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())).toISOString();
+  };
+
+  // Usage
+  const normalizedStartDate = normalizeToUtcMidnight(startDate);
+  const normalizedEndDate = normalizeToUtcMidnight(endDate);
+
+  console.log("the start date is", normalizedStartDate)
+  console.log("the end date is", normalizedEndDate)
   /** DATA FOR DOWNLOADING THE PDF */ 
   const pdfData = location.state.itinerary;
  
@@ -70,8 +83,8 @@ const FullCustomizeEnquiryForm = () => {
       selectedVehicle: vehicleId,
       destination: destinationId,
       duration: duration,
-      startDate: startDate.toISOString(),
-      endDate: endDate.toISOString(),
+      startDate: normalizedStartDate, // "2025-04-15T18:30:00.000Z"
+      endDate: normalizedEndDate
     };
     dispatch(sendFullyCustomizePackageEnquiry(formData)).then(
 
