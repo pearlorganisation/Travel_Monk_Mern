@@ -104,18 +104,18 @@ const Distinguish = ({ hotels }) => {
               ))}
           </Swiper>
               <button
-                        className="absolute  left-0 top-1/2 transform -translate-y-1/2 z-10 bg-[#007E8F] text-white p-1 rounded-full"
-                        onClick={prevSlide}
-                      >
-                        <HiChevronLeft size={24} />
-                      </button>
+                className="absolute  left-0 top-1/2 transform -translate-y-1/2 z-10 bg-[#007E8F] text-white p-1 rounded-full"
+                onClick={prevSlide}
+              >
+                <HiChevronLeft size={24} />
+              </button>
             
-                      <button
-                        className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-[#007E8F] text-white p-1 rounded-full"
-                        onClick={nextSlide}
-                      >
-                        <HiChevronRight size={24} />
-                      </button>
+            <button
+              className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-[#007E8F] text-white p-1 rounded-full"
+              onClick={nextSlide}
+            >
+              <HiChevronRight size={24} />
+            </button>
         </div>
         </div>
       </div>

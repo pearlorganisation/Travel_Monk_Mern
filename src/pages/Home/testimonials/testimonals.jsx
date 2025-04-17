@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Navigation, Pagination } from "swiper/modules";
+import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
 
 const testimonials = [
   {
@@ -32,76 +33,103 @@ const testimonials = [
 ];
 
 const Testimonials = () => {
+     const swiperRef = useRef()
+      const [swiperInstance, setSwiperInstance] = useState(null);
+      const prevSlide = () => {
+        if (swiperInstance) {
+          swiperInstance.slidePrev();
+        }
+      };
+    
+      const nextSlide = () => {
+        if (swiperInstance) {
+          swiperInstance.slideNext();
+        }
+      };
   return (
     <div className="bg-gray-100 py-10 px-6 lg:px-20">
       {/* Section Title */}
       <h2 className="text-center text-3xl font-bold mb-8 text-gray-800">
         Testimonials
       </h2>
-      <div className="relative flex items-center justify-center">
-        <Swiper
-          slidesPerView={1}
-          spaceBetween={20}
-          pagination={{ clickable: true }}
-          breakpoints={{
-            640: { slidesPerView: 1, spaceBetween: 20 },
-            768: { slidesPerView: 2, spaceBetween: 30 },
-            1024: { slidesPerView: 3, spaceBetween: 25 },
-          }}
-          navigation={{
-            prevEl: ".swiper-button-prev",
-            nextEl: ".swiper-button-next",
-          }}
-          modules={[Pagination, Navigation]}
-          className="mySwiper"
-        >
-          {Array.isArray(testimonials) &&
-            testimonials.map((testimonial) => (
-              <SwiperSlide key={testimonial.id}>
-                <div className="bg-white min-h-64 shadow-lg rounded-lg p-6 border border-gray-200 hover:shadow-xl transition-shadow duration-300 overflow-hidden">
-                  <div className="flex items-start gap-4">
-                   
-                    <div className="">
-                     
+      <div className="relative flex items-center justify-center px-16">
+     
+          <Swiper
+            onSwiper={setSwiperInstance}
+            ref={swiperRef}
+            slidesPerView={1}
+            spaceBetween={20}
+            pagination={{ clickable: true }}
+            breakpoints={{
+              640: { slidesPerView: 1, spaceBetween: 20 },
+              768: { slidesPerView: 2, spaceBetween: 30 },
+              1024: { slidesPerView: 3, spaceBetween: 25 },
+            }}
+            navigation={{
+              prevEl: ".swiper-button-prev",
+              nextEl: ".swiper-button-next",
+            }}
+            modules={[Pagination, Navigation]}
+            className="mySwiper"
+          >
+            {Array.isArray(testimonials) &&
+              testimonials.map((testimonial) => (
+                <SwiperSlide key={testimonial.id}>
+                  <div className="bg-white min-h-64 shadow-lg rounded-lg p-6 border border-gray-200 hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+                    <div className="flex items-start gap-4">
 
-                      <div className="w-20 h-20 bg-gray-200 rounded-full">
-                        <h1 className="text-center pt-6 capitalize ">
-                          {" "}
-                          {testimonial?.name.charAt(0)}{" "}
-                          {testimonial?.name.charAt(
-                            testimonial?.name.indexOf(" ") + 1
-                          )}
-                        </h1>
+                      <div className="">
+
+
+                        <div className="w-20 h-20 bg-gray-200 rounded-full">
+                          <h1 className="text-center pt-6 capitalize ">
+                            {" "}
+                            {testimonial?.name.charAt(0)}{" "}
+                            {testimonial?.name.charAt(
+                              testimonial?.name.indexOf(" ") + 1
+                            )}
+                          </h1>
+                        </div>
+                      </div>
+                      {/* Text Content */}
+                      <div className="flex-1">
+                        <h3 className="font-bold text-lg text-gray-800">
+                          {testimonial.name}
+                        </h3>
+                        <p className="text-gray-700 mt-2 lg:text-base md:text-sm text-xs line-clamp-4">
+                          {testimonial.text}
+                        </p>
+                        <a
+                          href="https://www.google.com/search?client=safari&rls=en&q=travel+monk+adventures&ie=UTF-8&oe=UTF-8&dlnr=1&sei=4mdNZ9CLMbWH4-EPyYGJ8Ac#dlnr=1&topic=mid:/g/11cmh5569r"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 font-medium hover:underline mt-4 block"
+                        >
+                          Read more
+                        </a>
                       </div>
                     </div>
-                    {/* Text Content */}
-                    <div className="flex-1">
-                      <h3 className="font-bold text-lg text-gray-800">
-                        {testimonial.name}
-                      </h3>
-                      <p className="text-gray-700 mt-2 lg:text-base md:text-sm text-xs line-clamp-4">
-                        {testimonial.text}
-                      </p>
-                      <a
-                        href="https://www.google.com/search?client=safari&rls=en&q=travel+monk+adventures&ie=UTF-8&oe=UTF-8&dlnr=1&sei=4mdNZ9CLMbWH4-EPyYGJ8Ac#dlnr=1&topic=mid:/g/11cmh5569r"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600 font-medium hover:underline mt-4 block"
-                      >
-                        Read more
-                      </a>
-                    </div>
                   </div>
-                </div>
-              </SwiperSlide>
-            ))}
-        </Swiper>
+                </SwiperSlide>
+              ))}
+          </Swiper>
+     
+  
 
         {/* Swiper Previous Button */}
-        <button className="swiper-button-prev absolute hidden md:flex left-2 lg:-left-16 bg-[#007E8F] text-white px-4 py-4 rounded-full h-12 w-12 top-1/2 transform -translate-y-1/2 z-10 text-xs font-semibold items-center justify-center hover:scale-110 transition-transform duration-300"></button>
-
-        {/* Swiper Next Button */}
-        <button className="swiper-button-next absolute hidden md:flex right-2 lg:-right-16 bg-[#007E8F] text-white px-4 py-4 rounded-full h-12 w-12 top-1/2 transform -translate-y-1/2 z-10 text-xs font-semibold items-center justify-center hover:scale-110 transition-transform duration-300"></button>
+           <button
+              className="absolute  left-0 top-1/2 transform -translate-y-1/2 z-10 bg-[#007E8F] text-white p-1 rounded-full"
+              onClick={prevSlide}
+            >
+              <HiChevronLeft size={24} />
+            </button>
+          
+          <button
+            className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-[#007E8F] text-white p-1 rounded-full"
+            onClick={nextSlide}
+          >
+            <HiChevronRight size={24} />
+          </button>
       </div>
     </div>
   );
