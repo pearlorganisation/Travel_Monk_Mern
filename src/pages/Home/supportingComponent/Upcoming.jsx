@@ -46,6 +46,7 @@ const Upcoming = () => {
     }
   };
 
+  console.log("the packages data is", packagesData)
   return (
     <div className="w-full min-h-[15rem] bg-gray-100 px-4 md:px-6 lg:px-8 py-8">
       <div className="max-w-7xl mx-auto">
@@ -65,7 +66,7 @@ const Upcoming = () => {
           </div>
         </div>
 
-        {packagesData !== null && (
+        {packagesData !== null && packagesData?.length >0 ? (
           <div className="bg-[#f5f5f5] py-6 md:py-8 px-4 md:px-6 rounded-lg">
             <div className="relative">
               <h2 className="text-xl md:text-2xl font-bold mb-6">
@@ -144,8 +145,8 @@ const Upcoming = () => {
               <button className="swiper-button-next absolute  lg:!-right-[50px] bg-[#007E8F] !text-[#ffff] !px-8 !py-8 !rounded-full !h-6 !w-6 !mt-4 top-1/2 transform -translate-y-1/2 z-10 !text-xs !font-semibold scale-50 flex items-center justify-center"></button>
             </div>
           </div>
-        )}
-        {packagesData ===null && <div className="w-full text-center">Select a month</div>}
+        ) : <><div className="w-full text-center">No Packages available in this month please select a different month.</div></>}
+        {/* {packagesData ===null &&  } */}
       </div>
     </div>
   );
