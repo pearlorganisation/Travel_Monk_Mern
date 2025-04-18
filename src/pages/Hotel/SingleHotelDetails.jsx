@@ -20,7 +20,7 @@ const SingleHotelDetails = () => {
     },
   });
   const state = location.state ?? {};
-  console.log("------------location state data", state);
+  // console.log("------------location state data", state);
   const { hotel, hotelStartDate, HotelEndDate, hotelTravellers } = state;
   const {
     name,
@@ -35,11 +35,12 @@ const SingleHotelDetails = () => {
     inclusion
   } = hotel;
 
+  // console.log("the estimated price is", estimatedPrice)
   let splittedInclusion = inclusion?.length >0 ? inclusion?.[0].split(",") : "" 
-  console.log("the splitted inclusion is", splittedInclusion)
+  // console.log("the splitted inclusion is", splittedInclusion)
   const inclusionHelper = (splittedInclusion) => {
     let newArr = splittedInclusion?.split(",");
-    console.log("the new arr is", newArr);
+    // console.log("the new arr is", newArr);
     return (
       <ul>
         {newArr?.map((item, index) => (
@@ -51,13 +52,29 @@ const SingleHotelDetails = () => {
 
   /**-------------to calculate the estimated value of the hotel according to the hotel travellers-------------*/
   let Estimated_Hotel_Value = (hotelTravellers, estimatedPrice) => {
+    console.log("the hotel travellers", hotelTravellers);
     let travellersCount = parseInt(hotelTravellers);
-    let cost = estimatedPrice * Math.ceil(travellersCount / 2);
+    let cost = 0;
+
+    if (isNaN(travellersCount) || travellersCount <= 0 || isNaN(estimatedPrice) || estimatedPrice <= 0) {
+      return 0;
+    }
+
+    if (travellersCount % 2 === 0) {
+      // Even number of travellers
+      cost = estimatedPrice * (travellersCount / 2);
+    } else {
+      // Odd number of travellers — rule: price x (travellersCount - 0.5)
+      cost = estimatedPrice * (travellersCount - 0.5);
+    }
+
     return cost;
   };
+
   let finalValue = Estimated_Hotel_Value(hotelTravellers, estimatedPrice);
   finalValue = !isNaN(finalValue) ? finalValue : 0;
-
+   
+  // console.log("the final value is", finalValue)
   /** calculating ultimate final value */
   let passenger = watch("passenger");
   let ultimateFinalValue =
@@ -65,6 +82,7 @@ const SingleHotelDetails = () => {
       ? Estimated_Hotel_Value(passenger, estimatedPrice)
       : finalValue;
 
+      console.log("the ultimate final value", ultimateFinalValue)
   let startDate = watch("startDate");
   let endDate = watch("endDate");
 
