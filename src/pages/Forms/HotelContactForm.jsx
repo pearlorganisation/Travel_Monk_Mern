@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { hotelContact } from "../../features/contact/contactAction";
 import { useLocation } from "react-router-dom";
 
@@ -9,6 +9,8 @@ const HotelContactForm = ({ data, setFormOpen, estimatedPrice, startDate, endDat
   // console.log("============location name", location.pathname)
   const { hotel, hotelStartDate, HotelEndDate, hotelTravellers } = data;
 console.log("form data is", hotelStartDate, HotelEndDate, hotelTravellers)
+  const { loading } = useSelector(state => state.contact)
+
   const dispatch = useDispatch();
   const {
     handleSubmit,
@@ -97,6 +99,12 @@ console.log("form data is", hotelStartDate, HotelEndDate, hotelTravellers)
               placeholder="Enter your message"
             ></textarea>
           </div>
+          {loading ? <div
+            // type="submit"
+            className="w-full bg-blue-600 text-white text-center py-2 px-4 rounded-md hover:bg-blue-700"
+          >
+            Contact is Submitting ...
+          </div> : 
           <div className="flex flex-row gap-3">
             <button
               type="submit"
@@ -111,7 +119,8 @@ console.log("form data is", hotelStartDate, HotelEndDate, hotelTravellers)
             >
               Cancel
             </button>
-          </div>
+          </div>}
+           
         </form>
       </div>
     </div>
