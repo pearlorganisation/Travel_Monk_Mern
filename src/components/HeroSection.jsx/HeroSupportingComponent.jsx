@@ -317,6 +317,7 @@ console.log('----------------- the actionsresult value is', actionResult)
                       selectsStart
                       selected={startDate}
                       onChange={(date) => setStartDate(date)}
+                      minDate={new Date()} // ⬅️ Restrict past dates
                       dateFormat="yyyy-MM-dd"
                       className="w-full px-3 py-2 border border-black/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#007E8F] focus:border-transparent"
                       placeholderText="Select Start Date"
@@ -326,7 +327,7 @@ console.log('----------------- the actionsresult value is', actionResult)
                     <label className="block mb-2 text-sm font-medium text-gray-700">
                       End Date
                     </label>
-                    <DatePicker
+                    {startDate != null ? <DatePicker
                       required
                       selectsEnd
                       selected={endDate}
@@ -336,7 +337,19 @@ console.log('----------------- the actionsresult value is', actionResult)
                       dateFormat="yyyy-MM-dd"
                       className="w-full px-3 py-2 border border-black/50  rounded-lg focus:outline-none focus:ring-2 focus:ring-[#007E8F] focus:border-transparent"
                       placeholderText="Select End Date"
-                    />
+                    /> : <><div> <DatePicker
+                    disabled={true}
+                      required
+                      selectsEnd
+                      selected={endDate}
+                      onChange={(date) => setEndDate(date)}
+                      minDate={startDate}
+                      maxDate={maxDate}
+                      dateFormat="yyyy-MM-dd"
+                      className="w-full px-3 py-2 border border-black/50  rounded-lg focus:outline-none focus:ring-2 focus:ring-[#007E8F] focus:border-transparent"
+                      placeholderText="Select End Date"
+                    /></div></> }
+                    
                   </div>
                 </div>
 
