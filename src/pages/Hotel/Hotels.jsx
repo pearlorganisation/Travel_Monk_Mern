@@ -93,14 +93,14 @@ const Hotels = () => {
             },
             {
             })
-            dispatch(getHotelsByDestination({ id: newDestinationId,limit:12, priceRange: selectedRange, search: searchQuery , page: currentPage }))
+            dispatch(getHotelsByDestination({ id: newDestinationId,limit:12, priceRange: selectedRange, search: debouncedSearchQuery , page: currentPage }))
         }
         if(searchQuery?.length>=0){
-            dispatch(getHotelsByDestination({ id: newDestinationId, limit: 12, priceRange: selectedRange, search: searchQuery, page: currentPage })
+            dispatch(getHotelsByDestination({ id: newDestinationId, limit: 12, priceRange: selectedRange, search: debouncedSearchQuery, page: currentPage })
         )
         }
  
-    },[selectedRange, navigate, location, dispatch,searchQuery, newDestinationId, currentPage, locationName]);
+    }, [selectedRange, navigate, location, dispatch, debouncedSearchQuery, newDestinationId, currentPage, locationName]);
  
 
 
@@ -120,15 +120,10 @@ const Hotels = () => {
         setSearchQuery(e.target.value)
     }
 
-    // useEffect(()=>{
-    //   if(searchQuery ==""){
-    //     setSearchQuery(locationName)
-    //   }
-    // },[searchQuery])
-
     if(searchQuery==""){
         setSearchQuery(locationName)
     };
+    
     console.log("initial search and after search query is", searchQuery)
     const submitForm = async(data)=>{
         const { hotelDestination } = data;
