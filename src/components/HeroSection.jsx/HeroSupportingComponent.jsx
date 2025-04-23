@@ -20,7 +20,10 @@ const HeroSupportingComponent = ({ data }, ref) => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
  
-  
+  const today = new Date();
+  const localDate = today.toLocaleDateString("en-CA"); // "yyyy-MM-dd" format
+
+  console.log("the local date is", localDate)
   const [travellers, setTravellers] = useState("");
   let maxDate = null;
   if (startDate) {
@@ -34,7 +37,7 @@ const HeroSupportingComponent = ({ data }, ref) => {
 
   /** getting the value of the destination field */
   const destinationFieldName = getValues("destination");
-  console.log("-------------------destination name", destinationFieldName);
+  // console.log("-------------------destination name", destinationFieldName);
 
   /** new addition */
   const debounce = (func, delay) => {
@@ -71,7 +74,6 @@ const HeroSupportingComponent = ({ data }, ref) => {
     const value = e.target.value;
     // setQuery(value);
     setDestination(value);
-    console.log(value, "my qury value");
     debouncedSearch(value);
     setValue("destination", value);
   };
@@ -87,7 +89,6 @@ const HeroSupportingComponent = ({ data }, ref) => {
   };
 
   const submitForm = async (data) => {
-    console.log(data, "my sent data");
     const { destination } = data;
 
     if (travellers == "") return alert("Travellers is a required field");
@@ -187,8 +188,7 @@ const handleHotelTraveller = (e)=>{
     setLocationName(e.target.value)
   }
 
-  console.log("the location name is", locationName)
-  /** handle to submit the form and get the hotels at that destination */
+   /** handle to submit the form and get the hotels at that destination */
   const submitHotelForm = async(data)=>{
     const { hotelDestination } = data;
     // console.log("the hotel destination is",hotelDestination)
@@ -196,8 +196,7 @@ const handleHotelTraveller = (e)=>{
     const actionResult = await dispatch(
       searchDestination(hotelDestination)
     ).unwrap();
-console.log('----------------- the actionsresult value is', actionResult)
-    if (actionResult?.data?.length > 0) {
+     if (actionResult?.data?.length > 0) {
       navigate(`hotels-dest/${actionResult.data[0]._id}`
         , {
           state: { hotelStartDate, HotelEndDate, hotelTravellers, locationName },
@@ -317,7 +316,7 @@ console.log('----------------- the actionsresult value is', actionResult)
                       selectsStart
                       selected={startDate}
                       onChange={(date) => setStartDate(date)}
-                      minDate={new Date()} // ⬅️ Restrict past dates
+                      minDate={new Date()}  
                       dateFormat="yyyy-MM-dd"
                       className="w-full px-3 py-2 border border-black/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#007E8F] focus:border-transparent"
                       placeholderText="Select Start Date"
@@ -513,21 +512,14 @@ console.log('----------------- the actionsresult value is', actionResult)
                       <label className="block mb-2 text-sm font-medium text-gray-700">
                         Check In
                       </label>
-                      {/* <DatePicker
-                        required
-                        selectsStart
-                        selected={hotelStartDate}
-                        onChange={(date) => setHotelStartDate(date)}
-                        dateFormat="MM-dd-yyyy"
-                        className="w-full px-3 py-2 border border-black/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#007E8F] focus:border-transparent"
-                        placeholderText="Select Start Date"
-                      /> */}
+              
                     <input
                       type="date"
                       id="checkIn"
                       {...register("checkIn")}
                       onChange={(e)=> setHotelStartDate(e.target.value)}
                       required
+                      min={localDate}  
                       className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                     </div>
@@ -535,26 +527,25 @@ console.log('----------------- the actionsresult value is', actionResult)
                       <label className="block mb-2 text-sm font-medium text-gray-700">
                         Check Out
                       </label>
-                      {/* <DatePicker
-                        required
-                        selectsEnd
-                        selected={HotelEndDate}
-                        onChange={(date) => setHotelEndDate(date)}
-                        minDate={startDate}
-                        // maxDate={maxDate}
-                        dateFormat="MM-dd-yyyy"
-                        className="w-full px-3 py-2 border border-black/50  rounded-lg focus:outline-none focus:ring-2 focus:ring-[#007E8F] focus:border-transparent"
-                        placeholderText="Select End Date"
-                      /> */}
-                    <input
+                    {hotelStartDate != null ? <input
                       type="date"
                       id="checkOut"
                       {...register("checkOut")}
-                      onChange={(e)=> setHotelEndDate(e.target.value)}
+                      onChange={(e) => setHotelEndDate(e.target.value)}
                       required
                       min={hotelStartDate}
                       className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
+                    /> : <input
+                      type="date"
+                      id="checkOut"
+                      disabled={true}
+                      {...register("checkOut")}
+                      onChange={(e) => setHotelEndDate(e.target.value)}
+                      required
+                      min={hotelStartDate}
+                      className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />  }
+                    
                     </div>
                   </div>
 
