@@ -14,6 +14,7 @@ import Pagination from "../../components/Pagination/Pagination";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { axiosInstance } from "../../services/axiosInterceptor";
+import DownloadPdfButtonByAdmin from "../../components/PDFDownload/DownloadPdfCreatedByAdmin";
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
@@ -470,7 +471,7 @@ const [isLoading, setLoading] = useState(false)
                     <div className="flex flex-row justify-between">
                       <div></div>
                       <div className="flex flex-col place-items-end">
-                        {/* {enquiry && <DownloadPdfButton data={enquiry} />} */}
+                        {enquiry && <DownloadPdfButtonByAdmin data={enquiry} />}
                         {/* <div className="mt-4"><button className="bg-red-300 px-7 py-2 rounded-lg" onClick={() => handlePayment(enquiry?._id, fully_Endpoint, fully_verify_endpoint)}>Book the trip</button></div> */}
                       </div>
                     </div>
