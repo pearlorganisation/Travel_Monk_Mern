@@ -90,19 +90,19 @@ const handlePageCustomPackageClick =(page)=>{
   }, []);
 
 useEffect(()=>{
-   dispatch(getMyFullyCustomizedEnquiries({page: pageFull,limit:3}))
+   dispatch(getMyFullyCustomizedEnquiries({page: pageFull,limit:10}))
 },[pageFull])
 
 useEffect(()=>{
-   dispatch(getMyPrebuiltEnquiry({page: currentPrebuiltPage, limit:3}))   
+   dispatch(getMyPrebuiltEnquiry({page: currentPrebuiltPage, limit:10}))   
 },[currentPrebuiltPage])
 
 useEffect(() => {
-    dispatch(getUserBookings({page:currentBookingPage, limit:4}));
+    dispatch(getUserBookings({page:currentBookingPage, limit:10}));
 }, [currentBookingPage]);
 
 useEffect(()=>{
-  dispatch(getPackagesCreatedByAdmin({page:currentCustomPackagePage, limit:1}))
+  dispatch(getPackagesCreatedByAdmin({page:currentCustomPackagePage, limit:10}))
 },[currentCustomPackagePage])
 const [isLoading, setLoading] = useState(false)
 
