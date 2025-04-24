@@ -190,6 +190,8 @@ const [isLoading, setLoading] = useState(false)
   // console.log("the prebuilt enquiries data is", prebuiltEnquiries)
   return (
     <div className="bg-gray-50 min-h-screen py-6 px-4 sm:px-6 lg:px-8">
+      
+      {/** user details section */}
       <div className="max-w-4xl mx-auto bg-white shadow-xl rounded-2xl overflow-hidden">
         {/* Profile Header */}
         <div className="p-6 border-b border-gray-300 bg-gray-100">
@@ -227,6 +229,7 @@ const [isLoading, setLoading] = useState(false)
           </div>
         </div>
       </div>
+      
       {/* Bookings Section */}
       <div className="mt-8 border-t border-gray-300 pt-6">
         <button
@@ -294,6 +297,7 @@ const [isLoading, setLoading] = useState(false)
         )}
         <Pagination paginate={paginateBookings} currentPage={currentBookingPage} totalPages={totalPagesBooking} handlePageClick={handlePageBookingClick} />
       </div>
+
       {/** prebuilt package enquiries */}
       <div className="mt-10 border-t border-gray-200 pt-6">
         <button
