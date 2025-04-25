@@ -508,9 +508,9 @@ const [isLoading, setLoading] = useState(false)
             </div>
           )}
         <div>        <Pagination paginate={paginate} currentPage={currentCustomPackagePage} totalPages={totalCustomPages} handlePageClick={handlePageCustomPackageClick} />
-</div>
        </div>
     </div>
+  </div>
 
   );
 };

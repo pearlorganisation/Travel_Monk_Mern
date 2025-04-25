@@ -67,31 +67,31 @@ const Distinguish = ({ hotels }) => {
                     to={`/hotel-details/${hotel?._id}`}
                     state={{ hotel: hotel }}
                   >
-                    <div className="lg:w-[260px] mx-6 rounded-md">
+                    <div className="w-full max-w-[90%] sm:max-w-sm md:max-w-md lg:max-w-[260px] mx-auto rounded-md">
                       <div
-                        className="bg-cover bg-center max-w-full sm:w-[400px] h-[300px] rounded-lg shadow-lg bg-opacity-50"
+                        className="bg-cover bg-center w-full h-[300px] rounded-lg shadow-lg"
                         style={{
                           backgroundImage: `linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${baseURL}/${hotel?.image?.path})`,
                         }}
                       >
-                        <div className="bg-opacity-50 h-full max-w-full flex items-center rounded-lg">
-                          <div className="text-left text-white p-8 flex flex-col justify-between h-full">
-                            {/* Container for Hotel Name (Top) */}
-                            <div className="mb-4"> {/* Add some margin-bottom for spacing */}
-                              <h3 className="text-lg md:text-xl font-bold overflow-hidden break-words whitespace-pre-wrap">
+                        <div className="bg-opacity-50 h-full w-full flex items-center rounded-lg">
+                          <div className="text-left text-white p-4 sm:p-6 md:p-8 flex flex-col justify-between h-full w-full">
+                            {/* Hotel Name */}
+                            <div className="mb-4">
+                              <h3 className="text-base sm:text-lg md:text-xl font-bold overflow-hidden break-words whitespace-pre-wrap">
                                 {hotel?.name}
                               </h3>
                             </div>
 
-                            {/* Container for the Bottom Elements (Button, City, Price) */}
+                            {/* Bottom Section */}
                             <div className="w-full">
-                              <button className="bg-[#007E8F] text-white py-2 px-4 rounded">
+                              <button className="bg-[#007E8F] text-white py-2 px-4 rounded text-sm sm:text-base">
                                 Explore
                               </button>
-                              <div className="text-base font-semibold text-gray-200 mt-2">
+                              <div className="text-sm sm:text-base font-semibold text-gray-200 mt-2">
                                 {hotel?.city}
                               </div>
-                              <div className="text-xl font-bold text-white mt-1">
+                              <div className="text-lg sm:text-xl font-bold text-white mt-1">
                                 ₹ {hotel?.estimatedPrice}
                               </div>
                             </div>
@@ -99,6 +99,7 @@ const Distinguish = ({ hotels }) => {
                         </div>
                       </div>
                     </div>
+
                   </Link>
                 </SwiperSlide>
               ))}

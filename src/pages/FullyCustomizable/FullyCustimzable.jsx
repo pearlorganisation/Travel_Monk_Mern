@@ -377,7 +377,7 @@ const len = datesObjects.length
 
  
   return (
-    <div className="bg-gray-100 relative">
+    <div className="relative">
       <div
         className="flex items-center absolute justify-end px-20 mb-6"
         style={{
@@ -389,7 +389,7 @@ const len = datesObjects.length
       >
         <WhatsAppLogo />
       </div>
-      <div className="p-6 mt-4 mb-3">
+      <div className="p-6 mt-4 bg-gray-100 mb-3 mx-4 rounded-md">
         <h1 className="text-[#1f1f1f] font-bold text-4xl leading-[48px]">
            Customize your Trip
          </h1>
