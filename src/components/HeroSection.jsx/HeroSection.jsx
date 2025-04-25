@@ -86,31 +86,32 @@ const HeroSection = () => {
   }
 
   return (
-    <div className="h-[30rem] flex flex-col items-center justify-center ">
-      <section className="flex flex-col justify-center ">
-        <div className="flex  items-center justify-center rounded-2xl overflow-hidden rounded-b-none bg-white">
+    <div className="min-h-[30rem]   flex flex-col items-center justify-center">
+      <section className="w-full flex flex-col items-center justify-center">
+        <div className="flex items-center justify-start sm:justify-center gap-2 rounded-2xl overflow-x-auto sm:overflow-visible rounded-b-none bg-white px-2 sm:px-4 py-2">
           {heroData.map((el, index) => {
             return (
               <div
                 onClick={() => handleHeroData(`${el.title}`)}
                 key={index}
-                className={`w-32 ${
-                  data.toLowerCase() === el.title.toLowerCase()
+                className={`min-w-[6rem] sm:w-32 ${data.toLowerCase() === el.title.toLowerCase()
                     ? "border-b-blue-400 bg-blue-400/30"
-                    : " "
-                }   space-y-1 group hover:bg-blue-400/30 h-20 border-b-2  border-b-transparent hover:border-b-blue-400 flex flex-col justify-center items-center `}
+                    : ""
+                  } space-y-1 group hover:bg-blue-400/30 h-20 border-b-2 border-b-transparent hover:border-b-blue-400 flex flex-col justify-center items-center text-center`}
               >
-                <div className="text-gray-600  w-8 h-8 ">{el.img}</div>
-                <p>{el.title}</p>
+                <div className="text-gray-600 w-8 h-8">{el.img}</div>
+                <p className="text-sm sm:text-base">{el.title}</p>
               </div>
             );
           })}
         </div>
       </section>
-      <div className="bg-white rounded-3xl">
+
+      <div className="w-full max-w-[95%] sm:max-w-[500px] md:max-w-[700px] lg:max-w-[950px] mx-auto rounded-3xl shadow-lg">
         {data && <HeroSupportingComponent data={data} />}
       </div>
     </div>
+
   );
 };
 

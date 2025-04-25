@@ -210,15 +210,13 @@ const handleHotelTraveller = (e)=>{
   }
   }
   return (
-    <div className="bg-white p-6 rounded-3xl shadow-lg lg:w-[950px] mx-auto">
+    <div className="w-[90%] sm:w-[500px] md:w-[700px] lg:w-[950px] mx-auto bg-white p-6 rounded-3xl shadow-lg">
       {data === "Trip" && (
         <div className="space-y-6">
           <div className="flex flex-col-reverse md:flex-row gap-6">
-            {/* Left Side: Destination Search */}
-
-            <div className="flex-grow">
+            <div className="flex-grow my-5">
               <form onSubmit={handleSubmit(submitForm)} className="space-y-4">
-                <div className="flex flex-row gap-4">
+                <div className="flex md:flex-row lg:flex-row flex-col gap-4">
                   <div className="relative">
                     <label
                       htmlFor="destination"
@@ -364,7 +362,7 @@ const handleHotelTraveller = (e)=>{
             </div>
 
             {/* Right Side: Date Pickers */}
-            <div className="flex flex-row gap-4 w-full md:w-auto"></div>
+            {/* <div className="flex flex-row gap-4 w-full md:w-auto"></div> */}
           </div>
         </div>
       )}
@@ -375,9 +373,9 @@ const handleHotelTraveller = (e)=>{
             <div className="flex flex-col-reverse md:flex-row gap-6">
               {/* Left Side: Destination Search */}
 
-              <div className="flex-grow">
+              <div className="flex-grow my-5">
                 <form onSubmit={handleSubmit(submitHotelForm)} className="space-y-4">
-                  <div className="flex flex-row gap-4">
+                <div className="flex md:flex-row lg:flex-row flex-col gap-4">
                     <div className="relative">
                       <label
                         htmlFor="hotelDestination"
