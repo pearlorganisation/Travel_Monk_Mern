@@ -5,8 +5,10 @@ import { getAllDestinations } from "../../features/trips/tripActions";
 import { BestPackages } from "../../components/DestinationCards/BestDestinationCard";
 import Pagination from "../../components/Pagination/Pagination";
 import { getBestSellerPackages } from "../../features/package/packageActions";
+import useScrollToTop from "../../hooks/scrollTop";
 
 const IndianPackages = () => {
+  useScrollToTop()
     const destState = useSelector((state) => state.trip.destinations);
     const { bestSellersPackages, bestSellerPaginate } = useSelector((state)=> state.packages)
     /** for the destinations */

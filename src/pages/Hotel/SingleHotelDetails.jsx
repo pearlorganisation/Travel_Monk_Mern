@@ -3,8 +3,10 @@ import { useLocation, useParams } from "react-router-dom";
 import { baseURL } from "../../services/axiosInterceptor";
 import HotelContactForm from "../Forms/HotelContactForm";
 import { useForm } from "react-hook-form";
+import useScrollToTop from "../../hooks/scrollTop";
 
 const SingleHotelDetails = () => {
+  useScrollToTop()
   const { id } = useParams();
   const location = useLocation();
   /** states for opening the modal of form */

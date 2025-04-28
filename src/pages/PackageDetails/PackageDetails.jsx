@@ -16,7 +16,9 @@ import CrossIcon from "../../assets/logos/icons8-cross-50.png";
 import WhatsAppLogo from "../../components/Whatsapp/WhatsLogo";
 import LocationIcon from "/icons/locationicon.svg"
 import ClockIcon2 from "/icons/durationtimeicon.svg"
+import useScrollToTop from "../../hooks/scrollTop";
 const PackageDetails = () => {
+  useScrollToTop()
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();

@@ -209,22 +209,29 @@ const [isLoading, setLoading] = useState(false)
 
         {/* User Information */}
         <div className="p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <div className="flex flex-col lg:flex-row">
-                <p className="text-gray-600 font-medium">Email:</p>
-                <p className="text-gray-700 pl-2">{userInfo?.email}</p>
+          <div className="">
+            <div className="space-y-2 w-full flex justify-between">
+              <div>
+                <div className="flex flex-col lg:flex-row">
+                  <p className="text-gray-600 font-medium">Email:</p>
+                  <p className="text-gray-700 pl-2">{userInfo?.email}</p>
+                </div>
+                <div className="flex flex-col lg:flex-row">
+
+                  <p className="text-gray-600 font-medium">Mobile Number:</p>
+                  <p className="text-gray-600 font-medium pl-2">{userInfo?.mobileNumber}</p>
+
+                </div>
               </div>
-              <div className="flex flex-col lg:flex-row">
-                <p className="text-gray-600 font-medium">Mobile Number:</p>
-                <p className="text-gray-600 font-medium pl-2">{userInfo?.mobileNumber}</p>
-                
+               
+              <div>
+                <Link to="/change-password">
+                  <button className="w-full sm:w-auto bg-indigo-500 hover:bg-indigo-600 text-white font-medium rounded-lg px-4 py-2 text-sm transition">
+                    Change Password
+                  </button>
+                </Link>
               </div>
-              <Link to="/change-password">
-                <button className="w-full sm:w-auto bg-indigo-500 hover:bg-indigo-600 text-white font-medium rounded-lg px-4 py-2 text-sm transition">
-                  Change Password
-                </button>
-              </Link>
+               
             </div>
           </div>
         </div>
@@ -313,81 +320,83 @@ const [isLoading, setLoading] = useState(false)
               prebuiltEnquiries?.map((enquiry, index) => (
                 <div
                   key={index}
-                  className="bg-white p-4 rounded-md shadow-sm mt-3 border border-gray-200"
+                  className="bg-white p-4 justify-between rounded-md shadow-sm mt-3 border flex border-gray-200"
                 >
-                  <div className="flex justify-between gap-6 ">
-                    <div ></div>
+                   
+                      <div> 
+                            <div className="flex justify-between">
+                              <div>
+                                <p className="font-semibold text-gray-800">
+                                  Enquiry ID: {enquiry?._id ?? "Not Found"}
+                                </p>
+
+                                <p className="font-semibold text-gray-800">
+                                  Package Name: {enquiry?.package?.name}
+                                </p>
+                                <p className="text-gray-600 mt-2">
+                                  Vehicle: {enquiry?.selectedVehicle?.name ?? "No Vehicle Selected"}
+                                </p>
+
+                                <p className="text-gray-600 text-sm">
+                                  Date: {moment(enquiry?.createdAt).format("DD MMM YYYY")}
+                                </p>
+                              </div>
+                            </div>
+
+                            <div className="mt-4">
+                              <p className="text-gray-600">
+                                Name: {enquiry?.name}
+                              </p>
+
+                              <p className="text-gray-600 mt-2">
+                                Email: {enquiry?.email}
+                              </p>
+
+                              <p className="text-gray-600 mt-2">
+                                Mobile: {enquiry?.mobileNumber}
+                              </p>
+
+                              <p className="text-gray-600 mt-2">
+                                Travellers: {enquiry?.numberOfTravellers}
+                              </p>
+
+                              <p className="text-gray-600 mt-2">
+                                Message: {enquiry?.message}
+                              </p>
+                            </div>
+{/* 
+                            <div className="mt-4">
+                              <p className="font-semibold text-gray-800">Itinerary:</p>
+                              {enquiry?.itinerary?.map((day, index) => (
+                                <div key={day?._id} className="mt-2 pl-4 border-l-2 border-gray-200">
+                                  <p className="font-medium text-gray-700">
+                                    Day {day?.day}: {day?.location}  ({day?.date}) yyyy/mm/dd
+                                  </p>
+                                  <p className="text-gray-600">
+                                    Hotel: {day?.selectedHotel?.name}
+                                  </p>
+                                  {day?.selectedActivities?.length > 0 && (
+                                    <div className="mt-1">
+                                      <p className="text-gray-600">Activities:</p>
+                                      {day?.selectedActivities?.map((activity) => (
+                                        <p key={activity?._id} className="text-gray-600 text-sm pl-2">
+                                          • {activity?.label}
+                                        </p>
+                                      ))}
+                                    </div>
+                                  )}
+                                </div>
+                              ))}
+                            </div> */}
+                      </div>
+
+                  <div className="flex gap-6">
                     <div className="flex place-items-end w-full flex-col gap-2">
                       <div><DownloadPrebuiltPdfButton data={enquiry} /></div>
                       <button className="bg-red-300 px-7 py-2 rounded-lg mt-4" onClick={() => handlePayment(enquiry?._id, prebuilt_endpoint, prebuilt_verify_endpoint)}> Book the Trip</button>
                     </div>
                   </div>
-                   
-                  <div className="flex justify-between">
-                    <div>
-                      <p className="font-semibold text-gray-800">
-                        Enquiry ID: {enquiry?._id ?? "Not Found"}
-                      </p>
-
-                      <p className="font-semibold text-gray-800">
-                        Package Name: {enquiry?.package?.name}
-                      </p>
-                      <p className="text-gray-600 mt-2">
-                        Vehicle: {enquiry?.selectedVehicle?.name ?? "No Vehicle Selected"}
-                      </p>
-
-                      <p className="text-gray-600 text-sm">
-                        Date: {moment(enquiry?.createdAt).format("DD MMM YYYY")}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="mt-4">
-                    <p className="text-gray-600">
-                      Name: {enquiry?.name}
-                    </p>
-
-                    <p className="text-gray-600 mt-2">
-                      Email: {enquiry?.email}
-                    </p>
-
-                    <p className="text-gray-600 mt-2">
-                      Mobile: {enquiry?.mobileNumber}
-                    </p>
-
-                    <p className="text-gray-600 mt-2">
-                      Travellers: {enquiry?.numberOfTravellers}
-                    </p>
-
-                    <p className="text-gray-600 mt-2">
-                      Message: {enquiry?.message}
-                    </p>
-                  </div>
-
-                  <div className="mt-4">
-                    <p className="font-semibold text-gray-800">Itinerary:</p>
-                    {enquiry?.itinerary?.map((day, index) => (
-                      <div key={day?._id} className="mt-2 pl-4 border-l-2 border-gray-200">
-                        <p className="font-medium text-gray-700">
-                          Day {day?.day}: {day?.location}  ({day?.date}) yyyy/mm/dd
-                        </p>
-                        <p className="text-gray-600">
-                          Hotel: {day?.selectedHotel?.name}
-                        </p>
-                        {day?.selectedActivities?.length > 0 && (
-                          <div className="mt-1">
-                            <p className="text-gray-600">Activities:</p>
-                            {day?.selectedActivities?.map((activity) => (
-                              <p key={activity?._id} className="text-gray-600 text-sm pl-2">
-                                • {activity?.label}
-                              </p>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                </div> 
               ))}
           </div>
         )}
@@ -409,15 +418,9 @@ const [isLoading, setLoading] = useState(false)
               fullyCustomizedEnquiries?.map((enquiry, index) => (
                 <div
                   key={index}
-                  className="bg-gray-50 p-4 rounded-lg shadow-md border border-gray-200"
+                  className="bg-gray-50 p-4 flex justify-between rounded-lg shadow-md border border-gray-200"
                 >
-                 <div className="flex flex-row justify-between">
-                  <div></div>
-                    <div className="flex flex-col place-items-end">
-                      {enquiry && <DownloadPdfButton data={enquiry} />}
-                      <div className="mt-4"><button className="bg-red-300 px-7 py-2 rounded-lg" onClick={() => handlePayment(enquiry?._id, fully_Endpoint, fully_verify_endpoint)}>Book the trip</button></div>
-                    </div>
-                 </div>
+                 
 
 
                   <div className="space-y-4">
@@ -447,6 +450,14 @@ const [isLoading, setLoading] = useState(false)
                       <p className="text-gray-700">{enquiry?.message}</p>
                     </div>
                   </div>
+
+                  <div className="flex flex-row justify-between">
+                    <div></div>
+                    <div className="flex flex-col place-items-end">
+                      {enquiry && <DownloadPdfButton data={enquiry} />}
+                      <div className="mt-4"><button className="bg-red-300 px-7 py-2 rounded-lg" onClick={() => handlePayment(enquiry?._id, fully_Endpoint, fully_verify_endpoint)}>Book the trip</button></div>
+                    </div>
+                  </div>
                 </div>
               ))}
           </div>
@@ -470,15 +481,9 @@ const [isLoading, setLoading] = useState(false)
                 usersCustomPackages?.map((enquiry, index) => (
                   <div
                     key={index}
-                    className="bg-gray-50 p-4 rounded-lg shadow-md border border-gray-200"
+                    className="bg-gray-50 p-4 flex justify-between rounded-lg shadow-md border border-gray-200"
                   >
-                    <div className="flex flex-row justify-between">
-                      <div></div>
-                      <div className="flex flex-col place-items-end">
-                        {enquiry && <DownloadPdfButtonByAdmin data={enquiry} />}
-                        {/* <div className="mt-4"><button className="bg-red-300 px-7 py-2 rounded-lg" onClick={() => handlePayment(enquiry?._id, fully_Endpoint, fully_verify_endpoint)}>Book the trip</button></div> */}
-                      </div>
-                    </div>
+                     
 
 
                     <div className="space-y-4">
@@ -501,6 +506,14 @@ const [isLoading, setLoading] = useState(false)
                         <p>Email: {enquiry?.user?.email}</p>
                         <p>Mobile: {enquiry?.user?.mobileNumber}</p>
                         <p>Travellers: {enquiry?.numberOfTravellers}</p>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-row justify-between">
+                      <div></div>
+                      <div className="flex flex-col place-items-end">
+                        {enquiry && <DownloadPdfButtonByAdmin data={enquiry} />}
+
                       </div>
                     </div>
                   </div>

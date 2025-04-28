@@ -4,8 +4,10 @@ import DestinationCard from "../../components/DestinationCards/DestinationCard";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllDestinations } from "../../features/trips/tripActions";
 import Pagination from "../../components/Pagination/Pagination";
+import useScrollToTop from "../../hooks/scrollTop";
 
 const InternationalPackages = () => {
+  useScrollToTop()
   const dispatch = useDispatch();
   const destState = useSelector((state) => state.trip.destinations);
   console.log("destState", destState);

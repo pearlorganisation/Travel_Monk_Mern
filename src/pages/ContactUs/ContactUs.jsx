@@ -4,8 +4,10 @@ import { useDispatch } from "react-redux";
 import { submitContact } from "../../features/contact/contactAction";
 import { resetContactForm } from "../../features/contact/contactSlice";
 import { useLocation } from "react-router-dom";
+import useScrollToTop from "../../hooks/scrollTop";
 
 const ContactUs = () => {
+  useScrollToTop()
   const contactMethods = [
     {
       icon: (

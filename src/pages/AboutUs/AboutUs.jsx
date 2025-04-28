@@ -5,8 +5,11 @@ import { Button } from "primereact/button";
 import "primereact/resources/themes/lara-light-indigo/theme.css"; //theme
 import "primereact/resources/primereact.min.css"; //core css
 import AnimatedImageTabs from "../../components/AnimatedTabs/AnimatedTabs";
+import useScrollToTop from "../../hooks/scrollTop";
 
 const AboutUs = () => {
+  useScrollToTop()
+
   return (
     <div>
       <div

@@ -22,8 +22,10 @@ import { getBestHotels } from "../../features/hotel/hotelActions";
 import ChoseTravelMonkSec from "../../components/chooseTravelMonk/choseTravelMonk";
 import Testimonials from "./testimonials/testimonals";
 import AnimatedImageTabs from "../../components/AnimatedTabs/AnimatedTabs";
+import useScrollToTop from "../../hooks/scrollTop";
 
 const Home = () => {
+  useScrollToTop()
   const navigate = useNavigate();
   const { isUserLoggedIn } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
